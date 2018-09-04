@@ -1,10 +1,12 @@
 require_relative 'room'
+require_relative 'reservation'
 
 module Hotel
   class BookingSystem
-    attr_accessor :rooms
+    attr_accessor :rooms, :reservations
     def initialize()
       @rooms = load_rooms() #<-- array of all rooms
+      @reservations = []
     end
 
     def load_rooms()
@@ -15,11 +17,20 @@ module Hotel
     end
 
     def list_all_rooms()
+      all_rooms_str = "Here is a list of all rooms: \n"
 
-      puts "Here is a list of all rooms: "
       @rooms.each do |room|
-        puts room
+        all_rooms_str << "- Room #{room.num} \n"
       end
+
+      return all_rooms_str
+    end
+
+    def add_reservation(reservation)
+      @reservations << reservation
+    end
+
+    def list_reservations_by_date()
     end
 
   end
@@ -27,7 +38,5 @@ end
 
 
 # booking = Hotel::BookingSystem.new()
-# rooms_list = booking.load_rooms
 #
-# puts rooms_list
-# puts rooms_list[0].num
+# puts booking.list_all_rooms

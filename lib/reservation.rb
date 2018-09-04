@@ -1,8 +1,13 @@
 module Hotel
-  class BookingSystem
-    attr_accessor :name
-    def initialize(name)
-      @name = name
+  class Reservation
+    attr_accessor :id, :room_num, :date_start, :date_end, :cost
+
+    def initialize(id, room_num, date_start, date_end, cost=200)
+      @id = id
+      @room_num = room_num
+      @date_start = date_start
+      @date_end = date_end
+      @cost = cost
     end
   end
 end

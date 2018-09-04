@@ -11,12 +11,15 @@ Minitest::Reporters.use! Minitest::Reporters::SpecReporter.new
 
 describe "BookingSystem class" do
   let(:booking) {Hotel::BookingSystem.new()}
-  let(:rooms_list) {booking.load_rooms()}
 
   describe "#initialize" do
     it "can create a new instance of BookingSystem" do
       expect(booking).must_be_kind_of Hotel::BookingSystem
     end
+  end
+
+  describe "#load_rooms" do
+    let(:rooms_list) {booking.load_rooms()}
 
     it "can load a list of rooms" do
       expect(rooms_list).must_be_kind_of Array
@@ -31,6 +34,19 @@ describe "BookingSystem class" do
 
       expect(last_room).must_be_kind_of Hotel::Room
       expect(last_room.num).must_equal 20
-end
+    end
+  end
+
+  describe "#list_all_rooms" do
+      let(:all_rooms_str) {booking.list_all_rooms()}
+
+    it "lists all rooms as a string" do
+      beginning_text = "Here is a list of all rooms:"
+      room_2 = "Room 2"
+
+      expect(all_rooms_str).must_be_kind_of String
+      expect(all_rooms_str).must_include beginning_text
+      expect(all_rooms_str).must_include room_2
+    end
   end
 end
