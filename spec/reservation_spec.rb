@@ -34,4 +34,16 @@ describe 'Reservation' do
     expect{Reservation.new(reservation_num, room_num, start_date, end_date, room_type)}.must_raise ArgumentError
   end
 
+  it 'correctly calculates duration of trip' do
+    reservation_num = 5555
+    room_num = 1
+    start_date = "2018,9,10"
+    end_date = "2018,9,12"
+    room_type = :standard
+
+    new_reservation = Reservation.new(reservation_num, room_num, start_date, end_date, room_type)
+
+    expect(new_reservation.duration).must_equal 2
+  end
+
 end

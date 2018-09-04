@@ -36,4 +36,13 @@ class Reservation
 
     @room_type = room_type
   end
+
+  def total_cost
+  end
+
+  # Helper method to total_cost
+  def duration
+    reservation_duration = @end_date - @start_date
+    return reservation_duration
+  end
 end
