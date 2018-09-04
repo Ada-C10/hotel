@@ -1,3 +1,6 @@
+require 'pry'
+require_relative 'Reservation'
+
 class Room
 
   attr_reader :room_number, :reservations
