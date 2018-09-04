@@ -11,5 +11,7 @@ module Hotel
       @room_num = room_num
       @@rooms_in_hotel += 1
     end
+
+
   end
 end

@@ -24,4 +24,8 @@ describe "Room class" do
     # end
   end
 
+  # describe "Room#reserve" do
+  #   it "changes a room's status"
+  # end
+
 end
