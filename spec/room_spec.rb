@@ -19,5 +19,14 @@ require_relative 'spec_helper'
       expect(room).must_respond_to :availibility
       expect(room.availibility).must_equal :available
     end
+
+    it 'raises an ArgumentError for an invalid room status' do
+        invalid_status = ['here', 15, :bogus, nil]
+        invalid_status.each do |availibility|
+          expect {
+            Room.new(1, availibility)
+          }.must_raise ArgumentError
+        end
+    end
   end
 # end
