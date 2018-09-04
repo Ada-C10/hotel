@@ -1,6 +1,6 @@
 require_relative 'spec_helper'
 
-describe Reservation do
+describe "#initialize" do
   before do
     @reservation = Reservation.new(start_time: Time.parse("2016-08-08"), end_time: Time.parse("2016-08-09"))
   end
@@ -17,4 +17,13 @@ describe Reservation do
     expect(@reservation.cost).must_equal 200
   end
 
+  it "raises an Standard error for invalid date range, end time before start time" do
+    @reservation = {start_time: Time.parse("2016-08-09"), end_time: Time.parse("2016-08-08")}
+    expect{
+        Reservation.new(@reservation)
+    }.must_raise StandardError
+  end
 end
+
+
+  #
