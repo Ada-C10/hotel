@@ -1,4 +1,5 @@
 require_relative 'spec_helper'
+
 describe 'hotel' do
   it 'prints hotel' do
     result = hotel()
