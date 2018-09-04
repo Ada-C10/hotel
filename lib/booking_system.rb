@@ -26,11 +26,26 @@ module Hotel
       return all_rooms_str
     end
 
+# QUESTION: ughhhh, inputtt??? this is not DRY
+    def create_reservation(id, room_num, start_date, end_date, cost=200)
+      new_reservation = Reservation.new(id, room_num, start_date, end_date, cost)
+      return new_reservation
+    end
+
     def add_reservation(reservation)
       @reservations << reservation
     end
 
-    def list_reservations_by_date()
+    def load_reservations()
+      new_reservation = create_reservation()
+      add_reservation(new_reservation)
+      return @reservations
+    end
+
+
+    def list_reservations_by_date(date)
+      #TODO error handling for date as Date object??
+      return res_by_date = @reservations.map { |reservation| reservation.date == date }
     end
 
   end

@@ -49,4 +49,18 @@ describe "BookingSystem class" do
       expect(all_rooms_str).must_include room_2
     end
   end
+
+  # TODO - below
+
+  describe "#create_reservation" do
+  end
+
+  describe "#add_reservation" do
+  end
+
+  describe "#load_reservations" do
+  end
+
+  describe "#list_reservations_by_date" do
+  end
 end
