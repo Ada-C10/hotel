@@ -1,3 +1,5 @@
+BASE_COST = 200
+
 module Hotel
 
   class Reservation
@@ -7,6 +9,9 @@ module Hotel
       @room_num = room_num
     end
 
-  end
+    def get_cost
+      return @date_range.get_total_days * BASE_COST
+    end
 
+  end
 end
