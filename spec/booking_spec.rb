@@ -1,13 +1,27 @@
 require_relative 'spec_helper'
 
-describe "Rooms" do
+describe "booking manager" do
   before do
-    #setup rooms here
+    # Make a manager - and test what it has
+    # Should have access to 20 rooms in an array
 
   end
 
   describe "Initialize" do
-    it "has a rooms method" do
+    it "can create an instance of booking manager" do
+      booking_manager = Booking.new(
+        # Collection of 20 room instances
+        {
+
+        }
+      )
+    end
+
+    it "has room_data attribute" do
+
+    end
+
+    it "is an array" do
 
     end
 
@@ -19,6 +33,10 @@ describe "Rooms" do
   # Test methods here
   describe "Lists" do
     # List tests here
+    # Access list of rooms
+    # Access list of reserved rooms by date
+    # Access list of rooms not reserved for date range
+    # List of block rooms
 
   end
 end
