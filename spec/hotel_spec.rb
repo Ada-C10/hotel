@@ -77,5 +77,30 @@ describe 'find reservations by date' do
     expect(result).must_be_instance_of Array
     expect(result.length).must_equal 0
   end
+end
 
+describe 'find available rooms' do
+  before do
+    @my_hotel = Hotel.new
+    @my_hotel.make_reservation(Date.new(2010, 3, 4), Date.new(2010, 3, 5), 6)
+    @my_hotel.make_reservation(Date.new(2010, 3, 4), Date.new(2010, 3, 8), 7)
+    @my_hotel.make_reservation(Date.new(2010, 2, 27), Date.new(2010, 3, 5), 8)
+    @my_hotel.make_reservation(Date.new(2010, 5, 4), Date.new(2010, 5, 8), 9)
+  end
+  it 'returns a list of room numbers given a date range' do
+    room_list = @my_hotel.find_available_rooms(Date.new(2010, 3, 4), Date.new(2010, 5, 8))
+    expect(room_list).must_equal [1, 2, 3, 4, 5, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
+  end
+  it 'says a room is available if someone is checking out on that day' do
+    room_list = @my_hotel.find_available_rooms(Date.new(2010, 3, 5), Date.new(2010, 5, 8))
+    expect(room_list.include?(6)).must_equal true
+    expect(room_list.include?(8)).must_equal true
+  end
+  it 'returns an empty list if no rooms are available' do
+    (1..20).each do |room_no|
+      @my_hotel.make_reservation(Date.new(2010, 1, 1), Date.new(2010, 5, 5), room_no)
+    end
+    room_list = @my_hotel.find_available_rooms(Date.new(2010, 3, 5), Date.new(2010, 5, 8))
+    expect(room_list).must_be_empty
+  end
 end

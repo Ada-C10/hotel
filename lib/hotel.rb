@@ -1,12 +1,11 @@
+require 'pry'
+
 class Hotel
-
-
   def initialize
     @rooms = []
     set_up_rooms(20)
     @reservations = []
   end
-
 
   def set_up_rooms(number_of_rooms)
     number_of_rooms.times do |i|
@@ -38,6 +37,19 @@ class Hotel
     @reservations.select {|reservation| reservation.checkin_date <= date && reservation.checkout_date >= date}
   end
 
+  def find_available_rooms(start_date, end_date)
+    available_room_numbers = []
+    room_list.each do |room|
+      room_is_available = true
+      (start_date..end_date).each do |date|
+        if !room.is_available?(date)
+          room_is_available = false
+        end
+      end
+      available_room_numbers << room.room_number if room_is_available
+    end
+    return available_room_numbers
+  end
 
 
 

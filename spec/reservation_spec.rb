@@ -24,6 +24,4 @@ describe 'initialize' do
   it 'can calculate the price of the reservation' do
     expect(new_reservation.price).must_equal 600
   end
-
-
 end
