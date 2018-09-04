@@ -10,14 +10,13 @@ describe "Room Class" do
     end
   end
 
-  describe "create_rooms" do
-    it "creates specified number of hotel rooms" do
-      hotel_ada = Hotel::Room.create_rooms(20)
-      expect(hotel_ada).must_be_instance_of Hotel::Room
-      expect(hotel_ada.rooms.count).must_equal 20
-      expect(hotel_ada.rooms[0]).must_be_instance_of Hotel::Room
-      expect(hotel_ada.rooms).must_be_kind_of Array
-    end
-  end
+  # describe "create_rooms" do
+  #   it "creates specified number of hotel rooms" do
+  #     hotel_ada = Hotel::Room.create_rooms(20)
+  #     expect(hotel_ada).must_be_instance_of Hotel::Room
+  #     expect(hotel_ada.rooms.count).must_equal 20
+  #     expect(hotel_ada.rooms[0]).must_be_instance_of Hotel::Room
+  #     expect(hotel_ada.rooms).must_be_kind_of Array
+  
 
 end
