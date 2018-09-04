@@ -5,8 +5,10 @@ describe 'reservation class' do
 
     it 'returns reservation object given correct inputs' do
 
-      expect( Hotel::Reservation.new(1, Date.new(2018,7,4), Date.new(2018,7,8) )).must_be_instance_of(Hotel::Reservation)
-      expect( Hotel::Reservation.new(10, Date.new(2018,6,4), Date.new(2018,7,4), 201 )).must_be_instance_of(Hotel::Reservation)
+      expect( Hotel::Reservation.new(1, Date.new(2018,7,4), Date.new(2018,7,8)
+      ).must_be_instance_of(Hotel::Reservation)
+      expect( Hotel::Reservation.new(10, Date.new(2018,6,4), Date.new(2018,7,4), 201)
+      ).must_be_instance_of(Hotel::Reservation)
     end
 
     it 'raise argument error given wrong input format' do
@@ -44,15 +46,16 @@ describe 'reservation class' do
     it 'returns correct number of days stayed' do
 
       expect(
-        Hotel::Reservation.new(1, Date.new(2018,7,4), Date.new(2018,7,5)).num_nights
+        Hotel::Reservation.new(1, Date.new(2018,7,4), Date.new(2018,7,5)).total_nights
       ).must_equal(1)
       expect(
-        Hotel::Reservation.new(1, Date.new(2018,7,4), Date.new(2018,7,10)).num_nights
+        Hotel::Reservation.new(1, Date.new(2018,7,4), Date.new(2018,7,10)).total_nights
       ).must_equal(6)
     end
 
   describe 'total_cost' do
     it 'returns correct total cost of reservation' do
+      
       expect(
         Hotel::Reservation.new(1, Date.new(2018,7,4), Date.new(2018,7,5)).total_cost
       ).must_equal(200)
