@@ -14,5 +14,10 @@ describe "Room class" do
     it "can return a room number" do
       expect(@room.room_number).must_equal 1
     end
+
+    it "returns an array of reservations" do
+      expect(@room.reservations).must_be_kind_of Array
+    end
+
   end
 end
