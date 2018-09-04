@@ -36,12 +36,12 @@ describe "Room class" do
     end
 
     it "changes a room's status for specified dates only to unavailable" do
-      expect(@room.availability("2019-01-01")).must_equal :AVAILABLE
-      expect(@room.availability("2019-01-02")).must_equal :UNAVAILABLE
-      expect(@room.availability("2019-01-05")).must_equal :UNAVAILABLE
-      expect(@room.availability("2019-01-06")).must_equal :UNAVAILABLE
+      expect(@room.availability["2019-01-01"]).must_equal :AVAILABLE
+      expect(@room.availability["2019-01-02"]).must_equal :UNAVAILABLE
+      expect(@room.availability["2019-01-05"]).must_equal :UNAVAILABLE
+      expect(@room.availability["2019-01-06"]).must_equal :UNAVAILABLE
       # room is available on the night of a reservation's end date
-      expect(@room.availability("2019-01-07")).must_equal :AVAILABLE
+      expect(@room.availability["2019-01-07"]).must_equal :AVAILABLE
     end
   end
 
