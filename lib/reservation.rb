@@ -21,7 +21,7 @@ class Reservation
     @rate = rate
 
     unless total_nights > 0
-      raise ArgumentError, "Invalid start/end dates"
+      raise StandardError, "Invalid start/end dates"
     end
   end
 

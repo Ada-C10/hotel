@@ -5,7 +5,7 @@ describe 'reservation class' do
 
     it 'returns reservation object given correct inputs' do
 
-      expect( Hotel::Reservation.new(1, Date.new(2018,7,4), Date.new(2018,7,8)
+      expect( Hotel::Reservation.new(1, Date.new(2018,7,4), Date.new(2018,7,8))
       ).must_be_instance_of(Hotel::Reservation)
       expect( Hotel::Reservation.new(10, Date.new(2018,6,4), Date.new(2018,7,4), 201)
       ).must_be_instance_of(Hotel::Reservation)
@@ -27,18 +27,18 @@ describe 'reservation class' do
       }.must_raise(ArgumentError)
     end
 
-    it 'raise argument error if start date is after end date' do
+    it 'raise standard error if start date is after end date' do
 
       expect{
         Hotel::Reservation.new(1, Date.new(2018,7,4), Date.new(2018,7,1))
-      }.must_raise(ArgumentError)
+      }.must_raise(StandardError)
     end
 
-    it 'raise argument error if start date is same as end date' do
+    it 'raise standard error if start date is same as end date' do
 
       expect{
         Hotel::Reservation.new(1, Date.new(2018,7,4), Date.new(2018,7,4))
-      }.must_raise(ArgumentError)
+      }.must_raise(StandardError)
     end
   end
 
@@ -55,7 +55,7 @@ describe 'reservation class' do
 
   describe 'total_cost' do
     it 'returns correct total cost of reservation' do
-      
+
       expect(
         Hotel::Reservation.new(1, Date.new(2018,7,4), Date.new(2018,7,5)).total_cost
       ).must_equal(200)

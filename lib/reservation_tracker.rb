@@ -23,6 +23,11 @@ class ReservationTracker
     return [*1..20]
   end
 
+  def select_room
+    return 1
+  end
+
+
 
 end
 end
