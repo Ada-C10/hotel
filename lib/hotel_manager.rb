@@ -14,4 +14,12 @@ class Hotel_Manager
     end
   end
 
+  def get_rooms
+    return @rooms
+  end
+
+  def find_room(find_room_number)
+    return @rooms.find { |room| room.room_number == find_room_number }
+  end
+
 end
