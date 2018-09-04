@@ -6,7 +6,7 @@ describe "initialize" do
   end
 
   it "creates a new instance of Room" do
-    expect(@new_room).is_a? Room
+    expect(@new_room).must_be_instance_of Room
   end
 
   it "has a room_number" do

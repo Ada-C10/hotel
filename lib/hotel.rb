@@ -1,11 +1,20 @@
 class Hotel
 
-  def set_up_rooms(number_of_rooms)
-    
+
+  def initialize
+    @rooms = []
+    set_up_rooms(20)
   end
 
 
-  def list_rooms
+  def set_up_rooms(number_of_rooms)
+    number_of_rooms.times do |i|
+      @rooms << Room.new(i + 1, 200)
+    end
+  end
+
+  def room_list
+    return @rooms
   end
 
   def make_reservation(start_date, end_date)
