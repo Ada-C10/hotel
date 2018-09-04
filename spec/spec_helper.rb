@@ -7,6 +7,8 @@ require 'minitest/reporters'
 require 'minitest/pride'
 require 'awesome_print'
 require 'pry'
+require 'faker'
+require 'date'
 
 
 Minitest::Reporters.use! Minitest::Reporters::SpecReporter.new
