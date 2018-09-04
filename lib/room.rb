@@ -15,6 +15,13 @@ class Room
     else
       raise ArgumentError.new("Invalid room number")
     end
+
+    valid_status = [:available, :unavailable]
+    if valid_status.include?(availability)
+      bad_status = false
+    else
+      raise ArgumentError.new("Invalid room status")
+    end
     # binding.pry
   end
 
