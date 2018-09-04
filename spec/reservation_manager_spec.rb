@@ -15,6 +15,7 @@ describe 'ReservationManager class' do
   describe 'ReservationManager instantiation' do
     it 'creates an instance of ReservationManager class' do
       expect(reservation_manager).must_be_instance_of Hotel::ReservationManager
+      expect(Hotel::ReservationManager.new(all_reservations: reservation)).must_be_instance_of Hotel::ReservationManager
     end
   end
 end
