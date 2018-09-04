@@ -22,9 +22,15 @@ class Room
     else
       raise ArgumentError.new("Invalid room status")
     end
-    # binding.pry
+
   end
 
-
-
+  def is_available?
+    if @availability == :available
+      status = true
+    else
+      status = false
+    end
+    return status
+  end
 end
