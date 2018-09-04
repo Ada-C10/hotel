@@ -7,6 +7,7 @@ module Hotel
     def initialize(start_date, end_date, room_num)
       @date_range = DateRange.new(start_date, end_date)
       @room_num = room_num
+      @cost = get_cost
     end
 
     def get_cost
