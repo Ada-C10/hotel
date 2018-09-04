@@ -19,7 +19,7 @@ class Hotel
   end
 
   def make_reservation(start_date, end_date, room_number)
-    new_reservation = Reservation.new(start_date, end_date, room_number)
+    new_reservation = Reservation.new(start_date, end_date, find_room_by_number(room_number))
     @reservations << new_reservation
     add_reservation_to_room(new_reservation)
     return new_reservation
@@ -38,8 +38,7 @@ class Hotel
     @reservations.select {|reservation| reservation.checkin_date <= date && reservation.checkout_date >= date}
   end
 
-  def find_price_of_reservation(reservation_id)
-  end
+
 
 
 end
