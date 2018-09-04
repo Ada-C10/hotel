@@ -6,7 +6,16 @@ class Room
   end
 
 
-  def self.list
-    return "Room #{self.id}"
+  # def self.list
+  #   return "Room #{self.id}"
+  # end
+
+  def self.create(number_rooms)
+    rooms = []
+    number_rooms.times do |room_number|
+      rooms << Room.new(room_number + 1)
+    end
+    return rooms
   end
+
 end
