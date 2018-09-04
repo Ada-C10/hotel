@@ -16,9 +16,7 @@ describe 'initialize' do
   end
 
   it 'each item in the rooms array is a type of Room object' do
-    20.times do |i|
-    expect(@room_list[i]).must_be_instance_of Room
-    end
+    expect(@room_list.all?{|item| item.is_a? Room}).must_equal true
   end
 end
 
@@ -69,6 +67,8 @@ describe 'find reservations by date' do
     result = @my_hotel.find_reservations_by_date(date)
     expect(result).must_be_instance_of Array
     expect(result.length).must_equal 1
+
+    expect(result.all?{|item| item.is_a? Reservation}).must_equal true
   end
 
   it 'returns an empty array if no reservations exist on the given date' do
