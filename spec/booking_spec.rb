@@ -9,6 +9,7 @@ describe "booking manager" do
 
   describe "Initialize" do
     it "can create an instance of booking manager" do
+      skip
       booking_manager = Booking.new(
         # Collection of 20 room instances
         {

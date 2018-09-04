@@ -11,7 +11,7 @@ describe "Room" do
     end
 
     it "Has an id" do
-      expect(@room.id).must_equal 1
+      expect(@room.room_number).must_equal 1
     end
 
     it "ArgumentError if id is not between 1 and 20" do
