@@ -5,7 +5,7 @@ module Hotel
     def initialize(id, status = :AVAILABLE)
       @id = id
       @status = status
-      
+
       validate_id
       validate_status
 
@@ -20,9 +20,9 @@ module Hotel
 
 
     def validate_id
-      id_options = [1..20]
+      id_options = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
 
-      raise ArgumentError.new("you must enter a valid id.") unless id_options.include?(id)
+      raise ArgumentError.new("You must enter a valid id.") unless id_options.include?(id)
     end
 
 

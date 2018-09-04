@@ -1,4 +1,5 @@
 require_relative 'spec_helper'
+require 'pry'
 
 describe 'Room class' do
 
@@ -6,7 +7,9 @@ describe 'Room class' do
 
     it "is an instance of Room" do
       @room = Hotel::Room.new(2)
-      expect(@room).must_be_instance_of Hotel::Room
+      # binding.pry
+
+      expect(@room).must_be_kind_of Hotel::Room
     end
 
 
@@ -31,13 +34,14 @@ describe 'Room class' do
 
 
     it "accepts all valid ids" do
-      valid_ids = [1..20]
+      valid_ids = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
 
       valid_ids.each do |id|
-        @room = Hotel::Room.new(id)
-        expect(@room.id).must_equal id
+        room = Hotel::Room.new(id)
+        expect(room.id).must_equal id
       end
     end
+    
 
     it "must throw an argument error if an invalid id is given" do
       bogus_ids = [53, 0, 'cool', -5, nil, :cool]
