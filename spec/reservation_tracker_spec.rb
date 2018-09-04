@@ -16,7 +16,9 @@ describe 'reservation_tracker class' do
     it 'successfully adds a reservation' do
 
       reservation = Hotel::Reservation.new(1, Date.new(2018,7,4), Date.new(2018,7,8))
-      expect( @hotel.add_reservation(reservation))
+      initial_reservations = @hotel.reservations.length
+      @hotel.add_reservation(reservation)
+      expect( @hotel.reservations.length - initial_reservations).must_equal(1)
     end
 
     it 'raises argument error if input is not reservation object' do
@@ -30,4 +32,29 @@ describe 'reservation_tracker class' do
 
     end
   end
+
+  describe 'sortby_startdate method' do
+    it 'successfully sorts the reservations array by start_date' do
+
+      @hotel.add_reservation(Hotel::Reservation.new(1, Date.new(2018,7,4), Date.new(2018,7,8)))
+      @hotel.add_reservation(Hotel::Reservation.new(1, Date.new(2018,5,4), Date.new(2018,8,5)))
+      @hotel.add_reservation(Hotel::Reservation.new(1, Date.new(2018,7,3), Date.new(2018,7,5)))
+      @hotel.add_reservation(Hotel::Reservation.new(1, Date.new(2018,6,4), Date.new(2018,6,8)))
+
+      @hotel.sortby_startdate
+
+      (@hotel.reservations.length-1).times do |i|
+        expect(
+          @hotel.reservations[i].start_date < @hotel.reservations[i+1].start_date
+        ).must_equal(true)
+      end
+    end
+  end
+
+  describe 'list_rooms method' do
+    it 'successfully returns list of all 20 rooms' do
+      expect( @hotel.list_rooms ).must_equal([*1..20])
+    end
+  end
+
 end
