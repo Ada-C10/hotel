@@ -24,4 +24,14 @@ describe 'Reservation' do
     expect{Reservation.new(reservation_num, room_num, start_date, end_date, room_type)}.must_raise ArgumentError
   end
 
+  it 'raises an ArgumentError if the start date is later than the end date' do
+    reservation_num = 666
+    room_num = 15
+    start_date = "2018,10,11"
+    end_date = "2018,10,6"
+    room_type = :standard
+
+    expect{Reservation.new(reservation_num, room_num, start_date, end_date, room_type)}.must_raise ArgumentError
+  end
+
 end
