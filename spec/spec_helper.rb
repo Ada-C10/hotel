@@ -1,8 +1,14 @@
+require 'simplecov'
+SimpleCov.start
 require 'minitest'
 require 'minitest/autorun'
 require 'minitest/reporters'
-# Add simplecov
+require 'minitest/pride'
 
 Minitest::Reporters.use! Minitest::Reporters::SpecReporter.new
 
+#our namespace module
+module Hotel; end
+
 # Require_relative your lib files here!
+require_relative '../lib/room.rb'
