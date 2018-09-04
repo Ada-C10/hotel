@@ -14,5 +14,20 @@ module Hotel
       end
     end
 
+    def make_reservation(start_date, end_date, num_of_rooms = 1)
+      available_rooms = rooms.select { |room|
+        room.is_available?(start_date, end_date)
+      }
+      if available_rooms.length >= num_of_rooms
+        available_rooms.first(num_of_rooms).each do |room|
+          room.reserve(start_date, end_date)
+        end
+      end
+    end
+
+    def list_reservations(date)
+      return rooms.select { |room| !room.is_available?(date) }
+    end
+
   end
 end
