@@ -1,7 +1,7 @@
 class Room
-attr_accessor :room_number
+attr_reader :room_number, :reservations
 
-  def initialize
+  def initialize (input)
     @room_number = input
     @reservations = []
   end
