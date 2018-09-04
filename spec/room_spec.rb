@@ -7,6 +7,13 @@ describe "Room class" do
       room_number: 1,
       status: :AVAILABLE
     )
+
+    @reservation_1 = Hotel::Reservation.new(
+      id: 1,
+      room: 1,
+      start_date: Date.today,
+      end_date: Date.today + 5,
+    )
   end
 
   describe "Room instantiation" do
@@ -49,6 +56,18 @@ describe "Room class" do
 
       expect(@room.room_number).must_be_kind_of Integer
       expect(@room.status).must_be_kind_of Symbol
+    end
+  end
+
+  describe "#add_booked_reservation method" do
+    it "throws an argument error if trip is not provided" do
+      expect{ @room.add_booked_reservation(1) }.must_raise ArgumentError
+    end
+
+    it "increases the trip count by one" do
+      previous = @room.booked_reservations.length
+      @room.add_booked_reservation(@reservation_1)
+      expect(@room.booked_reservations.length).must_equal previous + 1
     end
   end
 end
