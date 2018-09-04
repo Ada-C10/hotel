@@ -6,9 +6,9 @@
 module Hotel
   class Room
     attr_reader(:id, :cost, :booked_dates)
-    def initialize(id, booked_dates, cost = 200.00)
+    def initialize(id, booked_dates = {}, cost = 200.00)
       @id = id
-      # @booked_dates = {}
+      @booked_dates = {}
       @cost = cost
     end
 
