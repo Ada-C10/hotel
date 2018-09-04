@@ -6,7 +6,7 @@ describe "initialize" do
 # Test to make sure it takes correct parameters
   it 'Takes in a room number and availability status' do
     room_number = 5
-    availability = :avaliable
+    availability = :available
     test_room = Room.new(room_number, availability)
 
     expect(test_room).must_respond_to :room_number
@@ -21,5 +21,9 @@ describe "initialize" do
     expect{Room.new(237, :avaliable)}.must_raise ArgumentError
   end
 
+# Test to make sure status is valid
+  it 'Raise argument error for invalid status' do
+    expect{Room.new(2, :haunted)}.must_raise ArgumentError
+  end
 # initialize end
 end
