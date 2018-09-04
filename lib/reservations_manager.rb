@@ -10,9 +10,9 @@ module Hotel
       (1..number_of_rooms).each do |number|
         @rooms << Room.new(number)
       end
-
       @reservations =[]
-
     end
+
+
   end
 end

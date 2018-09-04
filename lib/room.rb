@@ -7,7 +7,5 @@ module Hotel
       @id = number
       @reservations = []
     end
-
-    
   end
 end
