@@ -5,7 +5,7 @@ describe 'Room class' do
   describe "initialize" do
 
     it "is an instance of Room" do
-      @room = Hotel::Room.new()
+      @room = Hotel::Room.new(2)
       expect(@room).must_be_instance_of Hotel::Room
     end
 
@@ -13,32 +13,46 @@ describe 'Room class' do
     it "contains a valid status" do
       valid_statuses = [:AVAILABLE, :UNAVAILABLE]
       valid_statuses.each do |status|
-        @room = Hotel::Room.new(status)
+        @room = Hotel::Room.new(2, status)
         expect(@room.status).must_equal status
       end
     end
 
 
     it "sets the status to :AVAILABLE if no status is given" do
-      @room = Hotel::Room.new()
+      @room = Hotel::Room.new(2)
       expect(@room.status).must_equal :AVAILABLE
     end
 
 
-    it "must throw an argument error if an invalid status is given" do  
-      expect {Hotel::Room.new(:HUH)}.must_raise ArgumentError
+    it "must throw an argument error if an invalid status is given" do
+      expect {Hotel::Room.new(2, :HUH)}.must_raise ArgumentError
     end
 
 
+    it "accepts all valid ids" do
+      valid_ids = [1..20]
+
+      valid_ids.each do |id|
+        @room = Hotel::Room.new(id)
+        expect(@room.id).must_equal id
+      end
+    end
+
+    it "must throw an argument error if an invalid id is given" do
+      bogus_ids = [53, 0, 'cool', -5, nil, :cool]
+      bogus_ids.each do |id|
+        expect {Hotel::Room.new(id)
+        }.must_raise ArgumentError
+      end
+    end
+
+
+
+
+
+
   end
-
-
-#must have a valid status
-#must throw argument error without valid status?
-
-
-
-
 
 
 
