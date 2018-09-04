@@ -3,8 +3,8 @@ require 'pry'
 
 class Reservation
 
-#input is start, end, and room#
-#output is instance of this reservation class (a hash with start, end, room#, and cost)
+  #input is start, end, and room#
+  #output is instance of this reservation class (a hash with start, end, room#, and cost)
 
   attr_reader :start_date, :end_date, :room_num
 
