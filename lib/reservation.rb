@@ -1,3 +1,6 @@
+require 'time'
+require 'date'
+
 class Reservation
   attr_accessor :reservation_num, :room_num, :start_date, :end_date, :room_type
 

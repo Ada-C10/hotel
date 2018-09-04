@@ -1,3 +1,6 @@
+require 'time'
+require 'date'
+
 class ReservationTracker
   attr_reader :all_rooms
 
