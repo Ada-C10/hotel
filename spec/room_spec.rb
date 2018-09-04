@@ -9,4 +9,9 @@ describe "Room Test" do
       expect(@new_room).must_be_kind_of Room
     end
   end
+  describe "Room.list method" do
+    it "Provides a list of all rooms" do
+      expect(@new_room).must_be_kind_of Array
+    end
+  end
 end
