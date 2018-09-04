@@ -3,6 +3,8 @@ require_relative 'room'
 class Hotel_Manager
   attr_reader :rooms
 
+  ROOM_NUMBERS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
+
   def initialize
     @rooms = load_rooms
     @reservations = []
@@ -18,11 +20,9 @@ class Hotel_Manager
 
   def load_rooms
     rooms = []
-    number = 1
-    while number <= 20
-      room = Room.new(number)
+    ROOM_NUMBERS.each do |num|
+      room = Room.new(num)
       rooms << room
-      number += 1
     end
     return rooms
   end
