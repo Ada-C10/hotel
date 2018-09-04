@@ -14,7 +14,6 @@ describe Reservation do
   end
 
   it "calculate cost" do
-    skip
     expect(@reservation.cost).must_equal 200
   end
 
