@@ -13,5 +13,9 @@ module Hotel
       end
     end
 
+    def get_total_days
+      return (@end_date - @start_date).to_i
+    end
+
   end
 end
