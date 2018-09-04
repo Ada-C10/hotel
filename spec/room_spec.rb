@@ -1,4 +1,5 @@
 require_relative 'spec_helper'
+require 'pry'
 
 describe "Room class" do
   before do
@@ -34,6 +35,20 @@ describe "Room class" do
           status:'available'
         )
       }.must_raise ArgumentError
+    end
+
+    it "sets booked_reservations to an empty array if not provided" do
+      expect(@room.booked_reservations).must_be_kind_of Array
+      expect(@room.booked_reservations.length).must_equal 0
+    end
+
+    it "is set up for specific attributes and data types" do
+      [:room_number, :status].each do |prop|
+        expect(@room).must_respond_to prop
+      end
+
+      expect(@room.room_number).must_be_kind_of Integer
+      expect(@room.status).must_be_kind_of Symbol
     end
   end
 end
