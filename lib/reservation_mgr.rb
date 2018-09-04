@@ -12,3 +12,5 @@ end
 yay = ReservationMgr.new
 p yay.rooms[0]
 p yay.rooms[0].class
+puts Room.list
+puts Room.list.length
