@@ -56,4 +56,28 @@ describe 'Reservation' do
     expect(new_reservation.duration).must_equal 2
   end
 
+  it 'correctly calculates total cost of a reservation for a standard booking' do
+    reservation_num = 5555
+    room_num = 1
+    start_date = "2018,9,10"
+    end_date = "2018,9,12"
+    room_type = :standard
+
+    new_reservation = Reservation.new(reservation_num, room_num, start_date, end_date, room_type)
+
+    expect(new_reservation.total_cost).must_equal 400
+  end
+
+  it 'correctly calculates total cost of a reservation for a block booking' do
+    reservation_num = 5555
+    room_num = 1
+    start_date = "2018,9,10"
+    end_date = "2018,9,12"
+    room_type = :block
+
+    new_reservation = Reservation.new(reservation_num, room_num, start_date, end_date, room_type)
+
+    expect(new_reservation.total_cost).must_equal 300
+  end
+
 end

@@ -42,7 +42,16 @@ class Reservation
     end
   end
 
+  # A standard room is $200/night and a block room is $150/night
   def total_cost
+    trip_duration = duration
+
+    if @room_type == :standard
+      total_price = trip_duration * 200
+    else
+      total_price = trip_duration * 150
+    end
+    return total_price
   end
 
   # Helper method to total_cost
