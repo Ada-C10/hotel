@@ -1,3 +1,4 @@
+require 'csv'
 # The resevation class will likely exist in the hotel module
 # the reservation class will contain an id, a list of room id's
 # that are booked in the reservation, the reservation start date,
@@ -22,5 +23,16 @@ module Hotel
     end
 
     # method to list all reservations
-  end
-end
+    def self.all_reservations
+      all_reservations = []
+      reservations = CSV.open('data/reservations.csv', 'r', headers: true).map {|line| line.to_h}
+      binding.pry
+      reservations.each do |reservation|
+        all_reservations << Reservation.new(reservation[id], reservation[guest_name],
+                        reservation[included_rooms], reservation[rsv_start],
+                        reservation[rsv_end], reservation[total_cost])
+      end
+    end
+
+  end #class end
+end #module end
