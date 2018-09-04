@@ -19,13 +19,30 @@ describe "Room class" do
       expect(@room.room_num).must_equal @room_number
     end
 
+    it "must start out as available for all dates in 2019" do
+      expect(@room.availability["2019-01-01"]).must_equal :AVAILABLE
+      expect(@room.availability["2019-09-19"]).must_equal :AVAILABLE
+      expect(@room.availability["2019-12-31"]).must_equal :AVAILABLE
+    end
+
     # it "updates the room count" do
     #   expect(@room.rooms_in_hotel).must_equal 1
     # end
   end
 
-  # describe "Room#reserve" do
-  #   it "changes a room's status"
-  # end
+  describe "Room#reserve" do
+    before do
+      @room.reserve("2019-01-02", "2019-01-07")
+    end
+
+    it "changes a room's status for specified dates only to unavailable" do
+      expect(@room.availability("2019-01-01")).must_equal :AVAILABLE
+      expect(@room.availability("2019-01-02")).must_equal :UNAVAILABLE
+      expect(@room.availability("2019-01-05")).must_equal :UNAVAILABLE
+      expect(@room.availability("2019-01-06")).must_equal :UNAVAILABLE
+      # room is available on the night of a reservation's end date
+      expect(@room.availability("2019-01-07")).must_equal :AVAILABLE
+    end
+  end
 
 end
