@@ -34,7 +34,12 @@ class Reservation
       raise ArgumentError.new("Invalid date range entered")
     end
 
-    @room_type = room_type
+    # Verifying valid room_type is entered
+    if room_type == :standard || room_type == :block
+      @room_type = room_type
+    else
+      raise ArgumentError.new("Invalid room type entered")
+    end
   end
 
   def total_cost

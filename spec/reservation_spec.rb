@@ -34,6 +34,16 @@ describe 'Reservation' do
     expect{Reservation.new(reservation_num, room_num, start_date, end_date, room_type)}.must_raise ArgumentError
   end
 
+  it 'raises an ArgumentError if an invalid room type is entered' do
+    reservation_num = 666
+    room_num = 15
+    start_date = "2018,10,10"
+    end_date = "2018,10,15"
+    room_type = :deluxe
+
+    expect{Reservation.new(reservation_num, room_num, start_date, end_date, room_type)}.must_raise ArgumentError
+  end
+
   it 'correctly calculates duration of trip' do
     reservation_num = 5555
     room_num = 1
