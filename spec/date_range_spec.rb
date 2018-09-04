@@ -32,6 +32,14 @@ describe 'DateRange class' do
         Hotel::DateRange.new(old_start, old_start + 2)
       }.must_raise ArgumentError
     end
+  end
 
+  describe 'get_total_days method' do
+    it 'returns the number of days in the date range' do
+      start_date = Date.new(2020, 1, 1)
+      end_date = start_date + 2
+      range = Hotel::DateRange.new(start_date, end_date)
+      expect(range.get_total_days).must_equal 2
+    end
   end
 end
