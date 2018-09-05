@@ -1,4 +1,4 @@
-# Keeps track of the availibility of 1 room
+# Keeps track of 1 room
 class Room
   attr_reader :room_number
 
