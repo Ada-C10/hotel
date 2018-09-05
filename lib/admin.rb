@@ -5,6 +5,7 @@ class Admin
   attr_reader :reservations
   def initialize
     @reservations = load_reservations('spec/test_data/test_reservation.csv')
+    sort_reservations
   end
 
   def load_reservations(filename)
@@ -21,7 +22,11 @@ class Admin
 
     return reservations
   end
-  # reservations sorted by date range
 
+  def sort_reservations
+    @reservations.sort_by { |object| object.start_time }
+  end
+
+  
 
 end
