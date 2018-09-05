@@ -13,6 +13,9 @@ module Hotel
       @reservations = []
 
 
+# method to make_reservation
+# return if successful return res_id, or "sucess", or return true
+# keep track of reservations - make sure # of reservations have increased by 1
 
       # methods
       # - Check availibility of room

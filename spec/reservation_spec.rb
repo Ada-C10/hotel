@@ -12,7 +12,7 @@ describe "initialize" do
     @new_res = Hotel::Reservation.new(check_in = "2018-02-03" , check_out = "2018-02-06", cost = 600.00, reservation_id = "603-XOX")
   end
 
-  it "is an instance of User" do
+  it "is an instance of Reservation" do
       expect(@new_res).must_be_kind_of Hotel::Reservation
     end
 
@@ -33,8 +33,8 @@ describe "initialize" do
   end
 
   it "is set up for specific attributes and data types" do
-    [:check_in, :check_out, :cost, :reservation_id].each do |prop|
-      expect(@new_res).must_respond_to prop
+    [:check_in, :check_out, :cost, :reservation_id].each do |initial|
+      expect(@new_res).must_respond_to initial
     end
 
     expect(@new_res.reservation_id).must_be_kind_of String
@@ -44,17 +44,19 @@ describe "initialize" do
   end
 end
 
-# describe "make a reservation" do
-#   it "generates a reservation ID" do
-#
-#     check_in = "2018-02-03"
-#     check_out = "2018-01-30"
-#     cost = 600
-#     reservation_id = "603-XOX"
-#
-#     expect(@user.name).must_be_kind_of String
-#   end
+describe "make a reservation" do
+  before do
+    @new_res = Hotel::Reservation.new(check_in = "2018-02-03" , check_out = "2018-02-06", cost = 200.00, reservation_id = "")
+  end
+  it "generates a reservation ID" do
+    expect(@new_res.generate_id.length).must_equal 7
+  end
 
+  it "finds the duration of stay" do
+    expect(@new_res.duration_of_stay).must_equal 3
+  end
 
-
-# end
+  it "finds the total cost of reservation" do
+    expect(@new_res.total_cost).must_equal 600.00
+  end
+end
