@@ -14,7 +14,7 @@ module Hotel
 # TODO: maybe separate load class?
     def load_rooms()
       nums = (1..20).to_a
-      all_rooms = nums.map { |num| Hotel::Room.new(num)}
+      all_rooms = nums.map { |num| Hotel::Room.new(num: num)}
 
       return all_rooms
     end
@@ -30,15 +30,15 @@ module Hotel
     end
 
     def create_reservation(input)
-      room = find_room(room_num)
-      start_date = Date.parse(input[:start_date])
-      end_date = Date.parse(input[:end_date])
+      room = find_room(input[:room_num])
+      # start_date = input[:start_date]
+      # end_date = input[:end_date]
 
       reservation_hash = {
         id: input[:id].to_i,
         room: room,
-        start_date: start_date,
-        end_date: end_date,
+        start_date: input[:start_date],
+        end_date: input[:end_date],
         cost: input[:cost] #QUESTION: needed??
       }
 

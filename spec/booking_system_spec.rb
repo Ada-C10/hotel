@@ -51,26 +51,32 @@ describe "BookingSystem class" do
   end
 
   describe "#find_room" do
-    let(:room_num) {num: 4}
-    let(:room_obj) {booking_system.find_room(room_obj)}
+    let(:room_num) {4}
+    let(:room_obj) {booking_system.find_room(room_num)}
 
-    it "finds room object by room number"
+    it "finds room object by room number" do
       # num = 4
       # room_obj = booking_system.find_room(num)
 
+      puts room_num
+      puts room_obj
+
       expect(room_obj).must_be_kind_of Hotel::Room
-      expect(room_obj.num).must_equal num
+      expect(room_obj.num).must_equal room_num
     end
   end
 
+# TODO: add create reservation method + 2nd input as room_num??
   describe "#create_reservation" do
+    # let(:room_num) {4}
+    # let(:room_obj) {booking_system.find_room(room_num)}
     let(:reservation_hash) {{
       id: "5",
-      room: room_obj,
-      start_date: ("2010, 8, 6")
-      end_date: ("2010, 8, 10")
+      room: "10",
+      start_date: "2010, 8, 6",
+      end_date: "2010, 8, 10"
       }}
-    let(:new_reservation) {Reservation.new(reservation_hash)}
+    let(:new_reservation) {booking_system.create_reservation(reservation_hash)}
 
     it "creates a new reservation successfully" do
       expect(new_reservation).must_be_kind_of Hotel::Reservation

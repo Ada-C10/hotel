@@ -1,4 +1,4 @@
-require 'time'
+require 'date'
 
 module Hotel
   class Reservation
@@ -7,8 +7,8 @@ module Hotel
     def initialize(input)
       @id = input[:id]
       @room = input[:room] # object; not num TODO
-      @start_date = input[:start_date]
-      @end_date = input[:end_date]
+      @start_date = Date.parse(input[:start_date])
+      @end_date = Date.parse(input[:end_date])
       @daily_rate = input[:daily_rate]
     end
 
