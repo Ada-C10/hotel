@@ -11,6 +11,7 @@ describe "Room" do
   describe "Room#initialize" do
     it "can create a room object" do
       expect(room).must_be_instance_of Room
+      expect(room.id).must_be_instance_of Integer
     end
 
     it "initializes a room with an empty array attribute for reservations" do

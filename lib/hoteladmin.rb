@@ -19,7 +19,7 @@ class HotelAdmin
   end
 
   def retrieve_room(number)
-    rooms.find {|r| r.room_id == number}
+    rooms.find {|r| r.id == number}
   end
 
   def retrieve_by_date(date)
@@ -28,9 +28,10 @@ class HotelAdmin
   end
 
   def reserve_room(guest_email, room_number, check_in, check_out)
-    new_reservation = Reservation.new({guest_id: guest_email, room_id: room_number, date_range: [check_in, check_out]})
+    room_object = retrieve_room(room_number)
+    new_reservation = Reservation.new({guest_id: guest_email, room: room_object, date_range: [check_in, check_out]})
     reservations << new_reservation
-    #add_booking
+    room_object.add_booking(new_reservation)
     new_reservation
   end
 

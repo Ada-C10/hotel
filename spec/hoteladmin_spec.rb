@@ -40,9 +40,9 @@ describe "HotelAdmin" do
 
   describe "HotelAdmin#retrieve_by_date" do
     before do
-      hotel.reservations << Reservation.new({guest_id: "SoccerMom2010@gmail.com", room_id: 1, date_range: [Date.new(2018,10,20),Date.new(2018,10,22)]})
-      hotel.reservations << Reservation.new({guest_id: "Guccifer2.0@ada.com", room_id: 1, date_range: [Date.new(2018,12,02),Date.new(2018,12,07)]})
-      hotel.reservations << Reservation.new({guest_id: "Jfahmy07@gmail.com", room_id: 2, date_range: [Date.new(2018,12,03),Date.new(2018,12,06)]})
+      hotel.reservations << Reservation.new({guest_id: "SoccerMom2010@gmail.com", room: 1, date_range: [Date.new(2018,10,20),Date.new(2018,10,22)]})
+      hotel.reservations << Reservation.new({guest_id: "Guccifer2.0@ada.com", room: 1, date_range: [Date.new(2018,12,02),Date.new(2018,12,07)]})
+      hotel.reservations << Reservation.new({guest_id: "Jfahmy07@gmail.com", room: 2, date_range: [Date.new(2018,12,03),Date.new(2018,12,06)]})
     end
 
     it "raises an argument error if invalid date object is provided" do
@@ -65,7 +65,7 @@ describe "HotelAdmin" do
 
     it "returns the new reservation object" do
       expect(@reservation.guest_id).must_equal "FishandChipsgrl@gmail.com"
-      expect(@reservation.room_id).must_equal 4
+      expect(@reservation.room).must_be_instance_of Room
       expect(@reservation.date_range).must_equal [Date.new(2019,01,20), Date.new(2019,01,22)]
       expect(@reservation.cost).must_equal 400.00
     end
@@ -78,7 +78,7 @@ describe "HotelAdmin" do
 
   describe "HotelAdmin#reservation_charge" do
     let (:reservation){
-      Reservation.new({guest_id: "Guccifer2.0@ada.com", room_id: 1, date_range: [Date.new(2018,12,02),Date.new(2018,12,07)]})
+      Reservation.new({guest_id: "Guccifer2.0@ada.com", room: 1, date_range: [Date.new(2018,12,02),Date.new(2018,12,07)]})
     }
     it "returns the cost associated with a given reservation" do
       expect(reservation.cost).must_equal 1000.00
@@ -87,13 +87,13 @@ describe "HotelAdmin" do
   end
 
   describe "HotelAdmin#retrieve_room" do
-    let (:room) {
+    let (:room_instance) {
       hotel.retrieve_room(8)
     }
 
     it "locates room object using a given room number" do
-      expect(room).must_be_instance_of Room
-      expect(room.room_id).must_equal 8
+      expect(room_instance).must_be_instance_of Room
+      expect(room_instance.id).must_equal 8
     end
   end
 

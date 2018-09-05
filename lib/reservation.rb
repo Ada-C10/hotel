@@ -1,10 +1,10 @@
 require 'pry'
 class Reservation
-  attr_reader :guest_id, :room_id, :date_range, :cost
+  attr_reader :guest_id, :room, :date_range, :cost
 
   def initialize(input)
     @guest_id = input[:guest_id]
-    @room_id = input[:room_id]
+    @room = input[:room]
     @date_range = input[:date_range]
     @cost = calculate_cost
   end

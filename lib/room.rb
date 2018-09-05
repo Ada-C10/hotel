@@ -1,10 +1,10 @@
 #As an administrator, I can access the list of all of the rooms in the hotel
 class Room
-  attr_reader :room_id
+  attr_reader :id
   attr_accessor :bookings
 
-  def initialize(room_id)
-    @room_id = room_id
+  def initialize(id)
+    @id = id
     @bookings = []
   end
 
