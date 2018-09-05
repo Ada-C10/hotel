@@ -57,8 +57,8 @@ describe "Hotel Manager class" do
       @hotel = Booking_Manager.new
       @input = { name: "Dr. Frankenstein",
         room_number: 6,
-        check_in: Date.new(2018, 6, 6),
-        check_out: Date.new(2018, 6, 9)
+        check_in_date: Date.new(2018, 6, 6),
+        check_out_date: Date.new(2018, 6, 9)
       }
     end
 
@@ -74,13 +74,13 @@ describe "Hotel Manager class" do
       @date = Date.new(2018, 6, 8)
       @input1 = { name: "Dr. Frankenstein",
         room_number: 6,
-        check_in: Date.new(2018, 6, 6),
-        check_out: Date.new(2018, 6, 9)
+        check_in_date: Date.new(2018, 6, 6),
+        check_out_date: Date.new(2018, 6, 9)
       }
       @input2 = { name: "Mx. Mummy",
         room_number: 3,
-        check_in: Date.new(2018, 6, 6),
-        check_out: Date.new(2018, 6, 12)
+        check_in_date: Date.new(2018, 6, 6),
+        check_out_date: Date.new(2018, 6, 12)
       }
       @hotel.reserve_room(@input1)
       @hotel.reserve_room(@input2)
@@ -118,8 +118,8 @@ describe "Hotel Manager class" do
         check_in_date: Date.new(2020,9,9),
         check_out_date: Date.new(2020,9,13),
       }
-      @reservation = Reservation.new(@input)
-      expect(@hotel.rooms[0].reservations.include?(@reservation)).must_equal true
+      @hotel.reserve_room(@input)
+      expect(@hotel.rooms[0].reservations[0].name).must_equal "Mx Thing"
     end
   end
 
