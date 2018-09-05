@@ -11,6 +11,9 @@ describe "Reservation Test" do
       expect{Reservation.new("2018-09-05","2018-09-31",1)}.must_raise ArgumentError
       expect{Reservation.new("2018-09-31","2018-10-01",1)}.must_raise ArgumentError
     end
+    it "raises an Argument Error when check-in date is after the check-out date" do
+      expect{Reservation.new("2018-09-07","2018-09-05",1)}.must_raise ArgumentError
+    end
     it "raises an Argument Error when an invalid room number is inserted" do
       expect{Reservation.new("2018-09-05","2018-09-07",23)}.must_raise ArgumentError
     end

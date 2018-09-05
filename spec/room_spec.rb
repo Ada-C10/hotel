@@ -20,4 +20,20 @@ describe "Room Test" do
       #expect(Room.list.length).must_equal 3
     end
   end
+
+  describe "Room.is_available? method" do
+    before do
+      @check_in = Date.parse("2018-09-05")
+      @check_out = Date.parse("2018-09-07")
+      @new_room1 = Room.new(1)
+      @new_room1.unavailable_dates = (@check_in...@check_out).to_a
+      @new_room2 = Room.new(2)
+    end
+    it "Provides room number if the room is available" do
+      expect(@new_room1.is_available?(@check_in,@check_out)).must_equal 0
+    end
+    it "Provides zero if room number is not available" do
+      expect(@new_room2.is_available?(@check_in,@check_out)).must_equal 2
+    end
+  end
 end

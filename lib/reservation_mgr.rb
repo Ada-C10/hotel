@@ -5,8 +5,14 @@ class ReservationMgr
   attr_reader :rooms
   def initialize
     @rooms = Room.create(20)
+    @reservations = []
 
   end
+
+  # def check_availability(check_in,check_out)
+  #
+  # end
+
 end
 
 # yay = ReservationMgr.new

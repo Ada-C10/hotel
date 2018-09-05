@@ -1,13 +1,11 @@
 class Room
   attr_reader :id
+  attr_accessor :unavailable_dates
 
   def initialize(id)
     @id = id
     @unavailable_dates = []
-    @status = :AVAILABLE
   end
-
-
 
 
   def self.create(number_rooms)
@@ -21,5 +19,15 @@ class Room
   def self.list
     return ObjectSpace.each_object(self).to_a
   end
+
+  def is_available?(check_in,check_out)
+    date_range = (check_in...check_out).to_a
+    if date_range.all? { |date| unavailable_dates.include?(date) }
+      return 0
+    else
+      return self.id
+    end
+  end
+
 
 end

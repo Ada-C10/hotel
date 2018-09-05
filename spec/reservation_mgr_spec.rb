@@ -13,4 +13,7 @@ describe "ReservationMgr Test" do
       expect(@new_ResMgr.rooms[0]).must_be_kind_of Room
     end
   end
+
+
+
 end
