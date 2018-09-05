@@ -9,7 +9,7 @@ require_relative 'spec_helper'
       room = Room.new(room_number)
 
       expect(room).must_respond_to :room_number
-      expect(room.room_number).must_equal 1
+      expect(room.room_number).must_equal room_number
 
       # expect(room).must_respond_to :availibility
       # expect(room.availibility).must_equal :available

@@ -1,5 +1,5 @@
 # Keeps track of the list of reservations
-class ReservationKeeper
+class ReservationTracker
 
   def list_of_all_rooms
   end
