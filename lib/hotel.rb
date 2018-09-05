@@ -18,6 +18,8 @@ class Hotel
   end
 
   def make_reservation(start_date, end_date, room_number)
+    available_room_list = find_available_rooms(start_date, end_date)
+    raise ArgumentError, 'Room not available' unless available_room_list.include?(room_number)
     new_reservation = Reservation.new(start_date, end_date, find_room_by_number(room_number))
     @reservations << new_reservation
     add_reservation_to_room(new_reservation)

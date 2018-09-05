@@ -46,6 +46,16 @@ describe 'make reservation' do
     room_6 = @my_hotel.find_room_by_number(6)
     expect(room_6.reservations.length).must_equal 1
   end
+  it 'raises an ArgumentError if the room is not available for that date range' do
+    expect {
+      @my_hotel.make_reservation(Date.new(2010, 3, 7), Date.new(2010, 3, 8), 6)
+    }.must_raise ArgumentError
+  end
+  it 'allows a new reservation to start on the last day of an existing reservation' do
+    @my_hotel.make_reservation(Date.new(2010, 3, 8), Date.new(2010, 3, 9), 6)
+    room_6 = @my_hotel.find_room_by_number(6)
+    expect(room_6.reservations.length).must_equal 2
+  end
 end
 
 describe 'find reservations by date' do
@@ -98,9 +108,9 @@ describe 'find available rooms' do
   end
   it 'returns an empty list if no rooms are available' do
     (1..20).each do |room_no|
-      @my_hotel.make_reservation(Date.new(2010, 1, 1), Date.new(2010, 5, 5), room_no)
+      @my_hotel.make_reservation(Date.new(2010, 1, 1), Date.new(2010, 2, 2), room_no)
     end
-    room_list = @my_hotel.find_available_rooms(Date.new(2010, 3, 5), Date.new(2010, 5, 8))
+    room_list = @my_hotel.find_available_rooms(Date.new(2010, 1, 5), Date.new(2010, 5, 8))
     expect(room_list).must_be_empty
   end
 end
