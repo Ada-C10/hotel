@@ -18,6 +18,9 @@ module Hotel
     end
 
     def is_within_date_range(date)
+      if date.class != Date
+        return false
+      end
       return date >= @check_in && date < @check_out
     end
 

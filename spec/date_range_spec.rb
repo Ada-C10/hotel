@@ -6,7 +6,7 @@ describe 'DateRange class' do
 
   describe 'DateRange instantiation' do
     before do
-      @check_in = Date.new(2020, 1, 1)
+      @check_in = Date.today
       @check_out = @check_in + 2
     end
 
@@ -40,6 +40,26 @@ describe 'DateRange class' do
       check_out = check_in + 2
       range = Hotel::DateRange.new(check_in, check_out)
       expect(range.get_total_days).must_equal 2
+    end
+  end
+
+  describe 'is_within_date_range' do
+    before do
+      check_in = Date.today
+      check_out = check_in + 2
+      @range = (Hotel::DateRange.new(check_in, check_out))
+    end
+
+    it 'returns true if date is within the range' do
+      expect(@range.is_within_date_range(Date.today)).must_equal true
+    end
+
+    it 'returns false if date is outside the range' do
+      expect(@range.is_within_date_range(Date.today - 1)).must_equal false
+    end
+
+    it 'returns false if given an invalid date' do
+      expect(@range.is_within_date_range('Not a Date')).must_equal false
     end
   end
 end
