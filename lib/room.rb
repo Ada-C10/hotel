@@ -1,22 +1,26 @@
+require_relative 'reservation'
+
 class Room
 
-  attr_reader :room
+  attr_reader :room, :availablity
 
 
-  def initialize(room, start_date, end_date)
+  def initialize(room)
     @room = room
-    @start_date = start_date
-    @end_date = end_date
+    @availablity = availablity
   end
 
-# status = ""
-#   def availablity(date1, date2)
-#       if @start_date != date1 && @end_date != date2
-#         status == true
-#       elseif
-#         status = false
-#       end
-#       return status
-#   end
+
+  #set room to a variable to be available or not available-get dates from reservation method
+
+  # def availablity(date1, date2)
+  #   if start_date != date1 && reservation.end_date != date2
+  #     status == ":available"
+  #     elseif
+  #     status = ":not-available"
+  #   end
+  #   binding.pry
+  #   return status
+  # end
 
 end
