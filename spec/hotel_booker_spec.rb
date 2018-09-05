@@ -73,4 +73,16 @@ describe 'HotelBooker class' do
       expect(matched_reservation.length).must_equal 0
     end
   end
+
+  describe 'list_available_rooms method' do
+    it 'returns an array containing a list of available room numbers for a given date' do
+      expect(hotel_booker.list_available_rooms(Date.today + 2)).must_be_instance_of Array
+    end
+
+    it 'correctly identifies the list of available room numbers for a given date' do
+      available_rooms = [*3..20]
+
+      expect(hotel_booker.list_available_rooms(Date.today + 2)).must_equal available_rooms
+    end
+  end
 end

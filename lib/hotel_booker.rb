@@ -26,6 +26,17 @@ module Hotel
       end
     end
 
-  end
+    def get_occupied_rooms(days_reservations)
+      return days_reservations.map { |reservations| reservations.room_num }
+    end
 
+    def list_available_rooms(date)
+      days_reservations = get_reservations_by_date(date)
+
+      occupied_rooms = get_occupied_rooms(days_reservations)
+
+      return @all_rooms - occupied_rooms
+    end
+
+  end
 end
