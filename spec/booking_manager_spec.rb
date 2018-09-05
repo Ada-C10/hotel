@@ -69,9 +69,16 @@ describe "BookingManager class" do
   end
 
   describe "list_rooms method" do
-    it "returns an array" do
+    it "returns an array of Room instances" do
       hotel_rooms = Hotel::BookingManager.new(5)
       expect(hotel_rooms.list_rooms).must_be_kind_of Array
+      expect(hotel_rooms.list_rooms.first).must_be_instance_of Hotel::Room
+    end
+
+    it "returns an array with the given number of rooms" do
+      x = 5
+      hotel_rooms = Hotel::BookingManager.new(x)
+      expect(hotel_rooms.list_rooms.length).must_equal x
     end
   end
 
