@@ -22,7 +22,7 @@ module Hotel
 
     def get_reservations_by_date(date)
       return @all_reservations.select do |reservation|
-        date >= reservation.date_range.check_in && date < reservation.date_range.check_out
+        reservation.date_range.is_within_date_range(date)
       end
     end
 
