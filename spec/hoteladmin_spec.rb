@@ -37,11 +37,11 @@ describe "HotelAdmin" do
     end
 
     it "raises an argument error if invalid date object is provided" do
-      expect{ (HotelAdmin.retrieve_by_date("I am a string")) }.must_raise ArgumentError
+      expect{ (hotel.retrieve_by_date("I am a string")) }.must_raise ArgumentError
     end
 
     it "returns an array of the reservations relevant to given date" do
-      reservations_for_date = HotelAdmin.retrieve_by_date(Date.new(2018,12,04))
+      reservations_for_date = hotel.retrieve_by_date(Date.new(2018,12,04))
 
       expect(reservations_for_date).must_be_instance_of Array
       expect(reservations_for_date.first).must_be_instance_of Reservation
