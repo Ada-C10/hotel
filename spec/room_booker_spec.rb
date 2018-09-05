@@ -31,21 +31,24 @@ describe 'Wave 1' do
   describe 'list_reservations method' do
     it 'lists the reservations for a given date' do
       given_date = Date.new(2018, 4, 1)
-      listed_reservations = @hotel.list_reservations
+      listed_reservations = @hotel.list_reservations(given_date)
 
       expect(listed_reservations).must_be_kind_of Array
-      expect(listed_reservations.first).must_equal @reservation
-      expect(listed_reservations.last).must_equal @reservation2
+      # According to the before block there should only be one reservation on 4/1/2018
+      expect(listed_reservations.length).must_equal 1
+      listed_reservations.each do |reservation|
+        expect(reservation).must_be_instance_of BookingLogic::Reservation
+      end
     end
   end
 
-  # describe 'reservation_cost method' do
-  #   it 'finds the cost of a given reservation' do
-  #     found_reservation = hotel.find_reservation(@reservation)
-  #     cost2 = hotel.reservation_cost(@reservation2)
-  #
-  #     expect(cost).must_equal 200
-  #     expect(cost2).must_equal 600
-  #   end
-  # end
+  describe 'reservation_cost method' do
+    it 'finds the cost of a given reservation' do
+      reservation = @hotel.reservation_cost(14, Date.new(2018, 4, 1))
+      reservation2 = @hotel.reservation_cost(15, Date.new(2018, 4, 3))
+
+      expect(reservation).must_equal 200
+      expect(reservation2).must_equal 600
+    end
+  end
 end
