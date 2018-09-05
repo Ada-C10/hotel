@@ -15,11 +15,10 @@ class HotelAdmin
     reservations.select { |res| (res.date_range.first..res.date_range.last).include? date }
   end
 
-  # def reserve_room
-  #
-  #   # @guest_id = guest_id
-  #   # @room_id = room_id
-  #   # @date_range = date_range
-  # end
+  def reserve_room(guest_email, room_number, check_in, check_out)
+    new_reservation = Reservation.new({guest_id: guest_email, room_id: room_number, date_range: [check_in, check_out]})
+    reservations << new_reservation
+    new_reservation
+  end
 
 end
