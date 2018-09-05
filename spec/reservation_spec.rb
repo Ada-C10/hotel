@@ -20,6 +20,10 @@ describe "Reservation" do
     it "must have a room" do
       expect(@reservation.room).must_be_kind_of Hotel::Room
     end
+  it "must raise error if end date is before start date" do
+    # @reservation2 = Hotel::Reservation.new(Hotel::Room.new(1),"2019-08-13" , "2019-08-10")
+    expect{Hotel::Reservation.new(Hotel::Room.new(1),"2019-08-13" , "2019-08-10")}.must_raise StandardError
+  end
   end
   describe "calculating nights in a reservation" do
     it "correctly adds up the number of nights" do
