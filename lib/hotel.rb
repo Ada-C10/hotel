@@ -47,20 +47,10 @@ class Hotel
   end
 
   def find_available_room(start_d, end_d)
-#make into smaller methods that are private
+    # find_rooms_without_reservations #returns rooms_without_reservations
     rooms.each do |room|
-      return room if room.reservations.length == 0
-    end
-
-    not_available_rooms = []
-    reservations.each do |reservation|
-      if (Date.parse(start_d) <= reservation.end_date) && (Date.parse(end_d) >= reservation.start_date)
-        not_available_rooms << reservation.rooms
-      end
-    end
-
-    rooms.each do |room|
-      if !(not_available_rooms.flatten.include? room)
+      if !(not_available_rooms(start_d, end_d).include? room)
+        #if the room is NOT one of the not_available_rooms 
         return room
       end
     end
@@ -84,6 +74,22 @@ class Hotel
       end
     end
     raise ArgumentError, "No such reservation."
+  end
+
+  def not_available_rooms(start_d, end_d)
+    not_available_rooms = []
+    reservations.each do |reservation|
+      if (Date.parse(start_d) <= reservation.end_date) && (Date.parse(end_d) >= reservation.start_date)
+        not_available_rooms << reservation.rooms
+      end
+    end
+    return not_available_rooms.flatten!
+  end
+
+  def find_rooms_without_reservations
+    rooms.each do |room|
+      return room if room.reservations.length == 0
+    end
   end
 
 end
