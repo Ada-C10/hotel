@@ -19,7 +19,10 @@ module Hotel
       @@rooms_in_hotel += 1
     end
 
-    def is_available?(checkin_date, final_night_date)
+    def is_available?(checkin_date, final_night_date = nil)
+      if final_night_date == nil
+        final_night_date = checkin_date
+      end
       checkin_date.upto(final_night_date) { |date|
         return false if @availability[date.to_s] == :UNAVAILABLE
       }

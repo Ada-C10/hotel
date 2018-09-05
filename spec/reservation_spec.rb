@@ -9,7 +9,7 @@ describe "Reservation" do
   before do
     @start_date = Date.parse("2019-02-01")
     @end_date = Date.parse("2019-02-05")
-    @reservation = Hotel::Reservation.new(@start_date, @end_date, Hotel::Room.new(1))
+    @reservation = Hotel::Reservation.new(@start_date, @end_date, Hotel::Room.new(1), 10)
   end
 
   describe "Reservation#initialize" do
@@ -27,6 +27,10 @@ describe "Reservation" do
 
     it "has a room assigned" do
       expect(@reservation.room).must_be_instance_of Hotel::Room
+    end
+
+    it "has a confirmation number" do
+      expect(@reservation.confirmation_number).must_equal 10
     end
   end
 
