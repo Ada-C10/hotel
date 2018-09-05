@@ -32,8 +32,9 @@ end
 class BlockReservation < Reservation
   def initialize(checkin_date, checkout_date, room_list, discounted_rate)
     room_list.each do |room|
-      super(checkin_date, checkout_date, room.number, discounted_rate)
+      super(checkin_date, checkout_date, room, discounted_rate)
     end
-
   end
+
+
 end
