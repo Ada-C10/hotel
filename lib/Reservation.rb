@@ -2,8 +2,9 @@ require 'date'
 require 'pry'
 require_relative "Room"
 require_relative 'Booking'
-class Reservation
 
+class Reservation
+  # Do instance of room in initialize?
   attr_reader :room_number, :check_in, :check_out, :cost_per_night, :total
 
   def initialize(room_number, check_in, check_out, cost_per_night=200)
@@ -26,16 +27,5 @@ class Reservation
     return number_of_days_reserved * cost_per_night
   end
 
-  def find_room
-    # Returns room object with matching room id
-    # Access from booking array based on id?
-
-  end
-
-  def add_reservation
-    # Adds reservation to rooms array of reservations
-    # Use find_room.reservations?
-    # Validate if room has availability for the date range given
-    # Can add a reservation check in on days where another person is checking out 
-  end
+  
 end

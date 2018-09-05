@@ -21,6 +21,27 @@ describe "booking manager" do
     end
   end
 
+  describe 'Reservations' do
+
+    it "Is able to find associated room based on room number" do
+      skip
+      # @room = Room.new(1,[] )
+      expect(@test_reservation.find_room).must_equal Room.new(1, [])
+    end
+
+    it "Has an error if attempting to book a reserved room" do
+      skip
+    end
+
+    it "Adds a reservation if a valid reservation is made" do
+      # Need to setup a room
+
+      # Need to setup reservation
+
+    end
+
+  end
+
   # Test methods here
   describe "Lists" do
     # Access list of rooms
@@ -28,7 +49,7 @@ describe "booking manager" do
       expect(@manager.list_all.length).must_equal 20
     end
     # Access list of reserved rooms by date
-    
+
     # Access list of rooms not reserved for date range
     # List of block rooms
 

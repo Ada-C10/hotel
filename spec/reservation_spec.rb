@@ -41,25 +41,8 @@ describe "Reservation" do
   end
 
   it "Correctly counts the number of days" do
-    expect(@test_reservation.number_of_days_reserved).must_equal 1
+    expect(@test_reservation.number_of_days_reserved).must_equal (@test_reservation.check_out - @test_reservation.check_in).to_i
   end
 
-  it "Is able to find associated room based on room number" do
-    skip
-    @room = Room.new(1,[] )
-    expect(@test_reservation.find_room).must_equal @room
-  end
-
-  it "Has an error if attempting to book a reserved room" do
-    skip
-  end
-
-  it "Adds a reservation if a valid reservation is made" do
-    # Need to setup a room
-
-    # Need to setup reservation
-
-
-  end
 
 end
