@@ -1,10 +1,10 @@
 class Reservation
-  attr_reader :id, :room_num, :begin_date, :end_date, :rate, :cost
+  attr_reader :room_num, :begin_date, :end_date, :room_num, :rate, :cost
 
-  def initialize(id, begin_date, end_date, rate)
-    @id = id
+  def initialize(begin_date, end_date, room_num, rate)
     @begin_date = begin_date
     @end_date = end_date
+    @room_num = room_num
     @rate = rate
     @cost = ( end_date - begin_date ) * rate
   end

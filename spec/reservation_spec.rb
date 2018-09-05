@@ -5,7 +5,7 @@ describe "Reservation class" do
   before do
     @begin_date = Date.new(2018,9,1)
     @end_date = Date.new(2018,9,15)
-    @reservation = Reservation.new(1, @begin_date, @end_date, 200)
+    @reservation = Reservation.new(@begin_date, @end_date, 5, 200)
   end
 
   describe "Creates a new reservation"do

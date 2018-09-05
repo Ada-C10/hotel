@@ -28,9 +28,23 @@ describe "BookingTracker class" do
   end
 
   describe "it can reserve a room for a given date range" do
+    before do
+      @reservation = @bookings.new_reservation('9-15-2018', '9-17-2018')
+    end
+
+    it "must raise ArgumentError for invalid dates" do
+
+      expect { @bookings.new_reservation('10-10-2018', '9-15-2018') }.must_raise ArgumentError
+    end
+
     it "must create a new reservation instance" do
-    reservation = @bookings.new_reservation('9-15-2018', '9-17-2018')
-    expect(reservation).must_be_kind_of Reservation
+
+    expect(@reservation).must_be_kind_of Reservation
+    end
+
+    it "can find an available_room for the reservation" do
+
+      expect (@reservation.room_num).must_equal 5
     end
   end
 
