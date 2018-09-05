@@ -2,7 +2,7 @@ require_relative 'spec_helper'
 require 'pry'
 require 'date'
 
-describe "tests for various pieces in each incidence of reservation" do
+describe "tests for various pieces in each incidence of Reservation" do
 
   before do
     start_date = Date.new(2018,2,3)
