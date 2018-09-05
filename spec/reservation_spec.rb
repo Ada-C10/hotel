@@ -18,4 +18,10 @@ describe "Reservation Test" do
       expect{Reservation.new("2018-09-05","2018-09-07",23)}.must_raise ArgumentError
     end
   end
+  describe "Reservation.cost method" do
+    it "Calculates cost for 2 nights" do
+      new_Res = Reservation.new("2018-09-05","2018-09-07",1)
+      expect(new_Res.cost).must_equal 400
+    end
+  end
 end

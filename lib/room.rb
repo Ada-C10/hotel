@@ -1,3 +1,5 @@
+require_relative 'reservation'
+
 class Room
   attr_reader :id
   attr_accessor :unavailable_dates
@@ -21,13 +23,22 @@ class Room
   end
 
   def is_available?(check_in,check_out)
-    date_range = (check_in...check_out).to_a
-    if date_range.all? { |date| unavailable_dates.include?(date) }
-      return 0
-    else
-      return self.id
-    end
+    if 
+    # if date_range.all? { |date| unavailable_dates.include?(date) }
+    #   return 0
+    # else
+    #   return self.id
+    # end
   end
+
+  def add_unavailable_dates(check_in,check_out)
+    dates = {}
+    dates[:check_in] = check_in
+    dates[:check_out] = check_out
+    unavailable_dates << dates
+    unavailable_dates.sort_by! { |ranges| ranges[:check_in] }
+  end
+
 
 
 end

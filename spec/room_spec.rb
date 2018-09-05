@@ -36,4 +36,25 @@ describe "Room Test" do
       expect(@new_room2.is_available?(@check_in,@check_out)).must_equal 2
     end
   end
+
+  describe "Room.add_unavailable_dates method" do
+    before do
+      @check_in = Date.parse("2018-09-05")
+      @check_out = Date.parse("2018-09-07")
+      @new_room1 = Room.new(1)
+      @new_room1.add_unavailable_dates(@check_in,@check_out)
+      @new_room1.add_unavailable_dates(Date.parse("2018-09-01"),Date.parse("2018-09-05"))
+    end
+    it "Provides room number if the room is available" do
+      expect(@new_room1.unavailable_dates[0]).must_be_kind_of Hash
+    end
+    it "Provides zero if room number is not available" do
+      expect(@new_room1.unavailable_dates[0][:check_in]).must_equal @check_in
+      expect(@new_room1.unavailable_dates[0][:check_out]).must_equal @check_out
+    end
+    it "Sorts the unavailable_dates" do
+      expect(@new_room1.unavailable_dates[0][:check_in]).must_be :<, @check_in
+      expect(@new_room1.unavailable_dates[0][:check_out]).must_be :<=, @check_in
+    end
+  end
 end
