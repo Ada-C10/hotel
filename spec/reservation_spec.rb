@@ -18,9 +18,9 @@ describe "Reservation" do
   # TODO: test room_num as 1-20
   # TODO: test cost nil or 200 or other value
   # QUESTION: let vs before/do --> preference and use case diff?
-  let(:start_date) {Date.new(2004, 7, 1)}
-  let(:end_date) {Date.new(2004, 7, 4)}
-  let(:reservation) {Hotel::Reservation.new(2, 3, start_date, end_date)}
+  let(:start_date) {"2004-7-1")}
+  let(:end_date) {"2004-7-4"}
+  let(:reservation) {Hotel::Reservation.new("2", "3", start_date, end_date)}
 
   describe "#initialize" do
     it "can create a new instance of reservation" do
@@ -29,24 +29,29 @@ describe "Reservation" do
     end
   end
 
-# TODO: go back to this after figuring out all other tests
-  # describe "#dates_reserved" do
-  #   # TODO: test edge cases like same start/end date
-  #   # TODO: error handling for bad start/end dates (above?)
-  #   it "returns an array of Date objects" do
-  #
-  #     expect(reservation.dates_reserved).must_be_kind_of Array
-  #     expect(reservation.dates_reserved()[0]).must_be_kind_of Date
-  #
-  #     second_start_date = ("2004, 7, 2")
-  #     second_end_date = ("2004, 7, 3")
-  #     expect(reservation.dates_reserved[1]).must_equal second_date
-  #   end
-  #   it "can list all the dates of a reservation" do
-  #     expect(reservation.dates_reserved.length).must_equal 3
-  #
-  #     second_date = Date.new(2004, 7, 2)
-  #     expect(reservation.dates_reserved[1]).must_equal second_date
-  #   end
-  # end
+  describe "#dates_reserved" do
+    # TODO: test edge cases like same start/end date
+    # TODO: error handling for bad start/end dates (above?)
+    it "returns an array of Date objects" do
+      expect(reservation.dates_reserved).must_be_kind_of Array
+      expect(reservation.dates_reserved[0]).must_be_kind_of Date
+    end
+    it "can list all the dates of a reservation" do
+      expect(reservation.dates_reserved.length).must_equal 3
+
+      expect(reservation.dates_reserved[0]).must_equal "2004-7-1"
+      expect(reservation.dates_reserved[1]).must_equal "2004-7-2"
+      expect(reservation.dates_reserved[2]).must_equal "2004-7-3"
+    end
+  end
+
+  describe "#total_stay_cost" do
+    it "correctly calculates total cost for a reservation" do
+      rate = 200
+      dates = 3
+      correct_cost = rate * dates
+
+      expect(reservation.total_stay_cost).must_equal 600
+    end
+  end
 end

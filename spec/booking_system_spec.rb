@@ -85,7 +85,7 @@ describe "BookingSystem class" do
       expect(new_reservation.room.num).must_equal 10
       expect(new_reservation.start_date).must_be_kind_of Date
       expect(new_reservation.end_date).must_be_kind_of Date
-      expect(new_reservation.cost).must_equal 200
+      expect(new_reservation.daily_rate).must_equal 200
 
     end
   end
