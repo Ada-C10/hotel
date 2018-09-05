@@ -1,5 +1,5 @@
-guard :minitest, bundler: false, rubygems: false do
-  # with Minitest::Spec
+guard :minitest, bundler: false, autorun: false, rubygems: false do
+  # With Minitest Reporters
   watch(%r{^spec/(.*)_spec\.rb$})
   watch(%r{^lib/(.+)\.rb$})         { |m| "spec/#{m[1]}_spec.rb" }
   watch(%r{^spec/spec_helper\.rb$}) { 'spec' }
