@@ -1,12 +1,19 @@
+require_relative '../lib/room_booker'
 require_relative 'spec_helper.rb'
 
 describe 'Wave 1' do
   before do
     @hotel = BookingLogic::RoomBooker.new
-    @room_id = 14
-    @check_in = Date.new(2018, 4, 1)
-    @check_out = Date.new(2018, 4, 2)
-    @reservation1 = @hotel.new_reservation(room_id, check_in, check_out)
+
+    # room_id = 14
+    # check_in = Date.new(2018, 4, 1)
+    # check_out = Date.new(2018, 4, 2)
+    # @reservation1 = @hotel.new_reservation(room_id, check_in, check_out)
+    #
+    # room_id2 = 15
+    # check_in2 = Date.new(2018, 4, 3)
+    # check_out2 = Date.new(2018, 4, 6)
+    # @reservation2 = hotel.new_reservation(room_id2, check_in2, heck_out2)
   end
 
   describe 'list_rooms method' do
@@ -25,17 +32,22 @@ describe 'Wave 1' do
 
   describe 'list_reservations method' do
     it 'lists the reservations for a given date' do
-      room_id = 15
-      check_in = Date.new(2018, 4, 3)
-      check_out = Date.new(2018, 4, 6)
-      reservation2 = @hotel.new_reservation(room_id, check_in, check_out)
-
       given_date = Date.new(2018, 4, 1)
       listed_reservations = @hotel.list_reservations
 
       expect(listed_reservations).must_be_kind_of Array
       expect(listed_reservations.first).must_equal @reservation
-      expect(listed_reservations.last).must_equal reservation2
+      expect(listed_reservations.last).must_equal @reservation2
     end
   end
+
+  # describe 'reservation_cost method' do
+  #   it 'finds the cost of a given reservation' do
+  #     found_reservation = hotel.find_reservation(@reservation)
+  #     cost2 = hotel.reservation_cost(@reservation2)
+  #
+  #     expect(cost).must_equal 200
+  #     expect(cost2).must_equal 600
+  #   end
+  # end
 end
