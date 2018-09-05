@@ -14,6 +14,12 @@ module Hotel
       return list_of_rooms
     end
 
+    def get_reservations_by_date(date)
+      return @all_reservations.select do |reservation|
+        date >= reservation.date_range.start_date && date < reservation.date_range.end_date
+      end
+    end
+
   end
 
 end

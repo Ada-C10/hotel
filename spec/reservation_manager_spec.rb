@@ -4,7 +4,7 @@ describe 'ReservationManager class' do
 
   let (:reservation1) {
     start_date = Date.today + 1
-    end_date = start_date + 2
+    end_date = start_date + 3
     Hotel::Reservation.new(start_date, end_date, 1)
   }
 
@@ -40,9 +40,20 @@ describe 'ReservationManager class' do
     end
   end
 
-  describe 'get_all_reservations method' do
-    it 'returns a list of all reservations' do
-      # reservation_manager
+  describe 'get_reservations_by_date method' do
+    it 'returns a list of all reservations for a given date ' do
+      matched_reservation = reservation_manager.get_reservations_by_date(Date.today + 2)
+
+      matched_reservation.each do |reservation|
+        expect(reservation).must_be_instance_of Hotel::Reservation
+      end
+      # binding.pry
+      expect(matched_reservation.length).must_equal 2
+
+      matched_reservation_2 = reservation_manager.get_reservations_by_date(Date.today + 1)
+
+      expect(matched_reservation_2[0].room_num).must_equal 1
+
 
     end
   end
