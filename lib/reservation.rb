@@ -10,6 +10,10 @@ module Hotel
       @date_range = DateRange.new(check_in, check_out)
       @room_num = room_num
       @cost = get_cost
+
+      if !@room_num.to_s.match /\d+/
+        raise ArgumentError, "Invalid Room Number"
+      end
     end
 
     def get_cost
