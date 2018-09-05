@@ -22,13 +22,16 @@ describe Reservation do
       expect(@reservation).must_respond_to :cost
     end
   end
-  # describe "#get_all_dates" do
-  #   it "returns Array" do
-  #     expect(@reservation.get_all_dates).must_be_kind_of Array
-  #   end
-  #   it "contains all dates for reservation" do
-  #     expect(@reservation.get_all_dates).must_equal
-  #   end
-  # end
-  # end
+  describe "#get_all_dates" do
+    it "returns Array" do
+      @reservation = Reservation.new(181202, 2)
+      expect(@reservation.get_all_dates).must_be_kind_of Array
+    end
+    it "contains all dates for reservation" do
+      @reservation = Reservation.new(181202, 2)
+      expect(@reservation.get_all_dates.length).must_equal 2
+      expect(@reservation.get_all_dates[0]).must_be_kind_of Date
+      expect(@reservation.get_all_dates[1]).must_be_kind_of Date
+    end
+  end
 end

@@ -6,13 +6,13 @@ class Reservation
     @number_of_nights = number_of_nights
     @cost = PRICE * number_of_nights
   end
-  # def get_all_dates
-  #   all_dates = []
-  #   date = check_in
-  #   number_of_nights.times do
-  #     all_dates << date.next
-  #     date = date.next
-  #   end
-  #   return all_dates
-  # end
+  def get_all_dates
+    all_dates = []
+    date = check_in
+    number_of_nights.times do
+      all_dates << date.next
+      date = date.next
+    end
+    return all_dates
+  end
 end
