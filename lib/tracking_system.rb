@@ -1,20 +1,36 @@
 require_relative 'room'
 require_relative 'reservation'
 
+NUMBER_OF_ROOMS = 20
+STANDARD_ROOM_PRICE = 200.0
+
 class TrackingSystem
-  attr_reader :available_rooms, :unavailable_rooms, :all_rooms
+  attr_reader :all_rooms, :reservations
 
   def initialize
-    @available_rooms = []
-    @unavailable_rooms = []
-    @all_rooms = [] #Admin can access the list of all of the rooms in the hotel, should i << avail and unavail?
+    @all_rooms = add_rooms #should i add << avail and unavail?
+    @reservations = []
   end
-  # 
-  # def make_reservation(checkin_time: nil, checkout_time: nil)
-  #   Reservation.new({room_num: assign_available_room, checkin_time:)
-  # end
+
+  def add_rooms
+    all_rooms = []
+    NUMBER_OF_ROOMS.times do |i|
+      i += 1
+      i = Room.new({room_num: i, price: STANDARD_ROOM_PRICE, availability: :AVAILABLE})
+      all_rooms << i
+    end
+    return all_rooms
+  end
+
+  def make_reservation(checkin_time: nil, checkout_time: nil, customer: "")
+    Reservation.new(attributes = {room_num: 0, checkin_time: Date.new, checkout_time: Date.new, price: STANDARD_ROOM_PRICE, customer: ""})
+  end
+
+
 
 end
+
+
 
 #reservation attributes
 # @room_num = input[:room_num]

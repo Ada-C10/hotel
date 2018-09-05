@@ -14,7 +14,7 @@ require_relative '../lib/reservation'
 #making sure each instance variable in initialization is the correct class
 
 describe 'TrackingSystem class' do
-
+###### WAVE 1 ##################################################################
   describe "#initialize" do
     before do
       @tracker = TrackingSystem.new
@@ -24,29 +24,44 @@ describe 'TrackingSystem class' do
       expect(@tracker).must_be_kind_of TrackingSystem
     end
 
-    it 'has a list of available rooms' do
-      expect(@tracker.available_rooms).must_be_instance_of Array
-    end
-
-    it 'has a list of unavailable rooms' do
-      expect(@tracker.unavailable_rooms).must_be_instance_of Array
-    end
-
     it 'has a list of all rooms' do
       expect(@tracker.all_rooms).must_be_instance_of Array
     end
 
+    it 'has a list of reservations' do
+      expect(@tracker.reservations).must_be_instance_of Array
+    end
+
   end
 
-  #method for making a reservation
-  # Admin can reserve a room for a given date range
+  describe "access the list of all 20 rooms in the hotel" do
+    before do
+      @tracker = TrackingSystem.new
+    end
+
+    it 'must return an Array' do
+      expect(@tracker.all_rooms).must_be_instance_of Array
+    end
+
+    it 'must contain 20 elements' do
+      expect(@tracker.all_rooms.length).must_equal 20
+    end
+
+    it 'must contain only instances of Room' do
+      expect(@tracker.all_rooms.all? {|room| room.class == Room}).must_equal true
+    end
+  end
+
+  # #method for making a reservation
+  # # Admin can reserve a room for a given date range
   describe "#make_reservation" do
     before do
-      @room = Room.new({room_num: 1, price: 200.0, availability: :available })
+      @tracker = TrackingSystem.new
+      # @room = Room.new({room_num: 1, price: 200.0, availability: :available })
     end
 
     it "creates a new instance of Reservation" do
-      expect(@room.make_reservation(checkin_time: Date.new(2018,8,1), checkout_time: Date.new(2018,8,25))).must_be_kind_of Reservation
+      expect(@tracker.make_reservation(checkin_time: Date.new(2018,8,1), checkout_time: Date.new(2018,8,25))).must_be_kind_of Reservation
     end
 
     # it "changes availability to :unavailable for a given date range" do

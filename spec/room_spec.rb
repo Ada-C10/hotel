@@ -6,7 +6,7 @@ describe 'Room class' do
   describe "#initialize" do
     before do
       @room = Room.new(
-        {room_num: 1, price: 200.0, availability: :available })
+        {room_num: 1, price: 200.0, availability: :RESERVED })
       end
 
       it 'is an instance of Room' do
