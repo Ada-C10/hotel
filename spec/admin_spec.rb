@@ -1,21 +1,21 @@
 require_relative 'spec_helper'
 
 # runs from project directory
-USER_TEST_FILE = 'spec/test_data/test_reservation.csv'
-@reservation = Reservation.new(start_time: Time.parse("2016-08-08"), end_time: Time.parse("2016-08-09"))
-xdescribe "Initializer" do
-  it "is an instance of TripDispatcher" do
-    dispatcher = Admin.new(USER_TEST_FILE)
+describe "#Admin - initializer" do
+  before do
+    @admin = Admin.new
+  end
+  it "is an instance of Admin" do
+    dispatcher = Admin.new
     expect(dispatcher).must_be_kind_of Admin
   end
 
 end
 
-describe "Reservation loads" do
+describe "Admin - reservations load" do
   before do
     @admin = Admin.new
   end
-
   it "accurately loads reservation information into reservations array" do
     first_reservation = @admin.reservations.first
     last_reservation = @admin.reservations.last

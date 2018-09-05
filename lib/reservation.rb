@@ -17,8 +17,4 @@ class Reservation
 #     @@reservations << self
 #   end
 
-  # def self.find(start_time, end_time)
-  #   reservations = @@reservations.select {|instance| instance.start_time == start_time && instance.end_time == end_time} # returns instance in array
-  # end
-
 end
