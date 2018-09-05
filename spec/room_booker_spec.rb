@@ -52,3 +52,47 @@ describe 'Wave 1' do
     end
   end
 end
+
+describe 'Wave 2' do
+  before do
+    @hotel = BookingLogic::RoomBooker.new
+
+    room_id1 = 14
+    check_in1 = Date.new(2018, 4, 1)
+    check_out1 = Date.new(2018, 4, 2)
+    @reservation1 = @hotel.new_reservation(room_id1, check_in1, check_out1)
+
+    room_id2 = 15
+    check_in2 = Date.new(2018, 4, 3)
+    check_out2 = Date.new(2018, 4, 6)
+    @reservation2 = @hotel.new_reservation(room_id2, check_in2, check_out2)
+
+    room_id3 = 2
+    check_in3 = Date.new(2018, 3, 21)
+    check_out3 = Date.new(2018, 4, 3)
+    @reservation3 = @hotel.new_reservation(room_id3, check_in3, check_out3)
+  end
+
+  describe 'list_available_rooms method' do
+    before do
+      @array_of_rooms = @hotel.list_available_rooms(Date.new(2018, 4, 1))
+    end
+
+    it 'returns an array of rooms' do
+      expect(@array_of_rooms).must_be_kind_of Array
+      @array_of_rooms.each do |room|
+        expect(room).must_be_instance_of Room
+      end
+    end
+
+    it 'only returns available rooms' do
+      room14 = @hotel.rooms.find { |room| room.id == 14 }
+      room2 = @hotel.rooms.find { |room| room.id == 2 }
+      remaining_rooms = @hotel.rooms.find_all { |room| room.id != 14 && room.id != 2 }
+
+      expect(@array_of_rooms).wont_include room14
+      expect(@array_of_rooms).wont_include room2
+      expect(@array_of_rooms).must_include remaining_rooms
+    end
+  end
+end
