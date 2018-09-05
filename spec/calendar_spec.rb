@@ -26,11 +26,17 @@ describe Calendar do
       calendar.add_reservation(reservation)
       calendar.add_reservation(reservation2)
       # end
-      binding.pry
+      # binding.pry
       expect(calendar.room_assignments[1][0]).must_be_kind_of Date
       expect(calendar.room_assignments[1][0]).wont_equal calendar.room_assignments[2][0]
       # calendar.room_assignments.each do |k, v|
       #   expect(v.empty?).must_equal false
+    end
+    it "returns added message" do
+      calendar = Calendar.new
+      reservation = Reservation.new(181202, 2)
+      add = calendar.add_reservation(reservation)
+      expect(add).must_equal "Added!"
     end
   end
 end
