@@ -1,5 +1,3 @@
-# require_relative 'booking_manager'
-
 module Hotel
   class Room
     attr_reader :number
