@@ -1,3 +1,5 @@
+require 'pry'
+
 require_relative 'room'
 
 module Hotel
@@ -5,8 +7,8 @@ module Hotel
     attr_accessor :rooms, :reservations
 
     def initialize
-      @rooms = populate_room_list
-      @reservations = reservations
+      @rooms = populate_room_list(20)
+      @reservations = make_reservation_list # Does a room necessarily have reservations?
     end # of def initialize
 
     # Create list of rooms as list of room Instances
@@ -19,15 +21,28 @@ module Hotel
         rooms << room
         num += 1
       end # of number_rooms loop
-    end # of populate_room_list method 
+      return rooms
+    end # of populate_room_list method
+
+    # Create array to store all of reservations
+    def make_reservation_list
+      reservations = []
+      return reservations
+    end
+
+    # Method to list all reservations
+    def list_reservations
+      return @reservations
+    end
 
     # Method to list all rooms in hotel
     # def list_rooms
     #   @rooms
     # end
 
-    # Method to list all reservations
-    # def list_reservations
+    # Method to add a reservation to list of reservations
+    # def add_reservation(reservation)
+    #
     # end
 
     # Method to get total cost of reservation
