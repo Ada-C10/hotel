@@ -1,6 +1,6 @@
 # Jacquelyn Cheng - Nodes
 
-# Admin: Loads rooms for future bookings by year.
+# Admin: Manages bookings for the hotel.
 
 module Hotel
   class Admin

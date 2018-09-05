@@ -1,6 +1,6 @@
 # Jacquelyn Cheng - Nodes
 
-# Reservation: Keeps track of a single guest's reservation.
+# Reservation: Keeps track of a single reservation's info.
 
 require 'date'
 
