@@ -7,8 +7,8 @@ describe "Room in Wave 1" do
       id = 1
       room_1 = Room.new(id)
 
-      expect(room_1).must_respond_to :id
-      expect(room_1.id).must_equal id
+      expect(room_1).must_respond_to :room_num
+      expect(room_1.room_num).must_equal id
       expect(room_1.rate).must_equal 200
       expect(room_1.reservations).must_equal []
 
