@@ -35,6 +35,12 @@ describe "BookingManager class" do
       expect(first_room.number).must_equal 1
       expect(last_room.number).must_equal x
     end
+
+    it "returns array of rooms with length equal to parameter passed into constructor" do
+      x = 12
+      hotel_rooms = Hotel::BookingManager.new(x)
+      expect(hotel_rooms.rooms.length).must_equal x
+    end
   end # of reservation and room load methods
 
 end # end of describe BookingManager class
