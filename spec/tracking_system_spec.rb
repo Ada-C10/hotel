@@ -61,10 +61,20 @@ describe 'TrackingSystem class' do
     end
 
     it "creates a new instance of Reservation" do
-      expect(@tracker.make_reservation(checkin_time: Date.new(2018,8,1), checkout_time: Date.new(2018,8,25))).must_be_kind_of Reservation
+      @reservation = @tracker.make_reservation(checkin_time: Date.new(2018,8,1), checkout_time: Date.new(2018,8,25))
+
+      expect(@reservation.sample).must_be_kind_of Reservation
     end
 
-    # it "changes availability to :unavailable for a given date range" do
+    it "increases the number of reservations in the reservations list" do
+      num_of_reservations = @tracker.reservations.length
+      @reservation = @tracker.make_reservation(checkin_time: Date.new(2018,8,1), checkout_time: Date.new(2018,8,25))
+      updated_num_of_reservations = @tracker.reservations.length
+
+      expect(updated_num_of_reservations - num_of_reservations).must_equal 1
+    end
+
+    # it "changes availability of the reserved room to :RESERVED for a given date range" do
     # end
   end
 end #end of class method

@@ -23,7 +23,8 @@ class TrackingSystem
   end
 
   def make_reservation(checkin_time: nil, checkout_time: nil, customer: "")
-    Reservation.new(attributes = {room_num: 0, checkin_time: Date.new, checkout_time: Date.new, price: STANDARD_ROOM_PRICE, customer: ""})
+    reservation = Reservation.new(attributes = {room_num: 0, checkin_time: Date.new, checkout_time: Date.new, price: STANDARD_ROOM_PRICE, customer: ""})
+    @reservations << reservation
   end
 
 
