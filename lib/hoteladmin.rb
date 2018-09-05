@@ -2,8 +2,16 @@ class HotelAdmin
   attr_accessor :rooms, :reservations
 
   def initialize
-    @rooms = []
+    @rooms = build_rooms
     @reservations = []
+  end
+
+  def build_rooms
+    room_set = []
+    20.times do |i|
+      room_set << Room.new(i+1)
+    end
+    room_set
   end
 
   def list_rooms
@@ -19,6 +27,10 @@ class HotelAdmin
     new_reservation = Reservation.new({guest_id: guest_email, room_id: room_number, date_range: [check_in, check_out]})
     reservations << new_reservation
     new_reservation
+  end
+
+  def reservation_charge(reservation)
+    reservation.cost
   end
 
 end
