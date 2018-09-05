@@ -38,7 +38,10 @@ describe 'reservation class' do
 
       @reservation.nights_of_stay.each do |night|
         expect(night).must_be_kind_of Date
-        expect(@nights.include?(night)).must_equal true
+
+      end
+      @nights.each do |night|
+        expect(@reservation.nights_of_stay.include?(night)).must_equal true
       end
     end
   end
@@ -60,9 +63,8 @@ describe 'reservation class' do
 
       expect(@reservation.nights_of_stay).must_be_kind_of Array
 
-      @reservation.nights_of_stay.each do |night|
-        expect(night).must_be_kind_of Date
-        expect(@nights.include?(night)).must_equal true
+      @nights.each do |night|
+        expect(@reservation.nights_of_stay.include?(night)).must_equal true
       end
     end
   end

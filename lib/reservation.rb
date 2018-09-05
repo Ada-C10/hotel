@@ -7,7 +7,6 @@ class Reservation
 
     check_in = input[:check_in_date]
     check_out = input[:check_out_date]
-
     nights_stay = generate_nights(check_in, check_out)
 
     @name = input[:name]
@@ -19,7 +18,7 @@ class Reservation
 
   def generate_nights(check_in, check_out)
     nights_stay = []
-    num_nights = ((check_out - check_in) - 1)
+    num_nights = (check_out - check_in)
     num_nights.to_i.times do |x|
       night = check_in + x
       nights_stay << night
