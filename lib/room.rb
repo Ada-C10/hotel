@@ -35,7 +35,11 @@ module Hotel
     # updates availability for dates of reservation
     def reserve(start_date, end_date)
       checkin = Date.parse(start_date)
-      checkout = Date.parse(end_date)
+      if end_date == nil
+        checkout = checkin.next_day
+      else
+        checkout = Date.parse(end_date)
+      end
       # room is unavailable from checkin to night before checkout
       # room is available day of checkout for reservations starting that evening
       checkin.upto(checkout.prev_day) { |date|
