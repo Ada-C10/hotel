@@ -1,7 +1,7 @@
 module Hotel
 class ReservationTracker
 
-  attr_reader :reservations
+  attr_reader :reservations, :blocks
 
   def initialize
     @reservations = []
@@ -48,5 +48,26 @@ class ReservationTracker
     @reservations << reservation
     return reservation
   end
+
+  def create_block(rooms, start_date, end_date, rate = 200)
+
+    block = Hotel::RoomBlock.new(rooms, start_date, end_date, rate)
+    @blocks << block
+    return block
+  end
+
+  def book_block_reservation(room, start_date, end_date)
+
+    block = find_matching_block(start_date, end_date)
+    block.book_reservation(room, start_date, end_date)
+
+  end
+
+  def find_matching_block(start_date, end_date)
+    return @blocks.find do
+      |block| block.start_date == start_date && block.end_date == end_date
+    end
+  end
+
 end
 end

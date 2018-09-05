@@ -130,4 +130,28 @@ describe 'reservation_tracker class' do
       expect( @hotel.reservations.length - initial_reservations).must_equal(1)
     end
   end
+
+  describe 'create_block' do
+    it 'returns block object' do
+      expect(
+        @hotel.create_block([*1..5], Date.new(2018,9,17), Date.new(2018,9,20))
+      ).must_be_instance_of(Hotel::RoomBlock)
+    end
+
+    it 'successful call adds a block instance to blocks attribute' do
+      initial_blocks = @hotel.blocks.length
+      @hotel.create_block([*1..5], Date.new(2018,9,17), Date.new(2018,9,20))
+
+      expect( @hotel.blocks.length - initial_blocks ).must_equal(1)
+    end
+  end
+
+  describe 'book_block_reservation' do
+    it 'returns reservation object' do
+      @hotel.create_block([*1..5], Date.new(2018,9,17), Date.new(2018,9,20))
+      @hotel.book_block_reservation(3, Date.new(2018,9,17), Date.new(2018,9,20))
+    end
+
+    
+  end
 end
