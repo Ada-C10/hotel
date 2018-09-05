@@ -118,8 +118,11 @@ If you are not familiar with what a block of hotel rooms, here is a brief descri
     - To create a block you need a date range, collection of rooms and a discounted room rate
     - The collection of rooms should only include rooms that are available for the given date range
     - If a room is set aside in a block, it is not available for reservation by the general public, nor can it be included in another block
+    - `RoomBlock.new`
 - As an administrator, I can check whether a given block has any rooms available
+  - `available_rooms`
 - As an administrator, I can reserve a room from within a block of rooms
+  - `book_reservation`
 
 ### Constraints
 
