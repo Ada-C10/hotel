@@ -17,6 +17,11 @@ describe 'HotelBooker class' do
   let (:hotel_booker) {
     Hotel::HotelBooker.new(all_reservations: [reservation1, reservation2])
   }
+  #
+  # let (:empty_hotel_booker) {
+  #   Hotel::HotelBooker.new
+  # }
+
 
   describe 'HotelBooker instantiation' do
     it 'creates an instance of HotelBooker class' do
@@ -48,8 +53,6 @@ describe 'HotelBooker class' do
     it 'raises an error when given invalid dates' do
       expect{hotel_booker.reserve_a_room(Date.today + 1, Date.today - 4)}.must_raise ArgumentError
     end
-
-
   end
 
   describe 'get_reservations_by_date method' do
@@ -80,9 +83,14 @@ describe 'HotelBooker class' do
     end
 
     it 'correctly identifies the list of available room numbers for a given date' do
+      all_rooms = [*1..20]
       available_rooms = [*3..20]
 
       expect(hotel_booker.list_available_rooms(Date.today + 2)).must_equal available_rooms
+
+      expect(hotel_booker.list_available_rooms(Date.today + 7)).must_equal all_rooms
     end
+
+    it 'raises an error if given an invalid date'
   end
 end

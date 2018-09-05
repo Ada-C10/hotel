@@ -17,7 +17,7 @@ module Hotel
     def reserve_a_room(check_in, check_out)
       room_num = @all_rooms.sample
 
-      return Reservation.new(check_in, check_out, room_num)
+      return Hotel::Reservation.new(check_in, check_out, room_num)
     end
 
     def get_reservations_by_date(date)
@@ -31,6 +31,10 @@ module Hotel
     end
 
     def list_available_rooms(date)
+      if date.class != Date 
+        raise ArgumentError, "Not a valid date"
+      end
+
       days_reservations = get_reservations_by_date(date)
 
       occupied_rooms = get_occupied_rooms(days_reservations)
