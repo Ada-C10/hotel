@@ -10,7 +10,7 @@ class Reservation
     all_dates = []
     date = check_in
     number_of_nights.times do
-      all_dates << date.next
+      all_dates << date
       date = date.next
     end
     return all_dates
