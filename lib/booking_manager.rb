@@ -1,5 +1,6 @@
 require 'Date'
 require_relative 'room'
+require_relative 'reservation'
 
 class Booking_Manager
   attr_reader :rooms, :hotel_reservations
@@ -28,6 +29,10 @@ class Booking_Manager
 
   def list_reservations(date)
     return reservations_on_date = @hotel_reservations.find_all { |reservation| reservation.nights_of_stay == date }
+  end
+
+  def self.total_cost_of_stay(reservation)
+    return (reservation.nights_of_stay.length * ROOM_COST)
   end
 
   # def find_room(find_room_number)

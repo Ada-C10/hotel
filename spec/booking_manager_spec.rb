@@ -62,7 +62,7 @@ describe "Hotel Manager class" do
 
       expect(@hotel.hotel_reservations).must_be_kind_of Array
     end
-    
+
   end
 
   describe 'list_reservations method' do
@@ -83,5 +83,18 @@ describe "Hotel Manager class" do
         expect(@reservations.include?(reservation)).must_equal true
       end
     end
+  end
+
+  describe 'total_cost_of_stay method' do
+    before do
+      @hotel = Booking_Manager.new
+      @input = {name:"Dr. Frankenstein", room_number: 6,check_in_date: Date.new(2018, 6, 6), check_out_date: Date.new(2018, 6, 9)}
+      @reservation = Reservation.new(@input)
+    end
+
+    it 'correctly sums the cost of a stay at the hotel' do
+      expect(Booking_Manager.total_cost_of_stay(@reservation)).must_equal 600
+    end
+
   end
 end
