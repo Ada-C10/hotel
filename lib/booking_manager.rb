@@ -1,4 +1,4 @@
-require 'pry'
+# require 'pry'
 
 require_relative 'room'
 
@@ -6,9 +6,9 @@ module Hotel
   class BookingManager
     attr_accessor :rooms, :reservations
 
-    def initialize
-      @rooms = populate_room_list(20)
-      @reservations = make_reservation_list # Does a room necessarily have reservations?
+    def initialize(number_rooms)
+      @rooms = populate_room_list(number_rooms) #(20)
+      @reservations = make_reservation_list
     end # of def initialize
 
     # Create list of rooms as list of room Instances
@@ -18,9 +18,11 @@ module Hotel
 
       number_rooms.times do |room|
         room = Room.new(num)
+        # room = "Room \# #{num}"
         rooms << room
         num += 1
       end # of number_rooms loop
+
       return rooms
     end # of populate_room_list method
 
