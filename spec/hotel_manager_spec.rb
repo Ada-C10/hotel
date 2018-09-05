@@ -23,9 +23,47 @@ describe "HotelManager" do
       end
     end
 
-    it "Keeps track of reservations" do
-    end
 
-
+    # it "Keeps track of reservations" do
+    #
+    # end
   end
+
+  # describe "available_rooms" do
+  #   let (:check_in) {
+  #     "2018-02-10"
+  #   }
+  #   let (:check_out) {
+  #     "2018-02-16"
+  #   }
+  #   let (:rooms) {
+  #     Hotel::Room.all
+  #   }
+  #   let (:open_rooms) {
+  #     Hotel::Room.available_rooms(check_in, check_out)
+  #   }
+  #
+  #   it "returns an array of Rooms" do
+  #     expect(open_rooms).must_be_kind_of Array
+  #   end
+  #
+  #   it "Returns an array full of Rooms" do
+  #     open_rooms.each do |room|
+  #       expect(room).must_be_kind_of Hotel::Room
+  #     end
+  #   end
+  #
+  #   it "Returns the correct number of rooms" do
+  #     rooms.first.calendar << Date.parse("2018-02-12")
+  #     expect(open_rooms.length).must_equal 19
+  #   end
+  #
+  #   it "returns nil if there are no rooms available" do
+  #     rooms.each do |room|
+  #       room.calendar << Date.parse("2018-02-12")
+  #     end
+  #
+  #     expect(open_rooms).must_be_nil
+  #   end
+  # end
 end
