@@ -12,27 +12,6 @@ describe 'reservation_tracker class' do
     end
   end
 
-  describe 'add_reservation method' do
-    it 'successfully adds a reservation' do
-
-      reservation = Hotel::Reservation.new(1, Date.new(2018,7,4), Date.new(2018,7,8))
-      initial_reservations = @hotel.reservations.length
-      @hotel.add_reservation(reservation)
-      expect( @hotel.reservations.length - initial_reservations).must_equal(1)
-    end
-
-    it 'raises argument error if input is not reservation object' do
-
-      expect{
-        @hotel.add_reservation('Reservation')
-      }.must_raise(ArgumentError)
-      expect{
-        @hotel.add_reservation(['R','E','S'])
-      }.must_raise(ArgumentError)
-
-    end
-  end
-
   describe 'list_rooms method' do
     it 'successfully returns list of all 20 rooms' do
       expect( @hotel.list_rooms ).must_equal([*1..20])
@@ -41,9 +20,9 @@ describe 'reservation_tracker class' do
 
   describe 'reservations_during_date method' do
     before do
-      @hotel.add_reservation(Hotel::Reservation.new(1, Date.new(2018,7,4), Date.new(2018,7,8)))
-      @hotel.add_reservation(Hotel::Reservation.new(1, Date.new(2018,8,4), Date.new(2018,8,5)))
-      @hotel.add_reservation(Hotel::Reservation.new(2, Date.new(2018,6,4), Date.new(2018,7,7)))
+      @hotel.book_reservation(1, Date.new(2018,7,4), Date.new(2018,7,8))
+      @hotel.book_reservation(1, Date.new(2018,8,4), Date.new(2018,8,5))
+      @hotel.book_reservation(2, Date.new(2018,6,4), Date.new(2018,7,7))
 
       @list_of_reservations = @hotel.reservations_during_date(Date.new(2018,7,5))
     end
@@ -72,7 +51,7 @@ describe 'reservation_tracker class' do
     it 'returns empty array if no rooms available' do
 
       [*1..20].each do |room|
-        @hotel.add_reservation(Hotel::Reservation.new(room, Date.new(2018,6,4), Date.new(2018,7,7)))
+        @hotel.book_reservation(room, Date.new(2018,6,4), Date.new(2018,7,7))
       end
 
       expect(
@@ -89,7 +68,7 @@ describe 'reservation_tracker class' do
     it 'returns list of available rooms' do
 
       [*1..10].each do |room|
-        @hotel.add_reservation(Hotel::Reservation.new(room, Date.new(2018,6,4), Date.new(2018,7,7)))
+        @hotel.book_reservation(room, Date.new(2018,6,4), Date.new(2018,7,7))
       end
 
       expect(
@@ -101,7 +80,7 @@ describe 'reservation_tracker class' do
 
 
       [*11..19].each do |room|
-        @hotel.add_reservation(Hotel::Reservation.new(room, Date.new(2018,6,4), Date.new(2018,7,7)))
+        @hotel.book_reservation(room, Date.new(2018,6,4), Date.new(2018,7,7))
       end
 
       expect(
@@ -112,9 +91,9 @@ describe 'reservation_tracker class' do
 
   describe 'book_reservation' do
     before do
-      @hotel.add_reservation(Hotel::Reservation.new(1, Date.new(2018,7,4), Date.new(2018,7,8)))
-      @hotel.add_reservation(Hotel::Reservation.new(1, Date.new(2018,8,4), Date.new(2018,8,5)))
-      @hotel.add_reservation(Hotel::Reservation.new(2, Date.new(2018,6,4), Date.new(2018,7,7)))
+      @hotel.book_reservation(1, Date.new(2018,7,4), Date.new(2018,7,8))
+      @hotel.book_reservation(1, Date.new(2018,8,4), Date.new(2018,8,5))
+      @hotel.book_reservation(2, Date.new(2018,6,4), Date.new(2018,7,7))
     end
 
     it 'raises error if date is not in correct format' do

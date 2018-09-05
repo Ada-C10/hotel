@@ -7,14 +7,6 @@ class ReservationTracker
     @reservations = []
   end
 
-  def add_reservation(reservation)
-
-    unless reservation.class == Hotel::Reservation
-      raise ArgumentError, "Please input a valid reservation"
-    end
-    @reservations << reservation
-  end
-
   def list_rooms
     return [*1..20]
   end
