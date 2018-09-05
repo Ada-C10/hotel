@@ -6,7 +6,6 @@ describe 'reservation instantiation' do
       room_number:  9,
       check_in_date: Date.new(2020,9,9),
       check_out_date: Date.new(2020,9,13),
-      nights_of_stay: [Date.new(2020,9,9), Date.new(2020,9,10), Date.new(2020,9,11), Date.new(2020,9,12)]
     }
     @reservation = Reservation.new(input)
   end
@@ -31,12 +30,16 @@ describe 'reservation instantiation' do
     expect(@reservation.check_out_date).must_be_kind_of Date
   end
 
-  it 'stores an array of all nights in a reservation' do
+  it 'generates an array of all nights in a reservation' do
+    @nights = [Date.new(2020,9,9), Date.new(2020,9,10), Date.new(2020,9,11), Date.new(2020,9,12)]
+
     expect(@reservation.nights_of_stay).must_be_kind_of Array
 
     @reservation.nights_of_stay.each do |night|
       expect(night).must_be_kind_of Date
+      expect(@nights.include?(night)).must_equal true
     end
+
   end
 
 end
