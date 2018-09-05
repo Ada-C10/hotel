@@ -1,5 +1,6 @@
 require_relative 'spec_helper'
 require 'pry'
+require 'date'
 
 describe "ReservationsManager" do
   before do
@@ -13,6 +14,8 @@ describe "ReservationsManager" do
       expect(@hotel_ada.rooms).must_be_kind_of Array
     end
   end
+  it "can reserve a room for a given date range" do
+    expect(@hotel_ada.reserve_room).must_be_instance_of Hotel::Reservation
 
 
 
