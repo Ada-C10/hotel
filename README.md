@@ -92,7 +92,9 @@ Remember that your job is only to build the classes that store information and h
 ### User Stories
 
 - As an administrator, I can view a list of rooms that are not reserved for a given date range
+  - `available_rooms`
 - As an administrator, I can reserve an available room for a given date range
+  - `book_reservation`
 
 ### Constraints
 
@@ -144,3 +146,7 @@ You should not be working on these (or even thinking about them) until you have 
 
 ## What we're looking for
 You can find what instructors will be looking for in the [feedback](feedback.md) markdown document.
+
+## Questions
+
+1. Does it make more sense to return an empty array or nil if there are no available rooms for a given date range?
