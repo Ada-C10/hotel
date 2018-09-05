@@ -56,6 +56,7 @@ describe 'HotelBooker class' do
 
     it 'reserves the first available room for the given date range' do
       expect(hotel_booker.reserve_a_room(Date.today + 1, Date.today + 2).room_num).must_equal 2
+      expect(hotel_booker.reserve_a_room(Date.today + 1, Date.today + 9).room_num).must_equal 3
     end
   end
 
