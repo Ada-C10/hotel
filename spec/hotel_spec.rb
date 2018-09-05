@@ -114,3 +114,41 @@ describe 'find available rooms' do
     expect(room_list).must_be_empty
   end
 end
+
+describe 'create room block' do
+  before do
+    @my_hotel = Hotel.new
+    @block = @my_hotel.create_room_block(Date.new(2010, 3, 4), Date.new(2010, 5, 8), [1, 2, 3, 4, 5], 150, 'Block1')
+
+  end
+
+  it 'creates a new instance of a BlockReservation' do
+    expect(@block).must_be_instance_of BlockReservation
+  end
+
+  it 'does not add the reservation to the list of hotel reservations' do
+    expect(@my_hotel.reservations).must_be_empty
+  end
+
+  it 'adds the reservation to the list of hotel blocks' do
+    expect(@my_hotel.blocks.length).must_equal 1
+    expect(@my_hotel.blocks[0]).must_be_instance_of BlockReservation
+  end
+
+
+  it 'adds the reservation to each room and makes the rooms in the block unavailable during the given date range' do
+    (1..5).each do |num|
+      expect(@my_hotel.find_available_rooms(Date.new(2010, 3, 4), Date.new(2010, 5, 8))).wont_include num
+    end
+    expect(@my_hotel.find_available_rooms(Date.new(2010, 3, 4), Date.new(2010, 5, 8))).must_include 6
+  end
+
+  it 'prevents make_reservation from reserving a room in the block' do
+    expect{
+      @my_hotel.make_reservation(Date.new(2010, 3, 15), Date.new(2010, 5, 2), 3)
+    }.must_raise ArgumentError
+  end
+
+
+
+end
