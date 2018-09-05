@@ -49,4 +49,20 @@ describe "HotelAdmin" do
     end
   end
 
+  describe "HotelAdmin#reserve_room" do
+    before do
+      test_reservation = reserve_room("FishandChipsgrl@gmail.com", 4, Date.new(2019,01,20), Date.new(2019,01,22))
+    end
+
+    it "returns the new reservation object" do
+      expect(test_reservation.guest_id).must_equal "FishandChipsgrl@gmail.com"
+      expect(test_reservation.room_id).must_equal 4
+      expect(test_reservation.date_range).must_equal [Date.new(2019,01,20), Date.new(2019,01,22)]
+    end
+
+    it "adds new reservation to the hoteladmin object's reservations array" do
+      expect(hotel.reservations).must_equal 1
+    end
+  end
+
 end
