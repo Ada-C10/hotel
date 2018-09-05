@@ -15,7 +15,7 @@ module Hotel
     end
 
     def date_range
-      reservation_period = (@start_date...@end_date)
+      date_range = (@start_date...@end_date)
       return date_range
     end
 
