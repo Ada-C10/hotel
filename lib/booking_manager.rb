@@ -1,5 +1,4 @@
 # require 'pry'
-
 require_relative 'room'
 
 module Hotel
@@ -36,15 +35,15 @@ module Hotel
     def list_reservations
       return @reservations
     end
-
+# binding.pry
     # Method to list all rooms in hotel
-    # def list_rooms
-    #   @rooms
-    # end
+    def list_rooms
+      @rooms
+    end
 
     # Method to add a reservation to list of reservations
     # def add_reservation(reservation)
-    #
+    #   @reservations << reservation
     # end
 
     # Method to get total cost of reservation
