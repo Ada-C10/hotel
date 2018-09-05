@@ -5,11 +5,11 @@ class Room
   def initialize(room_number, cost , reservations = [])
     @room_number = room_number
     @cost = cost 
-    @reservations = reservations
+    @reservations = []
   end
-  #
-  # def add_reservations(reservation)
-  #   @reservations << reservation
-  # end
+
+  def add_reservations(reservation)
+    @reservations << reservation
+  end
 
 end

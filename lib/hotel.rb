@@ -1,5 +1,6 @@
 require_relative 'room'
 require 'date'
+require 'pry'
 
 class Hotel
   attr_reader :reservations, :rooms
@@ -23,8 +24,66 @@ class Hotel
     end
   end
 
-  def reserve_room(number_of_rooms, start_date, end_date)
-    rooms << Reservation.new((i + 1), 200)
+  def reserve_room(start_date, end_date, number_of_rooms)
+
+#create a room check method to call here so that an error will happen if all rooms aren't available
+
+#make two methods for groups and individuals
+
+    new_reservation = Reservation.new(start_date, end_date)
+    reservations << new_reservation
+
+    if number_of_rooms > 1
+      number_of_rooms.times do
+        reserved_room = find_available_room(start_date, end_date)
+        new_reservation.add_rooms_reserved(reserved_room)
+        reserved_room.add_reservations(new_reservation)
+      end
+    elsif number_of_rooms == 1
+      reserved_room = find_available_room(start_date, end_date)
+      new_reservation.add_rooms_reserved(reserved_room)
+      reserved_room.add_reservations(new_reservation)
+    end
+  end
+
+  def find_available_room(start_d, end_d)
+#make into smaller methods that are private
+    rooms.each do |room|
+      return room if room.reservations.length == 0
+    end
+
+    not_available_rooms = []
+    reservations.each do |reservation|
+      if (Date.parse(start_d) <= reservation.end_date) && (Date.parse(end_d) >= reservation.start_date)
+        not_available_rooms << reservation.rooms
+      end
+    end
+
+    rooms.each do |room|
+      if !(not_available_rooms.flatten.include? room)
+        return room
+      end
+    end
+    raise ArgumentError, "No available rooms."
+  end
+
+  def list_reservations(date)
+    list = []
+    @reservations.each do |reservation|
+      if reservation.start_date == Date.parse(date)
+        list << reservation
+      end
+    end
+    return list
+  end
+
+  def reservation_cost(res_id)
+    @reservations.each do |reservation|
+      if reservation.reservation_id == res_id
+        return reservation.cost
+      end
+    end
+    raise ArgumentError, "No such reservation."
   end
 
 end
