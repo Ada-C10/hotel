@@ -2,19 +2,19 @@ require 'date'
 
 module Hotel
   class DateRange
-    attr_reader :start_date, :end_date
+    attr_reader :check_in, :check_out
 
-    def initialize(start_date, end_date)
-      if start_date > end_date || start_date < Date.today || end_date < Date.today
+    def initialize(check_in, check_out)
+      if check_in > check_out || check_in < Date.today || check_out < Date.today
         raise ArgumentError, "Invalid dates given"
       else
-        @start_date = start_date
-        @end_date = end_date
+        @check_in = check_in
+        @check_out = check_out
       end
     end
 
     def get_total_days
-      return (@end_date - @start_date).to_i
+      return (@check_out - @check_in).to_i
     end
 
   end

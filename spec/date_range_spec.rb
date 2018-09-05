@@ -6,12 +6,12 @@ describe 'DateRange class' do
 
   describe 'DateRange instantiation' do
     before do
-      @start_date = Date.new(2020, 1, 1)
-      @end_date = @start_date + 2
+      @check_in = Date.new(2020, 1, 1)
+      @check_out = @check_in + 2
     end
 
     it 'creates an instance of DateRange' do
-      expect(Hotel::DateRange.new(@start_date, @end_date)).must_be_instance_of Hotel::DateRange
+      expect(Hotel::DateRange.new(@check_in, @check_out)).must_be_instance_of Hotel::DateRange
     end
 
     # # possibly unnecessary
@@ -21,7 +21,7 @@ describe 'DateRange class' do
 
     it 'raises an Argument error if end date is before the start date' do
       expect{
-        Hotel::DateRange.new(@start_date, @start_date - 2)
+        Hotel::DateRange.new(@check_in, @check_in - 2)
       }.must_raise ArgumentError
     end
 
@@ -36,9 +36,9 @@ describe 'DateRange class' do
 
   describe 'get_total_days method' do
     it 'returns the number of days in the date range' do
-      start_date = Date.new(2020, 1, 1)
-      end_date = start_date + 2
-      range = Hotel::DateRange.new(start_date, end_date)
+      check_in = Date.new(2020, 1, 1)
+      check_out = check_in + 2
+      range = Hotel::DateRange.new(check_in, check_out)
       expect(range.get_total_days).must_equal 2
     end
   end

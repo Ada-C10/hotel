@@ -3,9 +3,9 @@ require_relative 'spec_helper'
 describe 'Reservation class' do
 
   let (:reservation) {
-    start_date = Date.new(2020, 1, 1)
-    end_date = start_date + 2
-    Hotel::Reservation.new(start_date, end_date, 1)
+    check_in = Date.new(2020, 1, 1)
+    check_out = check_in + 2
+    Hotel::Reservation.new(check_in, check_out, 1)
   }
 
   describe 'Reservation instantiation' do
@@ -18,7 +18,7 @@ describe 'Reservation class' do
 
   describe 'get_cost method' do
 
-    it 'returns the correct cost of a room' do
+    it 'returns the correct cost of a reservation' do
       expect(reservation.get_cost).must_equal BASE_COST * 2
     end
 

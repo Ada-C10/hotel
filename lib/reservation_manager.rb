@@ -1,6 +1,6 @@
 module Hotel
 
-  class ReservationManager
+  class HotelBooker
 
     attr_reader :all_rooms, :all_reservations
 
@@ -14,14 +14,15 @@ module Hotel
       return list_of_rooms
     end
 
-    def reserve_a_room(start_date, end_date)
+    def reserve_a_room(check_in, check_out)
+      room_num = @all_rooms.sample
 
-      return Reservation.new(start_date, end_date, 1)
+      return Reservation.new(check_in, check_out, room_num)
     end
 
     def get_reservations_by_date(date)
       return @all_reservations.select do |reservation|
-        date >= reservation.date_range.start_date && date < reservation.date_range.end_date
+        date >= reservation.date_range.check_in && date < reservation.date_range.check_out
       end
     end
 

@@ -6,8 +6,8 @@ module Hotel
 
     attr_reader :date_range, :room_num, :cost
 
-    def initialize(start_date, end_date, room_num)
-      @date_range = DateRange.new(start_date, end_date)
+    def initialize(check_in, check_out, room_num)
+      @date_range = DateRange.new(check_in, check_out)
       @room_num = room_num
       @cost = get_cost
     end

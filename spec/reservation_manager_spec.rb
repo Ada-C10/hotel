@@ -1,34 +1,34 @@
 require_relative 'spec_helper'
 
-describe 'ReservationManager class' do
+describe 'HotelBooker class' do
 
   let (:reservation1) {
-    start_date = Date.today + 1
-    end_date = start_date + 3
-    Hotel::Reservation.new(start_date, end_date, 1)
+    check_in = Date.today + 1
+    check_out = check_in + 3
+    Hotel::Reservation.new(check_in, check_out, 1)
   }
 
   let (:reservation2) {
-    start_date = Date.today + 2
-    end_date = start_date + 5
-    Hotel::Reservation.new(start_date, end_date, 2)
+    check_in = Date.today + 2
+    check_out = check_in + 5
+    Hotel::Reservation.new(check_in, check_out, 2)
   }
 
-  let (:reservation_manager) {
-    Hotel::ReservationManager.new(all_reservations: [reservation1, reservation2])
+  let (:hotel_booker) {
+    Hotel::HotelBooker.new(all_reservations: [reservation1, reservation2])
   }
 
-  describe 'ReservationManager instantiation' do
-    it 'creates an instance of ReservationManager class' do
-      expect(Hotel::ReservationManager.new).must_be_instance_of Hotel::ReservationManager
+  describe 'HotelBooker instantiation' do
+    it 'creates an instance of HotelBooker class' do
+      expect(Hotel::HotelBooker.new).must_be_instance_of Hotel::HotelBooker
     end
 
-    it 'creates an instance of ReservationManager class with reservations as input'do
-      expect(reservation_manager).must_be_instance_of Hotel::ReservationManager
+    it 'creates an instance of HotelBooker class with reservations as input'do
+      expect(hotel_booker).must_be_instance_of Hotel::HotelBooker
     end
 
     it 'if reservations passed in, it stores all reservations in an array of Reservations' do
-      reservation_manager.all_reservations.each do |reservation|
+      hotel_booker.all_reservations.each do |reservation|
         expect(reservation).must_be_instance_of Hotel::Reservation
       end
     end
@@ -36,19 +36,25 @@ describe 'ReservationManager class' do
 
   describe 'list_all_rooms method' do
     it 'returns a formatted string of all the rooms' do
-      expect(reservation_manager.list_all_rooms).must_be_instance_of String
+      expect(hotel_booker.list_all_rooms).must_be_instance_of String
     end
   end
 
   describe 'reserve_a_room method' do
     it 'returns an instance of reservation' do
-      expect(reservation_manager.reserve_a_room(Date.today + 1, Date.today + 4)).must_be_instance_of Hotel::Reservation
+      expect(hotel_booker.reserve_a_room(Date.today + 1, Date.today + 4)).must_be_instance_of Hotel::Reservation
     end
+
+    it 'raises an error when given invalid dates' do
+      expect{hotel_booker.reserve_a_room(Date.today + 1, Date.today - 4)}.must_raise ArgumentError
+    end
+
+
   end
 
   describe 'get_reservations_by_date method' do
     it 'returns a list of all reservations for a given date ' do
-      matched_reservation = reservation_manager.get_reservations_by_date(Date.today + 2)
+      matched_reservation = hotel_booker.get_reservations_by_date(Date.today + 2)
 
       matched_reservation.each do |reservation|
         expect(reservation).must_be_instance_of Hotel::Reservation
@@ -56,13 +62,13 @@ describe 'ReservationManager class' do
 
       expect(matched_reservation.length).must_equal 2
 
-      matched_reservation_2 = reservation_manager.get_reservations_by_date(Date.today + 1)
+      matched_reservation_2 = hotel_booker.get_reservations_by_date(Date.today + 1)
 
       expect(matched_reservation_2[0].room_num).must_equal 1
     end
 
     it 'returns an empty array if no reservations match a given date' do
-      matched_reservation = reservation_manager.get_reservations_by_date(Date.today + 10)
+      matched_reservation = hotel_booker.get_reservations_by_date(Date.today + 10)
       expect(matched_reservation).must_be_instance_of Array
       expect(matched_reservation.length).must_equal 0
     end
