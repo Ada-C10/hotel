@@ -1,24 +1,40 @@
 require_relative 'spec_helper.rb'
 
-describe "#initialize" do
-  # Test to make sure it takes correct parameters
-  it 'Takes in a room number and availability status' do
-    room = Room.new(5)
-    start_date = Date.new(2001, 1, 1)
-    end_date = Date.new(2001, 1, 7)
+describe 'Reservation' do
+  let (:room) {
+    Room.new(5)
+  }
+  let (:check_in) {
+    Date.new(2001, 1, 1)
+  }
+  let (:check_out) {
+    Date.new(2001, 1, 7)
+  }
+  let (:reservation) {
+    Reservation.new(room, check_in, check_out)
+  }
 
-    test_res = Reservation.new(room, start_date, end_date)
 
+  describe "#initialize" do
 
-    expect(test_res).must_respond_to :room
-    expect(test_res.room).must_equal room
+    # Test to make sure it takes correct parameters
+    it 'Takes in a room number and availability status' do
 
-    expect(test_res).must_respond_to :start_date
-    expect(test_res.start_date).must_equal start_date
+      expect(reservation).must_respond_to :room
+      expect(reservation.room).must_equal room
 
-    expect(test_res).must_respond_to :end_date
-    expect(test_res.end_date).must_equal end_date
+      expect(reservation).must_respond_to :check_in
+      expect(reservation.check_in).must_equal check_in
+
+      expect(reservation).must_respond_to :check_out
+      expect(reservation.check_out).must_equal check_out
+
+      # it 'raises an argument error if check out date is before check in date' do
+      #
+      #   bad_checkout = Date.new(1999, 1, 1)
+      #   expect {R}.must_raise ArgumentError
+      # end
+
+    end
   end
 end
-
- 
