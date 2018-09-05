@@ -10,16 +10,16 @@ Minitest::Reporters.use! Minitest::Reporters::SpecReporter.new
 
 
 describe "BookingSystem class" do
-  let(:booking) {Hotel::BookingSystem.new()}
+  let(:booking_system) {Hotel::BookingSystem.new()}
 
   describe "#initialize" do
     it "can create a new instance of BookingSystem" do
-      expect(booking).must_be_kind_of Hotel::BookingSystem
+      expect(booking_system).must_be_kind_of Hotel::BookingSystem
     end
   end
 
   describe "#load_rooms" do
-    let(:rooms_list) {booking.load_rooms()}
+    let(:rooms_list) {booking_system.load_rooms()}
 
     it "can load a list of rooms" do
       expect(rooms_list).must_be_kind_of Array
@@ -38,7 +38,7 @@ describe "BookingSystem class" do
   end
 
   describe "#list_all_rooms" do
-      let(:all_rooms_str) {booking.list_all_rooms()}
+    let(:all_rooms_str) {booking_system.list_all_rooms()}
 
     it "lists all rooms as a string" do
       beginning_text = "Here is a list of all rooms:"
@@ -50,17 +50,53 @@ describe "BookingSystem class" do
     end
   end
 
-  # TODO - below
+  describe "#find_room" do
+    let(:room_num) {num: 4}
+    let(:room_obj) {booking_system.find_room(room_obj)}
+
+    it "finds room object by room number"
+      # num = 4
+      # room_obj = booking_system.find_room(num)
+
+      expect(room_obj).must_be_kind_of Hotel::Room
+      expect(room_obj.num).must_equal num
+    end
+  end
 
   describe "#create_reservation" do
+    let(:reservation_hash) {{
+      id: "5",
+      room: room_obj,
+      start_date: ("2010, 8, 6")
+      end_date: ("2010, 8, 10")
+      }}
+    let(:new_reservation) {Reservation.new(reservation_hash)}
+
+    it "creates a new reservation successfully" do
+      expect(new_reservation).must_be_kind_of Hotel::Reservation
+    end
+
+    it "loaded reservation details properly" do
+      # QUESTION: should i test values or types? in rideshare, seems like mostly type was tested....
+      expect(new_reservation.id).must_equal 5
+      expect(new_reservation.room.num).must_equal 4
+      expect(new_reservation.start_date).must_be_kind_of Date
+      expect(new_reservation.end_date).must_be_kind_of Date
+      expect(new_reservation.cost).must_equal 200
+
+    end
   end
 
-  describe "#add_reservation" do
-  end
+  # describe "#add_reservation" do
+  #   updated_reservations = booking_system.add_reservation(new_reservation)
+  # end
 
-  describe "#load_reservations" do
-  end
+  # describe "#load_reservations" do
+  # end
 
-  describe "#list_reservations_by_date" do
-  end
+# # TODO - i think?
+#   describe "#list_reservations_by_date" do
+#   end
+
+
 end

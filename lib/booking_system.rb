@@ -49,10 +49,12 @@ module Hotel
       return new_reservation
     end
 
-    def add_reservation(new_reservation)
-      @reservations << create_reservation(new_reservation)
-    end
+    # QUESTION: NOT NEEDED-- JUST IN RESERVATION?
+    # def add_reservation(new_reservation)
+    #   @reservations << create_reservation(new_reservation)
+    # end
 
+    # QUESTION: add loading class or hold off? should be blank list at top?
     # def load_reservations(input)
     #   new_reservation = create_reservation()
     #   add_reservation(new_reservation)
