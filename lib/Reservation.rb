@@ -1,5 +1,6 @@
 require 'date'
 require 'pry'
+### does it need room? ###
 require_relative "Room"
 require_relative 'Booking'
 
@@ -8,15 +9,17 @@ class Reservation
   attr_reader :room_number, :check_in, :check_out, :cost_per_night, :total
 
   def initialize(room_number, check_in, check_out, cost_per_night=200)
+
     if check_in.class != Date || check_out.class != Date
       raise ArgumentError, "Please enter a date in mm-dd-yyyy format"
     end
 
+    @room_number = room_number
     @check_in = check_in
     @check_out = check_out
     @cost_per_night = cost_per_night
-    @room_number = room_number
-    # binding.pry
+    @total = reservation_cost
+     
   end
 
   def number_of_days_reserved
@@ -27,5 +30,5 @@ class Reservation
     return number_of_days_reserved * cost_per_night
   end
 
-  
+
 end

@@ -2,9 +2,8 @@ require_relative 'spec_helper'
 
 describe "booking manager" do
   before do
-    # Make a manager - and test what it has
-    # Should have access to 20 rooms in an array
     @manager = Booking.new
+    @test_reservation = Reservation.new(1, Date.new(2018, 9, 1), Date.new(2018, 9, 2))
   end
 
   describe "Initialize" do
@@ -22,23 +21,24 @@ describe "booking manager" do
   end
 
   describe 'Reservations' do
-
-    it "Is able to find associated room based on room number" do
-      skip
-      # @room = Room.new(1,[] )
-      expect(@test_reservation.find_room).must_equal Room.new(1, [])
-    end
-
-    it "Has an error if attempting to book a reserved room" do
-      skip
+    it "Returns the correct room" do
+      expect(@manager.find_room(1)).must_equal @manager.rooms.first
     end
 
     it "Adds a reservation if a valid reservation is made" do
-      # Need to setup a room
-
-      # Need to setup reservation
-
+      # @manager.add_reservation(Reservation.new(1, Date.new(2018, 9, 1), Date.new(2018, 9, 2))
+      # Creates an instance of reservation (own method)
+      # Accesses self.rooms/ Finds associated room via room_number (own method)
+      # Pushing reservation into room's array(end result of add_reservation)
     end
+
+    it "Has an error if attempting to book a reserved room" do
+      # When attempting to add a reservation,
+        # Check to see if given date range is already booked
+          # Do not include checkout day of prior reservations
+      skip
+    end
+
 
   end
 
@@ -46,11 +46,14 @@ describe "booking manager" do
   describe "Lists" do
     # Access list of rooms
     it "Shows a list of all the rooms" do
-      expect(@manager.list_all.length).must_equal 20
+      expect(@manager.list_all_rooms.length).must_equal 20
     end
+
     # Access list of reserved rooms by date
 
     # Access list of rooms not reserved for date range
+
+
     # List of block rooms
 
   end

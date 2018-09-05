@@ -5,6 +5,7 @@ require 'pry'
 describe "Reservation" do
   before do
     @test_reservation = Reservation.new(1, Date.new(2018, 9, 01), Date.new(2018, 9, 02))
+    @manager = Booking.new
   end
 
   it "Is an instance of Reservation" do
