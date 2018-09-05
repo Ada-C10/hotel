@@ -19,9 +19,9 @@ describe "Room" do
     end
   end
 
-  describe "Room#add_reservation" do
+  describe "Room#add_booking" do
     it "will add a reservation object to a room's bookings attribute'" do
-      room.add_reservation(reservation)
+      room.add_booking(reservation)
 
       expect(room.bookings).wont_be_empty
       expect(room.bookings[0]).must_be_instance_of Reservation

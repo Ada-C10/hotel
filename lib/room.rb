@@ -11,7 +11,7 @@ class Room
     @@rooms << self
   end
 
-  def add_reservation(reservation)
+  def add_booking(reservation)
     @bookings << reservation
   end
 
@@ -20,7 +20,7 @@ class Room
   end
 
 end
-# 
+#
 #
 # 20.times do |index|
 #   Room.new(index+1)
