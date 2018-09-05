@@ -28,16 +28,4 @@ describe "Room" do
     end
   end
 
-  describe "Room#list_rooms" do
-    it "will print all of the room objects" do
-      20.times do |index|
-        Room.new(index+1)
-      end
-      expect(Room.list_rooms[0]).must_be_instance_of Room
-      expect(Room.list_rooms).must_be_instance_of Array
-      #always getting increasing numbers here as it runs, so need greater than for now. Troubleshoot later!
-      expect(Room.list_rooms.length).must_be :>=, 20
-    end
-  end
-
 end
