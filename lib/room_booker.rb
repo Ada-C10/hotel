@@ -25,5 +25,9 @@ module BookingLogic
     def list_rooms
       return @rooms
     end
+
+    def find_room_by_id(room_id)
+      return rooms.find { |room| room.id = room_id }
+    end
   end
 end
