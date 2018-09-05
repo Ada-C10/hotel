@@ -25,8 +25,27 @@ describe "HotelAdmin" do
           end
           expect(hotel.list_rooms[0]).must_be_instance_of Room
           expect(hotel.list_rooms).must_be_instance_of Array
-          #always getting increasing numbers here as it runs, so need greater than for now. Troubleshoot later!
-          expect(hotel.list_rooms.length).must_be :>=, 20
+          expect(hotel.list_rooms.length).must_equal 20
+    end
+  end
+
+  describe "HotelAdmin#retrieve_by_date" do
+    before do
+      hotel.reservations << Reservation.new("SoccerMom2010@gmail.com", 1, [Date.new(2018,10,20),Date.new(2018,10,22)])
+      hotel.reservations << Reservation.new("Guccifer2.0@ada.com", 1, [Date.new(2018,12,02),Date.new(2018,12,07)])
+      hotel.reservations << Reservation.new("Jfahmy07@gmail.com", 2, [Date.new(2018,12,03),Date.new(2018,12,06)])
+    end
+
+    it "raises an argument error if invalid date object is provided" do
+      expect{ (HotelAdmin.retrieve_by_date("I am a string")) }.must_raise ArgumentError
+    end
+
+    it "returns an array of the reservations relevant to given date" do
+      reservations_for_date = HotelAdmin.retrieve_by_date(Date.new(2018,12,04))
+
+      expect(reservations_for_date).must_be_instance_of Array
+      expect(reservations_for_date.first).must_be_instance_of Reservation
+      expect(reservations_for_date.length).must_equal 2
     end
   end
 
