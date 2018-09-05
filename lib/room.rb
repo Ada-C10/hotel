@@ -2,7 +2,7 @@ module Hotel
 
   class Room
     attr_reader :room_number, :status
-    def initialize(room_number)
+    def initialize(room_number, status = :AVAILABLE)
       @room_number = room_number
       @cost = 200
       if room_number > 20 || room_number < 1
