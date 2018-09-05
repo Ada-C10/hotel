@@ -21,8 +21,12 @@ class ReservationMaker
 
   def available_room
     #find available room by comparing to list of @@reservations
-    #generate available room_num
-    @available_room = 13
+    #generate random assignment of available room_nums
+    @available_room = rand(20)
+    # @@reservations.each do |reservation|
+    #   if @available_room != reservation[:available_room]
+    #     @available_room = rand(20)
+    #   end
     return @available_room
   end
 
