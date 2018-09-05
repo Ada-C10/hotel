@@ -27,6 +27,14 @@ class ReservationTracker
     return 1
   end
 
+  def reservations_during_date(date)
+
+    valid_reservations = @reservations.find_all do |reservation|
+      reservation.date_within_reservation?(date)
+    end
+
+    return valid_reservations.empty? ? nil : valid_reservations
+  end
 
 
 end

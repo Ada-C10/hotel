@@ -57,6 +57,32 @@ describe 'reservation_tracker class' do
     end
   end
 
-  
+  describe 'reservations_during_date method' do
+    before do
+      @hotel.add_reservation(Hotel::Reservation.new(1, Date.new(2018,7,4), Date.new(2018,7,8)))
+      @hotel.add_reservation(Hotel::Reservation.new(1, Date.new(2018,8,4), Date.new(2018,8,5)))
+      @hotel.add_reservation(Hotel::Reservation.new(2, Date.new(2018,6,4), Date.new(2018,7,7)))
+
+      @list_of_reservations = @hotel.reservations_during_date(Date.new(2018,7,5))
+    end
+
+    it 'returns nil if no reservations during date' do
+      expect( @hotel.reservations_during_date(Date.new(2017,1,1)) ).must_be_nil
+    end
+
+    it 'returns array of reservations' do
+
+      expect( @list_of_reservations ).must_be_instance_of(Array)
+
+      @list_of_reservations.each do |reservation|
+        expect( reservation ).must_be_instance_of(Hotel::Reservation)
+      end
+    end
+
+    it 'returns correct number of reservations' do
+      expect (@list_of_reservations.length).must_equal(2)
+    end
+
+  end
 
 end

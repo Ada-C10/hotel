@@ -32,5 +32,9 @@ class Reservation
   def total_cost
     return (total_nights * rate).round(2)
   end
+
+  def date_within_reservation?(date)
+    return date >= @start_date && date < @end_date
+  end
 end
 end
