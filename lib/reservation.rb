@@ -7,6 +7,8 @@ class Reservation
 
     check_in = input[:check_in_date]
     check_out = input[:check_out_date]
+    check_valid_date_range(check_in, check_out)
+
     nights_stay = generate_nights(check_in, check_out)
 
     @name = input[:name]
@@ -24,6 +26,12 @@ class Reservation
       nights_stay << night
     end
     return nights_stay
+  end
+
+  def check_valid_date_range(check_in, check_out)
+    if check_out < check_in
+      return raise ArgumentError, 'Check_out date before check_in date.'
+    end
   end
 
 end
