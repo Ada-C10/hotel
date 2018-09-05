@@ -1,3 +1,4 @@
+require 'pry'
 
 class Reservation
   attr_reader :room
@@ -12,6 +13,13 @@ class Reservation
     if check_out < check_in
       raise ArgumentError.new("Check out date is before check in date")
     end
+  end
+
+  def total_charge
+    stay_duration = (@check_out - @check_in)
+    total_charge = stay_duration * 200
+    return total_charge
+
   end
 
 end
