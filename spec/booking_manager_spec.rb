@@ -41,6 +41,18 @@ describe "BookingManager class" do
       hotel_rooms = Hotel::BookingManager.new(x)
       expect(hotel_rooms.rooms.length).must_equal x
     end
-  end # of reservation and room load methods
+  end # of room load methods
+
+  describe "Reservation List creator method" do
+    it "returns a value equal to @reservations at instantiation" do
+      hotel_rooms = Hotel::BookingManager.new(10)
+      expect(hotel_rooms.reservations).must_equal hotel_rooms.make_reservation_list
+    end
+
+    it "returns an empty array as the list of reservations" do
+      hotel_rooms = Hotel::BookingManager.new(5)
+      expect(hotel_rooms.make_reservation_list).must_be_empty
+    end
+  end # of reservation list test do
 
 end # end of describe BookingManager class
