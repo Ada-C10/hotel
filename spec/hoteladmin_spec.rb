@@ -86,4 +86,15 @@ describe "HotelAdmin" do
 
   end
 
+  describe "HotelAdmin#retrieve_room" do
+    let (:room) {
+      hotel.retrieve_room(8)
+    }
+
+    it "locates room object using a given room number" do
+      expect(room).must_be_instance_of Room
+      expect(room.room_id).must_equal 8
+    end
+  end
+
 end
