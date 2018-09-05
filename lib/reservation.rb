@@ -9,6 +9,9 @@ class Reservation
     @check_in = check_in
     @check_out = check_out
 
+    if check_out < check_in
+      raise ArgumentError.new("Check out date is before check in date")
+    end
   end
 
 end
