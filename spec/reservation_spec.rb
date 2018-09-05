@@ -9,39 +9,25 @@ require_relative '../lib/reservation.rb'
 
 describe "initialize" do
   before do
-    @new_res = Hotel::Reservation.new(check_in = "2018-02-03" , check_out = "2018-02-06", cost = 600, reservation_id = "603-XOX")
+    @new_res = Hotel::Reservation.new(check_in = "2018-02-03" , check_out = "2018-02-06", cost = 600.00, reservation_id = "603-XOX")
   end
+
+  it "is an instance of User" do
+      expect(@new_res).must_be_kind_of Hotel::Reservation
+    end
+
   it "Takes check_in, check_out, cost, and reservation_id" do
 
-    check_in = "2018-02-03"
-    check_out = "2018-02-06"
-    cost = 600
-    reservation_id = "603-XOX"
+    expect(@new_res).must_respond_to :check_in
+    expect(@new_res).must_respond_to :check_out
+    expect(@new_res).must_respond_to :cost
+    expect(@new_res).must_respond_to :reservation_id
 
-
-    reservation = Hotel::Reservation.new(check_in, check_out, cost, reservation_id)
-
-    expect(reservation).must_respond_to :check_in
-    expect(reservation.check_in.to_s).must_equal check_in
-
-    expect(reservation).must_respond_to :check_out
-    expect(reservation.check_out.to_s).must_equal check_out
-
-    expect(reservation).must_respond_to :cost
-    expect(reservation.cost).must_equal cost
-
-    expect(reservation).must_respond_to :reservation_id
-    expect(reservation.reservation_id).must_equal reservation_id
   end
+
 
   # raise an error (StandardError) when an invalid date range is provided
   it "raises a StandardError if check-out is before check-in " do
-
-    check_in = "2018-02-03"
-    check_out = "2018-01-30"
-    cost = 600
-    reservation_id = "603-XOX"
-
 
     expect {Hotel::reservation.new(check_in, check_out, cost, reservation_id)}.must_raise StandardError
   end
