@@ -1,3 +1,4 @@
+require_relative 'Date'
 class Booking
   # manages reservations
     # Will have most methods
@@ -38,7 +39,19 @@ class Booking
     end
 
   # TODO Can access the list of reservations for given date
-  
+  # Access all rooms (method)
+  # Method to see if date is within a range
+  def within_date_range?(date)
+
+  end
+  # For each room, return room if they have that date
+    # within the check_in and check_out (map?)
+    def list_reservations_for_date(date)
+      list_all_rooms.select do |room|
+        room.reservations.include?(date)
+      end
+      binding.pry
+    end
 
   # TODO Can get the total cost for a given reservation
 

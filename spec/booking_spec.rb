@@ -1,4 +1,5 @@
 require_relative 'spec_helper'
+require 'date'
 
 describe "booking manager" do
   before do
@@ -37,13 +38,14 @@ describe "booking manager" do
       expect(@manager.rooms.first.reservations.length).must_equal 1
     end
 
-    it "Can access list of reservations for a given date" do
-      # Add a reservation for a date
+    it "Is able to list reservations for a date" do
+      # Adding a reservation to @manager
       @manager.add_reservation(1, Date.new(2018, 9, 1), Date.new(2018, 9, 2))
       @manager.add_reservation(2, Date.new(2018, 9, 1), Date.new(2018, 9, 2))
+      # Checking length of returned array
+      binding.pry
+      # expect(@manager.list_reservations_for_date(Date.new(2018, 9, 1)).length).must_equal 2
 
-      # Test to see if list returns both reservations for 9-1-18
-      
     end
 
     it "Has an error if attempting to book a reserved room" do
