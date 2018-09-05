@@ -72,10 +72,19 @@ describe "Hotel Manager class" do
     before do
       @hotel = Booking_Manager.new
       @date = Date.new(2018, 6, 8)
-      @reserve1 = @hotel.reserve_room("Dr. Frankenstein", 6, Date.new(2018, 6, 6), Date.new(2018, 6, 9))
-      @reserve2 = @hotel.reserve_room("Mx. Mummy", 3, Date.new(2018, 6, 6), Date.new(2018, 6, 12))
-      @reserve3 = @hotel.reserve_room("Mx. Mummy", 3, Date.new(2018, 7, 6), Date.new(2018, 7, 12))
-      @reservations = [@reserve1, @reserve2]
+      @input1 = { name: "Dr. Frankenstein",
+        room_number: 6,
+        check_in: Date.new(2018, 6, 6),
+        check_out: Date.new(2018, 6, 9)
+      }
+      @input2 = { name: "Mx. Mummy",
+        room_number: 3,
+        check_in: Date.new(2018, 6, 6),
+        check_out: Date.new(2018, 6, 12)
+      }
+      @hotel.reserve_room(@input1)
+      @hotel.reserve_room(@input2)
+      @names = ["Dr. Frankenstein", "Mx. Mummy"]
     end
 
     it 'returns an array of all reservations for that date' do
@@ -83,7 +92,7 @@ describe "Hotel Manager class" do
       expect(@hotel.list_reservations(@date)).must_be_kind_of Array
 
       @hotel.list_reservations(@date).each do |reservation|
-        expect(@reservations.include?(reservation)).must_equal true
+        expect(@names.include?(reservation.name)).must_equal true
       end
     end
   end
