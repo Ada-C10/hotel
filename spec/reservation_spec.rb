@@ -54,4 +54,5 @@ describe "Reservation in Wave 1" do
       expect(@rsv_2.dates_booked.include?@end_date).must_equal false
     end
   end
+
 end

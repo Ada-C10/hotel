@@ -2,7 +2,7 @@ require 'pry'
 require 'date'
 
 class Reservation
-  attr_reader :id, :customer_name, :room_num, :start_date, :end_date
+  attr_reader :id, :customer_name, :room_num, :start_date, :end_date, :cost
 
   def initialize(id, customer_name, start_date, end_date)
     if start_date >= end_date || start_date < Date.today
@@ -13,6 +13,7 @@ class Reservation
       @room_num = ''
       @start_date = start_date
       @end_date = end_date
+      @cost = 0
     end
   end
 
@@ -25,4 +26,5 @@ class Reservation
     end
     return result
   end
+
 end
