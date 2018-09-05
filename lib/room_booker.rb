@@ -23,7 +23,7 @@ module BookingLogic
     end
 
     def list_rooms
-      return @rooms
+      return rooms
     end
 
     def find_room_by_id(room_id)
