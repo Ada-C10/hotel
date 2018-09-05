@@ -12,9 +12,12 @@ Minitest::Reporters.use! Minitest::Reporters::SpecReporter.new
 describe "BookingSystem class" do
   let(:booking_system) {Hotel::BookingSystem.new()}
 
+# TODO test that rooms contains room obj like in load rooms
   describe "#initialize" do
     it "can create a new instance of BookingSystem" do
       expect(booking_system).must_be_kind_of Hotel::BookingSystem
+      expect(booking_system.rooms).must_be_kind_of Array
+      expect(booking_system.reservations).must_be_kind_of Array
     end
   end
 
@@ -65,6 +68,8 @@ describe "BookingSystem class" do
 
 # TODO: add create reservation method + 2nd input as room_num??
   describe "#create_reservation" do
+    # TODO test that it's added to Room
+    # TODO test that it's added to reservations
     # let(:room_num) {4}
     # let(:room_obj) {booking_system.find_room(room_num)}
     let(:reservation_hash) {{
@@ -79,7 +84,7 @@ describe "BookingSystem class" do
       expect(new_reservation).must_be_kind_of Hotel::Reservation
     end
 
-    it "loaded reservation details properly" do
+    it "loads reservation details properly" do
       # QUESTION: should i test values or types? in rideshare, seems like mostly type was tested....
       expect(new_reservation.id).must_equal 5
       expect(new_reservation.room.num).must_equal 10
@@ -97,9 +102,69 @@ describe "BookingSystem class" do
   # describe "#load_reservations" do
   # end
 
-# # TODO - i think?
-#   describe "#list_reservations_by_date" do
-#   end
+  describe "#list_reservations_for_date" do
+    before do
+
+      # res_1 = Hotel::Reservation.new({
+      #   id: "1",
+      #   room_num: "20",
+      #   start_date: "2010-8-1",
+      #   end_date: "2010-8-10",
+      #   })
+      # res_2 = Hotel::Reservation.new({
+      #   id: "2",
+      #   room_num: "19",
+      #   start_date: "2008-5-15",
+      #   end_date: "2010-5-18",
+      #   })
+      # res_3 = Hotel::Reservation.new({
+      #   id: "4",
+      #   room_num: "15",
+      #   start_date: "2009-4-4",
+      #   end_date: "2009-4-10",
+      #   })
+
+    res_1 = booking_system.create_reservation({
+      id: "1",
+      room_num: "20",
+      start_date: "2010-8-1",
+      end_date: "2010-8-10",
+      })
+    res_2 = booking_system.create_reservation({
+      id: "2",
+      room_num: "19",
+      start_date: "2010-8-15",
+      end_date: "2010-8-18",
+      })
+    res_3 = booking_system.create_reservation({
+      id: "4",
+      room_num: "15",
+      start_date: "2010-8-4",
+      end_date: "2010-8-20",
+      })
+
+    @matching_res = booking_system.list_reservations_for_date("2010-8-5")
+    puts @matching_res
+
+    end
+
+    it "should return an array of Reservation objects" do
+      expect(@matching_res).must_be_kind_of Array
+      expect(@matching_res[0]).must_be_kind_of Hotel::Reservation
+    end
+
+    it "accurately loads Reservation objects for specified date" do
+      puts @matching_res
+      expect(@matching_res.length).must_equal 2
+      expect(@matching_res[0].id).must_equal 1
+      expect(@matching_res[1].id).must_equal 4
+    end
+
+    it "returns nil if no Reservations are found for specified date" do
+      @matching_res = booking_system.list_reservations_for_date("2010-8-30")
+      expect(@matching_res).must_equal nil
+    end
+  end
 
 
 end

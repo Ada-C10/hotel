@@ -43,8 +43,10 @@ module Hotel
       }
 
       new_reservation = Reservation.new(reservation_hash)
-      #NOTE: add room.change_status???
+      #NOTE: add room.change_status??? should this part go in Res???
+      # or should this be split up????
       room.add_reservation(new_reservation)
+      @reservations << new_reservation
 
       return new_reservation
     end
@@ -62,11 +64,22 @@ module Hotel
     # end
 
 
-    def list_reservations_by_date(date)
+# QUESTION: should i be accessing this
+    def list_reservations_for_date(date)
+      date = Date.parse(date)
       #TODO error handling for date as Date object??
-      return res_by_date = @reservations.map { |reservation| reservation.date == date }
+      #TODO what if no dates match? should return nil?
+      # QUESTION: maybe add one to display by id?
+      # QUESTION: should room own this???
+      matching_res = @reservations.select { |reservation| reservation.dates_reserved.include? date }
+
+      # TODO: combine enumerable with ternary???? --> do in one line???
+      return matching_res == [] ? nil : matching_res
     end
 
+
+# QUESTION: should this method be here or in Reservation?
+# QUESTION: test nil return if nothing found
     def find_room(room_num)
       return @rooms.find {|room| room.num == room_num.to_i}
     end
@@ -76,5 +89,17 @@ end
 
 
 # booking = Hotel::BookingSystem.new()
+# #
+# res_3 = booking.create_reservation({
+#   id: "4",
+#   room_num: "15",
+#   start_date: "2010-8-4",
+#   end_date: "2010-8-20",
+#   })
+# res_2 = booking.create_reservation({id: "1",
+#   room_num: "20",
+#   start_date: "2010-8-1",
+#   end_date: "2010-8-10",
+#   })
 #
-# puts booking.list_all_rooms
+# p booking.list_reservations_for_date("2010-8-5")
