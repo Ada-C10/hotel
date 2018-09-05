@@ -10,17 +10,26 @@ class ReservationMaker
   def initialize (start_date, end_date)
     @start_date = start_date
     @end_date = end_date
+
+    if @end_date < @start_date
+      raise ArgumentError.new ("The start date cannot be after the end date.")
+    end
+  end
+
+  def rooms
+    rooms = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
+    return rooms
   end
 
   def available_room
     #find available room by comparing to list of @@reservations
     #generate random assignment of available room_nums
-    room = rand(20)
+
     # @@reservations.each do |reservation|
     #   if @available_room != reservation[:available_room]
     #     @available_room = rand(20)
     #   end
-    return room
+    return rooms.sample
   end
 
   def self.reservations
@@ -43,6 +52,7 @@ class ReservationMaker
   end
 
 end
+
 
 # start_date1 = Date.new(2018,2,3)
 # end_date1 = Date.new(2018,2,5)

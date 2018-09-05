@@ -22,6 +22,16 @@ describe "tests for various pieces in each incidence of ReservationMaker" do
     expect(ReservationMaker.reservations[0]).must_be_kind_of Hash
     expect(@example.start_date).must_be_kind_of Date
     expect(@example.end_date).must_be_kind_of Date
+    expect(@example.rooms).must_be_kind_of Array
+    expect(@example.rooms[0]).must_be_kind_of Integer
 
+  end
+end
+
+describe "test for errors in input" do
+  it "throws an ArgumentError if the start date is after the end date" do
+    expect do
+      ReservationMaker.new(Date.new(2018, 2, 3), Date.new(2018, 2, 1))
+    end.must_raise ArgumentError
   end
 end
