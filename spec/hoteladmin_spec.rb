@@ -31,9 +31,9 @@ describe "HotelAdmin" do
 
   describe "HotelAdmin#retrieve_by_date" do
     before do
-      hotel.reservations << Reservation.new("SoccerMom2010@gmail.com", 1, [Date.new(2018,10,20),Date.new(2018,10,22)])
-      hotel.reservations << Reservation.new("Guccifer2.0@ada.com", 1, [Date.new(2018,12,02),Date.new(2018,12,07)])
-      hotel.reservations << Reservation.new("Jfahmy07@gmail.com", 2, [Date.new(2018,12,03),Date.new(2018,12,06)])
+      hotel.reservations << Reservation.new({guest_id: "SoccerMom2010@gmail.com", room_id: 1, date_range: [Date.new(2018,10,20),Date.new(2018,10,22)]})
+      hotel.reservations << Reservation.new({guest_id: "Guccifer2.0@ada.com", room_id: 1, date_range: [Date.new(2018,12,02),Date.new(2018,12,07)]})
+      hotel.reservations << Reservation.new({guest_id: "Jfahmy07@gmail.com", room_id: 2, date_range: [Date.new(2018,12,03),Date.new(2018,12,06)]})
     end
 
     it "raises an argument error if invalid date object is provided" do

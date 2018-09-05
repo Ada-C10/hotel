@@ -4,13 +4,13 @@ require 'pry'
 describe "Reservation" do
 
   let (:reservation) {
-    Reservation.new("SoccerMom2010@gmail.com", 1, [Date.new(2018,10,20),Date.new(2018,10,22)])
+    Reservation.new({guest_id: "SoccerMom2010@gmail.com", room_id: 1, date_range: [Date.new(2018,10,20),Date.new(2018,10,22)]})
   }
   let (:reservation2) {
-    Reservation.new("Guccifer2.0@ada.com", 1, [Date.new(2018,12,02),Date.new(2018,12,07)])
+    Reservation.new({guest_id: "Guccifer2.0@ada.com", room_id: 1, date_range: [Date.new(2018,12,02),Date.new(2018,12,07)]})
   }
   let (:reservation3) {
-    Reservation.new("Jfahmy07@gmail.com", 2, [Date.new(2018,12,03),Date.new(2018,12,06)])
+    Reservation.new({guest_id: "Jfahmy07@gmail.com", room_id: 2, date_range: [Date.new(2018,12,03),Date.new(2018,12,06)]})
   }
 
   describe "#initialize" do

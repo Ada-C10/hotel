@@ -5,7 +5,7 @@ describe "Room" do
     Room.new(1)
   }
   let (:reservation) {
-    Reservation.new("SoccerMom2010@gmail.com", 1, [Date.new(2018,10,20),Date.new(2018,10,22)])
+    Reservation.new({guest_id: "SoccerMom2010@gmail.com", room_id: 1, date_range: [Date.new(2018,10,20),Date.new(2018,10,22)]})
   }
 
   describe "Room#initialize" do
