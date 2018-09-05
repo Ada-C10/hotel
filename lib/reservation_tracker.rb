@@ -36,6 +36,19 @@ class ReservationTracker
     return valid_reservations.empty? ? nil : valid_reservations
   end
 
+  def available_rooms(start_date, end_date)
+
+    unavailable_rooms = []
+
+    @reservations.each do |reservation|
+      if reservation.daterange_within_reservation?(start_date, end_date)
+        unavailable_rooms << reservation.room_num
+      end
+    end
+    
+    return ([*1..20] - unavailable_rooms)
+  end
+
 
 end
 end

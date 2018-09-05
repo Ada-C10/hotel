@@ -34,7 +34,11 @@ class Reservation
   end
 
   def date_within_reservation?(date)
-    return date >= @start_date && date < @end_date
+    return (date >= @start_date && date < @end_date)
+  end
+
+  def daterange_within_reservation?(start_date, end_date)
+    return date_within_reservation?(start_date) || date_within_reservation?(end_date)
   end
 end
 end

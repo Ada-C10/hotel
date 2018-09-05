@@ -80,9 +80,51 @@ describe 'reservation_tracker class' do
     end
 
     it 'returns correct number of reservations' do
-      expect (@list_of_reservations.length).must_equal(2)
+      expect( @list_of_reservations.length ).must_equal(2)
     end
 
   end
 
+  describe 'available_rooms method' do
+
+    it 'returns empty array if no rooms available' do
+
+      [*1..20].each do |room|
+        @hotel.add_reservation(Hotel::Reservation.new(room, Date.new(2018,6,4), Date.new(2018,7,7)))
+      end
+
+      expect(
+        @hotel.available_rooms(Date.new(2018,6,4), Date.new(2018,7,7))
+      ).must_equal([])
+      expect(
+        @hotel.available_rooms(Date.new(2018,6,1), Date.new(2018,6,5))
+      ).must_equal([])
+      expect(
+        @hotel.available_rooms(Date.new(2018,7,1), Date.new(2018,7,15))
+      ).must_equal([])
+    end
+
+    it 'returns list of available rooms' do
+
+      [*1..10].each do |room|
+        @hotel.add_reservation(Hotel::Reservation.new(room, Date.new(2018,6,4), Date.new(2018,7,7)))
+      end
+
+      expect(
+        @hotel.available_rooms(Date.new(2018,6,4), Date.new(2018,7,7))
+      ).must_be_instance_of(Array)
+      expect(
+        @hotel.available_rooms(Date.new(2018,7,6), Date.new(2018,7,7))
+      ).must_equal([*11..20])
+
+
+      [*11..19].each do |room|
+        @hotel.add_reservation(Hotel::Reservation.new(room, Date.new(2018,6,4), Date.new(2018,7,7)))
+      end
+
+      expect(
+        @hotel.available_rooms(Date.new(2018,6,10), Date.new(2018,7,7))
+      ).must_equal([20])
+    end
+  end
 end
