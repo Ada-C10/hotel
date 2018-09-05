@@ -1,17 +1,42 @@
 require 'pry'
 require 'awesome_print'
 
+require 'date'
 require_relative 'room'
 require_relative 'reservation'
-require_relative 'calendar'
+require_relative 'booked_dates'
 
 module Hotel
   class HotelBooker
-    attr_reader :id
+    attr_reader :rooms, :reservations, :booked_dates
     attr_accessor
 
-    def initialize
+    def initialize()
+      @reservations = []
+      @booked_dates = []
+      @rooms = []
 
+      number_of_rooms = 20
+      number_of_rooms.times do |i|
+        @rooms << Hotel::Room.new(i+1)
+      end
+    end
+
+    def make_reservation(id, check_in, check_out)
+      reservation = Hotel::Reservation.new(id, check_in, check_out)
+      reservation.assign_room(@rooms)
+      room = reservation.room
+      room.reservations << reservation
+      @reservations << reservation 
+    end
+
+    def all_rooms()
+    end
+
+    def all_reservations()
+    end
+
+    def all_booked_dates()
     end
 
   end
