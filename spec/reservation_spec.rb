@@ -42,7 +42,7 @@ describe 'reservation class' do
     end
   end
 
-  describe 'days stayed' do
+  describe 'total_nights' do
     it 'returns correct number of days stayed' do
 
       expect(
@@ -52,6 +52,7 @@ describe 'reservation class' do
         Hotel::Reservation.new(1, Date.new(2018,7,4), Date.new(2018,7,10)).total_nights
       ).must_equal(6)
     end
+  end
 
   describe 'total_cost' do
     it 'returns correct total cost of reservation' do
@@ -65,6 +66,43 @@ describe 'reservation class' do
     end
   end
 
+  describe 'date_within_reservation?' do
+    before do
+      @reservation = Hotel::Reservation.new(1, Date.new(2018,7,4), Date.new(2018,7,10))
+    end
+
+    it 'raise argumenterror for nondate inputs' do
+      expect{
+        @reservation.date_within_reservation?('datestring')
+      }.must_raise(ArgumentError)
+      expect{
+        @reservation.date_within_reservation?(23)
+      }.must_raise(ArgumentError)
+      expect{
+        @reservation.date_within_reservation?([])
+      }.must_raise(ArgumentError)
+    end
+
+    it 'returns false for dates out of range' do
+      expect(
+        @reservation.date_within_reservation?(Date.new(2018,5,1))
+      ).must_equal(false)
+      expect(
+        @reservation.date_within_reservation?(Date.new(2018,7,10))
+      ).must_equal(false)
+    end
+
+    it 'returns true for dates in range' do
+      expect(
+        @reservation.date_within_reservation?(Date.new(2018,7,4))
+      ).must_equal(true)
+      expect(
+        @reservation.date_within_reservation?(Date.new(2018,7,9))
+      ).must_equal(true)
+    end
   end
 
+  # TODO: is testing this method necessary?
+  describe 'daterange_within_reservation' do
+  end
 end

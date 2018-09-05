@@ -34,6 +34,10 @@ class Reservation
   end
 
   def date_within_reservation?(date)
+    unless date.is_a?(Date)
+      raise ArgumentError, "Invalid date input."
+    end
+
     return (date >= @start_date && date < @end_date)
   end
 
