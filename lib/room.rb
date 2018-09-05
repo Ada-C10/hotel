@@ -3,8 +3,8 @@ attr_reader :room_number, :reservations, :status
 
 ROOM_STATUS = [:VACANT, :OCCUPIED, :BOOKED]
 
-  def initialize(input)
-    @room_number = input
+  def initialize(room_number)
+    @room_number = room_number
     @reservations = []
     @status = :VACANT
   end

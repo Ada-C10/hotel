@@ -1,5 +1,7 @@
 require 'Date'
 require 'pry'
+require_relative 'room'
+
 class Reservation
   attr_reader :name, :room_number, :check_in_date, :check_out_date, :nights_of_stay
 
@@ -16,6 +18,7 @@ class Reservation
     @check_in_date = input[:check_in_date]
     @check_out_date = input[:check_out_date]
     @nights_of_stay = nights_stay
+
   end
 
   def generate_nights(check_in, check_out)

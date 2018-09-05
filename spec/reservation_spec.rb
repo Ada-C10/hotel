@@ -76,12 +76,4 @@ describe 'reservation class' do
        expect { @reservation2 = Reservation.new(@input2)}.must_raise ArgumentError
     end
   end
-
-  # describe 'connect reservation to room' do
-  #
-  #   it 'finds the room being reserved and adds the reservation to its list of reservations'
-  #   end
-  #
-  # end
-
 end

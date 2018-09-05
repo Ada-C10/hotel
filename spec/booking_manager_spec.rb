@@ -95,6 +95,27 @@ describe "Hotel Manager class" do
     it 'correctly sums the cost of a stay at the hotel' do
       expect(Booking_Manager.total_cost_of_stay(@reservation)).must_equal 600
     end
-
   end
+
+  describe 'connect_reservation_to_room' do
+
+    it 'finds the room being reserved and adds the reservation to its list of reservations' do
+      @hotel = Booking_Manager.new
+      @input = { name: "Mx Thing",
+        room_number: 1,
+        check_in_date: Date.new(2020,9,9),
+        check_out_date: Date.new(2020,9,13),
+      }
+      @reservation = Reservation.new(@input)
+      expect(@hotel.rooms[0].reservations.include?(@reservation)).must_equal true
+    end
+  end
+
+
+
+
+
+
+
+
 end

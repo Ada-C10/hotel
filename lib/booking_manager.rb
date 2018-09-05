@@ -20,7 +20,12 @@ class Booking_Manager
       check_out_date: check_out
     }
     reservation = Reservation.new(reserve)
+    connect_reservation_to_room(room_number, reservation)
     @hotel_reservations << reservation
+  end
+
+  def self.total_cost_of_stay(reservation)
+    return (reservation.nights_of_stay.length * ROOM_COST)
   end
 
   def get_rooms
@@ -31,13 +36,14 @@ class Booking_Manager
     return reservations_on_date = @hotel_reservations.find_all { |reservation| reservation.nights_of_stay == date }
   end
 
-  def self.total_cost_of_stay(reservation)
-    return (reservation.nights_of_stay.length * ROOM_COST)
-  end
 
   # def find_room(find_room_number)
   #   return @rooms.find { |room| room.room_number == find_room_number }
   # end
+
+  def connect_reservation_to_room(room_number, reservation)
+    
+  end
 
   def load_rooms
     rooms = []
