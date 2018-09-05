@@ -21,7 +21,6 @@ describe "Reservation" do
       expect(@reservation.room).must_be_kind_of Hotel::Room
     end
   it "must raise error if end date is before start date" do
-    # @reservation2 = Hotel::Reservation.new(Hotel::Room.new(1),"2019-08-13" , "2019-08-10")
     expect{Hotel::Reservation.new(Hotel::Room.new(1),"2019-08-13" , "2019-08-10")}.must_raise StandardError
   end
   end
