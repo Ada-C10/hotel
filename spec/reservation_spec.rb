@@ -2,6 +2,7 @@
 
 # Tests for reservation.rb
 
+require 'date'
 require_relative 'spec_helper.rb'
 
 describe "Reservation" do
@@ -17,16 +18,25 @@ describe "Reservation" do
     end
 
     it "has a start date" do
-      expect(@reservation.start_date).must_equal @start_date
+      expect(@reservation.checkin_date).must_equal Date.parse(@start_date)
     end
 
     it "has an end date" do
-      expect(@reservation.end_date).must_equal @end_date
+      expect(@reservation.checkout_date).must_equal Date.parse(@end_date)
     end
 
     it "has a room assigned" do
       expect(@reservation.room).must_be_instance_of Hotel::Room
     end
+  end
 
+  describe "Resevation#total_cost" do
+    it "returns a float" do
+      expect(@reservation.total_cost).must_be_instance_of Float
+    end
+
+    it "correctly calculates cost to two decimal places based on # of nights" do
+      expect(@reservation.total_cost).must_equal 800.00
+    end
   end
 end
