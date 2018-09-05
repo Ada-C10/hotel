@@ -61,7 +61,7 @@ describe "Booking" do
         # action
         hotel.request_reservation("2018-12-09", "2018-12-15")
         # assert
-        hotel.reservations[0].start_date.must_equal "2018-12-09"
+        hotel.reservations[0].start_date.must_equal Date.parse("2018-12-09")
       end
 
       it "increases id number by 1 when each reservation is added" do
@@ -93,7 +93,7 @@ describe "Booking" do
         hotel.request_reservation("2018-4-11", "2018-4-12")
         #action
         specific_date = hotel.reservations_by_date("2018-12-12")
-        # binding.pry
+        binding.pry
         #assert
         specific_date.length.must_equal 2
 
