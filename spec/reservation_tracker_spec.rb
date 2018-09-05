@@ -6,6 +6,12 @@ describe 'ReservationTracker class' do
     expect(new_tracker).must_be_kind_of ReservationTracker
   end
 
+  it 'shows all rooms in the hotel' do
+    new_tracker = ReservationTracker.new()
+    all_rooms = new_tracker.show_all_hotel_rooms
+    expect(all_rooms.length).must_equal 20
+  end
+
   it 'shows available rooms for a given date range when there are no existing bookings'do
     new_tracker = ReservationTracker.new()
     start_date = "2018,9,10"
