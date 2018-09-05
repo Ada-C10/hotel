@@ -1,10 +1,11 @@
 require 'Date'
 require_relative 'room'
 
-class Hotel_Manager
+class Booking_Manager
   attr_reader :rooms, :hotel_reservations
 
   ROOM_NUMBERS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
+  ROOM_COST = 200
 
   def initialize
     @rooms = load_rooms
@@ -23,6 +24,10 @@ class Hotel_Manager
 
   def get_rooms
     return @rooms
+  end
+
+  def list_reservations(date)
+    return reservations_on_date = @hotel_reservations.find_all { |reservation| reservation.nights_of_stay == date }
   end
 
   # def find_room(find_room_number)

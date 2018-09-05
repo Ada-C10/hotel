@@ -5,7 +5,7 @@ describe "Hotel Manager class" do
 
   describe 'Hotel Manager instantiation' do
     before do
-      @hotel = Hotel_Manager.new
+      @hotel = Booking_Manager.new
     end
 
     it 'has an array of all rooms in hotel' do
@@ -24,7 +24,7 @@ describe "Hotel Manager class" do
 
   describe 'get_room method' do
     before do
-      @hotel = Hotel_Manager.new
+      @hotel = Booking_Manager.new
     end
 
     it 'returns an Array of rooms in hotel' do
@@ -35,7 +35,7 @@ describe "Hotel Manager class" do
 
   # describe 'find_room method' do
   #   before do
-  #     @hotel = Hotel_Manager.new
+  #     @hotel = Booking_Manager.new
   #   end
   #
   #   it 'returns an instance of Room' do
@@ -54,7 +54,7 @@ describe "Hotel Manager class" do
 
   describe 'reserve_room method' do
     before do
-      @hotel = Hotel_Manager.new
+      @hotel = Booking_Manager.new
     end
 
     it 'adds a reservation to the array of all reservations' do
@@ -62,14 +62,16 @@ describe "Hotel Manager class" do
 
       expect(@hotel.hotel_reservations).must_be_kind_of Array
     end
+    
   end
 
   describe 'list_reservations method' do
     before do
-      @hotel = Hotel_Manager.new
+      @hotel = Booking_Manager.new
       @date = Date.new(2018, 6, 8)
       @reserve1 = @hotel.reserve_room("Dr. Frankenstein", 6, Date.new(2018, 6, 6), Date.new(2018, 6, 9))
       @reserve2 = @hotel.reserve_room("Mx. Mummy", 3, Date.new(2018, 6, 6), Date.new(2018, 6, 12))
+      @reserve3 = @hotel.reserve_room("Mx. Mummy", 3, Date.new(2018, 7, 6), Date.new(2018, 7, 12))
       @reservations = [@reserve1, @reserve2]
     end
 

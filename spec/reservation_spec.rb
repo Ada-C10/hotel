@@ -49,12 +49,17 @@ describe 'reservation class' do
   describe 'reservation instantiation' do
 
     before do
-      input = { name: "Vlad the Impaler",
+      @input = { name: "Vlad the Impaler",
         room_number:  9,
         check_in_date: Date.new(2020,9,9),
         check_out_date: Date.new(2020,9,13),
       }
-      @reservation = Reservation.new(input)
+      @input2 = { name: "Dr. Frankensteen",
+        room_number:  9,
+        check_in_date: Date.new(2020,9,13),
+        check_out_date: Date.new(2020,9,9),
+      }
+      @reservation = Reservation.new(@input)
     end
     #
     it 'generates an array of all nights in a reservation without including the checkout date' do
@@ -66,5 +71,17 @@ describe 'reservation class' do
         expect(@reservation.nights_of_stay.include?(night)).must_equal true
       end
     end
+
+    it 'raises an Error if the the check out date is before the check in date date' do
+       expect { @reservation2 = Reservation.new(@input2)}.must_raise ArgumentError
+    end
   end
+
+  # describe 'connect reservation to room' do
+  #
+  #   it 'finds the room being reserved and adds the reservation to its list of reservations'
+  #   end
+  #
+  # end
+
 end
