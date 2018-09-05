@@ -15,19 +15,9 @@ class Reservation
       raise ArgumentError.new("Invalid room number entered.")
     end
 
-    # start date must be entered in the format: yyyy,mm,dd
-    parsed_start_date = start_date.split(",")
-    start_year = parsed_start_date[0].to_i
-    start_month = parsed_start_date[1].to_i
-    start_day = parsed_start_date[2].to_i
-    starting_date = Date.new(start_year, start_month, start_day)
-
-    # end date must be entered in the format: yyyy,mm,dd
-    parsed_end_date = end_date.split(",")
-    end_year = parsed_end_date[0].to_i
-    end_month = parsed_end_date[1].to_i
-    end_day = parsed_end_date[2].to_i
-    ending_date = Date.new(end_year, end_month, end_day)
+    # dates must be entered in the format: yyyy,mm,dd
+    starting_date = format_date(start_date)
+    ending_date = format_date(end_date)
 
     # Verifying valid date ranges entered
     if ending_date - starting_date >= 1
@@ -61,5 +51,16 @@ class Reservation
   def duration
     reservation_duration = @end_date - @start_date
     return reservation_duration
+  end
+
+  # Helper method to the constructor
+  def format_date(date_string)
+    parsed_date = date_string.split(",")
+    year = parsed_date[0].to_i
+    month = parsed_date[1].to_i
+    day = parsed_date[2].to_i
+    formatted_date = Date.new(year, month, day)
+
+    return formatted_date
   end
 end
