@@ -1,14 +1,14 @@
 
 class Reservation
-attr_reader :room
-attr_reader :start_date
-attr_reader :end_date
+  attr_reader :room
+  attr_reader :check_in
+  attr_reader :check_out
 
-def initialize(room, start_date, end_date)
-@room = room
-@start_date = start_date
-@end_date = end_date
+  def initialize(room, check_in, check_out)
+    @room = room
+    @check_in = check_in
+    @check_out = check_out
 
-end
+  end
 
 end
