@@ -1,17 +1,15 @@
 # Keeps track of the availibility of 1 room
-VALID_ROOMS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
-
 class Room
-  attr_reader :room_number, :availibility
+  attr_reader :room_number
 
-  def initialize(room_number, availibility)
+  RATE = 200
+
+  def initialize(room_number)
     @room_number = room_number
-
-    room_status = [:available, :unavailable]
-    if room_status.include? availibility
-      @availibility = availibility
-    else
-      raise ArgumentError, "Not a valid status"
-    end
   end
+
+  # def is_room_available(date)
+  #   # TODO check list of reservations
+  #   return true
+  # end
 end
