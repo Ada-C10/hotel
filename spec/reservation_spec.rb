@@ -57,7 +57,8 @@ describe "Reservation class" do
 
   describe "#reservation_period method" do
     it "Finds difference between end_date and start_date not including the checkout_date" do
-      expect(@reservation.reservation_period).must_equal 4
+      reservation_period = @end_date - @start_date
+      expect(@reservation.reservation_period).must_equal reservation_period
     end
   end
 end

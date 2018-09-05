@@ -20,7 +20,7 @@ module Hotel
     end
 
     def reservation_period
-      reservation_period = ((@end_date - 1) - @start_date).to_i
+      reservation_period = @end_date - @start_date
       return reservation_period
     end
 
