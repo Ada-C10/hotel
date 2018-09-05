@@ -1,12 +1,12 @@
 require 'pry'
 require_relative 'room'
-require_relative 'booking_system'
+require_relative 'reservation'
 
 class BookingSystem
 
   attr_reader
 
-  def initialize ()
-  end
+  # def initialize ()
+  # end
 
 end
