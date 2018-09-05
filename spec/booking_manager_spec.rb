@@ -12,20 +12,19 @@ describe "BookingManager class" do
 
       expect(hotel_rooms.rooms).must_be_kind_of Array
       expect(hotel_rooms.reservations).must_be_kind_of Array
-      # expect hotel_rooms.rooms.length must_equal 20
     end
+
+    # it "assigns instance variables to values returned from class methods" do
+    #   hotel_rooms = Hotel::BookingManager.new(5)
+    #
+    #   expect(hotel_rooms.rooms).must_equal hotel_rooms.populate_room_list(5)
+    #   expect(hotel_rooms.reservations).must_equal hotel_rooms.make_reservation_list
+    # end
   end # of initializer describe
 
-  describe "Populate Room List method" do
-    it "creates an array of Room instances" do
-      # hotel_rooms = Hotel::BookingManager.new(10)
-      # first_room = hotel_rooms.rooms.first
-      # last_room = hotel_rooms.rooms.last
-      #
-      # expect(first_room).must_be_instance_of Hotel::Room
-      # expect(last_room).must_be_instance_of Hotel::Room
 
-      ## Changed to assertions that explicitly call method
+  describe "populate_room_list method" do
+    it "creates an array of Room instances" do
       new_rooms = Hotel::BookingManager.new(10)
       expect(new_rooms.populate_room_list(10)).must_be_kind_of Array
       expect(new_rooms.populate_room_list(10).first).must_be_instance_of Hotel::Room
@@ -45,11 +44,12 @@ describe "BookingManager class" do
     it "returns array of rooms with length equal to parameter passed into constructor" do
       x = 12
       hotel_rooms = Hotel::BookingManager.new(x)
-      expect(hotel_rooms.rooms.length).must_equal x
+      expect(hotel_rooms.populate_room_list(x).length).must_equal x
     end
   end # of room load methods
 
-  describe "Reservation List creator method" do
+
+  describe "make_reservation_list method" do
     it "returns a value equal to @reservations at instantiation" do
       hotel_rooms = Hotel::BookingManager.new(10)
       expect(hotel_rooms.reservations).must_equal hotel_rooms.make_reservation_list
@@ -60,5 +60,12 @@ describe "BookingManager class" do
       expect(hotel_rooms.make_reservation_list).must_be_empty
     end
   end # of reservation list test do
+
+  describe "list_reservations method" do
+    it "returns an array" do
+      hotel_rooms = Hotel::BookingManager.new(5)
+      expect(hotel_rooms.list_reservations).must_be_kind_of Array
+    end
+  end
 
 end # end of describe BookingManager class
