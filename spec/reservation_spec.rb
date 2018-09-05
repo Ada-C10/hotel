@@ -20,7 +20,7 @@ describe 'reservation instantiation' do
   end
 
   it 'has has a room number ' do
-    expect(@reservation.room_number).must equal 9
+    expect(@reservation.room_number).must_equal 9
   end
   #
   it 'has a check-in date' do
