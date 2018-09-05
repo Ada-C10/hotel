@@ -1,4 +1,5 @@
 require_relative 'spec_helper.rb'
+require 'pry'
 
 describe 'Wave 1' do
   before do
@@ -81,7 +82,7 @@ describe 'Wave 2' do
     it 'returns an array of rooms' do
       expect(@array_of_rooms).must_be_kind_of Array
       @array_of_rooms.each do |room|
-        expect(room).must_be_instance_of Room
+        expect(room).must_be_kind_of Struct
       end
     end
 
@@ -92,7 +93,9 @@ describe 'Wave 2' do
 
       expect(@array_of_rooms).wont_include room14
       expect(@array_of_rooms).wont_include room2
-      expect(@array_of_rooms).must_include remaining_rooms
+      remaining_rooms.each do |room|
+        expect(@array_of_rooms).must_include room
+      end
     end
   end
 end
