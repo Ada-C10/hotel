@@ -2,7 +2,7 @@ require 'time'
 require 'date'
 
 class ReservationTracker
-  attr_reader :all_rooms, :all_reservations
+  attr_accessor :all_rooms, :all_reservations
 
   def initialize()
     @all_rooms = []
@@ -61,8 +61,10 @@ class ReservationTracker
                                 room_instance.room_number
                               end
     if available_rooms_by_number.include?(room_number)
-      #make reservation
       reservation_number = make_reservation_number
+      new_reservation = Reservation.new(reservation_number, room_number, start_date, end_date, :standard)
+      @all_reservations << new_reservation
+
     else
       raise ArgumentError.new("The specified room is not available for the date range provided")
     end

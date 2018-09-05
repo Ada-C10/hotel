@@ -30,6 +30,11 @@ describe 'ReservationTracker class' do
     rooms_available = new_tracker.show_available_rooms(start_date, end_date)
 
     expect(rooms_available.length).must_equal 19
+  end
 
+  it 'makes a reservation number' do
+    new_tracker = ReservationTracker.new()
+    new_reservation_number = new_tracker.make_reservation_number
+    expect(new_reservation_number).must_equal 1
   end
 end
