@@ -40,11 +40,19 @@ module BookingLogic
       reservations << BookingLogic::Reservation.new(room, check_in, check_out)
     end
 
+    def date_range_include?(reservation, date)
+      if (reservation.check_in..reservation.check_out).cover?(date)
+        return true
+      else
+        return false
+      end
+    end
+
     def list_reservations(date)
       list_of_reservations = []
 
       reservations.each do |reservation|
-        if (reservation.check_in..reservation.check_out).cover?(date)
+        if date_range_include?(reservation, date)
           list_of_reservations << reservation
         end
       end
@@ -64,6 +72,20 @@ module BookingLogic
       reservation = find_reservation(room_id, check_in)
       days = reservation.check_out - reservation.check_in
       return days.to_i * reservation.room.cost
+    end
+
+    def list_available_rooms(date)
+      reserved_rooms = []
+
+      reservations.each do |reservation|
+        if date_range_include?(reservation, date)
+          reserved_rooms << reservation.room
+        end
+      end
+
+      available_rooms = rooms - reserved_rooms
+
+      return available_rooms
     end
 
   end
