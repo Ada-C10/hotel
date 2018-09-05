@@ -9,15 +9,11 @@ class Reservation
     @check_in_date = check_in_date
     @check_out_date = check_out_date
     @room = room
+    raise StandardError, 'The end date cannot be before the start date.' if check_out_date <= check_in_date
   end
 
   def booking_range
-    if check_out_date < check_in_date
-      raise ArgumentError, 'The end date cannot be before the start date.'
-    else
-      date_range = check_out_date - check_in_date
-    end
-    return date_range
+    return date_range = check_out_date - check_in_date
   end
 
   def rate

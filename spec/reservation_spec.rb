@@ -8,7 +8,8 @@ describe 'Reservation' do
   let (:check_out_date) { Date.new(2018, 9, 8) }
   let (:room) { Room.new(15) }
   let (:a_reservation) { Reservation.new(check_in_date, check_out_date, room)}
-  let (:invalid_date) { Date.new(1985, 9, 8) }
+  let (:invalid_range) { check_out_date <= check_in_date }
+  # let (:bad_date) { Date.new(1985, 12, 15)}
   let (:rate) {(check_out_date - check_in_date) * RATE}
 
   describe 'initialize' do
@@ -24,10 +25,8 @@ describe 'Reservation' do
       expect(a_reservation.room).must_equal room
     end
 
-    describe 'invalid_date' do
-      it 'raises an ArgumentError for a date out of range' do
-
-      end
+    it 'raises an ArgumentError for an invalid date range' do
+      expect{ (Rservation.new(invalid_range)) }.must_raise StandardError
     end
 
     describe 'rate' do
