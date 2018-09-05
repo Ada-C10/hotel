@@ -1,18 +1,17 @@
 require_relative 'spec_helper'
-require 'pry'
 
 describe "Reservation class" do
   before do
-    start_date = Date.today
-    end_date = Date.today + 5
+    @start_date = Date.today
+    @end_date = Date.today + 5
 
     @reservation_data = {
       id: 8,
       room: Hotel::Room.new(
         room_number: 1
       ),
-      start_date: start_date,
-      end_date: end_date
+      start_date: @start_date,
+      end_date: @end_date
     }
 
     @reservation = Hotel::Reservation.new(@reservation_data)
@@ -43,6 +42,22 @@ describe "Reservation class" do
       expect {
         reservation = Hotel::Reservation.new(reservation_data)
       }.must_raise ArgumentError
+    end
+  end
+
+  describe "#date_range method" do
+    it "Finds difference in seconds between end_time and start_time" do
+      expect(@reservation.date_range).must_be_kind_of Range
+      expect(@reservation.date_range).must_equal (@start_date...@end_date)
+      expect(@reservation.date_range).must_include @start_date
+      expect(@reservation.date_range).wont_include @end_date
+      expect(@reservation.date_range).must_include @end_date - 1
+    end
+  end
+
+  describe "#reservation_period method" do
+    it "Finds difference between end_date and start_date not including the checkout_date" do
+      expect(@reservation.reservation_period).must_equal 4
     end
   end
 end
