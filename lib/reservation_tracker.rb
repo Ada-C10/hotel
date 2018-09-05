@@ -53,8 +53,11 @@ class ReservationTracker
       if room_status.all?
         available_rooms << room
       end
-      
+
     end
+  end
+
+  def format_date(date_string)
 
   end
 
