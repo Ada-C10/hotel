@@ -13,6 +13,16 @@ describe "Room" do
       expect(room).must_respond_to :id
       expect(room.id).must_equal id
     end
+
+    it "Keeps track of Calendar in a hash" do
+      room = Hotel::Room.new(1)
+      expect(room).must_respond_to :calendar
+      expect(room.calendar).must_be_kind_of Hash
+      room.calendar.each do |date, status|
+        expect(date).must_be_kind_of Date
+        expect(status).must_be_kind_of Symbol
+      end
+    end
   end
 
   describe "all" do

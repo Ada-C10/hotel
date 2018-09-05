@@ -1,4 +1,5 @@
 require_relative 'spec_helper'
+require 'date'
 
 describe "HotelManager" do
   describe "#initialize" do
@@ -28,6 +29,18 @@ describe "HotelManager" do
     #
     # end
   end
+
+  describe "#reserve" do
+
+  end
+
+  # describe "#available_rooms" do
+  #   check_in = "2018-10-07"
+  #   check_out = "2018-10-14"
+  #   my_hotel = Hotel::HotelManager.new
+  #   available_rooms = my_hotel.available_rooms(check_in, check_out)
+  # end
+
 
   # describe "available_rooms" do
   #   let (:check_in) {

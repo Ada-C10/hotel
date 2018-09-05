@@ -7,7 +7,10 @@ module Hotel
 
     def initialize(id)
       @id = id
-      @calendar = []
+      @calendar = {}
+      (Date.parse("2018-10-01")..Date.parse("2019-09-30")).each do |date|
+        @calendar[date] = :AVAILABLE
+      end
     end
 
     def self.all
