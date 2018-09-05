@@ -5,6 +5,7 @@ class ReservationTracker
 
   def initialize
     @reservations = []
+    @blocks = []
   end
 
   def list_rooms

@@ -82,26 +82,4 @@ describe 'RoomBlock class' do
       expect( @roomblock.available_rooms).must_equal([1, 3, 4])
     end
   end
-
-  describe 'total_cost' do
-    before do
-      @roomblock = Hotel::RoomBlock.new([*1..5], Date.new(2018,9,5), Date.new(2018,9,17), 100)
-    end
-    it 'correctly calculates total cost of room block' do
-
-      [*1..4].each do |i|
-        @roomblock.book_reservation(i, Date.new(2018,9,5), Date.new(2018,9,17))
-      end
-      expect( @roomblock.total_cost ).must_equal(3500)
-
-      @roomblock.book_reservation(5, Date.new(2018,9,5), Date.new(2018,9,17))
-      expect( @roomblock.total_cost ).must_equal(4000)
-    end
-
-    it 'calculates total cost as 0 if no rooms have been reserved yet' do
-      expect( @roomblock.total_cost ).must_equal(0)
-    end
-
-  end
-
 end

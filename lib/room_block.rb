@@ -27,11 +27,11 @@ class RoomBlock
 
   def book_reservation(room, start_date, end_date)
 
-      unless valid_unbooked_room?(room)
+      unless available_rooms.include?(room)
         raise ArgumentError, "This room cannot be booked within this block."
       end
 
-      unless start_date == @start_date && end_date == @end_date
+      unless match_date?(start_date, end_date)
         raise ArgumentError, "Date range does not match block"
       end
 
@@ -40,17 +40,13 @@ class RoomBlock
       return reservation
   end
 
-  def valid_unbooked_room?(room)
-
-    reserved_room = @reservations.find{ |reservation| reservation.room == room }
-    return (reserved_room.nil? ? true : false) && @rooms.include?(room)
+  def match_date?(start_date, end_date)
+    return start_date == @start_date && end_date == @end_date
   end
 
   def available_rooms
     return @rooms - @reservations.map{ |reservation| reservation.room }
   end
-
-
 
 
 end
