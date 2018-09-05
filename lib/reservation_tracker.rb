@@ -49,7 +49,28 @@ class ReservationTracker
         available_rooms << room
       end
     end
+    # returning room instances NOT room numbers
     return available_rooms
+  end
+
+  def reserve_room(room_num, start_date, end_date)
+    room_number = room_num.to_i
+
+    available_rooms = show_available_rooms(start_date, end_date)
+    available_rooms_by_number = available_rooms.map do |room_instance|
+                                room_instance.room_number
+                              end
+    if available_rooms_by_number.include?(room_number)
+      #make reservation
+      reservation_number = make_reservation_number
+    else
+      raise ArgumentError.new("The specified room is not available for the date range provided")
+    end
+  end
+
+  def make_reservation_number
+    reservation_number = @all_reservations.length + 1
+    return reservation_number
   end
 
   def format_date(date_string)
