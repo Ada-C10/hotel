@@ -1,3 +1,6 @@
+require 'date'
+require_relative 'reservation'
+
 module BookingLogic
   class RoomBooker
     attr_reader :rooms
@@ -28,6 +31,11 @@ module BookingLogic
 
     def find_room_by_id(room_id)
       return rooms.find { |room| room.id = room_id }
+    end
+
+    def new_reservation(room_id, check_in, check_out)
+      room = find_room_by_id(room_id)
+      reservations << BookingLogic::Reservation.new(room, check_in, check_out)
     end
   end
 end
