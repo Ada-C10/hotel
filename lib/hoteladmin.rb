@@ -1,4 +1,4 @@
-class Hotel
+class HotelAdmin
 
   def initialize
   end
