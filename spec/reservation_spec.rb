@@ -7,8 +7,8 @@ describe "tests for various pieces in each incidence of reservation" do
   before do
     start_date = Date.new(2018,2,3)
     end_date = Date.new(2018,2,5)
-    room_num = 13
-    @reservation = Reservation.new(start_date, end_date, room_num)
+    available_room = 13
+    @reservation = Reservation.new(start_date, end_date, available_room)
   end
 
   it "is an instance of Reservation" do
