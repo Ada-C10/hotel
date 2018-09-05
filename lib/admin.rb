@@ -20,10 +20,14 @@ class Admin
   end
 
   def request_reservation(start_date, end_date)
-    new = Reservation.new(1, start_date, end_date)
+    id = reservations.length + 1
+    room = select_room
+    # binding.pry
+    new_reservation = Reservation.new(id, room, start_date, end_date)
 
-    add_reservation(new)
-    return new
+    # room_to_unavailable(room)
+    add_reservation(new_reservation)
+    return new_reservation
   end
   #param - date
   #returns - array of reservations within that date
@@ -45,6 +49,11 @@ class Admin
   end
   # need assign room when reservation is made
   def select_room
-    @rooms.find { |room| room.status == :available }
+    room = @rooms.find { |room| room.status == :available }
+    return room
   end
+
+  # def room_to_unavailable(room)
+  #   room.status = :unavialable
+  # end
 end

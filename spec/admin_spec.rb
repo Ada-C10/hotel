@@ -27,6 +27,7 @@ describe "Booking" do
       hotel = Admin.new
       (hotel.rooms[19].room_number).must_equal 20
     end
+
     it "starts with no reservations" do
       hotel = Admin.new
       hotel.reservations.count.must_equal 0
@@ -44,23 +45,43 @@ describe "Booking" do
     describe "add reservations" do
       it "increase count by 1 when add reservation" do
         hotel = Admin.new
-        reserve1 = Reservation.new(7, "2018-12-09", "2018-12-15")
+        reserve1 = Reservation.new(7, 4, "2018-12-09", "2018-12-15")
         hotel.add_reservation(reserve1)
 
         hotel.reservations.count.must_equal 1
       end
+
     end
 
     describe "request_reservations" do
       it "admin is able to book a reservation" do
         # arrange
         hotel = Admin.new
-        reserve1 = Reservation.new(7, "2018-12-09", "2018-12-15")
+        reserve1 = Reservation.new(7, 4, "2018-12-09", "2018-12-15")
         # action
         hotel.request_reservation("2018-12-09", "2018-12-15")
         # assert
         hotel.reservations[0].start_date.must_equal "2018-12-09"
       end
+
+      it "increases id number by 1 when each reservation is added" do
+        hotel = Admin.new
+        hotel.request_reservation("2018-12-09", "2018-12-15")
+
+        new_reservation = hotel.reservations[0]
+
+        new_reservation.id.must_equal 1
+      end
+
+      # it "changes room used to unavailable" do
+      #   hotel = Admin.new
+      #   hotel.request_reservation("2018-12-09", "2018-12-15")
+      #   hotel.request_reservation("2018-12-11", "2018-12-17")
+      #   second_reservation = hotel.reservations[1]
+      #
+      #   second_reservation.room.must_equal 2
+      # end
+
     end
 
     describe "reservations_by_date" do
@@ -83,7 +104,7 @@ describe "Booking" do
       it "accurately calculates cost of reservation" do
         hotel = Admin.new
         reserve1 = hotel.request_reservation("2018-12-09", "2018-12-15")
-        # binding.pry
+
         cost = hotel.reservation_cost(reserve1)
 
         cost.must_equal 1200
