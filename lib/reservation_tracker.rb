@@ -42,13 +42,22 @@ class ReservationTracker
 
     @reservations.each do |reservation|
       if reservation.daterange_within_reservation?(start_date, end_date)
-        unavailable_rooms << reservation.room_num
+        unavailable_rooms << reservation.room
       end
     end
-    
+
     return ([*1..20] - unavailable_rooms)
   end
 
+  def book_reservation(room, start_date, end_date)
 
+    unless available_rooms(start_date, end_date).includes?(room)
+      raise StandardError, "Room is not available for these dates."
+    end
+
+    reservation = Hotel::Reservation.new(room, start_date, end_date)
+    @reservations << reservation
+    return reservation
+  end
 end
 end
