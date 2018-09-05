@@ -7,8 +7,8 @@ require_relative 'spec_helper.rb'
 
 describe "Reservation" do
   before do
-    @start_date = "2019-02-01"
-    @end_date = "2019-02-05"
+    @start_date = Date.parse("2019-02-01")
+    @end_date = Date.parse("2019-02-05")
     @reservation = Hotel::Reservation.new(@start_date, @end_date, Hotel::Room.new(1))
   end
 
@@ -18,11 +18,11 @@ describe "Reservation" do
     end
 
     it "has a start date" do
-      expect(@reservation.checkin_date).must_equal Date.parse(@start_date)
+      expect(@reservation.checkin_date).must_equal @start_date
     end
 
     it "has an end date" do
-      expect(@reservation.checkout_date).must_equal Date.parse(@end_date)
+      expect(@reservation.checkout_date).must_equal @end_date
     end
 
     it "has a room assigned" do

@@ -32,7 +32,7 @@ describe "Room class" do
 
   describe "Room#reserve" do
     before do
-      @room.reserve("2019-01-02", "2019-01-07")
+      @room.reserve(Date.parse("2019-01-02"), Date.parse("2019-01-06"))
     end
 
     it "changes a room's status for specified dates only to unavailable" do

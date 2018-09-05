@@ -8,9 +8,9 @@ module Hotel
   class Reservation
     attr_reader :checkin_date, :checkout_date, :nights, :nightly_rate, :room
 
-    def initialize(start_date, end_date, room)
-      @checkin_date = Date.parse(start_date)
-      @checkout_date = Date.parse(end_date)
+    def initialize(checkin_date, checkout_date, room)
+      @checkin_date = checkin_date
+      @checkout_date = checkout_date
       @nights = checkout_date - checkin_date
       @nightly_rate = 200
       @room = room

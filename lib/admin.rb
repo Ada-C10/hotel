@@ -17,19 +17,41 @@ module Hotel
     # Makes a reservation by 1. finding an available room,
     # 2. updating its availability, 3. creating a new Reservation that has
     # that room, 4. returning that new Reservation
-    def make_reservation(start_date, end_date = nil)
+    def make_reservation(arrive, depart)
+      checkin_date = Date.parse(arrive)
+      checkout_date = Date.parse(depart)
+      valid_dates?(checkin_date, checkout_date) # check dates
+      room = assign_room(checkin_date, checkout_date) # check availability and return available room
+      return Reservation.new(checkin_date, checkout_date, room) # create res
+    end
+
+    # raises ArgumentError if dates invalid
+    def valid_dates?(checkin_date, checkout_date)
+      if checkin_date > checkout_date
+        raise ArgumentError, "Check-in date must be before check-out date."
+      else
+        return true
+      end
+    end
+
+    # raises ArgumentError if dates invalid
+    def assign_room(checkin_date, checkout_date)
       available_rooms = rooms.select { |room|
-        room.is_available?(start_date, end_date)
+        room.is_available?(checkin_date, checkout_date.prev_day)
       }
-      if available_rooms.length >= 1
-        available_rooms.first.reserve(start_date, end_date)
-        return Reservation.new(start_date, end_date, available_rooms.first)
+      if available_rooms.empty?
+        raise NoRoomsAvailableError, "No rooms available from #{checkin_date} to #{checkout_date}."
+      else
+        return available_rooms.first.reserve(checkin_date, checkout_date.prev_day)
       end
     end
 
     def list_reservations(date)
-      return rooms.select { |room| !room.is_available?(date) }
+      return rooms.select { |room| !room.is_available?(date, date) }
     end
 
+  end
+
+  class NoRoomsAvailableError < StandardError
   end
 end

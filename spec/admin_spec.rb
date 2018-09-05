@@ -26,7 +26,7 @@ describe "Admin" do
 
   describe "Admin#make_reservation" do
     it "returns a Reservation" do
-      expect(@admin.make_reservation("2019-01-01")).must_be_instance_of Hotel::Reservation
+      expect(@admin.make_reservation("2019-01-01", "2019-01-02")).must_be_instance_of Hotel::Reservation
     end
 
     it "assigns a room to the Reservation" do
@@ -34,10 +34,24 @@ describe "Admin" do
     end
 
     it "updates the assigned room's availability" do
-      expect(@admin.rooms[2].is_available?("2019-01-01")).must_equal true
+      expect(@admin.rooms[2].is_available?(Date.parse("2019-01-01"), Date.parse("2019-01-01"))).must_equal true
 
       res3 = @admin.make_reservation("2019-01-01", "2019-01-03")
-      expect(@admin.rooms[2].is_available?("2019-01-01")).must_equal false
+      expect(@admin.rooms[2].is_available?(Date.parse("2019-01-01"), Date.parse("2019-01-01"))).must_equal false
+    end
+
+    it "raises an exception if provided end date before start date" do
+      expect{
+        @admin.make_reservation("2019-01-04", "2019-01-01")
+      }.must_raise ArgumentError
+    end
+
+    it "raises an exception if no rooms are available for dates selected" do
+      expect{
+        21.times do
+          @admin.make_reservation("2019-01-01", "2019-01-04")
+        end
+      }.must_raise Hotel::NoRoomsAvailableError
     end
   end
 
