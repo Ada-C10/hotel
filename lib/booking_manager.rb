@@ -41,12 +41,19 @@ module Hotel
       @rooms
     end
 
-    # Method to add a reservation to list of reservations
-    # def add_reservation(reservation)
-    #   @reservations << reservation
-    # end
+  # Method to add a reservation to list of reservations
+    def add_reservation(reservation)
+      @reservations << reservation
+    end
 
     # Method to get total cost of reservation
+
+    # Method to check room availability here? Or in room?
+    # when check if something is available
+    # search through reservations for room with nil -> reserve
+    # if none with nil, search from beginning for date with specific dates.
+    # if found, move to next room to check.
+    # do rooms have a list of reserved dates? or no knowledge of dates? 
 
   end # of class BookingManager
 end # of module Hotel
