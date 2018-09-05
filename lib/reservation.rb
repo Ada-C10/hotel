@@ -3,17 +3,12 @@ require 'pry'
 
 class Reservation
 
-  #input is start, end, and room#
-  #output is instance of this reservation class (a hash with start, end, room#, and cost)
+  attr_reader :start_date, :end_date, :room
 
-  attr_reader :start_date, :end_date, :available_room
-
-  def initialize (start_date, end_date, available_room)
-  #warning: parentheses after method name is interpreted as an argument list, not a decomposed argument???
-
+  def initialize (start_date, end_date, room)
     @start_date = start_date
     @end_date = end_date
-    @available_room = available_room
+    @room = room
     @reservation_duration = reservation_duration
     @cost = cost
   end
