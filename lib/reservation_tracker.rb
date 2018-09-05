@@ -31,7 +31,13 @@ class ReservationTracker
       end
     end
 
-    return ([*1..20] - unavailable_rooms)
+    @blocks.each do |block|
+      if block.daterange_within_block?(start_date, end_date)
+        unavailable_rooms << reservation.room
+      end
+    end
+
+    return ([*1..20] - unavailable_rooms.uniq)
   end
 
   def book_reservation(room, start_date, end_date)

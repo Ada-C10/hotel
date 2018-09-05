@@ -48,6 +48,9 @@ class RoomBlock
     return @rooms - @reservations.map{ |reservation| reservation.room }
   end
 
+  def daterange_within_block?(start_date, end_date)
+    return (start_date >= @start_date && start_date < @end_date) || (end_date >= @start_date && end_date < @end_date)
+  end
 
 end
 end

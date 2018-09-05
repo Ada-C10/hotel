@@ -151,7 +151,5 @@ describe 'reservation_tracker class' do
       @hotel.create_block([*1..5], Date.new(2018,9,17), Date.new(2018,9,20))
       @hotel.book_block_reservation(3, Date.new(2018,9,17), Date.new(2018,9,20))
     end
-
-    
   end
 end
