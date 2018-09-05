@@ -2,7 +2,7 @@ require 'time'
 require 'date'
 
 class ReservationTracker
-  attr_reader :all_rooms
+  attr_reader :all_rooms, :all_reservations
 
   def initialize()
     @all_rooms = []
@@ -44,8 +44,8 @@ class ReservationTracker
       if room_status.all?
         available_rooms << room
       end
-
     end
+    return available_rooms
   end
 
   def format_date(date_string)
