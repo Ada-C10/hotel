@@ -33,24 +33,24 @@ describe "Hotel Manager class" do
     end
   end
 
-  describe 'find_room method' do
-    before do
-      @hotel = Hotel_Manager.new
-    end
-
-    it 'returns an instance of Room' do
-      expect(@hotel.find_room(1)).must_be_kind_of Room
-      expect(@hotel.find_room(20)).must_be_kind_of Room
-      # binding.pry
-    end
-
-    it 'must be a valid room number 1-20' do
-      VALID_ROOM_NUMBERS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
-      @hotel.rooms.each do |room|
-        expect(VALID_ROOM_NUMBERS.include?(room.room_number)).must_equal true
-      end
-    end
-  end
+  # describe 'find_room method' do
+  #   before do
+  #     @hotel = Hotel_Manager.new
+  #   end
+  #
+  #   it 'returns an instance of Room' do
+  #     expect(@hotel.find_room(1)).must_be_kind_of Room
+  #     expect(@hotel.find_room(20)).must_be_kind_of Room
+  #     # binding.pry
+  #   end
+  #
+  #   it 'must be a valid room number 1-20' do
+  #     VALID_ROOM_NUMBERS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
+  #     @hotel.rooms.each do |room|
+  #       expect(VALID_ROOM_NUMBERS.include?(room.room_number)).must_equal true
+  #     end
+  #   end
+  # end
 
   describe 'reserve_room method' do
     before do
@@ -62,7 +62,24 @@ describe "Hotel Manager class" do
 
       expect(@hotel.hotel_reservations).must_be_kind_of Array
     end
-
   end
 
+  describe 'list_reservations method' do
+    before do
+      @hotel = Hotel_Manager.new
+      @date = Date.new(2018, 6, 8)
+      @reserve1 = @hotel.reserve_room("Dr. Frankenstein", 6, Date.new(2018, 6, 6), Date.new(2018, 6, 9))
+      @reserve2 = @hotel.reserve_room("Mx. Mummy", 3, Date.new(2018, 6, 6), Date.new(2018, 6, 12))
+      @reservations = [@reserve1, @reserve2]
+    end
+
+    it 'returns an array of all reservations for that date' do
+
+      expect(@hotel.list_reservations(@date)).must_be_kind_of Array
+
+      @hotel.list_reservations(@date).each do |reservation|
+        expect(@reservations.include?(reservation)).must_equal true
+      end
+    end
+  end
 end

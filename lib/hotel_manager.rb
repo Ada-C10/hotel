@@ -25,9 +25,9 @@ class Hotel_Manager
     return @rooms
   end
 
-  def find_room(find_room_number)
-    return @rooms.find { |room| room.room_number == find_room_number }
-  end
+  # def find_room(find_room_number)
+  #   return @rooms.find { |room| room.room_number == find_room_number }
+  # end
 
   def load_rooms
     rooms = []

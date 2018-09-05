@@ -55,10 +55,9 @@ describe 'reservation class' do
         check_out_date: Date.new(2020,9,13),
       }
       @reservation = Reservation.new(input)
-      @nights = [Date.new(2020,9,9), Date.new(2020,9,10), Date.new(2020,9,11), Date.new(2020,9,12)]
     end
     #
-    it 'generates an array of all nights in a reservation' do
+    it 'generates an array of all nights in a reservation without including the checkout date' do
       @nights = [Date.new(2020,9,9), Date.new(2020,9,10), Date.new(2020,9,11), Date.new(2020,9,12)]
 
       expect(@reservation.nights_of_stay).must_be_kind_of Array
