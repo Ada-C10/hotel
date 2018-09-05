@@ -127,4 +127,46 @@ describe 'reservation_tracker class' do
       ).must_equal([20])
     end
   end
+
+  describe 'book_reservation' do
+    before do
+      @hotel.add_reservation(Hotel::Reservation.new(1, Date.new(2018,7,4), Date.new(2018,7,8)))
+      @hotel.add_reservation(Hotel::Reservation.new(1, Date.new(2018,8,4), Date.new(2018,8,5)))
+      @hotel.add_reservation(Hotel::Reservation.new(2, Date.new(2018,6,4), Date.new(2018,7,7)))
+    end
+
+    it 'raises error if date is not in correct format' do
+      expect{
+        @hotel.book_reservation(1, '20180503', Date.new(2018,5,9))
+      }.must_raise(ArgumentError)
+      expect{
+        @hotel.book_reservation(1, Date.new(2018,5,9), '20180503')
+      }.must_raise(ArgumentError)
+    end
+
+    it 'raises error if room is unavailable' do
+      expect{
+        @hotel.book_reservation(1, Date.new(2018,7,7), Date.new(2018,7,10))
+      }.must_raise(StandardError)
+      expect{
+        @hotel.book_reservation(2, Date.new(2018,5,1), Date.new(2018,6,4))
+      }.must_raise(StandardError)
+    end
+
+    it 'successful book returns reservation with matching dates' do
+      reservation = @hotel.book_reservation(5, Date.new(2018,7,7), Date.new(2018,7,10))
+
+      expect( reservation ).must_be_instance_of(Hotel::Reservation)
+      expect( reservation.start_date ).must_equal(Date.new(2018,7,7))
+      expect( reservation.end_date ).must_equal(Date.new(2018,7,10))
+
+    end
+
+    it 'successful book increases total reservations array by one' do
+      initial_reservations = @hotel.reservations.length
+      reservation = @hotel.book_reservation(5, Date.new(2018,7,7), Date.new(2018,7,10))
+
+      expect( @hotel.reservations.length - initial_reservations).must_equal(1)
+    end
+  end
 end

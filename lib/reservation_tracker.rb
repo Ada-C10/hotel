@@ -51,7 +51,11 @@ class ReservationTracker
 
   def book_reservation(room, start_date, end_date)
 
-    unless available_rooms(start_date, end_date).includes?(room)
+    unless start_date.is_a?(Date) && end_date.is_a?(Date)
+      raise ArgumentError, "Invalid date format"
+    end
+
+    unless available_rooms(start_date, end_date).include?(room)
       raise StandardError, "Room is not available for these dates."
     end
 
