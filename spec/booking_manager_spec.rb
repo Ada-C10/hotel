@@ -63,8 +63,15 @@ describe "BookingManager class" do
 
   describe "list_reservations method" do
     it "returns an array" do
-      hotel_rooms = Hotel::BookingManager.new(5)
+      hotel_rooms = Hotel::BookingManager.new(7)
       expect(hotel_rooms.list_reservations).must_be_kind_of Array
+    end
+  end
+
+  describe "list_rooms method" do
+    it "returns an array" do
+      hotel_rooms = Hotel::BookingManager.new(5)
+      expect(hotel_rooms.list_rooms).must_be_kind_of Array
     end
   end
 
