@@ -5,7 +5,7 @@ class Room
   attr_reader :room_number, :dates_booked
 
   def initialize(room_number)
-    @room_number = room_number
+    @room_number = room_number.to_i
     @dates_booked = []
   end
 
