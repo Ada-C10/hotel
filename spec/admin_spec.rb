@@ -79,6 +79,17 @@ describe "Booking" do
       end
     end
 
+    describe "reservation_cost" do
+      it "accurately calculates cost of reservation" do
+        hotel = Admin.new
+        reserve1 = hotel.request_reservation("2018-12-09", "2018-12-15")
+        # binding.pry
+        cost = hotel.reservation_cost(reserve1)
+
+        cost.must_equal 1200
+      end
+    end
+
   end
 
 end

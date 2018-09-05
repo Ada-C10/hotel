@@ -1,4 +1,5 @@
 require_relative 'spec_helper'
+require 'pry'
 
 describe "Reservation" do
   describe "initialize" do
@@ -9,6 +10,7 @@ describe "Reservation" do
     it "Create an instance of reservation" do
       reservation = Reservation.new(7, "4-17-2018", "4-20-2018")
       reservation.must_be_kind_of Reservation
+      # binding.pry
     end
 
     it "keeps track of ID" do

@@ -9,7 +9,7 @@ class Reservation
     #add rooms_needed to def initialize
     # cost?
     # rooms_needed
-    @id = id
+    @id = id 
     @start_date = start_date
     @end_date = end_date
     #add itself to reservation list
