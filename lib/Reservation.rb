@@ -1,7 +1,7 @@
 require 'date'
 require 'pry'
 ### does it need room? ###
-require_relative "Room"
+# require_relative "Room"
 require_relative 'Booking'
 
 class Reservation
@@ -19,9 +19,10 @@ class Reservation
     @check_out = check_out
     @cost_per_night = cost_per_night
     @total = reservation_cost
-     
+
   end
 
+  # Should this be in date? 
   def number_of_days_reserved
     return (check_out - check_in).to_i
   end

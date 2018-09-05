@@ -10,6 +10,7 @@ describe "booking manager" do
   describe "Initialize" do
     it "can create an instance of booking manager" do
       booking_manager = Booking.new
+      expect(booking_manager).kind_of? Booking
     end
 
     it "has a rooms array" do
@@ -39,11 +40,12 @@ describe "booking manager" do
     end
 
     it "Is able to list reservations for a date" do
+      skip
       # Adding a reservation to @manager
       @manager.add_reservation(1, Date.new(2018, 9, 1), Date.new(2018, 9, 2))
       @manager.add_reservation(2, Date.new(2018, 9, 1), Date.new(2018, 9, 2))
       # Checking length of returned array
-      binding.pry
+      # binding.pry
       # expect(@manager.list_reservations_for_date(Date.new(2018, 9, 1)).length).must_equal 2
 
     end
