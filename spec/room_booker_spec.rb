@@ -1,19 +1,18 @@
-require_relative '../lib/room_booker'
 require_relative 'spec_helper.rb'
 
 describe 'Wave 1' do
   before do
     @hotel = BookingLogic::RoomBooker.new
 
-    # room_id = 14
-    # check_in = Date.new(2018, 4, 1)
-    # check_out = Date.new(2018, 4, 2)
-    # @reservation1 = @hotel.new_reservation(room_id, check_in, check_out)
-    #
-    # room_id2 = 15
-    # check_in2 = Date.new(2018, 4, 3)
-    # check_out2 = Date.new(2018, 4, 6)
-    # @reservation2 = hotel.new_reservation(room_id2, check_in2, heck_out2)
+    room_id1 = 14
+    check_in1 = Date.new(2018, 4, 1)
+    check_out1 = Date.new(2018, 4, 2)
+    @reservation1 = @hotel.new_reservation(room_id1, check_in1, check_out1)
+
+    room_id2 = 15
+    check_in2 = Date.new(2018, 4, 3)
+    check_out2 = Date.new(2018, 4, 6)
+    @reservation2 = @hotel.new_reservation(room_id2, check_in2, check_out2)
   end
 
   describe 'list_rooms method' do
@@ -25,8 +24,7 @@ describe 'Wave 1' do
 
   describe 'new_reservation method' do
     it 'adds a new reservation to master collection' do
-      expect(@hotel.reservations.last).must_be_instance_of Reservation
-      expect(@hotel.reservations.last).must_equal @reservation
+      expect(@hotel.reservations.first).must_be_instance_of BookingLogic::Reservation
     end
   end
 
