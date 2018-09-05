@@ -23,4 +23,29 @@ describe "Room in Wave 1" do
         }.must_raise ArgumentError
     end
   end
+
+  describe "#add_reservation" do
+    before do
+      @room_1 = Room.new(3)
+      @reservation_1 = Reservation.new(123, "Mike Smith", Date.new(2018,10,4), Date.new(2018,10,7))
+    end
+
+    it "throws an argument error if reservation is not provided" do
+
+      expect{ @room_1.add_reservation('') }.must_raise ArgumentError
+    end
+
+    it "will throw ArgumentError if attemps to add reservation objects to the reservation array more than once" do
+
+      @room_1.add_reservation(@reservation_1)
+      expect{ @room_1.add_reservation(@reservation_1) }.must_raise ArgumentError
+    end
+
+
+    it "increases the reservation count by one" do
+      previous = @room_1.reservations.length
+      @room_1.add_reservation(@reservation_1)
+      expect(@room_1.reservations.length).must_equal previous + 1
+    end
+  end
 end
