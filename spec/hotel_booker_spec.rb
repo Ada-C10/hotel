@@ -53,6 +53,10 @@ describe 'HotelBooker class' do
     it 'raises an error when given invalid dates' do
       expect{hotel_booker.reserve_a_room(Date.today + 1, Date.today - 4)}.must_raise ArgumentError
     end
+
+    it 'reserves the first available room for the given date range' do
+      expect(hotel_booker.reserve_a_room(Date.today + 1, Date.today + 2).room_num).must_equal 2
+    end
   end
 
   describe 'get_reservations_by_date method' do
@@ -91,6 +95,9 @@ describe 'HotelBooker class' do
       expect(hotel_booker.list_available_rooms(Date.today + 7)).must_equal all_rooms
     end
 
-    it 'raises an error if given an invalid date'
+    it 'raises an error if given an invalid date' do
+      expect{hotel_booker.list_available_rooms("Not a Date")}.must_raise ArgumentError
+    end
+
   end
 end
