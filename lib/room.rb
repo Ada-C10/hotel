@@ -12,6 +12,12 @@ module Hotel
       @room_num = room_num
       @room_reservations = room_reservations
     end
-  end
 
+    def get_reservations_by_date(date)
+      return @room_reservations.select do |reservation|
+        reservation.date_range.is_within_date_range(date)
+      end
+    end
+
+  end
 end

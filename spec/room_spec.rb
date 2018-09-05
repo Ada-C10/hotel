@@ -1,18 +1,20 @@
 require_relative 'spec_helper'
 
 describe 'Room class' do
+
+  let (:reservations) {
+    check_in = Date.today + 1
+    check_out = check_in + 3
+    reservation_1 = Hotel::Reservation.new(check_in, check_out, 1)
+
+    check_in = Date.today + 2
+    check_out = check_in + 5
+    reservation_2 = Hotel::Reservation.new(check_in, check_out, 2)
+
+    [reservation_1, reservation_2]
+  }
+
   describe 'Room instantiation' do
-    let (:reservations) {
-      check_in = Date.today + 1
-      check_out = check_in + 3
-      reservation_1 = Hotel::Reservation.new(check_in, check_out, 1)
-
-      check_in = Date.today + 2
-      check_out = check_in + 5
-      reservation_2 = Hotel::Reservation.new(check_in, check_out, 2)
-
-      [reservation_1, reservation_2]
-    }
 
     it 'creates an instance of room' do
       expect(Hotel::Room.new(1)).must_be_instance_of Hotel::Room
@@ -28,5 +30,12 @@ describe 'Room class' do
       expect(room.room_reservations).must_equal reservations
     end
   end
-  
+
+  describe 'get_reservations_by_date method' do
+    it 'returns an array of reservations on this room for the given date' do
+      room = Hotel::Room.new(1, room_reservations: reservations)
+      expect(room.get_reservations_by_date(Date.today + 2)).must_equal reservations
+      expect(room.get_reservations_by_date(Date.today + 1)).must_equal [reservations[0]]
+    end
+  end
 end
