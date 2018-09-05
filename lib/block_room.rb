@@ -23,4 +23,7 @@ class BlockRoom
     @rooms_blocked = []
   end
 
+  # def add_room_to_block(room_num)
+  # end
+
 end
