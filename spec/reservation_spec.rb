@@ -1,8 +1,5 @@
 require_relative 'spec_helper'
 
-require 'room'
-require 'date'
-
 describe "Reservation" do
   before do
     @reservation = Hotel::Reservation.new(Hotel::Room.new(1),"2019-08-08" , "2019-08-10")
