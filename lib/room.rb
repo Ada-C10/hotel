@@ -1,9 +1,11 @@
 class Room
-  attr_reader :room_num, :cost, :availability
+  attr_reader :room_num, :cost, :reservations
 
   def initialize(room_num, cost = 200)
     @room_num = room_num
     @cost = cost
-    @availabiity = []
+    @reservations = []
   end
+
+
 end
