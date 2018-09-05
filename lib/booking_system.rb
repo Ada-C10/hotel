@@ -1,7 +1,8 @@
 module Hotel
   class BookingSystem
-    # def load_reservations
-    #
-    # end
+    def find_reservations(search_date)
+
+
+    end
   end
 end

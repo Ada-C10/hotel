@@ -14,10 +14,10 @@ module Hotel
 
       @id = id # reservation id
       @guest_name = guest_name # name of guest holding reservation
-      @included_rooms = [] # array - list of rooms booked for reservation
+      @included_rooms = included_rooms # array - list of rooms booked for reservation
       @rsv_start = Date.parse(rsv_start) # reservation start date
       @rsv_end = Date.parse(rsv_end) # reservation end data
-      @total_cost = total_cost
+      @total_cost = total_cost.to_f
       # TODO: implement booking type for standard vs block booking ??? hmm
       # @booking_type = booking_type # :STANDARD, :BLOCK
     end
@@ -26,12 +26,15 @@ module Hotel
     def self.all_reservations
       all_reservations = []
       reservations = CSV.open('data/reservations.csv', 'r', headers: true).map {|line| line.to_h}
-      binding.pry
+      # binding.pry
       reservations.each do |reservation|
-        all_reservations << Reservation.new(reservation[id], reservation[guest_name],
-                        reservation[included_rooms], reservation[rsv_start],
-                        reservation[rsv_end], reservation[total_cost])
+        # binding.pry
+        all_reservations << Reservation.new(reservation['id'], reservation['guest_name'],
+                        (reservation['included_rooms']).split(';').map {|s| s.to_i}, reservation['rsv_start'],
+                        reservation['rsv_end'], reservation['total_cost'])
       end
+      # binding.pry
+      return all_reservations
     end
 
   end #class end
