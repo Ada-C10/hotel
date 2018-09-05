@@ -24,20 +24,26 @@ class Booking
   end
 
   # TODO Can reserve a room for a given date range
+    def create_reservation(room_number, check_in, check_out)
+      return Reservation.new(room_number, check_in, check_out)
+    end
+
+    def add_reservation(room_number, check_in, check_out)
+      # create reservation
+      reservation = create_reservation(room_number, check_in, check_out)
+      # find room (method)
+      room = find_room(room_number)
+      # push reservation into room
+      room.reservations << reservation
+    end
 
   # TODO Can access the list of reservations for given date
+  
 
   # TODO Can get the total cost for a given reservation
 
   # TODO Can view a list of rooms that are not reserved for a given date range
 
   # TODO Can reserve an available room for a given date range
-
-
-  def add_reservation
-    # Adds reservation to rooms array of reservations
-    # Validate if room has availability for the date range given
-    # Can add a reservation check in on days where another person is checking out
-  end
 
 end

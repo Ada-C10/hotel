@@ -25,11 +25,25 @@ describe "booking manager" do
       expect(@manager.find_room(1)).must_equal @manager.rooms.first
     end
 
-    it "Adds a reservation if a valid reservation is made" do
-      # @manager.add_reservation(Reservation.new(1, Date.new(2018, 9, 1), Date.new(2018, 9, 2))
+    it "Creates a reservation instance" do
+      expect(@manager.create_reservation(1, Date.new(2018, 9, 1), Date.new(2018, 9, 2))).kind_of? Reservation
+    end
+
+    it "Adds a reservation to the room" do
+      @manager.add_reservation(1, Date.new(2018, 9, 1), Date.new(2018, 9, 2))
       # Creates an instance of reservation (own method)
       # Accesses self.rooms/ Finds associated room via room_number (own method)
       # Pushing reservation into room's array(end result of add_reservation)
+      expect(@manager.rooms.first.reservations.length).must_equal 1
+    end
+
+    it "Can access list of reservations for a given date" do
+      # Add a reservation for a date
+      @manager.add_reservation(1, Date.new(2018, 9, 1), Date.new(2018, 9, 2))
+      @manager.add_reservation(2, Date.new(2018, 9, 1), Date.new(2018, 9, 2))
+
+      # Test to see if list returns both reservations for 9-1-18
+      
     end
 
     it "Has an error if attempting to book a reserved room" do
