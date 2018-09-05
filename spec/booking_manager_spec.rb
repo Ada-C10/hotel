@@ -18,19 +18,25 @@ describe "BookingManager class" do
 
   describe "Populate Room List method" do
     it "creates an array of Room instances" do
-      hotel_rooms = Hotel::BookingManager.new(10)
-      first_room = hotel_rooms.rooms.first
-      last_room = hotel_rooms.rooms.last
+      # hotel_rooms = Hotel::BookingManager.new(10)
+      # first_room = hotel_rooms.rooms.first
+      # last_room = hotel_rooms.rooms.last
+      #
+      # expect(first_room).must_be_instance_of Hotel::Room
+      # expect(last_room).must_be_instance_of Hotel::Room
 
-      expect(first_room).must_be_instance_of Hotel::Room
-      expect(last_room).must_be_instance_of Hotel::Room
+      ## Changed to assertions that explicitly call method
+      new_rooms = Hotel::BookingManager.new(10)
+      expect(new_rooms.populate_room_list(10)).must_be_kind_of Array
+      expect(new_rooms.populate_room_list(10).first).must_be_instance_of Hotel::Room
+      expect(new_rooms.populate_room_list(10).last).must_be_instance_of Hotel::Room
     end # of array Room instance it
 
     it "assigns numbers to rooms consecutively as instantiated" do
       x = 15
       hotel_rooms = Hotel::BookingManager.new(x)
-      first_room = hotel_rooms.rooms.first
-      last_room = hotel_rooms.rooms.last
+      first_room = hotel_rooms.populate_room_list(x).first
+      last_room = hotel_rooms.populate_room_list(x).last
 
       expect(first_room.number).must_equal 1
       expect(last_room.number).must_equal x
