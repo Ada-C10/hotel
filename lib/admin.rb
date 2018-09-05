@@ -23,12 +23,12 @@ class Admin
     return reservations
   end
 
-  def sort_reservations
-    @reservations.sort_by { |object| object.start_time }
-  end
-
   def find_reservation(date)
     @reservations.select {|instance| instance.start_time == start_time || instance.end_time == end_time}
   end
-
+  
+  private
+  def sort_reservations
+    @reservations.sort_by { |object| object.start_time }
+  end
 end
