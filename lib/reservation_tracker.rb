@@ -15,16 +15,8 @@ class ReservationTracker
     @reservations << reservation
   end
 
-  def sortby_startdate
-    @reservations.sort_by!{ |reservation| reservation.start_date }
-  end
-
   def list_rooms
     return [*1..20]
-  end
-
-  def select_room
-    return 1
   end
 
   def reservations_during_date(date)
