@@ -14,18 +14,18 @@ module Hotel
       raise ArgumentError.new("Start date must be before end date") if @end_date < @start_date
     end
 
-    def reservation_period
+    def date_range
       reservation_period = (@start_date...@end_date)
+      return date_range
+    end
+
+    def reservation_period
+      reservation_period = ((@end_date - 1) - @start_date).to_i
       return reservation_period
     end
 
-    def duration
-      duration = ((@end_date - 1) - @start_date).to_i
-      return duration
-    end
-
     def calculate_cost
-      cost = RATE_PER_NIGHT * duration
+      cost = RATE_PER_NIGHT * reservation_period
     end
   end
 end
