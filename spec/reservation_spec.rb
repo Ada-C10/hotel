@@ -36,4 +36,22 @@ describe "Reservation in Wave 1" do
         }.must_raise ArgumentError
     end
   end
+
+  describe "#dates_booked" do
+    before do
+      @end_date = Date.new(2018,10,6)
+      @rsv_2 = Reservation.new(@id, @customer_name, @start_date, @end_date)
+    end
+    it "returns an array" do
+      expect(@rsv_2.dates_booked).must_be_kind_of Array
+    end
+    it "returns an array of date" do
+      expect(@rsv_2.dates_booked.first).must_be_kind_of Date
+      expect(@rsv_2.dates_booked.first).must_equal @start_date
+    end
+
+    it "end_date should not be included into the array" do
+      expect(@rsv_2.dates_booked.include?@end_date).must_equal false
+    end
+  end
 end

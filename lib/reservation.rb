@@ -16,5 +16,13 @@ class Reservation
     end
   end
 
-
+  def dates_booked
+    result = []
+    date_enter = @start_date
+    while date_enter < @end_date
+      result << date_enter
+      date_enter += 1
+    end
+    return result
+  end
 end
