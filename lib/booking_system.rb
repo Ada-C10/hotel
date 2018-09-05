@@ -29,6 +29,7 @@ module Hotel
       return all_rooms_str
     end
 
+# QUESTION: is this necessary??
     def create_reservation(input)
       room = find_room(input[:room_num])
       # start_date = input[:start_date]
@@ -39,7 +40,6 @@ module Hotel
         room: room,
         start_date: input[:start_date],
         end_date: input[:end_date],
-        cost: input[:cost] #QUESTION: needed??
       }
 
       new_reservation = Reservation.new(reservation_hash)
@@ -68,7 +68,7 @@ module Hotel
     end
 
     def find_room(room_num)
-      return @rooms.find {|room| room.num == room_num}
+      return @rooms.find {|room| room.num == room_num.to_i}
     end
 
   end

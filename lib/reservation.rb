@@ -10,6 +10,7 @@ module Hotel
       @start_date = Date.parse(input[:start_date])
       @end_date = Date.parse(input[:end_date])
       @daily_rate = input[:daily_rate]
+      @cost = input[:cost] ? input[:cost] : 200
     end
 
     def dates_reserved()

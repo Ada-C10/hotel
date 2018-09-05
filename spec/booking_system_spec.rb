@@ -58,9 +58,6 @@ describe "BookingSystem class" do
       # num = 4
       # room_obj = booking_system.find_room(num)
 
-      puts room_num
-      puts room_obj
-
       expect(room_obj).must_be_kind_of Hotel::Room
       expect(room_obj.num).must_equal room_num
     end
@@ -72,9 +69,9 @@ describe "BookingSystem class" do
     # let(:room_obj) {booking_system.find_room(room_num)}
     let(:reservation_hash) {{
       id: "5",
-      room: "10",
-      start_date: "2010, 8, 6",
-      end_date: "2010, 8, 10"
+      room_num: "10",
+      start_date: "2010-8-6",
+      end_date: "2010-8-10",
       }}
     let(:new_reservation) {booking_system.create_reservation(reservation_hash)}
 
@@ -85,7 +82,7 @@ describe "BookingSystem class" do
     it "loaded reservation details properly" do
       # QUESTION: should i test values or types? in rideshare, seems like mostly type was tested....
       expect(new_reservation.id).must_equal 5
-      expect(new_reservation.room.num).must_equal 4
+      expect(new_reservation.room.num).must_equal 10
       expect(new_reservation.start_date).must_be_kind_of Date
       expect(new_reservation.end_date).must_be_kind_of Date
       expect(new_reservation.cost).must_equal 200

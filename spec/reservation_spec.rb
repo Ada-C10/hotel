@@ -16,6 +16,7 @@ describe "Reservation" do
   # TODO: test cost as float?
   # TODO: test id as any pos int
   # TODO: test room_num as 1-20
+  # TODO: test cost nil or 200 or other value
   # QUESTION: let vs before/do --> preference and use case diff?
   let(:start_date) {Date.new(2004, 7, 1)}
   let(:end_date) {Date.new(2004, 7, 4)}
