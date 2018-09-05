@@ -11,7 +11,13 @@ class Room
     else
       raise ArgumentError.new("Invalid room number")
     end
-
   end
+
+def self.all
+
+end
+
+
+
 #
 end
