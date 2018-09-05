@@ -1,6 +1,6 @@
 require 'date'
-require 'booking'
-require 'room'
+require 'admin'
+
 
 class Reservation
   attr_reader :id, :start_date, :end_date
@@ -12,8 +12,13 @@ class Reservation
     @id = id
     @start_date = start_date
     @end_date = end_date
+    #add itself to reservation list
+
   end
+  #reserves room by selecting first available room for now
+
 end
 
-def select_room
-end
+
+#find reservations for a specific date
+#I can get total cost for reservation
