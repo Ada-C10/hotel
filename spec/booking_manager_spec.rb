@@ -33,36 +33,39 @@ describe "Hotel Manager class" do
     end
   end
 
-  # describe 'find_room method' do
-  #   before do
-  #     @hotel = Booking_Manager.new
-  #   end
-  #
-  #   it 'returns an instance of Room' do
-  #     expect(@hotel.find_room(1)).must_be_kind_of Room
-  #     expect(@hotel.find_room(20)).must_be_kind_of Room
-  #     # binding.pry
-  #   end
-  #
-  #   it 'must be a valid room number 1-20' do
-  #     VALID_ROOM_NUMBERS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
-  #     @hotel.rooms.each do |room|
-  #       expect(VALID_ROOM_NUMBERS.include?(room.room_number)).must_equal true
-  #     end
-  #   end
-  # end
-
-  describe 'reserve_room method' do
+  describe 'find_room_number method' do
     before do
       @hotel = Booking_Manager.new
     end
 
-    it 'adds a reservation to the array of all reservations' do
-      @hotel.reserve_room("Dr. Frankenstein", 6, Date.new(2018, 6, 6), Date.new(2018, 6, 9))
-
-      expect(@hotel.hotel_reservations).must_be_kind_of Array
+    it 'returns an instance of Room' do
+      expect(@hotel.find_room_number(1)).must_be_kind_of Room
+      expect(@hotel.find_room_number(20)).must_be_kind_of Room
+      # binding.pry
     end
 
+    it 'must be a valid room number 1-20' do
+      VALID_ROOM_NUMBERS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
+      @hotel.rooms.each do |room|
+        expect(VALID_ROOM_NUMBERS.include?(room.room_number)).must_equal true
+      end
+    end
+  end
+
+  describe 'reserve_room method' do
+    before do
+      @hotel = Booking_Manager.new
+      @input = { name: "Dr. Frankenstein",
+        room_number: 6,
+        check_in: Date.new(2018, 6, 6),
+        check_out: Date.new(2018, 6, 9)
+      }
+    end
+
+    it 'adds a reservation to the array of all reservations' do
+      @hotel.reserve_room(@input)
+      expect(@hotel.hotel_reservations[0].name).must_equal "Dr. Frankenstein"
+    end
   end
 
   describe 'list_reservations method' do

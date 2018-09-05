@@ -13,14 +13,17 @@ class Booking_Manager
     @hotel_reservations = []
   end
 
-  def reserve_room(name, room_number, check_in, check_out)
-    reserve = { name: name,
-      room_number: room_number,
-      check_in_date: check_in,
-      check_out_date: check_out
+  def reserve_room(input)
+
+    connected_room_number = find_room_number(input[:room_number])
+    
+    reserve = { name: input[:name],
+      room_number: connected_room_number,
+      check_in_date: input[:check_in],
+      check_out_date: input[:check_out]
     }
     reservation = Reservation.new(reserve)
-    connect_reservation_to_room(room_number, reservation)
+    connected_room_number.reservations << reservation
     @hotel_reservations << reservation
   end
 
@@ -37,12 +40,12 @@ class Booking_Manager
   end
 
 
-  # def find_room(find_room_number)
-  #   return @rooms.find { |room| room.room_number == find_room_number }
-  # end
+  def find_room_number(find_room_number)
+    return @rooms.find { |room| room.room_number == find_room_number }
+  end
 
   def connect_reservation_to_room(room_number, reservation)
-    
+      room_number.reservations << reservation
   end
 
   def load_rooms
