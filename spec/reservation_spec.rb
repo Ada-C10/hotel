@@ -73,7 +73,7 @@ describe 'reservation class' do
     end
 
     it 'raises an Error if the the check out date is before the check in date date' do
-       expect { @reservation2 = Reservation.new(@input2)}.must_raise ArgumentError
+       expect {Reservation.new(@input2)}.must_raise ArgumentError
     end
   end
 end
