@@ -1,4 +1,5 @@
-require 'date'
+require_relative 'hotel_helper'
+require 'pry'
 
 # class HotelManager retrieves and saves information about rooms and reservations
 module Hotel
@@ -14,10 +15,15 @@ module Hotel
     end
 
     # As an administrator, I can reserve a room for a given date range
-    def reserve(check_in, check_out, room_number)
+    def reserve(room_number, check_in, check_out)
       new_reservation = Hotel::Reservation.new(room_number, check_in, check_out)
 
-      @reservations << new_reservation
+      room = rooms.find {|r| r.id == room_number}
+      all_dates = date_array(check_in, check_out)
+      all_dates.each do |date|
+        room.status_by_date[date] = :UNAVAILABLE
+      end
+      reservations << new_reservation
     end
 
     # As an administrator, I can access the list of reservations for a specific date
@@ -25,8 +31,8 @@ module Hotel
       found_reservations = []
 
       @reservations.each do |reservation|
-        date_array = *(reservation.check_in...reservation.check_out)
-        if date_array.include? Date.parse(date)
+        all_dates = date_array(reservation.check_in, reservation.check_out)
+        if all_dates.include? Date.parse(date)
           found_reservations << reservation
         end
       end
@@ -53,7 +59,7 @@ module Hotel
       room_data = CSV.open(filename, 'r', headers: true, header_converters: :symbol)
 
       room_data.each do |room|
-        new_room = Room.new(room[:id])
+        new_room = Room.new(room[:id].to_i)
         all_rooms << new_room
       end
 
@@ -65,12 +71,19 @@ module Hotel
       reservation_data = CSV.open(filename, 'r', headers: true, header_converters: :symbol)
 
       reservation_data.each do |reservation|
-        new_reservation = Reservation.new(reservation[:room_number], reservation[:check_in], reservation[:check_out])
+        new_reservation = Reservation.new(reservation[:room_number].to_i, reservation[:check_in], reservation[:check_out])
         all_reservations << new_reservation
       end
+
+      #add reservations to rooms
 
       return all_reservations
     end
 
+    private
+    def date_array(start_date, end_date)
+      all_dates = *(Date.parse(start_date)...Date.parse(end_date))
+      return all_dates
+    end
   end
 end

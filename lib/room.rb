@@ -1,4 +1,4 @@
-require 'date'
+require_relative 'hotel_helper'
 
 # class Room creates instances of Room
 # (with room number and a calendar of availability)
@@ -9,20 +9,20 @@ module Hotel
 
     def initialize(id)
       @id = id
-      @status_by_date = {}
-      (Date.parse("2018-10-01")..Date.parse("2019-09-30")).each do |date|
-        @status_by_date[date] = :AVAILABLE
-      end
+      @status_by_date = create_calendar
     end
 
-    def self.all
-      rooms = []
+    private
+    def create_calendar
+      room_calendar = {}
+      starting_date = Date.today
+      ending_date = Date.today + 365
 
-      20.times do |i|
-        rooms << Room.new(i+1)
+      (starting_date..ending_date).each do |date|
+        room_calendar[date] = :AVAILABLE
       end
 
-      return rooms
+      return room_calendar
     end
   end
 end
