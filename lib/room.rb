@@ -8,7 +8,6 @@ module Hotel
       @num = input[:num]
       @reservations = input[:reservations].nil? ? [] : input[:reservations]
 
-      # QUESTION: move up??
       unless (1..20).include? @num
         raise ArgumentError, "This is not a valid room number."
       end

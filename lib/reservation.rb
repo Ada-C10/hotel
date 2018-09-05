@@ -4,12 +4,12 @@ module Hotel
   class Reservation
     attr_accessor :id, :room, :start_date, :end_date, :cost
 
-    def initialize(id, room, start_date, end_date, cost=200)
-      @id = id
-      @room = room # object; not num
-      @start_date = start_date
-      @end_date = end_date
-      @cost = cost
+    def initialize(input)
+      @id = input[:id]
+      @room = input[:room] # object; not num TODO
+      @start_date = input[:start_date]
+      @end_date = input[:end_date]
+      @daily_rate = input[:daily_rate]
     end
 
     def dates_reserved()

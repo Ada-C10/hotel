@@ -1,3 +1,5 @@
+require "date"
+
 require_relative 'room'
 require_relative 'reservation'
 
@@ -27,24 +29,35 @@ module Hotel
       return all_rooms_str
     end
 
-# QUESTION: ughhhh, inputtt??? this is not DRY
     def create_reservation(input)
       room = find_room(room_num)
+      start_date = Date.parse(input[:start_date])
+      end_date = Date.parse(input[:end_date])
 
-      new_reservation = Reservation.new(input)
-      new_reservation = Reservation.new(id, room, start_date, end_date, cost)
+      reservation_hash = {
+        id: input[:id].to_i,
+        room: room,
+        start_date: start_date,
+        end_date: end_date,
+        cost: input[:cost] #QUESTION: needed??
+      }
+
+      new_reservation = Reservation.new(reservation_hash)
+      #NOTE: add room.change_status???
+      room.add_reservation(new_reservation)
+
       return new_reservation
     end
 
-    def add_reservation(reservation)
-      @reservations << reservation
+    def add_reservation(new_reservation)
+      @reservations << create_reservation(new_reservation)
     end
 
-    def load_reservations()
-      new_reservation = create_reservation()
-      add_reservation(new_reservation)
-      return @reservations
-    end
+    # def load_reservations(input)
+    #   new_reservation = create_reservation()
+    #   add_reservation(new_reservation)
+    #   return @reservations
+    # end
 
 
     def list_reservations_by_date(date)
@@ -53,7 +66,7 @@ module Hotel
     end
 
     def find_room(room_num)
-      return @rooms.map {|room| room.num == room_num}
+      return @rooms.find {|room| room.num == room_num}
     end
 
   end
