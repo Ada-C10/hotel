@@ -22,5 +22,8 @@ module BookingLogic
       return rooms_array
     end
 
+    def list_rooms
+      return @rooms
+    end
   end
 end
