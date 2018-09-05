@@ -40,6 +40,12 @@ describe 'ReservationManager class' do
     end
   end
 
+  describe 'reserve_a_room method' do
+    it 'returns an instance of reservation' do
+      expect(reservation_manager.reserve_a_room(Date.today + 1, Date.today + 4)).must_be_instance_of Hotel::Reservation
+    end
+  end
+
   describe 'get_reservations_by_date method' do
     it 'returns a list of all reservations for a given date ' do
       matched_reservation = reservation_manager.get_reservations_by_date(Date.today + 2)
@@ -47,14 +53,18 @@ describe 'ReservationManager class' do
       matched_reservation.each do |reservation|
         expect(reservation).must_be_instance_of Hotel::Reservation
       end
-      # binding.pry
+
       expect(matched_reservation.length).must_equal 2
 
       matched_reservation_2 = reservation_manager.get_reservations_by_date(Date.today + 1)
 
       expect(matched_reservation_2[0].room_num).must_equal 1
+    end
 
-
+    it 'returns an empty array if no reservations match a given date' do
+      matched_reservation = reservation_manager.get_reservations_by_date(Date.today + 10)
+      expect(matched_reservation).must_be_instance_of Array
+      expect(matched_reservation.length).must_equal 0
     end
   end
 end
