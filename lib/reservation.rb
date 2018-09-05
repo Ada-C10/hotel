@@ -16,11 +16,11 @@ class Reservation
   end
 
   def stay_duration
-
+    stay_duration = (@check_out - @check_in)
+    return stay_duration
   end
 
-  def total_charge
-    stay_duration = (@check_out - @check_in)
+  def total_charge(stay_duration)
     total_charge = stay_duration * 200
     return total_charge
   end
