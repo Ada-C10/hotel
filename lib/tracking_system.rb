@@ -16,21 +16,40 @@ class TrackingSystem
     all_rooms = []
     NUMBER_OF_ROOMS.times do |i|
       i += 1
-      i = Room.new({room_num: i, price: STANDARD_ROOM_PRICE, availability: :AVAILABLE})
+      i = Room.new({room_num: i, price: STANDARD_ROOM_PRICE, reserved_dates: []})
       all_rooms << i
     end
     return all_rooms
   end
 
-  def make_reservation(checkin_time: nil, checkout_time: nil, customer: "")
-    reservation = Reservation.new(attributes = {room_num: 0, checkin_time: Date.new, checkout_time: Date.new, price: STANDARD_ROOM_PRICE, customer: ""})
-    @reservations << reservation
+  #access the list of all of the rooms in the hotel
+  def view_all_rooms
+    return @all_rooms
   end
 
+  # reserve a room for a given date range
+  def make_reservation(checkin_time: Date.new, checkout_time: Date.new)
+    # 1. pick a room that is available. the next available room?
+    @all_rooms.each do |room|
+      if room.reserved_dates.reduce
+    # go in @all_rooms and find the first room_num whos checkOUT_time is earlier than input's checkin_time(this is gonna work because i'll store peoples checout time internally as ending a day before)
+    # raise argument error if inside @all_rooms no room is available on this date range (then admin would need to input a new date range)
+    # else..make the new reservation below
+    reservation = Reservation.new(date_range: {checkin_time: Date.new, checkout_time: Date.new -1}, room: room)  # <----room object contains {room_num:, price: STANDARD_ROOM_PRICE, customer: ""}
+    @reservations << reservation
+    room.reserved_dates << {checkin_time: nil, checkout_time: nil}
+  end
 
+  #access the list of reservations for a specific date
+  #get the total cost for a given reservation
 
+  private #helper methods below
+  def view_two_dates_as_range()
+  def check_if_rooms_available_on(date_range)
+
+  #############################  #############################   #############################
 end
-
+#think about how each room can be reserved thru time
 
 
 #reservation attributes

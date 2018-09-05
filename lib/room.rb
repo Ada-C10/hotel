@@ -1,10 +1,11 @@
 class Room
-  attr_reader :room_num, :price, :availability
+  attr_reader :room_num, :price, :reserved_dates, :block_status
 
-  def initialize(attributes = {})
+  def initialize(attributes)
     @room_num = attributes[:room_num]
     @price = attributes[:price]
-    @availability = attributes[:availability] #reserved or not
+    @reserved_dates = attributes[:reserved_dates]
+    @block_status = :AVAILABLE
   end
 end
 

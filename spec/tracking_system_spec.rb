@@ -76,5 +76,19 @@ describe 'TrackingSystem class' do
 
     # it "changes availability of the reserved room to :RESERVED for a given date range" do
     # end
+    # it "saves the checkout_time as a day before " do
+    # end
   end
+
+  describe "#view_all_rooms" do
+    before do
+      @tracker = TrackingSystem.new
+    end
+
+    it "returns a list" do
+      expect(@tracker.view_all_rooms).must_be_kind_of Array
+    end
+
+  end
+
 end #end of class method

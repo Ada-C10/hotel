@@ -11,7 +11,6 @@ describe 'Reservation class' do
          checkin_time: Date.new(2018,8,1),
          checkout_time: Date.new(2018,9,1),
          price: 200.0,
-         customer: "Koehler"
          })
 
     end
@@ -21,7 +20,7 @@ describe 'Reservation class' do
     end
 
     it "is set up for specific attributes and data types" do
-      [:room_num, :checkin_time, :checkout_time, :price, :customer].each do |attribute|
+      [:room_num, :checkin_time, :checkout_time, :price].each do |attribute|
         expect(@reservation).must_respond_to attribute
       end
 
@@ -29,7 +28,6 @@ describe 'Reservation class' do
       expect(@reservation.checkin_time).must_be_kind_of Date
       expect(@reservation.checkout_time).must_be_kind_of Date
       expect(@reservation.price).must_be_kind_of Float
-      expect(@reservation.customer).must_be_kind_of String
     end
 
 
