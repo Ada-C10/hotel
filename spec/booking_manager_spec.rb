@@ -82,4 +82,23 @@ describe "BookingManager class" do
     end
   end
 
+  describe "add_reservation method" do
+    before do
+      @hotel_rooms = Hotel::BookingManager.new(5)
+    end
+
+    it "increases the length of the reservations array by one" do
+      old_number = @hotel_rooms.reservations.length
+      new_booking = "new reservation"
+
+      @hotel_rooms.add_reservation(new_booking)
+      expect(@hotel_rooms.reservations.length).must_equal old_number + 1
+    end
+
+    # it "adds an instance of Reservation to array of reservations" do
+    #
+    # end
+  end
+
+
 end # end of describe BookingManager class
