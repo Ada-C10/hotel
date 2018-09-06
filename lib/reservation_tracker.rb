@@ -24,6 +24,16 @@ class ReservationTracker
   def show_all_reservations
     return @all_reservations
   end
+
+  # def show_reservations_per_date(date)
+  #   reservations_for_date = []
+  #   all_reservations = show_all_reservations
+  #
+  #   all_reservations.each do |reservation|
+  #     if reservation.
+  #   end
+  # end
+
   # date must be entered in the format: yyyy,mm,dd
   def show_available_rooms(start_date, end_date)
     available_rooms = []
