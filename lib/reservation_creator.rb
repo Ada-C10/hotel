@@ -1,5 +1,4 @@
 require 'date'
-require_relative 'rooms'
 
 module Hotel
   class Reservation
@@ -11,9 +10,9 @@ module Hotel
         raise StandardError, "Checkout date cannot be before checkin date" unless check_in_date < check_out_date
     end
 
-    def count_number_of_nights
-      num_of_nights = check_out_date.mjd - check_in_date.mjd
-      return num_of_nights
+    def reservation_date_range
+      date_range = [*check_in_date..check_in_date]
+      return date_range
     end
   end
 end
