@@ -54,7 +54,8 @@ class Admin
     reservations = @reservations.select do |instance|
       start_date = instance.start_time
       end_date = instance.end_time
-      if date_in_range(start_date, end_date, date)
+      range = create_range(start_date, end_date)
+      if date_in_range(range, date)
         instance
       end
     end
@@ -73,8 +74,11 @@ class Admin
     @reservations.sort_by { |object| object.start_time }
   end
 
-  def date_in_range(start_date, first_date, date)
-    range = (start_date..first_date)
+  def date_in_range(range, date)
     range.include?(date)
+  end
+
+  def create_range(start_date, end_date)
+    range = (start_date..end_date)
   end
 end
