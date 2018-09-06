@@ -6,7 +6,8 @@ require 'date'
 # the reservation end date
 module Hotel
   class Reservation
-    attr_reader :id, :guest_name, :included_rooms, :rsv_start, :rsv_end, :total_cost, :booked_dates, :status
+    attr_reader :id, :guest_name, :included_rooms, :rsv_start, :rsv_end,
+                :total_cost, :booked_dates, :status
     def initialize(id, guest_name, included_rooms, rsv_start, rsv_end)
       raise ArgumentError if rsv_end < rsv_start
       raise ArgumentError if included_rooms.empty?
@@ -47,7 +48,7 @@ module Hotel
 
 
     # method to list all reservations
-    def self.all_reservations
+    def self.load_reservations
       all_reservations = []
       reservations = CSV.open('data/reservations.csv', 'r',
                               headers: true, header_converters: :symbol)
@@ -60,17 +61,23 @@ module Hotel
                                             (reservation[:included_rooms]).split(';')
                                                                           .map {|s| s.to_i},
                                             reservation[:rsv_start], reservation[:rsv_end])
-        # binding.pry
       end
-      # binding.pry
+
       return all_reservations
     end
     # method to find a reservation based on an inspect date 'insp_date'
-    def self.find_all_reservations(insp_date)
-      # found_reservations = []
-      # @booked_dates.find { |date| date.insp_date == insp_date }
-      # return
+    def self.find_reservations_by_date(inspect_date)
+      # standardize input date
+      search_date = Date.parse(inspect_date)
+      # select all reservation instances that have booked dates that match
+      # the inspect date
+      found_reservations = Reservation.load_reservations.select do |reservation|
+        reservation.booked_dates.include? search_date.to_s
+      end
+      raise ArgumentError, 'No reservations on that date' if found_reservations.empty?
+      return found_reservations
     end
+
 
   end #class end
 end #module end

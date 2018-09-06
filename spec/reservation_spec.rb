@@ -70,18 +70,32 @@ end
 
 describe 'it can load csv data' do
   it 'can return all current reservation instances as an array' do
-    expect(Hotel::Reservation.all_reservations).must_be_kind_of Array
+    expect(Hotel::Reservation.load_reservations).must_be_kind_of Array
   end
   it 'can parse data from csv correctly' do
-    expect(Hotel::Reservation.all_reservations[0].id).must_be_kind_of String
-    expect(Hotel::Reservation.all_reservations[0].guest_name).must_be_kind_of String
-    expect(Hotel::Reservation.all_reservations[0].included_rooms).must_be_kind_of Array
-    expect(Hotel::Reservation.all_reservations[0].included_rooms[0]).must_be_kind_of Integer
+    expect(Hotel::Reservation.load_reservations[0].id).must_be_kind_of String
+    expect(Hotel::Reservation.load_reservations[0].guest_name).must_be_kind_of String
+    expect(Hotel::Reservation.load_reservations[0].included_rooms).must_be_kind_of Array
+    expect(Hotel::Reservation.load_reservations[0].included_rooms[0]).must_be_kind_of Integer
   end
 end
 
 describe 'it can find reservation data' do
-  it 'given a date, can find a reservation'do
-
+  let(:finder) do
+    find_date = "October 22 2019"
+    Hotel::Reservation.find_reservations_by_date(find_date)
+  end
+  it 'given a date, can find a reservation' do
+    expect((finder).length).must_equal 2
+  end
+  it 'returns an array of reservations on that date' do
+    expect(finder).must_be_kind_of Array
+  end
+  it 'returns an array of reservation instances' do
+    expect(finder[0]).must_be_kind_of Hotel::Reservation
+  end
+  it 'raises an argument error if no reservations are found on that date' do
+    expect{ Hotel::Reservation.find_reservations_by_date("May 4 2020") }.must_raise ArgumentError
   end
 end
+
