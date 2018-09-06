@@ -74,6 +74,14 @@ describe "HotelAdmin" do
       expect(hotel.reservations.first).must_be_instance_of Reservation
       expect(hotel.reservations.length).must_equal 1
     end
+
+    it "will raise an exception if a conflicting reservation is added to a room" do
+
+      expect{
+        hotel.reserve_room("Mamacita09@gmail.com", 4, Date.new(2019,01,21), Date.new(2019,01,22))
+      }.must_raise ArgumentError
+
+    end
   end
 
   describe "HotelAdmin#reservation_charge" do
