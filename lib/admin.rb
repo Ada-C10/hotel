@@ -21,7 +21,7 @@ class Admin
 
   def request_reservation(start_date, end_date)
     id = reservations.length + 1
-    room = select_room
+    room = available_rooms(start_date, end_date).sample
     # binding.pry
     new_reservation = Reservation.new(id, room, start_date, end_date)
 
@@ -32,9 +32,11 @@ class Admin
   #param - date
   #returns - array of reservations within that date
   def reservations_by_date(date)
-    @reservations.find_all do |reservation|
+    specific_reservations = @reservations.find_all do |reservation|
       (reservation.start_date..reservation.end_date).cover?(Date.parse(date))
     end
+
+    return specific_reservations
   end
 
   def reservations_by_date_range(trip_start, trip_end)
@@ -44,7 +46,7 @@ class Admin
     @reservations.find_all do |reservation|
       unless reservation.end_date == trip_start
         (reservation.start_date..reservation.end_date).cover?(trip_start) || (reservation.start_date..reservation.end_date).cover?(trip_end)
-      end 
+      end
     end
   end
 
@@ -58,11 +60,23 @@ class Admin
 
     return cost
   end
-  # need assign room when reservation is made
-  def select_room
-    room = @rooms.find { |room| room.status == :available }
-    return room
+
+  def available_rooms(trip_start, trip_end)
+    specific_reservations = reservations_by_date_range(trip_start, trip_end)
+    all_rooms = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]
+    unavailable_rooms = []
+    specific_reservations.each do |reservation|
+      unavailable_rooms << reservation.room
+    end
+
+    available_rooms = all_rooms - unavailable_rooms
+    return available_rooms
   end
+  # need assign room when reservation is made
+  # def select_room
+  #   room = @rooms.find { |room| room.status == :available }
+  #   return room
+  # end
 
   # def room_to_unavailable(room)
   #   room.status = :unavialable

@@ -36,11 +36,11 @@ describe "Booking" do
   end
 
   describe "select room" do
-    it "selects the first available room" do
-      hotel = Admin.new
-      (hotel.select_room).must_be_kind_of Room
-      # binding.pry
-    end
+    # it "selects the first available room" do
+    #   hotel = Admin.new
+    #   (hotel.select_room).must_be_kind_of Room
+    #   # binding.pry
+    # end
 
     describe "add reservations" do
       it "increase count by 1 when add reservation" do
@@ -57,7 +57,6 @@ describe "Booking" do
       it "admin is able to book a reservation" do
         # arrange
         hotel = Admin.new
-        reserve1 = Reservation.new(7, 4, "2018-12-09", "2018-12-15")
         # action
         hotel.request_reservation("2018-12-09", "2018-12-15")
         # assert
@@ -93,7 +92,7 @@ describe "Booking" do
         hotel.request_reservation("2018-4-11", "2018-4-12")
         #action
         specific_date = hotel.reservations_by_date("2018-12-12")
-        # binding.pry
+
         #assert
         specific_date.length.must_equal 2
 
@@ -119,7 +118,7 @@ describe "Booking" do
         hotel.request_reservation("2018-4-11", "2018-4-12")
         #action
         specific_dates = hotel.reservations_by_date_range("2018-12-12", "2018-12-14")
-        # binding.pry
+        binding.pry
         specific_dates.length.must_equal 2
       end
 
@@ -146,6 +145,19 @@ describe "Booking" do
       end
     end
 
+    describe "available rooms" do
+      it "creates an array of available rooms for specific date range" do
+        hotel = Admin.new
+        hotel.request_reservation("2018-12-09", "2018-12-15")
+        hotel.request_reservation("2018-12-11", "2018-12-17")
+        hotel.request_reservation("2018-4-11", "2018-4-12")
+
+        rooms_available = hotel.available_rooms("2018-12-12", "2018-12-14")
+
+        rooms_available.must_be_kind_of Array
+        rooms_available.length.must_equal 18
+      end
+    end
   end
 
 end
