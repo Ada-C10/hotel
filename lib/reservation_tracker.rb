@@ -85,6 +85,16 @@ class ReservationTracker
     end
   end
 
+  def cost_of_reservation(reservation_number)
+
+    @all_reservations.each do |reservation|
+      if reservation.reservation_num == reservation_number.to_i
+        return reservation.total_cost
+      end
+    end
+
+  end
+
   def make_reservation_number
     reservation_number = @all_reservations.length + 1
     return reservation_number
