@@ -19,7 +19,9 @@ module Hotel
     def is_available?(requested_dates)
       @booked_reservations.all? do |reservation|
         reservation_period = reservation.date_range
+
         !reservation_period.overlap?(requested_dates)
+        # !requested_dates.overlap?(reservation_period)
       end
     end
   end

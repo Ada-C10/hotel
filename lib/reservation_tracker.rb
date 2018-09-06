@@ -3,13 +3,24 @@ require 'date'
 require_relative 'reservation'
 require_relative 'room'
 
+NUMBER_OF_ROOMS = 20
+
 module Hotel
 
   class ReservationTracker
     attr_reader :reservations, :rooms, :date_range
 
     def initialize(reservations)
+      @rooms = load_rooms
       @reservations = load_reservations
+    end
+
+    def load_rooms
+      all_rooms = []
+      NUMBER_OF_ROOMS.times do |room_index|
+        all_rooms << Hotel::Room.new(room_number: room_index + 1)
+      end
+      return all_rooms
     end
 
     def load_reservations
@@ -17,7 +28,7 @@ module Hotel
       return reservations
     end
 
-    def list_reservations(date)
+    def list_reservations_by_date(date)
       reservations_by_date = @reservations.find_all do |reservation|
         reservation.date_range.include?(date)
       end
@@ -50,11 +61,29 @@ module Hotel
     end
 
     def find_available_rooms(requested_dates)
+      unavailable_rooms = find_unavailable_rooms(requested_dates)
+
       available_rooms = @rooms.map do |room|
-        return room if room.is_available?(requested_dates)
+        room if !@rooms.include?(unavailable_rooms)
       end
-      # Raise error if no rooms available for dates
     end
+
+    def find_unavailable_rooms(requested_dates)
+      unavailable_rooms = []
+      unavailable_rooms = @reservations.map do |reservation|
+        reservation_period = reservation.date_range
+        if reservation_period.overlap?(requested_dates)
+          unavailable_rooms << reservations.room
+        end
+      end
+    end
+
+    # def find_available_rooms(requested_dates)
+    #   available_rooms = @rooms.map do |room|
+    #     return room if room.is_available?(requested_dates)
+    #   end
+    #   # Raise error if no rooms available for dates
+    # end
 
     private
 
