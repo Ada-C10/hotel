@@ -1,2 +1,2 @@
-room_num, price, block_status
-1, 200, AVAILABLE
+room_num, block_status
+1, AVAILABLE
