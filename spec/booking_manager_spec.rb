@@ -157,6 +157,7 @@ describe "Hotel Manager class" do
       @hotel.reserve_room(@input3)
       @hotel.reserve_room(@input)
       @available_rooms = [4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]
+      @all_rooms_available = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]
     end
 
     it 'given a range of dates, it returns a list of available rooms, if the reservation shares the same dates as a reserved room' do
@@ -182,8 +183,10 @@ describe "Hotel Manager class" do
         expect(expect(@hotel.search_room_availability(@date5, @date6)).must_equal @available_rooms)
     end
     it 'it returns a list of available rooms, returning rooms where the  reservation check in date is on the check out day of another reservation'do
+        expect(expect(@hotel.search_room_availability(@date2, @date6)).must_equal @all_rooms_available)
     end
     it 'it returns a list of available rooms, returning rooms where the  reservation check out date is on the check in day of another reservation'do
+        expect(expect(@hotel.search_room_availability(@date5, @date1)).must_equal @all_rooms_available)
     end
   end
 

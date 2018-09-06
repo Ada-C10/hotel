@@ -39,7 +39,7 @@ module Hotel
     end
 
     def search_room_availability(check_in_date, check_out_date)
-
+      possible_nights_of_stay = Hotel::Reservation.generate_nights(check_in_date, check_out_date)
       vacant_rooms = []
       booked_rooms = []
       @rooms.each do |room|
@@ -47,11 +47,12 @@ module Hotel
           vacant_rooms << room.room_number
           next
         end
+
         min = 0
         max = room.reservations.length
         while min < max
           mid = (min + max )/ 2
-          if room.reservations[mid].nights_of_stay.include?(check_in_date) || room.reservations[mid].nights_of_stay.include?(check_out_date)
+          if !(possible_nights_of_stay & room.reservations[mid].nights_of_stay).empty?
             booked_rooms << room.room_number
             break
           elsif room.reservations[mid].check_in_date > check_in_date
@@ -60,8 +61,7 @@ module Hotel
             min = mid + 1
           end
         end
-        # binding.pry
-        # if room.reservations[min].nights_of_stay.include?(check_in_date)
+        # if !(possible_nights_of_stay & room.reservations[min].nights_of_stay).empty?
         #   booked_rooms << room.room_number
         # end
         unless booked_rooms.include?(room.room_number)
