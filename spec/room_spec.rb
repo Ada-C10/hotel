@@ -13,6 +13,18 @@ describe 'Room' do
     @room.add_reservation(Hotel::Reservation.new("16/12/2018", "18/12/2018", 2))
     @room.reservations }
 
+  let(:false_available) {
+    @room.add_reservation(Hotel::Reservation.new("13/12/2018", "15/12/2018", 1))
+    range = (Date.parse("13/12/2018")..Date.parse("15/12/2018")).to_a
+    @room.is_available?(range)
+  }
+
+  let(:true_available) {
+    @room.add_reservation(Hotel::Reservation.new("13/12/2018", "15/12/2018", 1))
+    range = (Date.parse("19/12/2018")..Date.parse("20/12/2018")).to_a
+    @room.is_available?(range)
+  }
+
   describe 'initialize' do
 
     it 'will initialize on instance of a room' do
@@ -35,15 +47,6 @@ describe 'Room' do
 
   end
 
-  describe 'is_available?' do
-
-    it 'will return true if date present in @reservations' do
-    end
-
-    it 'will return false if date not present @reservations' do
-    end
-
-  end
 
 
   describe 'add_reservation' do
@@ -56,7 +59,7 @@ describe 'Room' do
 
       end
 
-      it 'will increment the reservations by one ' do
+      it 'will increment the reservations by one' do
 
         expect(@room.reservations.length).must_equal 0
         expect(one_reservation_added.length).must_equal 1
@@ -65,6 +68,19 @@ describe 'Room' do
 
 
     end
+
+    describe 'is_available?' do
+
+      it 'will return true if date present in @reservations' do
+        expect(true_available).must_equal true
+      end
+
+      it 'will return false if date not present @reservations' do
+        expect(false_available).must_equal false
+      end
+
+    end
+
 
 
   end
