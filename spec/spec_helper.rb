@@ -10,4 +10,6 @@ require 'awesome_print'
 Minitest::Reporters.use! Minitest::Reporters::SpecReporter.new
 
 # Require_relative your lib files here!
-require_relative '../lib/test'
+require_relative '../lib/reservation_creator'
+require_relative '../lib/rooms'
+require_relative '../lib/booking_system'
