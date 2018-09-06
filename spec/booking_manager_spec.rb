@@ -126,16 +126,35 @@ describe "Hotel Manager class" do
 
   describe 'search_room_availability' do
 
-    it 'finds the room being reserved and adds the reservation to its list of reservations' do
-      # @hotel = Booking_Manager.new
-      # @input = { name: "Mx Thing",
-      #   room_number: 1,
-      #   check_in_date: Date.new(2020,9,9),
-      #   check_out_date: Date.new(2020,9,13),
-      # }
-      # @hotel.reserve_room(@input)
-      # expect(@hotel.rooms[0].reservations[0].name).must_equal "Mx Thing"
+    before do
+      @hotel = Booking_Manager.new
+      @input = { name: "Mx Thing",
+        room_number: 1,
+        check_in_date: Date.new(2020,9,9),
+        check_out_date: Date.new(2020,9,13),
+      }
+      @input2 = { name: "Teen Wolf",
+        room_number: 2,
+        check_in_date: Date.new(2020,9,9),
+        check_out_date: Date.new(2020,9,13),
+      }
+      @input3 = { name: "Señor Dracula",
+        room_number: 3,
+        check_in_date: Date.new(2020,9,9),
+        check_out_date: Date.new(2020,9,13),
+      }
+      @date1 = Date.new(2020,9,9)
+      @date2 = Date.new(2020,9,13)
+      @available_rooms = [4,5,6,7,8,9,10,11,12,13,14,16,17,18,19,20]
     end
+
+    it 'given a range of dates, it returns a list of available rooms' do
+      @hotel.reserve_room(@input2)
+      @hotel.reserve_room(@input3)
+      @hotel.reserve_room(@input)
+      expect(Booking_Manager.search_room_availability(@date1, @date2)).must_equal @available_rooms
+    end
+
   end
 
   describe 'sort_reservations' do
@@ -159,7 +178,7 @@ describe "Hotel Manager class" do
         check_in_date: Date.new(2018,7,9),
         check_out_date: Date.new(2018,7,13),
       }
-      @hotel.reserve_room(@input2)
+      @hotel.reserve_room(@input3)
 
       Booking_Manager.sort_reservations(@hotel.hotel_reservations)
 
