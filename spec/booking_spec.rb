@@ -40,14 +40,13 @@ describe "booking manager" do
     end
 
     it "Is able to list reservations for a date" do
-      skip
       # Adding a reservation to @manager
       @manager.add_reservation(1, Date.new(2018, 9, 1), Date.new(2018, 9, 2))
       @manager.add_reservation(2, Date.new(2018, 9, 1), Date.new(2018, 9, 2))
       # Checking length of returned array
       # binding.pry
-      # expect(@manager.list_reservations_for_date(Date.new(2018, 9, 1)).length).must_equal 2
-
+      expect(@manager.list_reservations_for_date(Date.new(2018, 9, 1)).length).must_equal 2
+      # binding.pry
     end
 
     it "Has an error if attempting to book a reserved room" do

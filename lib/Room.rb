@@ -12,4 +12,12 @@ class Room
     end
     @reservations = reservations
   end
+
+  def is_available?(date)
+    # This way Booking can ask each room if they have availability 
+    # Check reservations to see if room is available
+    # Maybe access reservations and ask if any of the ranges include the date
+    # If so, return false
+    # if not, return true
+  end
 end

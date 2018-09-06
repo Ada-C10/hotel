@@ -10,6 +10,7 @@ describe 'DateRange' do
     expect(@date_range).kind_of? Date
   end
 
+
   it "Raises an ArgumentError if check_in is not a date" do
     expect{ DateRange.new("Not a date", Date.new(2018, 9, 2)) }.must_raise ArgumentError
   end

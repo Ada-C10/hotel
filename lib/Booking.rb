@@ -40,17 +40,19 @@ class Booking
   end
 
   # TODO Can access the list of reservations for given date
-  # Access all rooms (method)
-  # Method to see if date is within a range
-  def within_date_range?(date)
-
-  end
-  # For each room, return room if they have that date
-    # within the check_in and check_out (map?)
+  ##### NEED HELP IS RETURNING ALL ROOMS ##### 
   def list_reservations_for_date(date)
-    # Use Date method to return true if date is within range
-    # Select rooms where that method returns true
+    @rooms.select do |room|
+      # Check if any of the room's reservation has given date
+      room.reservations.each do |reservation|
+        date_range = DateRange.new(reservation.check_in, reservation.check_out)
+        # Return room if any ranges include that date
+        date_range.within_range?(date)
+      end
+        binding.pry
+    end
   end
+
 end
 
   # TODO Can get the total cost for a given reservation
