@@ -70,8 +70,8 @@ module BookingLogic
 
     def reservation_cost(room_id, check_in)
       reservation = find_reservation(room_id, check_in)
-      days = reservation.check_out - reservation.check_in
-      return days.to_i * reservation.room.cost
+      days_reserved = reservation.check_out - reservation.check_in
+      return days_reserved.to_i * reservation.room.cost
     end
 
     def list_available_rooms(date)
