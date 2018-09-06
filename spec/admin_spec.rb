@@ -51,4 +51,16 @@ describe "#reservation information" do
     expect(reservation_cost).must_be_kind_of Integer
     expect(reservation_cost).must_equal 400
   end
+
+  describe "#rooms information" do
+    before do
+      @admin = Admin.new
+    end
+    it "view all of the rooms" do
+
+      rooms = @admin.view_rooms
+
+      expect(rooms).must_be_kind_of Array
+    end
+  end
 end

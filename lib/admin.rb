@@ -5,8 +5,13 @@ class Admin
   attr_reader :reservations, :find_reservation
   def initialize
     @reservations = load_reservations('spec/test_data/test_reservation.csv')
+    @rooms = [1,2,4]
     sort_reservations
   end
+
+  # def create_rooms(20)
+  #
+  # end
 
   def load_reservations(filename)
     reservations = []
@@ -22,6 +27,18 @@ class Admin
 
     return reservations
   end
+
+  # As an administrator, I can access the list of all of the rooms in the hotel
+  def view_rooms
+    return @rooms
+  end
+  
+  #As an administrator, I can reserve a room for a given date range
+  def reserve_room(start_date, end_date)
+
+  end
+
+
   #As an administrator, I can access the list of reservations for a specific date
   def find_reservations(date)
     date = Time.parse(date)
