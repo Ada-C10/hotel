@@ -21,6 +21,9 @@ class ReservationTracker
     return @all_rooms
   end
 
+  def show_all_reservations
+    return @all_reservations
+  end
   # date must be entered in the format: yyyy,mm,dd
   def show_available_rooms(start_date, end_date)
     available_rooms = []
@@ -54,6 +57,7 @@ class ReservationTracker
     return available_rooms
   end
 
+  # date must be entered in the format: yyyy,mm,dd
   def reserve_room(room_num, start_date, end_date)
     room_number = room_num.to_i
 
