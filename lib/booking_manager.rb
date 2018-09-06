@@ -36,7 +36,8 @@ module Hotel
     def list_reservations
       return @reservations
     end
-# binding.pry
+    # binding.pry
+    
     # Method to list all rooms in hotel
     def list_rooms
       @rooms
