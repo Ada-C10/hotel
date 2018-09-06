@@ -13,7 +13,7 @@ class Reservation
     @room_number = room.room_number
     @reservation_id = create_unique_id(room_number, checkin_date)
     @price_per_night = price_per_night
-    @price = calculate_price(checkin_date, checkout_date, price_per_night)
+    @price = calculate_price(checkin_date, checkout_date, price_per_night).to_i
   end
 
   def check_date_range(start, finish)
