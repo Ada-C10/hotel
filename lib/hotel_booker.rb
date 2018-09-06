@@ -41,26 +41,14 @@ module Hotel
     end
 
     def list_unavailable_rooms(date_range)
-      # days_reservations = get_reservations_by_date(date)
 
       occupied_rooms = []
       [*date_range.check_in...date_range.check_out].each do |date|
         if get_reservations_by_date(date)
-
           occupied_rooms.concat get_reservations_by_date(date).map { |reservation| reservation.room_num }
         end
       end
-      # binding.pry
       occupied_rooms.uniq!
-
-      # available_rooms = @all_rooms - occupied_rooms_list
-      # room_num = available_rooms.first
-      #   if list_unavailable_rooms(date)
-      #     occupied_rooms_list.concat list_unavailable_rooms(date)
-      #   end
-      # end
-
-      # occupied_rooms = get_occupied_rooms(days_reservations)
       return occupied_rooms #occupied_rooms.empty? ? nil : occupied_rooms
 
     end

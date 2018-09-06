@@ -97,13 +97,41 @@ describe 'HotelBooker class' do
       # date_range_1 = Hotel::DateRange.new(Date.today + 2, Date.today + 3)
       # date_range_2 = Hotel::DateRange.new(Date.today + 7, Date.today + 8)
 
+      # Two date ranges *do* overlap if range A compared to range B:
+      # - Same dates
+      expect(hotel_booker.list_available_rooms(Date.today + 1, Date.today + 7)).must_equal available_rooms
+      # - Overlaps in the front
+      expect(hotel_booker.list_available_rooms(Date.today, Date.today + 2)).must_equal [*2..20]
+      # - Overlaps in the back
+      expect(hotel_booker.list_available_rooms(Date.today + 5, Date.today + 7)).must_equal [1,*3..20]
+      # - Completely contained
+      expect(hotel_booker.list_available_rooms(Date.today + 2, Date.today + 6)).must_equal available_rooms
+      # - Completely containing
+      expect(hotel_booker.list_available_rooms(Date.today, Date.today + 8)).must_equal available_rooms
+      #
+      # Two date ranges are *not* overlapping if range A compared to range B:
+      # - Completely before
+      expect(hotel_booker.list_available_rooms(Date.today - 1, Date.today)).must_equal all_rooms
+      # - Completely after
+      expect(hotel_booker.list_available_rooms(Date.today + 8, Date.today + 9)).must_equal all_rooms
+      # - Ends on the checkin date
+      expect(hotel_booker.list_available_rooms(Date.today, Date.today + 2)).must_equal [*2..20]
+      # - Starts on the checkout date (edited)
+      expect(hotel_booker.list_available_rooms(Date.today + 4, Date.today + 5)).must_equal [1,*3..20]
+
+
       expect(hotel_booker.list_available_rooms(Date.today + 2, Date.today + 3)).must_equal available_rooms
 
       expect(hotel_booker.list_available_rooms(Date.today + 7, Date.today + 8)).must_equal all_rooms
     end
 
-    it 'raises an error if given an invalid date' do
-      expect{hotel_booker.list_available_rooms("Not a Date")}.must_raise ArgumentError
+    it 'raises an error if not given a Date' do
+      expect{hotel_booker.list_available_rooms("Not a Date", Date.today)}.must_raise ArgumentError
+      expect{hotel_booker.list_available_rooms(Date.today, "Also not a Date")}.must_raise ArgumentError
+    end
+
+    it 'raises an error if given a check-out date occuring after a check-in date' do
+      expect{hotel_booker.list_available_rooms(Date.today + 1, Date.today)}.must_raise ArgumentError
     end
 
   end
