@@ -93,7 +93,7 @@ describe "Booking" do
         hotel.request_reservation("2018-4-11", "2018-4-12")
         #action
         specific_date = hotel.reservations_by_date("2018-12-12")
-        binding.pry
+        # binding.pry
         #assert
         specific_date.length.must_equal 2
 
@@ -108,6 +108,41 @@ describe "Booking" do
         cost = hotel.reservation_cost(reserve1)
 
         cost.must_equal 1200
+      end
+    end
+
+    describe "find_reservations_by_date_range" do
+      it "accurately finds all reservations during that date range" do
+        hotel = Admin.new
+        hotel.request_reservation("2018-12-09", "2018-12-15")
+        hotel.request_reservation("2018-12-11", "2018-12-17")
+        hotel.request_reservation("2018-4-11", "2018-4-12")
+        #action
+        specific_dates = hotel.reservations_by_date_range("2018-12-12", "2018-12-14")
+        # binding.pry
+        specific_dates.length.must_equal 2
+      end
+
+      it "will not include reservation if requested trip start is same date as end_time of other reservation" do
+        hotel = Admin.new
+        hotel.request_reservation("2018-12-09", "2018-12-15")
+        hotel.request_reservation("2018-12-11", "2018-12-17")
+        hotel.request_reservation("2018-4-11", "2018-4-12")
+        #action
+        specific_dates = hotel.reservations_by_date_range("2018-12-17", "2018-12-20")
+
+        specific_dates.length.must_equal 0
+      end
+
+      it "will include zero reservations is no reservations are during that time range" do
+        hotel = Admin.new
+        hotel.request_reservation("2018-12-09", "2018-12-15")
+        hotel.request_reservation("2018-12-11", "2018-12-17")
+        hotel.request_reservation("2018-4-11", "2018-4-12")
+        #action
+        specific_dates = hotel.reservations_by_date_range("2018-3-20", "2018-3-27")
+
+        specific_dates.length.must_equal 0
       end
     end
 

@@ -37,6 +37,17 @@ class Admin
     end
   end
 
+  def reservations_by_date_range(trip_start, trip_end)
+    trip_start = Date.parse(trip_start)
+    trip_end = Date.parse(trip_end)
+
+    @reservations.find_all do |reservation|
+      unless reservation.end_date == trip_start
+        (reservation.start_date..reservation.end_date).cover?(trip_start) || (reservation.start_date..reservation.end_date).cover?(trip_end)
+      end 
+    end
+  end
+
   def reservation_cost(reservation)
     # https://stackoverflow.com/questions/4502245/how-can-i-find-the-number-of-days-between-two-date-objects-in-ruby
     start_date = reservation.start_date
