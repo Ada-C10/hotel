@@ -8,8 +8,8 @@ module Hotel
     attr_reader :room_number, :reservations
 
     def initialize
-
-      #to constant or not to constant, that is one of my questions
+      raise StandardError.new('Created too many rooms.') if VALID_ROOMS.empty?
+      
       @room_number = generate_id
       @reservations = []
     end
@@ -24,14 +24,16 @@ module Hotel
     def is_available?(date_range)
 
       @reservations.each do |reservation|
-        #if date_range has nothing in common with reservation range, then set_difference is date_range
+        #if date_range has nothing in common with reservations range, then set_difference is date_range
         set_difference = date_range - (reservation.checkin_date..reservation.checkout_date).to_a
 
         #if set difference not equal to date_range, return false
         if !(set_difference == date_range)
           return false
         end
+
       end
+
       return true
     end
 
