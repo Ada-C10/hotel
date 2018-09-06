@@ -54,7 +54,7 @@ describe 'HotelBooker class' do
     end
 
     it 'raises an error when given invalid dates' do
-      expect{hotel_booker.reserve_a_room(Date.today + 1, Date.today - 4)}.must_raise ArgumentError
+      expect{hotel_booker.reserve_a_room(Date.today + 1, Date.today - 4, 1)}.must_raise ArgumentError
     end
 
     it 'adds the reservation to the list of all_reservations' do
@@ -67,21 +67,42 @@ describe 'HotelBooker class' do
     end
 
     it 'raises an error if room is unavailable' do
-      [*3..20].each do |room|
-        hotel_booker.reserve_a_room(Date.today + 1, Date.today + 4, room)
-      end
+      # [*3..20].each do |room|
+      #   hotel_booker.reserve_a_room(Date.today + 1, Date.today + 4, room)
+      # end
       expect{
-        hotel_booker.reserve_a_room(Date.today + 1, Date.today + 4, 3)
+        hotel_booker.reserve_a_room(Date.today + 1, Date.today + 4, 1)
       }.must_raise StandardError
 
     end
 
-  it 'reserves the first available room for the given date range' do
-    skip
-    expect(hotel_booker.reserve_a_room(Date.today + 1, Date.today + 2).room_num).must_equal 2
-    expect(hotel_booker.reserve_a_room(Date.today + 1, Date.today + 9).room_num).must_equal 3
+    it 'reserves the first available room for the given date range' do
+      skip
+      expect(hotel_booker.reserve_a_room(Date.today + 1, Date.today + 2).room_num).must_equal 2
+      expect(hotel_booker.reserve_a_room(Date.today + 1, Date.today + 9).room_num).must_equal 3
+    end
   end
-end
+
+  describe 'is_room_available helper method' do
+    it 'returns true if room is available for the given date range' do
+      expect(hotel_booker.is_room_available(Date.today, Date.today + 2, 2)).must_equal true
+      expect(hotel_booker.is_room_available(Date.today + 4, Date.today + 5, 1)).must_equal true
+    end
+
+    it 'returns false if room is unavailable for the given date range' do
+      expect(hotel_booker.is_room_available(Date.today, Date.today + 2, 1)).must_equal false
+      expect(hotel_booker.is_room_available(Date.today + 4, Date.today + 5, 2)).must_equal false
+    end
+  end
+
+  describe 'get_occupied_rooms helper method' do
+    it 'returns an array containing a list of rooms' do
+      reservations = [reservation1, reservation2]
+      expect(hotel_booker.get_occupied_rooms(reservations)).must_equal [1, 2]
+      expect(hotel_booker.get_occupied_rooms([reservation1])).must_equal [1]
+      expect(hotel_booker.get_occupied_rooms([reservation2])).must_equal [2]
+    end
+  end
 
   describe 'get_reservations_by_date method' do
     it 'returns a list of all reservations for a given date ' do
