@@ -71,15 +71,31 @@ describe "Booking" do
 
         new_reservation.id.must_equal 1
       end
-
-      # it "changes room used to unavailable" do
-      #   hotel = Admin.new
-      #   hotel.request_reservation("2018-12-09", "2018-12-15")
-      #   hotel.request_reservation("2018-12-11", "2018-12-17")
-      #   second_reservation = hotel.reservations[1]
-      #
-      #   second_reservation.room.must_equal 2
-      # end
+      #what about a nominal case for rooms?
+      it "raises an ArgumentError when no rooms are available" do
+        hotel = Admin.new
+        hotel.request_reservation("2018-12-09", "2018-12-15")
+        hotel.request_reservation("2018-12-09", "2018-12-15")
+        hotel.request_reservation("2018-12-09", "2018-12-15")
+        hotel.request_reservation("2018-12-09", "2018-12-15")
+        hotel.request_reservation("2018-12-09", "2018-12-15")
+        hotel.request_reservation("2018-12-09", "2018-12-15")
+        hotel.request_reservation("2018-12-09", "2018-12-15")
+        hotel.request_reservation("2018-12-09", "2018-12-15")
+        hotel.request_reservation("2018-12-09", "2018-12-15")
+        hotel.request_reservation("2018-12-09", "2018-12-15")
+        hotel.request_reservation("2018-12-09", "2018-12-15")
+        hotel.request_reservation("2018-12-09", "2018-12-15")
+        hotel.request_reservation("2018-12-09", "2018-12-15")
+        hotel.request_reservation("2018-12-09", "2018-12-15")
+        hotel.request_reservation("2018-12-09", "2018-12-15")
+        hotel.request_reservation("2018-12-09", "2018-12-15")
+        hotel.request_reservation("2018-12-09", "2018-12-15")
+        hotel.request_reservation("2018-12-09", "2018-12-15")
+        hotel.request_reservation("2018-12-09", "2018-12-15")
+        hotel.request_reservation("2018-12-09", "2018-12-15")
+        expect{hotel.request_reservation("2018-12-09", "2018-12-15")}.must_raise ArgumentError
+      end
 
     end
 
@@ -92,7 +108,6 @@ describe "Booking" do
         hotel.request_reservation("2018-4-11", "2018-4-12")
         #action
         specific_date = hotel.reservations_by_date("2018-12-12")
-
         #assert
         specific_date.length.must_equal 2
 
@@ -118,7 +133,7 @@ describe "Booking" do
         hotel.request_reservation("2018-4-11", "2018-4-12")
         #action
         specific_dates = hotel.reservations_by_date_range("2018-12-12", "2018-12-14")
-        binding.pry
+        # binding.pry
         specific_dates.length.must_equal 2
       end
 
@@ -153,7 +168,7 @@ describe "Booking" do
         hotel.request_reservation("2018-4-11", "2018-4-12")
 
         rooms_available = hotel.available_rooms("2018-12-12", "2018-12-14")
-
+        binding.pry
         rooms_available.must_be_kind_of Array
         rooms_available.length.must_equal 18
       end

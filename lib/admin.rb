@@ -22,6 +22,9 @@ class Admin
   def request_reservation(start_date, end_date)
     id = reservations.length + 1
     room = available_rooms(start_date, end_date).sample
+      if room.nil?
+        raise ArgumentError, "no rooms available"
+      end 
     # binding.pry
     new_reservation = Reservation.new(id, room, start_date, end_date)
 
