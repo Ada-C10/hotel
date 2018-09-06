@@ -5,12 +5,16 @@ module Hotel
     attr_reader :all_rooms, :all_reservations
 
     def initialize(all_reservations: [])
-      @all_rooms = [*1..20]
+      @all_rooms = [*1..20].map { |room_num| Hotel::Room.new(room_num) }
+
       @all_reservations = all_reservations
     end
 
+
+
     def list_all_rooms
-      list_of_rooms = @all_rooms.each_with_index.map { |room_num, order| "Room #{order + 1}: #{room_num}" }.join("\n")
+
+      list_of_rooms = @all_rooms.each_with_index.map { |room, order| "Room #{order + 1}: #{room.room_num}" }.join("\n")
       return list_of_rooms
     end
 
@@ -26,6 +30,7 @@ module Hotel
 
     def reserve_a_room(check_in, check_out)
       if is_Date(check_in) && is_Date(check_out)
+        
         occupied_rooms_list = []
         [*check_in...check_out].each do |date|
           if list_unavailable_rooms(date)
@@ -48,7 +53,14 @@ module Hotel
     end
 
     def get_occupied_rooms(days_reservations)
-      return days_reservations.map { |reservations| reservations.room_num }
+      temp = days_reservations.map do |reservations|
+        # binding.pry
+        reservations.room.room_num
+      end
+
+      return temp
+
+      # return days_reservations.map { |reservations| reservations.room.room_num }
     end
 
     def list_available_rooms(date)

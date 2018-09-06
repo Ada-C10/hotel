@@ -5,13 +5,13 @@ describe 'HotelBooker class' do
   let (:reservation1) {
     check_in = Date.today + 1
     check_out = check_in + 3
-    Hotel::Reservation.new(check_in, check_out, 1)
+    Hotel::Reservation.new(check_in, check_out, Hotel::Room.new(1))
   }
 
   let (:reservation2) {
     check_in = Date.today + 2
     check_out = check_in + 5
-    Hotel::Reservation.new(check_in, check_out, 2)
+    Hotel::Reservation.new(check_in, check_out, Hotel::Room.new(2))
   }
 
   let (:hotel_booker) {
@@ -55,8 +55,8 @@ describe 'HotelBooker class' do
     end
 
     it 'reserves the first available room for the given date range' do
-      expect(hotel_booker.reserve_a_room(Date.today + 1, Date.today + 2).room_num).must_equal 2
-      expect(hotel_booker.reserve_a_room(Date.today + 1, Date.today + 9).room_num).must_equal 3
+      expect(hotel_booker.reserve_a_room(Date.today + 1, Date.today + 2).room.room_num).must_equal 2
+      expect(hotel_booker.reserve_a_room(Date.today + 1, Date.today + 9).room.room_num).must_equal 3
     end
   end
 
@@ -72,7 +72,7 @@ describe 'HotelBooker class' do
 
       matched_reservation_2 = hotel_booker.get_reservations_by_date(Date.today + 1)
 
-      expect(matched_reservation_2[0].room_num).must_equal 1
+      expect(matched_reservation_2[0].room.room_num).must_equal 1
     end
 
     it 'returns an empty array if no reservations match a given date' do
