@@ -18,7 +18,7 @@ describe "Reservation" do
   it "Check in is a date" do
     expect(@test_reservation.check_in).kind_of? Date
     expect(@test_reservation).respond_to? :check_in
-    expect(@test_reservation.check_in).must_equal check_in
+    expect(@test_reservation.check_in).must_equal Date.new(2018, 9, 01)
   end
 
   it 'raises an ArgumentError if check_in is not a date' do
@@ -51,6 +51,7 @@ describe "Reservation" do
 
   it "Correctly counts the number of days" do
     expect(@test_reservation.number_of_days_reserved).must_equal (@test_reservation.check_out - @test_reservation.check_in).to_i
+    expect(@test_reservation).kind_of? Integer
   end
 
 

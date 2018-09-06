@@ -15,6 +15,7 @@ describe "booking manager" do
 
     it "has a rooms array" do
       expect(@manager.rooms).kind_of? Array
+      expect(@manager).respond_to? :rooms
     end
 
     it "has 20 rooms" do
@@ -25,10 +26,13 @@ describe "booking manager" do
   describe 'Reservations' do
     it "Returns the correct room" do
       expect(@manager.find_room(1)).must_equal @manager.rooms.first
+      expect(@manager).respond_to? :find_room
+      expect(@manager.find_room(1)).kind_of? Room
     end
 
     it "Creates a reservation instance" do
       expect(@manager.create_reservation(1, Date.new(2018, 9, 1), Date.new(2018, 9, 2))).kind_of? Reservation
+
     end
 
     it "Adds a reservation to the room" do
@@ -64,7 +68,9 @@ describe "booking manager" do
   describe "Lists" do
     # Access list of rooms
     it "Shows a list of all the rooms" do
+      expect(@manager).respond_to? :list_all_rooms
       expect(@manager.list_all_rooms.length).must_equal 20
+      expect(@manager).kind_of? Array
     end
 
     # Access list of reserved rooms by date
