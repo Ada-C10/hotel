@@ -9,8 +9,13 @@ module Hotel
       @all_reservations = all_reservations
     end
 
-    def list_all_rooms
+    def get_printable_all_rooms
       return @all_rooms.map { |room_num| "Room #{room_num}"}.join("\n")
+    end
+
+    def get_printable_available_rooms(check_in, check_out)
+      room_list = list_available_rooms(check_in, check_out)
+      return "Available Rooms:\n" + room_list.map { |room_num| "Room #{room_num}"}.join("\n")
     end
 
     def is_room_available(check_in, check_out, room)
@@ -22,15 +27,16 @@ module Hotel
         raise ArgumentError, "Invalid Dates Given"
       end
 
-      if is_room_available(check_in, check_out, room)
+
+      if !is_room_available(check_in, check_out, room)
+        raise UnavailableRoomError, "Room not available"
+      else
         new_reservation = Hotel::Reservation.new(check_in, check_out, room)
         @all_reservations << new_reservation
         return new_reservation
-
-      # TODO: response for if no rooms are available
       end
-
     end
+
 
 
     def get_reservations_by_date(date)
@@ -45,8 +51,6 @@ module Hotel
 
     def check_if_invalid_dates(check_in, check_out)
       return check_in > check_out || !is_Date(check_in) || !is_Date(check_out)
-      #   raise ArgumentError, "Invalid dates given"
-      # end
     end
 
     def get_occupied_rooms(days_reservations)
@@ -80,4 +84,8 @@ module Hotel
       end
     end
   end
+
+  class UnavailableRoomError < StandardError
+  end
+
 end

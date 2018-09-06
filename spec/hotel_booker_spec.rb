@@ -34,9 +34,16 @@ describe 'HotelBooker class' do
     end
   end
 
-  describe 'list_all_rooms method' do
+  describe 'get_printable_all_rooms method' do
     it 'returns a formatted string of all the rooms' do
-      expect(hotel_booker.list_all_rooms).must_be_instance_of String
+      expect(hotel_booker.get_printable_all_rooms).must_be_instance_of String
+    end
+  end
+
+  describe 'get_printable_available_rooms method' do
+    it 'returns a formatted string of all the available rooms' do
+      available_rooms = hotel_booker.get_printable_available_rooms(Date.today, Date.today + 7)
+      expect(available_rooms).must_be_instance_of String
     end
   end
 
@@ -52,17 +59,29 @@ describe 'HotelBooker class' do
 
     it 'adds the reservation to the list of all_reservations' do
       num_of_reservations = hotel_booker.all_reservations.length
-      hotel_booker.reserve_a_room(Date.today + 1, Date.today + 4, 3)
+      reservation = hotel_booker.reserve_a_room(Date.today + 1, Date.today + 4, 3)
+
       expect(hotel_booker.all_reservations.length - 1).must_equal num_of_reservations
+      expect(hotel_booker.all_reservations[2]).must_equal reservation
 
     end
 
-    it 'reserves the first available room for the given date range' do
-      skip
-      expect(hotel_booker.reserve_a_room(Date.today + 1, Date.today + 2).room_num).must_equal 2
-      expect(hotel_booker.reserve_a_room(Date.today + 1, Date.today + 9).room_num).must_equal 3
+    it 'raises an error if room is unavailable' do
+      [*3..20].each do |room|
+        hotel_booker.reserve_a_room(Date.today + 1, Date.today + 4, room)
+      end
+      expect{
+        hotel_booker.reserve_a_room(Date.today + 1, Date.today + 4, 3)
+      }.must_raise StandardError
+
     end
+
+  it 'reserves the first available room for the given date range' do
+    skip
+    expect(hotel_booker.reserve_a_room(Date.today + 1, Date.today + 2).room_num).must_equal 2
+    expect(hotel_booker.reserve_a_room(Date.today + 1, Date.today + 9).room_num).must_equal 3
   end
+end
 
   describe 'get_reservations_by_date method' do
     it 'returns a list of all reservations for a given date ' do
