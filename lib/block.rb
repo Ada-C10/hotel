@@ -18,39 +18,56 @@
 # - When a room is reserved from a block of rooms, the reservation dates will always match the date range of the block
 # - All of the availability checking logic from Wave 2 should now respect room blocks as well as individual reservations
 
-
-# class Reservation
-#   attr_reader :checkin_date, :checkout_date, :nights, :nightly_rate, :room, :confirmation_number
-#
-#   def initialize(checkin_date, checkout_date, room, confirmation_number)
-#     @checkin_date = checkin_date
-#     @checkout_date = checkout_date
-#     @nights = checkout_date - checkin_date
-#     @nightly_rate = 200
-#     @room = room
-#     @confirmation_number = confirmation_number
-#   end
-#
-#   def total_cost
-#     return (nights * nightly_rate).to_f.round(2)
-#   end
-# end
-
 module Hotel
-  class Block < Reservation
-    attr_reader :block
-    attr_accessor :blocked_rooms_available, :blocked_rooms_booked
+  class Block
+    attr_reader :checkin_date, :checkout_date, :block_name, :discount_rate, :blocked_rooms, :reservations
 
-    def initialize(block, checkin_date, checkout_date, discount_rate, blocked_rooms_available = 5, rooms = nil, confirmation_number = nil)
-      super(checkin_date, checkout_date, discount_rate, rooms, confirmation_number)
-      @block = block
-      if blocked_rooms_available.length > 5 || blocked_rooms_available.length < 1
-        raise ArgumentError, "Between 1-5 rooms can be blocked at once."
-      end
-      @blocked_rooms_available = blocked_rooms_available
-      @blocked_rooms_booked = []
+    MAX_BLOCK = 5
+
+    def initialize(checkin_date, checkout_date, block_name, discount_rate)
+      @checkin_date = checkin_date
+      @checkout_date = checkout_date
+      @block_name = block_name
+      @discount_rate = discount_rate
+      @blocked_rooms = []
+      @reservations = []
     end
 
+    # adds a room to the block and updates rooms status to :BLOCKED
+    # checkout_date status is not updated since guest leaves in morning
+    # raises an ArgumentError if Room not provided or Room is already in block
+    # returns updated rooms collection if successful
+    def add_room(room)
+      raise ArgumentError, "Must provide a Room." unless room.is_a? Room
+      unless blocked_rooms.empty?
+        room_nums = blocked_rooms.map { |room| room.room_num }
+        raise ArgumentError, "Room already in block." if room_nums.include? room.room_num
+      end
+      if (blocked_rooms.length + reservations.length) == MAX_BLOCK
+        raise ArgumentError, "Maximum number of rooms alredy in block."
+      end
+      checkin_date.upto(checkout_date.prev_day) do |date|
+        room.change_room_status(date, :BLOCKED)
+      end
+      blocked_rooms << room
+      return blocked_rooms
+    end
+
+    # adds a reservation to the block and removes room from @blocked_rooms
+    # raises an ArgumentError if Reservation not provided or Reservation is already in block
+    # returns updated reservations collection if successful
+    def add_reservation(reservation)
+      raise ArgumentError, "Must provide a Reservation." unless reservation.is_a? Reservation
+      unless reservations.empty?
+        conf_nums = reservations.map { |res| res.confirmation_number }
+        raise ArgumentError, "Reservation already in block." if conf_nums.include? reservation.confirmation_number
+      end
+      reservation.rooms.each do |room|
+        blocked_rooms.delete(room)
+      end
+      reservations << reservation
+      return reservations
+    end
 
   end
 end

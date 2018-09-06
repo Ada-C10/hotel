@@ -43,7 +43,7 @@ describe "Reservation" do
     end
   end
 
-  describe "Resevation#add_room" do
+  describe "Reservation#add_room" do
     it "updates the room's status" do
       expect(room1.is_available? @checkin_date).must_equal true
       expect(room1.is_available? @checkout_date.prev_day).must_equal true

@@ -2,8 +2,6 @@
 
 # Room: Keeps track of the availability of hotel rooms.
 
-require 'date'
-
 module Hotel
   class Room
     attr_reader :room_num, :availability

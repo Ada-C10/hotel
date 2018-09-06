@@ -2,8 +2,6 @@
 
 # Reservation: Keeps track of a single reservation's info.
 
-require 'date'
-
 module Hotel
   class Reservation
     attr_reader :checkin_date, :checkout_date, :confirmation_number, :rooms
@@ -17,7 +15,7 @@ module Hotel
 
     # adds a room to the reservation and updates rooms status to :BOOKED
     # checkout_date status is not updated since guest leaves in morning
-    # raises an ArgumentError if Room not provided
+    # raises an ArgumentError if Room not provided or Room is already in reservation
     # returns updated rooms collection if successful
     def add_room(room)
       raise ArgumentError, "Must provide a Room." unless room.is_a? Room
