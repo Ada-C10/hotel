@@ -74,6 +74,29 @@ module BookingLogic
       return days_reserved.to_i * reservation.room.cost
     end
 
+    def create_date_range_array(check_in, check_out)
+      date_range_array = check_in...check_out
+      return date_range_array.to_a
+    end
+
+    def date_ranges_overlap?(
+      existing_check_in,
+      existing_check_out,
+      new_check_in,
+      new_check_out)
+
+      existing_range = create_date_range_array(existing_check_in, existing_check_out)
+      new_range = create_date_range_array(new_check_in, new_check_out)
+
+      intersecting_dates = existing_range & new_range
+
+      if intersecting_dates.empty?
+        return true
+      else
+        return false
+      end
+    end
+
     def list_available_rooms(date)
       reserved_rooms = []
 
