@@ -36,16 +36,26 @@ module Hotel
       end
     end
 
+    def is_Date(date)
+      return date.class == Date
+    end
+
+    def check_if_valid_dates(check_in, check_out)
+      return check_in > check_out || !is_Date(check_in) || !is_Date(check_out)
+      #   raise ArgumentError, "Invalid dates given"
+      # end
+    end
+
     def get_occupied_rooms(days_reservations)
       return days_reservations.map { |reservations| reservations.room_num }
     end
 
-    def list_unavailable_rooms(date_range)
+    def list_unavailable_rooms(check_in, check_out)
 
       occupied_rooms = []
-      [*date_range.check_in...date_range.check_out].each do |date|
+      [*check_in...check_out].each do |date|
         if get_reservations_by_date(date)
-          occupied_rooms.concat get_reservations_by_date(date).map { |reservation| reservation.room_num }
+          occupied_rooms.concat get_occupied_rooms(get_reservations_by_date(date))
         end
       end
       occupied_rooms.uniq!
@@ -55,11 +65,15 @@ module Hotel
 
 
     def list_available_rooms(check_in, check_out)
-      date_range = DateRange.new(check_in, check_out)
+      unless check_if_valid_dates(check_in, check_out)
 
-      occupied_rooms = list_unavailable_rooms(date_range)
+        occupied_rooms = list_unavailable_rooms(check_in, check_out)
 
-      return @all_rooms - occupied_rooms
+        return @all_rooms - occupied_rooms
+
+      else
+        raise ArgumentError, "Invalid Dates Given"
+      end
 
       # if is_Date(date)
       #   occupied_rooms = list_unavailable_rooms(date)
@@ -68,10 +82,5 @@ module Hotel
       #   raise ArgumentError, "Not a valid date"
       # end
     end
-
-    def is_Date(date)
-      return date.class == Date
-    end
-
   end
 end
