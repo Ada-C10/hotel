@@ -48,6 +48,10 @@ class Booking_Manager
       connected_room_number.reservations << reservation
   end
 
+  def sort_reservations(list_of_reservations)
+      # list_of_reservations.sort! { |a,b| a.check_in_date <=> b.check_in_date }
+  end
+
   def load_rooms
     rooms = []
     ROOM_NUMBERS.each do |num|

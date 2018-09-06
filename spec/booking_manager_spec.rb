@@ -120,12 +120,43 @@ describe "Hotel Manager class" do
       }
       @hotel.reserve_room(@input)
       expect(@hotel.rooms[0].reservations[0].name).must_equal "Mx Thing"
+
     end
   end
 
+  describe 'search_room_availability' do
 
+    it 'finds the room being reserved and adds the reservation to its list of reservations' do
+      # @hotel = Booking_Manager.new
+      # @input = { name: "Mx Thing",
+      #   room_number: 1,
+      #   check_in_date: Date.new(2020,9,9),
+      #   check_out_date: Date.new(2020,9,13),
+      # }
+      # @hotel.reserve_room(@input)
+      # expect(@hotel.rooms[0].reservations[0].name).must_equal "Mx Thing"
+    end
+  end
 
+  describe 'sort_reservations' do
 
+    it 'finds the room being reserved and adds the reservation to its list of reservations' do
+      @hotel = Booking_Manager.new
+      @input = { name: "Mx Thing",
+        room_number: 1,
+        check_in_date: Date.new(2020,9,9),
+        check_out_date: Date.new(2020,9,13),
+      }
+      @hotel.reserve_room(@input)
+      @input2 = { name: "Teen Wolf",
+        room_number: 1,
+        check_in_date: Date.new(2016,7,9),
+        check_out_date: Date.new(2016,7,13),
+      }
+      @hotel.reserve_room(@input2)
+      expect(@hotel.hotel_reservations[0].name).must_equal "Teen Wolf"
+    end
+  end
 
 
 
