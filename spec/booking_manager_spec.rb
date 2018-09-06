@@ -145,14 +145,14 @@ describe "Hotel Manager class" do
       }
       @date1 = Date.new(2020,9,9)
       @date2 = Date.new(2020,9,13)
-      @available_rooms = [4,5,6,7,8,9,10,11,12,13,14,16,17,18,19,20]
+      @available_rooms = [4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]
     end
 
     it 'given a range of dates, it returns a list of available rooms' do
       @hotel.reserve_room(@input2)
       @hotel.reserve_room(@input3)
       @hotel.reserve_room(@input)
-      expect(Hotel::Booking_Manager.search_room_availability(@date1, @date2)).must_equal @available_rooms
+      expect(@hotel.search_room_availability(@date1, @date2)).must_equal @available_rooms
     end
 
   end

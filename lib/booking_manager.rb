@@ -38,30 +38,34 @@ module Hotel
       list_of_reservations.sort! { |a,b| a.check_in_date <=> b.check_in_date }
     end
 
-    def self.search_room_availability(check_in_date, check_out_date)
+    def search_room_availability(check_in_date, check_out_date)
 
-      # vacant_rooms = []
-      # rooms = get_rooms
-      # rooms.each do |room|
-      #   min = 0
-      #   max = room.reservations.length
-      #   while min < max
-      #     mid = (min + max )/ 2
-      #     if reservations[mid].nights_of_stay.include?(check_in_date)
-      #       break
-      #     elsif reservations[mid].check_in_date > check_in_date
-      #       max = mid - 1
-      #     elsif reservations[mid].check_in_date < check_in_date
-      #       min = mid + 1
-      #     end
-      #   end
-      #   if reservations[min].nights_of_stay.include?(check_in_date)
-      #     break
-      #   end
-      #   vacant_rooms << room
-      # end
-      #
-      # return vacant_rooms
+      vacant_rooms = []
+      booked_rooms = []
+      @rooms.each do |room|
+        min = 0
+        max = room.reservations.length
+        while min < max
+          mid = (min + max )/ 2
+          if room.reservations[mid].nights_of_stay.include?(check_in_date)
+            booked_rooms << room.room_number
+            break
+          elsif room.reservations[mid].check_in_date > check_in_date
+            max = mid - 1
+          elsif room.reservations[mid].check_in_date < check_in_date
+            min = mid + 1
+          end
+        end
+        # binding.pry
+        # if room.reservations[min].nights_of_stay.include?(check_in_date)
+        #   booked_rooms << room.room_number
+        # end
+        unless booked_rooms.include?(room.room_number)
+          vacant_rooms << room.room_number
+        end
+      end
+
+      return vacant_rooms
     end
 
 
