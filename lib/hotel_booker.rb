@@ -14,9 +14,13 @@ module Hotel
 
       # TODO: send message, rescue, or error if no available rooms or less than num_of_rooms
       # TODO: check if num_of_rooms is 1 <= 5, or does room_block already check for this?
+      all_available_rooms = list_available_rooms(check_in, check_out)
 
-      available_rooms = list_available_rooms(check_in, check_out)[0..num_of_rooms - 1]
+      if all_available_rooms.empty? || all_available_rooms.length < num_of_rooms
+        raise StandardError, "Not enough rooms available"
+      end
 
+      available_rooms = all_available_rooms[0..num_of_rooms - 1]
       room_block = Hotel::RoomBlock.new(check_in, check_out, available_rooms, discounted_rate)
       @room_blocks << room_block
       return room_block

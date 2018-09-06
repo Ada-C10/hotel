@@ -236,6 +236,23 @@ describe 'HotelBooker class' do
       expect(num_new_blocks - 1).must_equal num_old_blocks
       expect(hotel_booker.room_blocks[0]).must_equal room_block
     end
+
+    it 'raises an exception if no rooms are available for that date range' do
+      [*3..20].each do |room|
+        hotel_booker.reserve_a_room(Date.today + 1, Date.today + 4, room)
+      end
+
+      expect{room_block}.must_raise StandardError
+
+    end
+    it 'raises an exception if not enough rooms are available for that date range' do
+      [*7..20].each do |room|
+        hotel_booker.reserve_a_room(Date.today + 1, Date.today + 4, room)
+      end
+
+      expect{room_block}.must_raise StandardError
+
+    end
   end
 
   # describe 'is_Date method' do
