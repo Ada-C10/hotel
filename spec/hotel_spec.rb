@@ -30,6 +30,17 @@ describe 'find room by number' do
   end
 end
 
+describe 'show all room numbers' do
+  it 'returns a list of every room number in the hotel' do
+    @my_hotel = Hotel.new
+    room_list = @my_hotel.show_all_room_numbers
+    expect(room_list.length).must_equal 20
+    20.times do |i|
+      expect(room_list[i]).must_be_instance_of Integer
+    end
+  end
+end
+
 describe 'make reservation' do
   before do
     @my_hotel = Hotel.new
@@ -86,6 +97,15 @@ describe 'find reservations by date' do
     result = @my_hotel.find_reservations_by_date(date)
     expect(result).must_be_instance_of Array
     expect(result.length).must_equal 0
+  end
+end
+
+describe 'find reservation price' do
+  it 'can find the price using the reservation id' do
+    @my_hotel = Hotel.new
+    new_res = @my_hotel.make_reservation(Date.new(2010, 3, 4), Date.new(2010, 3, 5), 6, 'customer')
+    price = @my_hotel.find_reservation_price(new_res.reservation_id)
+    expect(price).must_equal 200
   end
 end
 
