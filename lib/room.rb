@@ -5,4 +5,9 @@ class Room
     @number = data[:number]
     @status = data[:status]
   end
+
+  def change_status
+    @status = "unavailable"
+  end
+
 end
