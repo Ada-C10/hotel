@@ -1,19 +1,26 @@
 require 'awesome_print'
-#room should STORE room information
-#room should STORE room status
-#room should STORE room costs
-#room should STORE all hotel rooms
+#room should CREATE ROOMS = yes
+#room should STORE room information = yes
+#room should STORE room status = yes
+#room should STORE room costs = yes
+#room should STORE all hotel rooms = yes
 
 module Lodging
-  class Room
 
-    def initialize(room_count, cost = 200)
-      @room_count = room_count
+  class Room
+    attr_reader :room_number
+
+    @@room_list = [] #to store all instances of rooms created
+
+    def initialize(room_number, cost = 200)
+      @room_number = room_number
       @cost = cost
+      @status = :available
+      @@room_list << self
     end
 
-    def create_rooms
-
+    def self.show_list #to show list as instances
+      return @@room_list
     end
 
   end
