@@ -116,7 +116,7 @@ class Hotel
     available_room_numbers = []
     room_list.each do |room|
       room_is_available = true
-      (start_date..end_date).each do |date|
+      (start_date..(end_date - 1)).each do |date|
         if !room.is_available?(date)
           room_is_available = false
         end

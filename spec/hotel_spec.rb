@@ -126,6 +126,12 @@ describe 'find available rooms' do
     expect(room_list.include?(6)).must_equal true
     expect(room_list.include?(8)).must_equal true
   end
+  it 'says a room is available as a checkout day if someone is checking in on that day' do
+    room_list = @my_hotel.find_available_rooms(Date.new(2010, 2, 5), Date.new(2010, 3, 4))
+    expect(room_list.include?(6)).must_equal true
+    expect(room_list.include?(7)).must_equal true
+  end
+
   it 'returns an empty list if no rooms are available' do
     (1..20).each do |room_no|
       @my_hotel.make_reservation(Date.new(2010, 1, 1), Date.new(2010, 2, 2), room_no, 'customer')
