@@ -19,7 +19,7 @@ describe "Reservation Hub class" do
       expect(@reservation_hub).must_be_kind_of Hotel::ReservationHub
     end
 
-    it "can access all available rooms" do
+    it "can access all rooms in the hotel" do
       expect(@reservation_hub.rooms.length).must_equal 20
     end
 
@@ -44,10 +44,32 @@ describe "Reservation Hub class" do
 
       expect(@reservation_hub.reservations.length).must_equal 2
 
-      # binding.pry
     end
 
 
+    describe "find reservation" do
+
+      before do
+        @reservation_hub = Hotel::ReservationHub.new
+
+        @reservation1 = Hotel::Reservation.new(2018,01,03,2018,01,07)
+        @reservation2 = Hotel::Reservation.new(2018,04,02,2018,04,06)
+        @reservation3 = Hotel::Reservation.new(2018,01,03,2018,02,12)
+      end
+
+      it "returns a list of reservations based on a start date" do
+
+        expect(@reservation_hub.find_reservations(2018-01-03)).must_be_kind_of Array
+
+        expect(@reservation_hub.find_reservations(2018-01-03).lenght).must_equall 2
+
+        #each must be kind of (instance of?) reservation
+
+
+      end
+
+
+    end
 
 
 
