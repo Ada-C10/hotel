@@ -16,7 +16,7 @@ class TrackingSystem
     all_rooms = []
     NUMBER_OF_ROOMS.times do |i|
       i += 1
-      i = Room.new({room_num: i, price: STANDARD_ROOM_PRICE, reserved_dates: []})
+      i = Room.new({room_num: i, reserved_dates: []})
       all_rooms << i
     end
     return all_rooms
@@ -28,22 +28,29 @@ class TrackingSystem
   end
 
   # reserve an available room for a given date range
-  def make_reservation(start_time: nil, end_time: nil, number_of_rooms)
-    # 1. pick a room that is available. the next available room?
-    @all_rooms.each do |room|
-      room.reserved_dates.each do |reserved_dates| # this is a hash containing {checkin_time: checkin, checkout_time: checkout}, can replace some fo this with helper method
-        if !(reserved_dates[:checkin_time]..reserved_dates[:checkout_time]).include?(:start_time) && room.block_status == :NA
-          #create a new reservation with |room| that is iterated in and fits the reqs
-        else
-         # raise argument error if inside @all_rooms no room is available on this date range (then admin would need to input a new date range)
-    # else..make the new reservation below
-    reservation = Reservation.new(date_range: view_two_dates_as_range {checkin_time: checkin, checkout_time: checkout -1}, room: room)  # <----room object contains {room_num:, price: STANDARD_ROOM_PRICE, customer: ""}
-    @reservations << reservation
-    room.reserved_dates << {checkin_time: checkin, checkout_time: checkout}
+  # ******************************************************************************************
+  def make_reservation(start_time: nil, end_time: nil, rooms: num)
+  #   # 1. pick a room that is available. the next available room?
+  #   @all_rooms.each do |room|
+  #     room.reserved_dates.each do |reserved_dates| # this is a hash containing {checkin_time: checkin, checkout_time: checkout}, can replace some fo this with helper method
+  #       if !(reserved_dates[:start_time]..reserved_dates[:end_time]).include?(:checkin) && room.block == :NA
+  #         #create a new reservation with |room| that is iterated in and fits the reqs
+  #       else
+  #        # raise argument error if inside @all_rooms no room is available on this date range (then admin would need to input a new date range)
+  #   # else..make the new reservation below
+  #   reservation = Reservation.new(date_range: view_two_dates_as_range {start_time: checkin, end_time: checkout -1}, room: room)  # <----room object contains {room_num:, price: STANDARD_ROOM_PRICE, customer: ""}
+  #   @reservations << reservation
+  #   room.reserved_dates << {start_time: checkin, end_time: checkout}
   end
-
+# *********************************************************************************************************
+  #block method idea
+  #this method below is going to return a value that can into the Block.rooms << (aka list of rooms in a block), but how/when do i assign these available rooms a block id? Ah i think that i will
+  # i will create another method called create_block, call view_available_rooms_on(start_time, end_time) within that
+  # and then in that create_block method, update a block status for each room (aka block :A) corresponding to the Block's ID (id: A,B,C etc..)
+  #
   # view a list of rooms that are not reserved(aka available) for a given date range
-  # def view_available_rooms_on(checkin_time, checkout_time)
+
+  # def view_available_rooms_on(start_time, end_time)
   #   #available_rooms = []
   #   # @all_rooms.each do |room|
   #   # room.reserved_dates.each do |date_range| <---date_range could be a hash like {checkin_time: checkin, checkout_time: checkout}

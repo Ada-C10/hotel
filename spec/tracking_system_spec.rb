@@ -57,28 +57,47 @@ describe 'TrackingSystem class' do
   describe "#make_reservation" do
     before do
       @tracker = TrackingSystem.new
-      # @room = Room.new({room_num: 1, price: 200.0, availability: :available })
+      # @room = Room.new({room_num: 1, availability: :available })
     end
 
     it "creates a new instance of Reservation" do
-      @reservation = @tracker.make_reservation(checkin_time: Date.new(2018,8,1), checkout_time: Date.new(2018,8,25))
+      @reservation = @tracker.make_reservation(start_time: Date.new(2018,8,1), end_time: Date.new(2018,8,25), rooms: 1) #<---1 is the number of rooms
 
-      expect(@reservation.sample).must_be_kind_of Reservation
+      expect(@reservation).must_be_kind_of Reservation
     end
 
     it "increases the number of reservations in the reservations list" do
       num_of_reservations = @tracker.reservations.length
-      @reservation = @tracker.make_reservation(checkin_time: Date.new(2018,8,1), checkout_time: Date.new(2018,8,25))
+      @reservation = @tracker.make_reservation(start_time: Date.new(2018,8,1), end_time: Date.new(2018,8,25), rooms: 1)
       updated_num_of_reservations = @tracker.reservations.length
 
       expect(updated_num_of_reservations - num_of_reservations).must_equal 1
     end
 
-    # it "changes availability of the reserved room to :RESERVED for a given date range" do
+    # it "changes block_status of the reserved room to :RESERVED for a given date range" do
     # end
     # it "saves the checkout_time as a day before " do
     # end
   end
+
+  # def make_reservation(start_time: nil, end_time: nil, number_of_rooms)
+  #   # 1. pick a room that is available. the next available room?
+  #   @all_rooms.each do |room|
+  #     room.reserved_dates.each do |reserved_dates| # this is a hash containing {checkin_time: checkin, checkout_time: checkout}, can replace some fo this with helper method
+  #       if !(reserved_dates[:start_time]..reserved_dates[:end_time]).include?(:checkin) && room.block == :NA
+  #         #create a new reservation with |room| that is iterated in and fits the reqs
+  #       else
+  #        # raise argument error if inside @all_rooms no room is available on this date range (then admin would need to input a new date range)
+  #   # else..make the new reservation below
+  #   reservation = Reservation.new(date_range: view_two_dates_as_range {start_time: checkin, end_time: checkout -1}, room: room)  # <----room object contains {room_num:, price: STANDARD_ROOM_PRICE, customer: ""}
+  #   @reservations << reservation
+  #   room.reserved_dates << {start_time: checkin, end_time: checkout}
+  # end
+
+
+
+
+
 
   describe "#view_all_rooms" do
     before do

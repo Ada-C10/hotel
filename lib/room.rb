@@ -1,11 +1,10 @@
 class Room
-  attr_reader :room_num, :price, :reserved_dates, :block_status
+  attr_reader :room_num, :reserved_dates, :block
 
   def initialize(attributes)
     @room_num = attributes[:room_num]
-    @price = attributes[:price]
     @reserved_dates = []  #<--- this should be a list of date_range hashes? like {checkin_time: checkin, checkout_time: checkout}
-    @block_status = :AVAILABLE
+    @block = :NA #room should have a letter A~Z to indicate which rooms are with what block, NA is default
   end
 end
 

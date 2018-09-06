@@ -6,7 +6,7 @@ describe 'Room class' do
   describe "#initialize" do
     before do
       @room = Room.new(
-        {room_num: 1, reserved_dates: [], block_status: :NA })
+        {room_num: 1, reserved_dates: [], block: :NA })
       end
 
       it 'is an instance of Room' do
@@ -14,13 +14,13 @@ describe 'Room class' do
       end
 
       it "is set up for specific attributes and data types" do
-        [:room_num, :reserved_dates, :block_status].each do |attribute|
+        [:room_num, :reserved_dates, :block].each do |attribute|
           expect(@room).must_respond_to attribute
         end
 
         expect(@room.room_num).must_be_kind_of Integer
         expect(@room.reserved_dates).must_be_kind_of Array
-        expect(@room.block_status).must_be_kind_of Symbol
+        expect(@room.block).must_be_kind_of Symbol
 
       end
     end
