@@ -2,7 +2,7 @@ require 'time'
 require 'date'
 
 class Reservation
-  attr_accessor :reservation_num, :room_num, :start_date, :end_date, :room_type
+  attr_accessor :reservation_num, :room_num, :start_date, :end_date, :room_type, :dates_booked_for_reservation
 
   def initialize(reservation_num, room_num, start_date, end_date, room_type)
     @reservation_num = reservation_num.to_i
