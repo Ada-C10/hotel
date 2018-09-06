@@ -22,7 +22,33 @@ describe "Reservation class" do
     end
   end
 
+  describe "reservation cost" do
+    it "returns the total amount of the new reservation" do
+
+      @reservation = Hotel::Reservation.new(2015, 03, 01, 2015, 03, 05)
+
+      start_date = @reservation.start_date
+      end_date = @reservation.end_date
+
+      expect(@reservation.reservation_cost(start_date, end_date)).must_equal 800
+
+
+
+    end
+
+
+  end
+
 end
+
+# it "Returns the total from the collection of products" do
+#   products = { "banana" => 1.99, "cracker" => 3.00 }
+#   order = Order.new(1337, products, customer)
+#
+#   expected_total = 5.36
+#
+#   expect(order.total).must_equal expected_total
+# end
 
 #As an administrator, I can access the list of all of the rooms in the hotel
 #As an administrator, I can reserve a room for a given date range
