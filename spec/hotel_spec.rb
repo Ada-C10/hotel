@@ -1,13 +1,6 @@
 require_relative 'spec_helper'
 require 'pry'
 
-
-# # As an administrator, I can access the list of reservations for a specific date
-
-#
-# # As an administrator, I can get the total cost for a given reservation
-# # hotel.reservations.find_cost(reservation_id)
-
 describe "Hotel Class: Wave One: Tracking Reservations" do
   describe "hotel class initialize" do
     before do
@@ -64,12 +57,36 @@ describe "Hotel Class: Wave One: Tracking Reservations" do
 
     it "raises an error for unavailable dates" do
       @hotel.reserve_room('2018-03-01', '2018-03-15', 20)
-      expect{@hotel.reserve_room('2018-03-01', '2018-03-14', 1)}.must_raise ArgumentError
 
-      @hotel.reserve_room('2018-01-01', '2018-01-15', 1)
-      expect{@hotel.reserve_room('2018-01-01', '2018-01-15', 20)}.must_raise ArgumentError
+      #same dates
+      expect{@hotel.reserve_room('2018-03-01', '2018-03-15', 1)}.must_raise ArgumentError
+      #overlaps in the front
+      expect{@hotel.reserve_room('2018-02-28', '2018-03-15', 1)}.must_raise ArgumentError
+      #overlaps in the back
+      expect{@hotel.reserve_room('2018-03-01', '2018-03-18', 1)}.must_raise ArgumentError
+      #completely contained
+      expect{@hotel.reserve_room('2018-03-05', '2018-03-13', 1)}.must_raise ArgumentError
+      #completely containing
+      expect{@hotel.reserve_room('2018-02-28', '2018-03-16', 1)}.must_raise ArgumentError
     end
 
+    it "does not raise an error for date ranges that are not overlapping " do
+      @hotel.reserve_room('2018-04-01', '2018-04-15', 20)
+
+      #completely before
+      expect(@hotel.reserve_room('2018-03-01', '2018-03-15', 1))
+      #completely after
+      expect(@hotel.reserve_room('2018-04-16', '2018-04-18', 1))
+      #ends on the checkin date
+      expect(@hotel.reserve_room('2018-03-20', '2018-04-01', 1))
+      #starts on the checkout date
+      expect(@hotel.reserve_room('2018-04-15', '2018-04-18', 1))
+    end
+
+    it "reservation can start on the same day that another reservation for the same room ends" do
+      @hotel.reserve_room('2018-03-01', '2018-03-15', 20)
+      expect{@hotel.reserve_room('2018-03-15', '2018-03-20', 1)}.must_be_silent
+    end
 
   end
 
@@ -108,6 +125,86 @@ describe "Hotel Class: Wave One: Tracking Reservations" do
 
     it "raises an error for invalid id" do
       expect{@hotel.reservation_cost(12345)}.must_raise ArgumentError
+    end
+  end
+end
+
+describe "Hotel Class: Wave Two: Room Availability" do
+
+  describe "list_not_reserved_rooms" do
+    before do
+      @hotel = Hotel.new(20)
+      @hotel.reserve_room('2018-02-03', '2018-02-05', 1)
+    end
+
+    it "lists all rooms not reserved" do
+      expect(@hotel.list_available_rooms('2018-01-03', '2018-01-05').length).must_equal 20
+      expect(@hotel.list_available_rooms('2018-02-03','2018-02-05').length).must_equal 19
+    end
+
+    it "warns user that all rooms that date are reserved" do
+      @hotel.reserve_room('2018-04-03', '2018-04-05', 20)
+
+      expect(@hotel.list_available_rooms('2018-04-03', '2018-04-05')).must_equal "All rooms are reserved from 2018-04-03 to 2018-04-05."
+    end
+  end
+
+end
+
+
+describe "Hotel Class: Wave Three: Blocks of Rooms" do
+
+  describe "reserve_room_block" do
+    before do
+      @hotel = Hotel.new(20)
+      @hotel.reserve_room_block('2018-01-03', '2018-01-05', 5, 150)
+      @block_id = @hotel.block_reservations[0].reservation_id
+
+    end
+
+    it "can create a block of rooms" do
+      expect(@hotel.block_reservations[0]).must_be_instance_of BlockReservation
+    end
+
+    it "can check whether a given block has any rooms available" do
+      expect(@hotel.list_available_block_rooms(@block_id).length).must_equal 5
+    end
+
+    it "can reserve a room from within a block of rooms" do
+      @hotel.reserve_block_room(@block_id, 1)
+
+      expect(@hotel.list_available_block_rooms(@block_id).length).must_equal 4
+    end
+
+    it "a block can contain a maximum of 5 rooms" do
+
+      expect{@hotel.reserve_room_block('2018-09-05', '2018-09-10', 7, 150)}.must_raise ArgumentError
+    end
+
+    it "when a room is reserved from a block, the reservation dates will match the date range of the block" do
+      @hotel.reserve_block_room(@block_id, 1)
+
+      expect(@hotel.block_reservations[0].rooms_reserved[0].block_reservations[0].start_date).must_equal @hotel.block_reservations[0].start_date
+
+      expect(@hotel.block_reservations[0].rooms_reserved[0].block_reservations[0].end_date).must_equal @hotel.block_reservations[0].end_date
+    end
+
+    it "if a room is set aside in a block, it is not available for reservation" do
+      @hotel.reserve_room_block('2018-05-03', '2018-05-08', 5, 150)
+      @hotel.reserve_room_block('2018-05-03', '2018-05-08', 5, 150)
+      @hotel.reserve_room_block('2018-05-03', '2018-05-08', 5, 150)
+      @hotel.reserve_room_block('2018-05-03', '2018-05-08', 5, 150)
+
+      expect{@hotel.reserve_room('2018-05-03', '2018-05-10', 1)}.must_raise ArgumentError
+    end
+
+    it "if a room is set aside in a block it can't be included in another block" do
+      @hotel.reserve_room_block('2018-05-03', '2018-05-08', 5, 150)
+      @hotel.reserve_room_block('2018-05-03', '2018-05-08', 5, 150)
+      @hotel.reserve_room_block('2018-05-03', '2018-05-08', 5, 150)
+      @hotel.reserve_room_block('2018-05-03', '2018-05-08', 5, 150)
+
+      expect{@hotel.reserve_room_block('2018-05-05', '2018-05-08', 7, 150)}.must_raise ArgumentError
     end
 
   end

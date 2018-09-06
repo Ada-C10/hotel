@@ -3,7 +3,7 @@ require_relative 'spec_helper'
 describe "Reservation Class: Wave One: Tracking Reservations" do
   describe "Reservation class initialize" do
     before do
-      @reservation = Reservation.new('2018-02-03', '2018-02-05')
+      @reservation = Reservation.new('2018-02-03', '2018-02-05', 1)
     end
 
     it "creates a reservation" do
@@ -20,7 +20,7 @@ describe "Reservation Class: Wave One: Tracking Reservations" do
     end
 
     it "raises an error for invalid dates" do
-      expect{Reservation.new('2018-02-15', '2018-02-05')}.must_raise StandardError
+      expect{Reservation.new('2018-02-15', '2018-02-05', 1)}.must_raise StandardError
     end
   end
 end
