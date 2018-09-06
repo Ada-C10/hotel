@@ -1,34 +1,33 @@
-require 'date'
 require 'awesome_print'
-require_relative 'duration'
+require_relative 'date_range'
 
 =begin
-This will keep track of all the reservations
-
-1. create method for available/unavailable rooms based on date range
-
-2.
-
+1. This will keep track of one reservation
 =end
-
 
 module Hotel
   class Reservation
+    # TODO: change duration to start/end dates
 
     PRICE_PER_NIGHT = 200.00
-    attr_reader :id, :duration, :room_number
+    attr_reader :date_range, :room_number
 
 
-    def initialize(id, duration, room_number)
-      @id = id
-      @duration = duration
+    def initialize(date_range, room_number)
+      @date_range = date_range
+      # @start_date = Date.parse(start_date)
+      # @end_date = Date.parse(end_date)
       @room_number = room_number
     end
 
+    def number_of_nights
+      return (@date_range.end_date - @date_range.start_date).to_i
+    end
 
     def total_cost
-      return (@duration.number_of_nights * PRICE_PER_NIGHT).round(2)
+      return ("%.2f" % (number_of_nights * PRICE_PER_NIGHT)).to_f
     end
+
 
   end
 
