@@ -103,66 +103,78 @@ describe "BookingSystem class" do
   # end
 
   describe "#list_reservations_for_date" do
-    before do
-
-      # res_1 = Hotel::Reservation.new({
-      #   id: "1",
-      #   room_num: "20",
-      #   start_date: "2010-8-1",
-      #   end_date: "2010-8-10",
-      #   })
-      # res_2 = Hotel::Reservation.new({
-      #   id: "2",
-      #   room_num: "19",
-      #   start_date: "2008-5-15",
-      #   end_date: "2010-5-18",
-      #   })
-      # res_3 = Hotel::Reservation.new({
-      #   id: "4",
-      #   room_num: "15",
-      #   start_date: "2009-4-4",
-      #   end_date: "2009-4-10",
-      #   })
-
-    res_1 = booking_system.create_reservation({
+    let(:res_1) {booking_system.create_reservation({
       id: "1",
       room_num: "20",
       start_date: "2010-8-1",
-      end_date: "2010-8-10",
-      })
-    res_2 = booking_system.create_reservation({
+      end_date: "2010-8-10"
+      })}
+
+    let(:res_2) {booking_system.create_reservation({
       id: "2",
       room_num: "19",
       start_date: "2010-8-15",
-      end_date: "2010-8-18",
-      })
-    res_3 = booking_system.create_reservation({
+      end_date: "2010-8-18"
+      })}
+
+    let(:res_3) {booking_system.create_reservation({
       id: "4",
       room_num: "15",
       start_date: "2010-8-4",
-      end_date: "2010-8-20",
-      })
+      end_date: "2010-8-20"
+      })}
 
-    @matching_res = booking_system.list_reservations_for_date("2010-8-5")
-    puts @matching_res
+    let(:matching_res) {booking_system.list_reservations_for_date("2010-8-5")}
+    # puts @matching_res}
+    # res_1 = booking_system.create_reservation({
+    #   id: "1",
+    #   room_num: "20",
+    #   start_date: "2010-8-1",
+    #   end_date: "2010-8-10",
+    #   })
+    # res_2 = booking_system.create_reservation({
+    #   id: "2",
+    #   room_num: "19",
+    #   start_date: "2010-8-15",
+    #   end_date: "2010-8-18",
+    #   })
+    # res_3 = booking_system.create_reservation({
+    #   id: "4",
+    #   room_num: "15",
+    #   start_date: "2010-8-4",
+    #   end_date: "2010-8-20",
+    #   })
 
-    end
+    # @matching_res = booking_system.list_reservations_for_date("2010-8-5")
+    # puts @matching_res
+    # end
 
     it "should return an array of Reservation objects" do
-      expect(@matching_res).must_be_kind_of Array
-      expect(@matching_res[0]).must_be_kind_of Hotel::Reservation
+      expect(matching_res).must_be_kind_of Array
+      expect(matching_res[0]).must_be_kind_of Hotel::Reservation
     end
 
     it "accurately loads Reservation objects for specified date" do
-      puts @matching_res
-      expect(@matching_res.length).must_equal 2
-      expect(@matching_res[0].id).must_equal 1
-      expect(@matching_res[1].id).must_equal 4
+      expect(matching_res.length).must_equal 2
+      expect(matching_res[0].id).must_equal 1
+      expect(matching_res[1].id).must_equal 4
     end
 
     it "returns nil if no Reservations are found for specified date" do
-      @matching_res = booking_system.list_reservations_for_date("2010-8-30")
-      expect(@matching_res).must_equal nil
+      matching_res = booking_system.list_reservations_for_date("2010-8-30")
+      expect(matching_res).must_equal nil
+    end
+  end
+
+  describe "#available_rooms_by_date" do
+    let(:start_date) {"2010-8-15"}
+    let(:end_date) {"2010-8-16"}
+
+    it "returns an array of room numbers" do
+      expect(booking_system.available_rooms_by_date(start_date, end_date)).must_be_kind_of Array
+
+      expect(booking_system.available_rooms_by_date(start_date, end_date)[0]).must_be_kind_of Integer
+
     end
   end
 

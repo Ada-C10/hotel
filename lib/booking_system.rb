@@ -20,6 +20,7 @@ module Hotel
     end
 
     def list_all_rooms()
+      # return list as a string
       all_rooms_str = "Here is a list of all rooms: \n"
 
       @rooms.each do |room|
@@ -30,6 +31,7 @@ module Hotel
     end
 
 # QUESTION: is this necessary??
+# QUESTION: should I ditch input for date ranges??
     def create_reservation(input)
       room = find_room(input[:room_num])
       # start_date = input[:start_date]
@@ -65,6 +67,7 @@ module Hotel
 
 
 # QUESTION: should i be accessing this
+# QUESTION: add a pretty to_s for listing reserved dates?
     def list_reservations_for_date(date)
       date = Date.parse(date)
       #TODO error handling for date as Date object??
@@ -84,22 +87,40 @@ module Hotel
       return @rooms.find {|room| room.num == room_num.to_i}
     end
 
+    def available_rooms_by_date(start_date, end_date)
+      # QUESTION: should this be the input??
+      # TODO: ugh, not DRY....
+      check_date_range = (start_date...end_date).to_a
+
+      @reservations.each do |reservation|
+        # check for overlap in dates
+        if !(reservation.date_range & check_date_range)
+          return reservation.room.num
+        end
+
+      end
+
+      # TODO URGENT: add rooms to reservation class??
+
+
+    end
+
   end
 end
 
 
-# booking = Hotel::BookingSystem.new()
-# #
-# res_3 = booking.create_reservation({
-#   id: "4",
-#   room_num: "15",
-#   start_date: "2010-8-4",
-#   end_date: "2010-8-20",
-#   })
-# res_2 = booking.create_reservation({id: "1",
-#   room_num: "20",
-#   start_date: "2010-8-1",
-#   end_date: "2010-8-10",
-#   })
+booking = Hotel::BookingSystem.new()
 #
-# p booking.list_reservations_for_date("2010-8-5")
+res_3 = booking.create_reservation({
+  id: "4",
+  room_num: "15",
+  start_date: "2010-8-4",
+  end_date: "2010-8-20",
+  })
+res_2 = booking.create_reservation({id: "1",
+  room_num: "20",
+  start_date: "2010-8-1",
+  end_date: "2010-8-10",
+  })
+
+p booking.available_rooms_by_date("2010-8-5")
