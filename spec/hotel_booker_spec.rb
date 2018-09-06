@@ -216,6 +216,28 @@ describe 'HotelBooker class' do
 
   end
 
+  describe 'create_a_block method' do
+    let (:room_block) {
+      hotel_booker.create_a_block(Date.today + 2, Date.today + 7, 5, 150)
+    }
+    it 'returns a RoomBlock object if given valid parameters' do
+      expect(room_block).must_be_instance_of Hotel::RoomBlock
+    end
+
+    it 'returns a RoomBlock with only available rooms for that time range' do
+      expect(room_block.blocked_rooms).must_equal [*3..7]
+    end
+
+    it 'adds a RoomBlock to room_blocks list' do
+      num_old_blocks = hotel_booker.room_blocks.length
+      room_block
+      num_new_blocks = hotel_booker.room_blocks.length
+
+      expect(num_new_blocks - 1).must_equal num_old_blocks
+      expect(hotel_booker.room_blocks[0]).must_equal room_block
+    end
+  end
+
   # describe 'is_Date method' do
   #   it 'returns true if given date is not a Date' do
   #     expect(is_Date(Date.today)).must_equal true

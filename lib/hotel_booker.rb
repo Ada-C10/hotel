@@ -2,11 +2,25 @@ module Hotel
 
   class HotelBooker
 
-    attr_reader :all_rooms, :all_reservations
+    attr_reader :all_rooms, :all_reservations, :room_blocks
 
     def initialize(all_reservations: [])
       @all_rooms = [*1..20]
       @all_reservations = all_reservations
+      @room_blocks = []
+    end
+
+    def create_a_block(check_in, check_out, num_of_rooms, discounted_rate)
+
+      # TODO: send message, rescue, or error if no available rooms or less than num_of_rooms
+      # TODO: check if num_of_rooms is 1 <= 5, or does room_block already check for this?
+
+      available_rooms = list_available_rooms(check_in, check_out)[0..num_of_rooms - 1]
+
+      room_block = Hotel::RoomBlock.new(check_in, check_out, available_rooms, discounted_rate)
+      @room_blocks << room_block
+      return room_block
+
     end
 
 

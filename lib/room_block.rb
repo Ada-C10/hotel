@@ -39,10 +39,11 @@ module Hotel
     def is_number(num)
       return num.to_f.to_s == num.to_s || num.to_i.to_s == num.to_s
     end
-    #
-    # def get_cost
-    #   return @date_range.get_total_days * BASE_COST
-    # end
+
+    # TODO: methods to create:
+    # make_block_reservation
+    # check_if_block_has_availabiliy
+    # make_blocked_room unavailable to be reserved by the public for that date range, or by another block
 
 
 
