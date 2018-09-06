@@ -19,26 +19,23 @@ describe "HotelManager" do
       expect(my_hotel).must_be_kind_of Hotel::HotelManager
     end
 
-    it "Creates an array of rooms" do
+    it "establishes the base data structures when instantiated" do
+      [:rooms, :reservations].each do |prop|
+        expect(my_hotel).must_respond_to prop
+      end
+
       expect(my_hotel.rooms).must_be_kind_of Array
+      expect(my_hotel.reservations).must_be_kind_of Array
     end
 
     it "Keeps track of rooms" do
-      expect(my_hotel).must_respond_to :rooms
-
       my_hotel.rooms.each_with_index do |room, i|
         expect(room.id).must_equal (i + 1)
         expect(room).must_be_kind_of Hotel::Room
       end
     end
 
-    it "Creates an array of reservations" do
-      expect(my_hotel.reservations).must_be_kind_of Array
-    end
-
     it "Keeps track of reservations" do
-      expect(my_hotel).must_respond_to :reservations
-
       my_hotel.reservations.each do |reservation|
         expect(reservation).must_be_kind_of Hotel::Reservation
       end
@@ -61,102 +58,73 @@ describe "HotelManager" do
         expect(my_room.status_by_date[date]).must_equal :UNAVAILABLE
       end
     end
+
+    it "Creates and stores a reservation when there are no reservations yet" do
+      my_reservations = my_hotel.reservations.clear
+
+      my_hotel.reserve(id, check_in, check_out)
+
+      expect(my_reservations.length).must_equal 1
+      expect(my_reservations.first.room_number).must_equal id
+      expect(my_reservations.first.check_in).must_equal Date.parse(check_in)
+      expect(my_reservations.first.check_out).must_equal Date.parse(check_out)
+    end
+
+    it "Raises an error if room is not available" do
+      room_number = 1337
+      room = Hotel::Room.new(room_number)
+      my_hotel.rooms << room
+      Hotel::Room.change_status_of_room(my_hotel.rooms, room_number, check_in, check_out)
+
+      expect {
+        my_hotel.reserve(room_number, check_in, check_out)
+      }.must_raise StandardError
+    end
   end
 
-  # describe "#find_reservations_by_date" do
-  #   it "Returns an array" do
-  #     date = "2018-10-12"
-  #
-  #     my_hotel = Hotel::HotelManager.new
-  #     reservations = my_hotel.find_reservations_by_date(date)
-  #
-  #     expect(reservations).must_be_kind_of Array
-  #   end
-  #
-  #   it "Returns an accurate count of Reservations" do
-  #     date = "2018-10-12"
-  #     reservation_one = Hotel::Reservation.new("2018-10-10", "2018-10-16", 1)
-  #     reservation_two = Hotel::Reservation.new("2018-11-15", "2018-11-29", 1)
-  #     reservation_three = Hotel::Reservation.new("2018-10-12", "2018-10-31", 1)
-  #
-  #     my_hotel = Hotel::HotelManager.new
-  #     my_hotel.reservations << reservation_one
-  #     my_hotel.reservations << reservation_two
-  #     my_hotel.reservations << reservation_three
-  #     reservations = my_hotel.find_reservations_by_date(date)
-  #
-  #     expect(reservations.length).must_equal 2
-  #
-  #     reservations.each do |reservation|
-  #       expect(reservation).must_be_kind_of Hotel::Reservation
-  #     end
-  #   end
-  # end
+  describe "#find_reservations" do
+    before do
+      @date = "2018-12-05"
+    end
 
-  # describe "#available_rooms" do
-  #     let (:check_in) {
-  #       "2018-10-07"
-  #     }
-  #     let (:check_out) {
-  #       "2018-10-16"
-  #     }
-  #     let (:my_hotel) {
-  #       Hotel::HotelManager.new
-  #     }
-  #
-  #   it "returns an array of Rooms" do
-  #     expect(my_hotel.available_rooms(check_in, check_out)).must_be_kind_of Array
-  #   end
-  #
-  #   it "Returns an array full of Rooms" do
-  #     my_hotel.rooms.each do |room|
-  #       expect(room).must_be_kind_of Hotel::Room
-  #     end
-  #   end
-  #
-  #   it "Returns the correct number of rooms" do
-  #     all_rooms = my_hotel.rooms
-  #     all_rooms.first.calendar[Date.parse("2018-10-10")] = :UNAVAILABLE
-  #     expect(my_hotel.available_rooms(check_in, check_out)).must_equal 19
-  #   end
+    it "Returns an array" do
+      reservations = my_hotel.find_reservations(@date)
 
+      expect(reservations).must_be_kind_of Array
+    end
 
-    # it "returns nil if there are no rooms available" do
-    #   rooms.each do |room|
-    #     room.calendar << Date.parse("2018-02-12")
-    #   end
-    #
-    #   expect(open_rooms).must_be_nil
-    # end
+    it "Returns an accurate count of Reservations" do
+      reservations = my_hotel.find_reservations(@date)
 
-    # all_rooms = my_hotel.rooms
-    # all_rooms.each do |room|
-    #   room
-    #
-    # available_rooms = my_hotel.available_rooms(check_in, check_out)
+      expect(reservations.length).must_equal 2
+    end
+  end
 
-    # describe "all" do
-    #   it "Returns an array full of Rooms" do
-    #     rooms = Hotel::Room.all
-    #
-    #     rooms.each do |room|
-    #       expect(room).must_be_kind_of Hotel::Room
-    #     end
-    #   end
-    #
-    #   it "Returns the correct number of rooms" do
-    #     rooms = Hotel::Room.all
-    #     expect(rooms.length).must_equal 20
-    #   end
-    #
-    #   it "Gets the first Room from the array" do
-    #     rooms = Hotel::Room.all
-    #     expect(rooms.first.id).must_equal 1
-    #   end
-    #
-    #   it "Gets the last Room from the array" do
-    #     rooms = Hotel::Room.all
-    #     expect(rooms.last.id).must_equal 20
-    #   end
-    # end
+  describe "#load_rooms and #load_reservations" do
+    it "accurately loads room information into rooms array" do
+      first_room = my_hotel.rooms.first
+      last_room = my_hotel.rooms.last
+
+      expect(first_room.id).must_equal 1
+      expect(last_room.id).must_equal 20
+      expect(first_room.status_by_date).must_be_kind_of Hash
+    end
+
+    it "accurately loads reservation information into reservation array" do
+      first_rv = my_hotel.reservations.first
+      last_rv = my_hotel.reservations.last
+
+      expect(first_rv.room_number).must_equal 1
+      expect(last_rv.room_number).must_equal 18
+    end
+
+    it "accurately updates Rooms when Reservations are added" do
+      my_reservation = my_hotel.reservations.first
+      my_room = my_hotel.rooms.find {|r| r.id == my_reservation.room_number}
+
+      (my_reservation.check_in...my_reservation.check_out).each do |date|
+        expect(my_room.status_by_date[date]).must_equal :UNAVAILABLE
+      end
+    end
+  end
 end

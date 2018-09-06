@@ -1,6 +1,6 @@
 require_relative 'hotel_helper'
 
-# class Reservation builds instances of Reservation
+# class Reservation creates instances of Reservation
 # (with check-in date, check-out date, room number, and total cost)
 module Hotel
   class Reservation
