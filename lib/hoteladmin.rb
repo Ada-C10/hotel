@@ -27,18 +27,23 @@ class HotelAdmin
     reservations.select { |res| (res.date_range.first..res.date_range.last).include? date }
   end
 
+  #This method does too much!
   def reserve_room(guest_email, room_number, check_in, check_out)
     room_object = retrieve_room(room_number)
-    new_reservation = Reservation.new({guest_id: guest_email, room: room_object, date_range: [check_in, check_out]})
-    reservations << new_reservation
-    room_object.add_booking(new_reservation)
-    new_reservation
+    reservations << Reservation.new({guest_id: guest_email, room: room_object, date_range: [check_in, check_out]})
+    room_object.add_booking(reservations.last)
+    reservations.last
   end
 
   def reservation_charge(reservation)
     reservation.cost
   end
 
-
-
+  # def available_rooms(check_in, check_out)
+  #   rooms.select do |room|
+  #     (check_in..check_out).each do |day|
+  #       (room.booking.date_range[0]..room.date_range[0]).include? day
+  #     end
+  #   end
+  # end
 end

@@ -4,8 +4,14 @@ describe "Room" do
   let (:room) {
     Room.new(1)
   }
+  let (:room2) {
+    Room.new(2)
+  }
   let (:reservation) {
-    Reservation.new({guest_id: "SoccerMom2010@gmail.com", room_id: 1, date_range: [Date.new(2018,10,20),Date.new(2018,10,22)]})
+    Reservation.new({guest_id: "SoccerMom2010@gmail.com", room: room, date_range: [Date.new(2018,10,20),Date.new(2018,10,22)]})
+  }
+  let (:reservation2) {
+    Reservation.new({guest_id: "Guccifer2.0@ada.com", room: room2 , date_range: [Date.new(2018,12,02),Date.new(2018,12,07)]})
   }
 
   describe "Room#initialize" do
@@ -26,6 +32,17 @@ describe "Room" do
 
       expect(room.bookings).wont_be_empty
       expect(room.bookings[0]).must_be_instance_of Reservation
+    end
+  end
+
+  describe "Room#available?" do
+    before do
+      room.add_booking(reservation)
+      room2.add_booking(reservation2)
+    end
+
+    it "will return true or false if a given room is available" do
+      expect(room.available?(Date.new(2018,10,21),Date.new(2018,10,22)))
     end
   end
 
