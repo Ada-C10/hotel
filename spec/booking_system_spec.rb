@@ -22,3 +22,17 @@ describe 'booking_system' do
     expect(list.hotel_instances[0].room).must_equal 1
   end
 end
+
+
+# describe 'booking_system' do
+#   it "Give you the list of the reservation if it is avilable" do
+# 
+#   start_time = 1/9/2018
+#   end_time = 3/9/2018
+#   room = 3
+#
+#   one_reservation = Reservation.new(start_time, end_time, room).Room.new(room).availability(start_time, end_time)
+#
+#   expect(one_reservation).must_be_kind_of Array
+# end
+# end

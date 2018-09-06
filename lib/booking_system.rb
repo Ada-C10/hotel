@@ -11,9 +11,10 @@ class BookingSystem
     @end_time = end_time
     @room = room
 
-    @hotel_instances = list_hotel
-    @reservation_list = list_reservations
+    reserve_room
 
+    @hotel_instances = list_hotel
+    @reservation_list = []
   end
 
   def list_hotel
@@ -31,9 +32,15 @@ class BookingSystem
 
   end
 
-#method to actually reserve a room
-  def reserve_room
-  end
-
-
+  # method to actually reserve a room
+  # def reserve_room
+  #   one_reservation_request = Reservation.new(@start_time, @end_time, @room).Room.new(@room).availability(@start_time, @end_time)
+  #   if one_reservation_request == ":available"
+  #     @reservation_list << one_reservation_request
+  #   else
+  #     return "sorry the room is not available for this time"
+  #   end
+  #   return @reservation_list
+  #
+  # end
 end
