@@ -33,6 +33,23 @@ class Reservation
     else
       raise ArgumentError.new("Invalid room type entered")
     end
+
+    # Recording the dates that the reservation is made for
+    @dates_booked_for_reservation = dates_of_booking(@start_date, @end_date)
+  end
+
+  def dates_of_booking(checkin, checkout)
+    dates_for_booking = []
+
+    duration_of_booking = checkout - checkin
+
+    booking_date = checkin
+    while booking_date < checkout
+      dates_for_booking << booking_date
+      booking_date += 1
+    end
+
+    return dates_for_booking
   end
 
   # A standard room is $200/night and a block room is $150/night
