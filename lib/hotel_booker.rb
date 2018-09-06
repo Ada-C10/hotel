@@ -13,7 +13,16 @@ module Hotel
       return @all_rooms.map { |room_num| "Room #{room_num}"}.join("\n")
     end
 
+    def reserve_a_room(check_in, check_out, room)
+      unless check_if_invalid_dates(check_in, check_out)
 
+        return Hotel::Reservation.new(check_in, check_out, room)
+
+      else
+        raise ArgumentError, "Invalid Dates Given"
+      end
+
+    end
 
     # def reserve_a_room(check_in, check_out)
     #   if is_Date(check_in) && is_Date(check_out)
@@ -42,7 +51,7 @@ module Hotel
       return date.class == Date
     end
 
-    def check_if_valid_dates(check_in, check_out)
+    def check_if_invalid_dates(check_in, check_out)
       return check_in > check_out || !is_Date(check_in) || !is_Date(check_out)
       #   raise ArgumentError, "Invalid dates given"
       # end
@@ -61,13 +70,14 @@ module Hotel
         end
       end
       occupied_rooms.uniq!
+
       return occupied_rooms #occupied_rooms.empty? ? nil : occupied_rooms
 
     end
 
 
     def list_available_rooms(check_in, check_out)
-      unless check_if_valid_dates(check_in, check_out)
+      unless check_if_invalid_dates(check_in, check_out)
 
         occupied_rooms = list_unavailable_rooms(check_in, check_out)
 
