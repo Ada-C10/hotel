@@ -173,6 +173,50 @@ describe "Booking" do
         rooms_available.length.must_equal 18
       end
     end
+
+    describe "request block reservation" do
+      it "allows admin to book a block reservation" do
+        # arrange
+        hotel = Admin.new
+        # action
+        hotel.request_block_reservation(3, "2018-12-09", "2018-12-15")
+        # assert
+        hotel.reservations[0].start_date.must_equal Date.parse("2018-12-09")
+      end
+
+      it "increases id number by 1 when each reservation is added" do
+        hotel = Admin.new
+        hotel.request_block_reservation(3, "2018-12-09", "2018-12-15")
+
+        new_reservation = hotel.reservations[0]
+
+        new_reservation.id.must_equal 1
+      end
+
+      it "raises an ArgumentError when no rooms are available" do
+        hotel = Admin.new
+        hotel.request_reservation("2018-12-09", "2018-12-15")
+        hotel.request_reservation("2018-12-09", "2018-12-15")
+        hotel.request_reservation("2018-12-09", "2018-12-15")
+        hotel.request_reservation("2018-12-09", "2018-12-15")
+        hotel.request_reservation("2018-12-09", "2018-12-15")
+        hotel.request_reservation("2018-12-09", "2018-12-15")
+        hotel.request_reservation("2018-12-09", "2018-12-15")
+        hotel.request_reservation("2018-12-09", "2018-12-15")
+        hotel.request_reservation("2018-12-09", "2018-12-15")
+        hotel.request_reservation("2018-12-09", "2018-12-15")
+        hotel.request_reservation("2018-12-09", "2018-12-15")
+        hotel.request_reservation("2018-12-09", "2018-12-15")
+        hotel.request_reservation("2018-12-09", "2018-12-15")
+        hotel.request_reservation("2018-12-09", "2018-12-15")
+        hotel.request_reservation("2018-12-09", "2018-12-15")
+        hotel.request_reservation("2018-12-09", "2018-12-15")
+        hotel.request_reservation("2018-12-09", "2018-12-15")
+        hotel.request_reservation("2018-12-09", "2018-12-15")
+
+        expect{hotel.request_block_reservation(5, "2018-12-09", "2018-12-15")}.must_raise StandardError
+      end
+    end
   end
 
 end

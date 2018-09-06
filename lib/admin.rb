@@ -25,12 +25,27 @@ class Admin
       if room.nil?
         raise ArgumentError, "no rooms available"
       end
-    # binding.pry
+
     new_reservation = Reservation.new(id, room, start_date, end_date)
 
-    # room_to_unavailable(room)
     add_reservation(new_reservation)
     return new_reservation
+  end
+
+  def request_block_reservation(number_of_rooms, start_date, end_date)
+    # individual reservations in block will be reached by going to block reservation first
+    # individual reservations with have different id's (1-5) depending on size of block
+    id = reservations.length + 1
+    rooms = available_rooms(start_date, end_date).sample(number_of_rooms)
+      if rooms.length < number_of_rooms
+        raise StandardError, "not enough rooms available"
+      end
+
+    new_block = BlockReservation.new(id, rooms, start_date, end_date)
+
+    add_reservation(new_block)
+
+    return new_block
   end
   #param - date
   #returns - array of reservations within that date
