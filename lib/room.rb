@@ -8,7 +8,7 @@ require 'awesome_print'
 module Lodging
 
   class Room
-    attr_reader :room_number
+    attr_reader :room_number, :status, :cost
 
     @@room_list = [] #to store all instances of rooms created
 
