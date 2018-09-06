@@ -15,7 +15,8 @@ describe "ReservationsManager" do
     end
   end
   it "can reserve a room for a given date range" do
-    expect(@hotel_ada.reserve_room).must_be_instance_of Hotel::Reservation
+    expect(@hotel_ada.reserve_room(start_date, end_date)).must_be_instance_of Hotel::Reservation
+
 
 
 
