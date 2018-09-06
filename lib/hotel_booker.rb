@@ -2,12 +2,12 @@ module Hotel
 
   class HotelBooker
 
-    attr_reader :all_rooms, :all_reservations, :room_blocks
+    attr_reader :all_rooms, :all_reservations, :all_room_blocks
 
     def initialize(all_reservations: [])
       @all_rooms = [*1..20]
       @all_reservations = all_reservations
-      @room_blocks = []
+      @all_room_blocks = []
     end
 
     def create_a_block(check_in, check_out, num_of_rooms, discounted_rate)
@@ -22,7 +22,7 @@ module Hotel
 
       available_rooms = all_available_rooms[0..num_of_rooms - 1]
       room_block = Hotel::RoomBlock.new(check_in, check_out, available_rooms, discounted_rate)
-      @room_blocks << room_block
+      @all_room_blocks << room_block
       return room_block
 
     end
@@ -69,15 +69,29 @@ module Hotel
       end
     end
 
+    def get_room_blocks_by_date(date)
+      return @all_room_blocks.select do |room_block|
+        room_block.date_range.is_within_date_range(date)
+      end
+    end
+
 
     def list_unavailable_rooms(check_in, check_out)
 
       occupied_rooms = []
       [*check_in...check_out].each do |date|
-        if get_reservations_by_date(date)
+        if !get_reservations_by_date(date).empty?
           occupied_rooms.concat get_occupied_rooms(get_reservations_by_date(date))
         end
+        if !get_room_blocks_by_date(date).empty?
+          # binding.pry
+          get_room_blocks_by_date(date).each do |room_block|
+            occupied_rooms.concat room_block.blocked_rooms
+          end
+        end
+          # days_reservations.map { |reservations| reservations.room_num }
       end
+      # binding.pry
       occupied_rooms.uniq!
 
       return occupied_rooms #occupied_rooms.empty? ? nil : occupied_rooms

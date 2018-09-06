@@ -2,7 +2,7 @@ module Hotel
 
   class RoomBlock #< Reservation
 
-    attr_reader :check_in, :check_out, :blocked_rooms, :discounted_rate, :block_reservations
+    attr_reader :date_range, :blocked_rooms, :discounted_rate, :block_reservations
     #
     def initialize(check_in, check_out, blocked_rooms, discounted_rate)
       @date_range = DateRange.new(check_in, check_out)

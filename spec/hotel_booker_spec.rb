@@ -131,7 +131,7 @@ describe 'HotelBooker class' do
       expect(hotel_booker.list_available_rooms(Date.today + 2, Date.today + 4)).must_be_instance_of Array
     end
 
-    it 'correctly identifies the list of unavailable rooms numbers for a given date range' do
+    it 'correctly identifies the list of unavailable room numbers for a given date range' do
       room_1 = [1]
       room_2 = [2]
       both_rooms = room_1 + room_2
@@ -163,6 +163,13 @@ describe 'HotelBooker class' do
 
       expect(hotel_booker.list_unavailable_rooms(Date.today + 7, Date.today + 8)).must_equal []
 
+    end
+
+    it 'correctly identifies the list of unavailable room numbers for a given date range when there is an existing block' do
+
+      puts hotel_booker.create_a_block(Date.today + 2, Date.today + 7, 5, 150)
+
+      expect(hotel_booker.list_unavailable_rooms(Date.today + 2, Date.today + 7)).must_equal [*1..7]
     end
   end
 
@@ -228,13 +235,13 @@ describe 'HotelBooker class' do
       expect(room_block.blocked_rooms).must_equal [*3..7]
     end
 
-    it 'adds a RoomBlock to room_blocks list' do
-      num_old_blocks = hotel_booker.room_blocks.length
+    it 'adds a RoomBlock to all_room_blocks list' do
+      num_old_blocks = hotel_booker.all_room_blocks.length
       room_block
-      num_new_blocks = hotel_booker.room_blocks.length
+      num_new_blocks = hotel_booker.all_room_blocks.length
 
       expect(num_new_blocks - 1).must_equal num_old_blocks
-      expect(hotel_booker.room_blocks[0]).must_equal room_block
+      expect(hotel_booker.all_room_blocks[0]).must_equal room_block
     end
 
     it 'raises an exception if no rooms are available for that date range' do
