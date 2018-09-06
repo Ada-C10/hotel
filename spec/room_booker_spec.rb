@@ -83,6 +83,8 @@ describe 'Wave 2' do
       expect(@array_of_rooms).must_be_kind_of Array
       @array_of_rooms.each do |room|
         expect(room).must_be_kind_of Struct
+        expect(1..20).must_include room.id
+        expect(room.cost).must_equal 200
       end
     end
 
@@ -97,5 +99,34 @@ describe 'Wave 2' do
         expect(@array_of_rooms).must_include room
       end
     end
+  end
+
+  describe 'reserve_available_room method' do
+    before do
+      @hotel = BookingLogic::RoomBooker.new
+
+      room_id1 = 14
+      check_in1 = Date.new(2018, 4, 1)
+      check_out1 = Date.new(2018, 4, 2)
+      @reservation1 = @hotel.new_reservation(room_id1, check_in1, check_out1)
+
+      room_id2 = 15
+      check_in2 = Date.new(2018, 4, 3)
+      check_out2 = Date.new(2018, 4, 6)
+      @reservation2 = @hotel.new_reservation(room_id2, check_in2, check_out2)
+
+      room_id3 = 2
+      check_in3 = Date.new(2018, 3, 21)
+      check_out3 = Date.new(2018, 4, 3)
+      @reservation3 = @hotel.new_reservation(room_id3, check_in3, check_out3)
+
+      @new_reservation = @hotel.reserve_available_room(4, Date.new(2018, 4, 1), Date.new(2018, 4, 4))
+    end
+
+    it 'instantiates a new Reservation' do
+      expect(@new_reservation).must_be_instance_of Reservation
+    end
+
+
   end
 end
