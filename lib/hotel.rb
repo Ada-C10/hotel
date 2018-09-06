@@ -19,10 +19,10 @@ class Hotel
     return @rooms
   end
 
-  def make_reservation(start_date, end_date, room_number)
+  def make_reservation(start_date, end_date, room_number, customer)
     check_availability(start_date, end_date, room_number)
     room = find_room_by_number(room_number)
-    new_reservation = Reservation.new(start_date, end_date, room)
+    new_reservation = Reservation.new(start_date, end_date, room, customer)
     @reservations << new_reservation
     add_reservation_to_room(room, new_reservation)
     return new_reservation
@@ -38,6 +38,36 @@ class Hotel
     room_list.each do |room|
       add_reservation_to_room(room, new_reservation)
     end
+    return new_reservation
+  end
+
+  def find_block_with_code(block_code)
+    @blocks.find {|block| block.block_code == block_code}
+  end
+
+  def find_available_block_rooms(block_code)
+    raise ArgumentError, 'Invalid block code' unless find_block_with_code(block_code)
+    available_rooms = []
+    block = find_block_with_code(block_code)
+    rooms = block.room_list
+    rooms.each do |room|
+      reservation = room.reservations.find{|reservation| reservation.checkin_date == block.checkin_date}
+      if reservation.is_a? BlockReservation
+        available_rooms << room.room_number
+      end
+    end
+    return available_rooms
+  end
+
+  def reserve_blocked_room(block_code, room_number)
+    raise ArgumentError, 'Invalid block code' unless find_block_with_code(block_code)
+    raise ArgumentError, 'Room is unavailable' unless find_available_block_rooms(block_code).include? room_number
+    room = find_room_by_number(room_number)
+    block = find_block_with_code(block_code)
+    i = room.reservations.find_index {|reservation| reservation.block_code == block_code}
+    new_reservation = Reservation.new(block.checkin_date, block.checkout_date, room, 'customer', block.discounted_rate)
+    room.reservations[i] = new_reservation
+    @reservations << new_reservation
     return new_reservation
   end
 

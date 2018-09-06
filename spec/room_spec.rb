@@ -21,7 +21,7 @@ end
 describe "is available?" do
   before do
     @new_room = Room.new(6, 200)
-    @new_room.add_reservation(Reservation.new(Date.new(2010, 3, 4), Date.new(2010, 3, 8), @new_room))
+    @new_room.add_reservation(Reservation.new(Date.new(2010, 3, 4), Date.new(2010, 3, 8), @new_room, 'customer'))
   end
   it "can check its own availability on a specific date" do
     expect(@new_room.is_available?(Date.new(2010, 3, 5))).must_equal false

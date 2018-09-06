@@ -1,10 +1,10 @@
 class Room
-  attr_reader :room_number, :price_per_night, :reservations
+  attr_reader :room_number, :reservations, :price_per_night
 
   def initialize(room_number, price_per_night)
     @room_number = room_number
-    @price_per_night = price_per_night
     @reservations = []
+    @price_per_night = price_per_night
   end
 
   def is_available?(date)

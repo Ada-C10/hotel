@@ -6,7 +6,7 @@ describe 'initialize' do
     @room_2 = Room.new(2, 200)
   end
 
-  let (:new_reservation) {Reservation.new(Date.new(2018, 9, 5), Date.new(2018, 9, 8), @room_1)}
+  let (:new_reservation) {Reservation.new(Date.new(2018, 9, 5), Date.new(2018, 9, 8), @room_1, 'customer')}
 
   it 'creates a new reservation' do
     expect(new_reservation).is_a? Reservation
@@ -14,10 +14,10 @@ describe 'initialize' do
 
   it 'raises an error for an invalid date range' do
     expect{
-      Reservation.new(Date.new(2018, 9, 5), Date.new(2018, 9, 5), @room_1)
+      Reservation.new(Date.new(2018, 9, 5), Date.new(2018, 9, 5), @room_1, 'customer')
     }.must_raise StandardError
     expect{
-      Reservation.new(Date.new(2018, 9, 5), Date.new(2015, 9, 5), @room_2)
+      Reservation.new(Date.new(2018, 9, 5), Date.new(2015, 9, 5), @room_2, 'customer')
     }.must_raise StandardError
   end
 
@@ -51,5 +51,9 @@ describe 'Block initialize' do
     expect(new_reservation.price).must_equal 450
   end
 
-
+  it 'raises an error if the block size is more than 5 rooms' do
+    expect{
+      BlockReservation.new(Date.new(2018, 9, 5), Date.new(2018, 9, 10), [@room_1, @room_2, 'fake room', 'fake room', 'fake room', 'fake room'], 150, 'Block1')
+    }.must_raise ArgumentError
+  end
 end

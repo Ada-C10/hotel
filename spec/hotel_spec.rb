@@ -33,7 +33,7 @@ end
 describe 'make reservation' do
   before do
     @my_hotel = Hotel.new
-    @new_reservation = @my_hotel.make_reservation(Date.new(2010, 3, 4), Date.new(2010, 3, 8), 6)
+    @new_reservation = @my_hotel.make_reservation(Date.new(2010, 3, 4), Date.new(2010, 3, 8), 6, 'customer')
   end
   it 'can create a new reservation with a start date, end date, and room number' do
     expect(@new_reservation).must_be_instance_of Reservation
@@ -48,11 +48,11 @@ describe 'make reservation' do
   end
   it 'raises an ArgumentError if the room is not available for that date range' do
     expect {
-      @my_hotel.make_reservation(Date.new(2010, 3, 7), Date.new(2010, 3, 8), 6)
+      @my_hotel.make_reservation(Date.new(2010, 3, 7), Date.new(2010, 3, 8), 6, 'customer')
     }.must_raise ArgumentError
   end
   it 'allows a new reservation to start on the last day of an existing reservation' do
-    @my_hotel.make_reservation(Date.new(2010, 3, 8), Date.new(2010, 3, 9), 6)
+    @my_hotel.make_reservation(Date.new(2010, 3, 8), Date.new(2010, 3, 9), 6, 'customer')
     room_6 = @my_hotel.find_room_by_number(6)
     expect(room_6.reservations.length).must_equal 2
   end
@@ -61,10 +61,10 @@ end
 describe 'find reservations by date' do
   before do
     @my_hotel = Hotel.new
-    @my_hotel.make_reservation(Date.new(2010, 3, 4), Date.new(2010, 3, 5), 6)
-    @my_hotel.make_reservation(Date.new(2010, 3, 4), Date.new(2010, 3, 8), 7)
-    @my_hotel.make_reservation(Date.new(2010, 2, 27), Date.new(2010, 3, 5), 8)
-    @my_hotel.make_reservation(Date.new(2010, 5, 4), Date.new(2010, 5, 8), 9)
+    @my_hotel.make_reservation(Date.new(2010, 3, 4), Date.new(2010, 3, 5), 6, 'customer')
+    @my_hotel.make_reservation(Date.new(2010, 3, 4), Date.new(2010, 3, 8), 7, 'customer')
+    @my_hotel.make_reservation(Date.new(2010, 2, 27), Date.new(2010, 3, 5), 8, 'customer')
+    @my_hotel.make_reservation(Date.new(2010, 5, 4), Date.new(2010, 5, 8), 9, 'customer')
   end
 
   it 'returns an array of reservations that contain a specific date' do
@@ -92,10 +92,10 @@ end
 describe 'find available rooms' do
   before do
     @my_hotel = Hotel.new
-    @my_hotel.make_reservation(Date.new(2010, 3, 4), Date.new(2010, 3, 5), 6)
-    @my_hotel.make_reservation(Date.new(2010, 3, 4), Date.new(2010, 3, 8), 7)
-    @my_hotel.make_reservation(Date.new(2010, 2, 27), Date.new(2010, 3, 5), 8)
-    @my_hotel.make_reservation(Date.new(2010, 5, 4), Date.new(2010, 5, 8), 9)
+    @my_hotel.make_reservation(Date.new(2010, 3, 4), Date.new(2010, 3, 5), 6, 'customer')
+    @my_hotel.make_reservation(Date.new(2010, 3, 4), Date.new(2010, 3, 8), 7, 'customer')
+    @my_hotel.make_reservation(Date.new(2010, 2, 27), Date.new(2010, 3, 5), 8, 'customer')
+    @my_hotel.make_reservation(Date.new(2010, 5, 4), Date.new(2010, 5, 8), 9, 'customer')
   end
   it 'returns a list of room numbers given a date range' do
     room_list = @my_hotel.find_available_rooms(Date.new(2010, 3, 4), Date.new(2010, 5, 8))
@@ -108,14 +108,14 @@ describe 'find available rooms' do
   end
   it 'returns an empty list if no rooms are available' do
     (1..20).each do |room_no|
-      @my_hotel.make_reservation(Date.new(2010, 1, 1), Date.new(2010, 2, 2), room_no)
+      @my_hotel.make_reservation(Date.new(2010, 1, 1), Date.new(2010, 2, 2), room_no, 'customer')
     end
     room_list = @my_hotel.find_available_rooms(Date.new(2010, 1, 5), Date.new(2010, 5, 8))
     expect(room_list).must_be_empty
   end
 end
 
-describe 'create room block' do
+describe 'room block' do
   before do
     @my_hotel = Hotel.new
     @block = @my_hotel.create_room_block(Date.new(2010, 3, 4), Date.new(2010, 5, 8), [1, 2, 3, 4, 5], 150, 'Block1')
@@ -149,6 +149,44 @@ describe 'create room block' do
     }.must_raise ArgumentError
   end
 
+  it 'can locate a block using the block code' do
+    found_block = @my_hotel.find_block_with_code('Block1')
+    expect(found_block).must_equal @block
+  end
 
+  it 'can find available rooms within a block' do
+    room_list = @my_hotel.find_available_block_rooms('Block1')
+    expect(room_list).must_equal [1, 2, 3, 4, 5]
+  end
 
+  it 'raises an error if asked to find rooms for a nonexistent block code' do
+    expect{
+      @my_hotel.find_available_block_rooms('garbage')
+    }.must_raise ArgumentError
+  end
+
+  it 'can reserve an available room inside a block using the block code' do
+    new_reservation = @my_hotel.reserve_blocked_room('Block1', 2)
+
+    room_list = @my_hotel.find_available_block_rooms('Block1')
+    expect(room_list).must_equal [1, 3, 4, 5]
+
+    room_2 = @my_hotel.find_room_by_number(2)
+    expect(room_2.reservations.length).must_equal 1
+
+    expect(room_2.reservations[0]).must_equal new_reservation
+  end
+
+  it 'will raise an error if an attempt is made to reserve an unavailable room inside a block' do
+    new_reservation = @my_hotel.reserve_blocked_room('Block1', 2)
+    expect {
+      @my_hotel.reserve_blocked_room('Block1', 2)
+    }.must_raise ArgumentError
+  end
+
+  it 'will raise an error if an invalid block code is provided' do
+    expect {
+      @my_hotel.reserve_blocked_room('bad code', 2)
+    }.must_raise ArgumentError
+  end
 end
