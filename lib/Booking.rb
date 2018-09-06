@@ -41,15 +41,12 @@ class Booking
 
   # TODO Can access the list of reservations for given date
   ##### NEED HELP IS RETURNING ALL ROOMS #####
+  # Did I write my code backwards? Check this...
   def list_reservations_for_date(date)
-  #   @rooms.select do |room|
-  #     # Check if any of the room's reservation has given date
-  #     room.reservations.each do |reservation|
-  #       date_range = DateRange.new(reservation.check_in, reservation.check_out)
-  #       # Return room if any ranges include that date
-  #       date_range.within_range?(date)
-      # end
-    # end
+    @rooms.reject do |room|
+      room.is_available?(date)
+      # binding.pry
+    end
   end
 
 end

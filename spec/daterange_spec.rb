@@ -7,7 +7,7 @@ describe 'DateRange' do
   end
 
   it "Can be initalized" do
-    expect(@date_range).kind_of? Date
+    expect(@date_range).kind_of? DateRange
   end
 
   describe "has the correct instance variables" do

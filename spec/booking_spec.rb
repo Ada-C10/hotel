@@ -32,7 +32,6 @@ describe "booking manager" do
 
     it "Creates a reservation instance" do
       expect(@manager.create_reservation(1, Date.new(2018, 9, 1), Date.new(2018, 9, 2))).kind_of? Reservation
-
     end
 
     it "Adds a reservation to the room" do
@@ -44,7 +43,6 @@ describe "booking manager" do
     end
 
     it "Is able to list reservations for a date" do
-      skip
       # Adding a reservation to @manager
       @manager.add_reservation(1, Date.new(2018, 9, 1), Date.new(2018, 9, 2))
       @manager.add_reservation(2, Date.new(2018, 9, 1), Date.new(2018, 9, 2))
