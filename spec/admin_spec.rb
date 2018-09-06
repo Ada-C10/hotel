@@ -28,7 +28,7 @@ describe "#Admin - initializer" do
   end
 end
 
-describe "#find reservation" do
+describe "#reservation information" do
   before do
     @admin = Admin.new
   end
@@ -39,6 +39,16 @@ describe "#find reservation" do
     reservations = @admin.find_reservations(date)
 
     expect(reservations).must_be_kind_of Array
-    expect(reservations.id).must_equal 1
+    expect(reservations.first.id).must_equal 2
+  end
+
+  it "return the cost of a reservation" do
+    #arrange
+    reservation_id = 2
+
+    reservation_cost = @admin.find_cost(reservation_id)
+
+    expect(reservation_cost).must_be_kind_of Integer
+    expect(reservation_cost).must_equal 400
   end
 end

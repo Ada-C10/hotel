@@ -22,7 +22,7 @@ class Admin
 
     return reservations
   end
-#As an administrator, I can access the list of reservations for a specific date
+  #As an administrator, I can access the list of reservations for a specific date
   def find_reservations(date)
     date = Time.parse(date)
     reservations = @reservations.select do |instance|
@@ -33,6 +33,13 @@ class Admin
       end
     end
     return reservations
+  end
+
+  #As an administrator, I can get the total cost for a given reservation
+  def find_cost(reservation_id)
+    reservation = @reservations.select { |instance| instance.id == reservation_id }[0]
+    cost = reservation.cost
+    return cost
   end
 
   private
