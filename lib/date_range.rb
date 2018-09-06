@@ -17,11 +17,12 @@ module Hotel
       return (@check_out - @check_in).to_i
     end
 
+    def is_Date(date)
+      return date.class == Date
+    end
+
     def is_within_date_range(date)
-      if date.class != Date
-        return false
-      end
-      return date >= @check_in && date < @check_out
+      return is_Date(date) && date >= @check_in && date < @check_out
     end
 
   end
