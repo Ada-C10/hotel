@@ -19,27 +19,6 @@ describe "RoomBooker Class" do
     end
   end
 
-  describe "check_valid_dates method" do
-    it 'Raises an ArgumentError for invalid date ranges' do
-
-      expect{
-        booking_system.check_valid_dates('2018-09-05', '2018-09-01')
-      }.must_raise ArgumentError
-
-      expect{
-        booking_system.check_valid_dates('', '2018-09-01')
-      }.must_raise ArgumentError
-
-      expect{
-        booking_system.check_valid_dates('2018-09-01', '')
-      }.must_raise ArgumentError
-
-      expect{
-        booking_system.check_valid_dates('', '')
-      }.must_raise ArgumentError
-
-    end
-  end
 
 
 
