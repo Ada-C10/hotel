@@ -2,6 +2,7 @@ require 'date'
 # Responsability - Handle date methods
 
 class DateRange
+  attr_reader :check_in, :check_out
 
   def initialize(check_in, check_out)
     @check_in = check_in

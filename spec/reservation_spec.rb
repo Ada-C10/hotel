@@ -4,7 +4,10 @@ require 'pry'
 
 describe "Reservation" do
   before do
-    @test_reservation = Reservation.new(1, Date.new(2018, 9, 01), Date.new(2018, 9, 02))
+    room_number = 1,
+    check_in = Date.new(2018, 9, 01),
+    check_out = Date.new(2018, 9, 02),
+    @test_reservation = Reservation.new(1, check_in, check_out)
     @manager = Booking.new
   end
 
@@ -14,6 +17,8 @@ describe "Reservation" do
 
   it "Check in is a date" do
     expect(@test_reservation.check_in).kind_of? Date
+    expect(@test_reservation).respond_to? :check_in
+    expect(@test_reservation.check_in).must_equal check_in
   end
 
   it 'raises an ArgumentError if check_in is not a date' do
@@ -22,6 +27,7 @@ describe "Reservation" do
 
   it "Has a checkout" do
     expect(@test_reservation.check_out).kind_of? Date
+    expect(@test_reservation).must_respond_to :check_out
   end
 
   it 'raises an ArgumentError if check_out is not a date' do
@@ -30,13 +36,15 @@ describe "Reservation" do
 
   it "Has a room number" do
     expect(@test_reservation.room_number).must_equal 1
+    expect(@test_reservation).must_respond_to :room_number
   end
 
   it "Has a cost" do
     expect(@test_reservation.cost_per_night).must_equal 200
+    expect(@test_reservation).must_respond_to :cost_per_night
   end
 
-  it "Has a valid total" do
+  it "Has a valid cost" do
     @test_reservation = Reservation.new(1, Date.new(2018, 9, 1), Date.new(2018, 9, 2))
     expect(@test_reservation.reservation_cost).must_equal 200
   end
