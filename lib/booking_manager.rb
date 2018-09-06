@@ -33,6 +33,17 @@ module Hotel
       return reservations
     end
 
+    # Create list of rooms with reserved dates. Change name?
+    def make_room_calendar(number) # combine with @rooms?
+      @room_calendar = {}
+
+      number.times do |num|
+        dates_reserved = []
+        @room_calendar[:num] = dates_reserved
+      end
+      return @room_calendar
+    end
+
     # Method to list all reservations
     def list_reservations
       return @reservations
@@ -41,20 +52,16 @@ module Hotel
 
     # Method to list all rooms in hotel
     def list_rooms
-      @rooms
+      return @rooms
     end
 
-  # Create a new instance of Reservation # should this and add_reservation be one method?
-    def reserve(room)
-    end
+  # # Create a new instance of Reservation # should this and add_reservation be one method?
+  #   def reserve(room)
+  #   end
 
   # Method to add a reservation to list of reservations
     def add_reservation(reservation)
       @reservations << reservation
-    end
-
-    def make_room_calendar(number)
-      @room_calendar = {}
     end
 
     # Method to get total cost of reservation
