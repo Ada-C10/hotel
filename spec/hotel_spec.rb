@@ -207,6 +207,12 @@ describe "Hotel Class: Wave Three: Blocks of Rooms" do
       expect{@hotel.reserve_room_block('2018-05-05', '2018-05-08', 7, 150)}.must_raise ArgumentError
     end
 
+    it "will give the block rooms a discounted rate" do
+      @hotel.reserve_room('2018-01-03', '2018-01-05', 5)
+
+      expect(@hotel.reservations[0].cost).must_equal 2000
+      expect(@hotel.block_reservations[0].cost).must_equal 1500
+    end
   end
 
 end

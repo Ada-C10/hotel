@@ -25,8 +25,7 @@ attr_reader :start_date, :end_date, :cost, :reservation_id, :rooms, :checkout_da
   end
 
   def get_cost
-    return (((@end_date - @start_date).to_i ) * 200) * @rooms.length if @rooms.length > 1
-    return ((@end_date - @start_date).to_i ) * 200
+    return (((@end_date - @start_date).to_i ) * 200) * @number_of_rooms
   end
 
   def create_reservation_id
