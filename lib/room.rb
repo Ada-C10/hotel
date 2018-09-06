@@ -2,7 +2,7 @@ require 'time'
 require 'date'
 
 class Room
-  attr_reader :room_number, :dates_booked
+  attr_accessor :room_number, :dates_booked
 
   def initialize(room_number)
     @room_number = room_number.to_i
