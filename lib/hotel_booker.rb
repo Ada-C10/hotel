@@ -13,13 +13,20 @@ module Hotel
       return @all_rooms.map { |room_num| "Room #{room_num}"}.join("\n")
     end
 
+    def is_room_available(check_in, check_out, room)
+      return list_available_rooms(check_in, check_out).include?(room)
+    end
+
     def reserve_a_room(check_in, check_out, room)
-      unless check_if_invalid_dates(check_in, check_out)
+      if check_if_invalid_dates(check_in, check_out)
+        raise ArgumentError, "Invalid Dates Given"
+      end
+
+      if is_room_available(check_in, check_out, room)
 
         return Hotel::Reservation.new(check_in, check_out, room)
 
-      else
-        raise ArgumentError, "Invalid Dates Given"
+      # TODO: response for if no rooms are available
       end
 
     end
