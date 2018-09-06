@@ -28,16 +28,19 @@ class TrackingSystem
   end
 
   # reserve a room for a given date range
-  def make_reservation(checkin_time: Date.new, checkout_time: Date.new)
+  def make_reservation(checkin_time: checkin, checkout_time: checkout)
     # 1. pick a room that is available. the next available room?
     @all_rooms.each do |room|
-      if room.reserved_dates.reduce
+      room.reserved_dates.each do |reserved_date| # this is a hash containing {checkin_time: checkin, checkout_time: checkout}
+        if !(reserved_date[checkin_time:]..reserved_date[checkout_time:]).include?(checkin_time: checkin)
+
+          #you can use a range to see if a date is included in that range (Date..Datenow)
     # go in @all_rooms and find the first room_num whos checkOUT_time is earlier than input's checkin_time(this is gonna work because i'll store peoples checout time internally as ending a day before)
     # raise argument error if inside @all_rooms no room is available on this date range (then admin would need to input a new date range)
     # else..make the new reservation below
-    reservation = Reservation.new(date_range: {checkin_time: Date.new, checkout_time: Date.new -1}, room: room)  # <----room object contains {room_num:, price: STANDARD_ROOM_PRICE, customer: ""}
+    reservation = Reservation.new(date_range: {checkin_time: checkin, checkout_time: checkout -1}, room: room)  # <----room object contains {room_num:, price: STANDARD_ROOM_PRICE, customer: ""}
     @reservations << reservation
-    room.reserved_dates << {checkin_time: nil, checkout_time: nil}
+    room.reserved_dates << {checkin_time: checkin, checkout_time: checkout}
   end
 
   #access the list of reservations for a specific date

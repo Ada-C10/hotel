@@ -4,7 +4,7 @@ class Room
   def initialize(attributes)
     @room_num = attributes[:room_num]
     @price = attributes[:price]
-    @reserved_dates = attributes[:reserved_dates]
+    @reserved_dates = []  #<--- this should be a list of date_ranges 
     @block_status = :AVAILABLE
   end
 end

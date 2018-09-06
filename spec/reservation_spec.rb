@@ -29,6 +29,9 @@ describe 'Reservation class' do
       expect(@reservation.checkout_time).must_be_kind_of Date
       expect(@reservation.price).must_be_kind_of Float
     end
+    # 
+    # it "checkin_time must be before checkout_time" do
+    # end
 
 
   end
