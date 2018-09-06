@@ -33,6 +33,15 @@ describe "Room" do
       expect(room.bookings).wont_be_empty
       expect(room.bookings[0]).must_be_instance_of Reservation
     end
+
+    it "will raise an exception if a conflicting reservation is added to a room" do
+      bad_reservation = Reservation.new({guest_id: "TellieTubbie@gmail.com", room: room, date_range: [Date.new(2018,10,20), Date.new(2018,10,21)]})
+      room.add_booking(bad_reservation)
+
+      expect{ room.add_booking(bad_reservation)
+      }.must_raise ArgumentError
+
+    end
   end
 
   describe "Room#available?" do
@@ -45,6 +54,7 @@ describe "Room" do
       expect(room.available?(Date.new(2018,10,22), Date.new(2018,10,24))).must_equal TRUE
     end
   end
+
 
 
 end

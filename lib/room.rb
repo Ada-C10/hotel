@@ -8,8 +8,7 @@ class Room
   end
 
   def add_booking(reservation)
-    #Raise exception here?
-    #(reservations.date_range[0]..
+    raise ArgumentError, "Conflicting reservation, cannot complete transaction." if !available?(reservation.date_range[0],reservation.date_range[-1])
     @bookings << reservation
   end
 
