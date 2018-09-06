@@ -8,7 +8,7 @@ require "awesome_print"
 
 module HotBook
 
-  class Reservation
+  class Loader
   end
 
 end
