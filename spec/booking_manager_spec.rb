@@ -5,7 +5,7 @@ describe "Hotel Manager class" do
 
   describe 'Hotel Manager instantiation' do
     before do
-      @hotel = Booking_Manager.new
+      @hotel = Hotel::Booking_Manager.new
     end
 
     it 'has an array of all rooms in hotel' do
@@ -17,14 +17,14 @@ describe "Hotel Manager class" do
     end
 
     it 'each index of the array is an instance of class' do
-      expect(@hotel.rooms[0]).must_be_kind_of Room
+      expect(@hotel.rooms[0]).must_be_kind_of Hotel::Room
       # binding.pry
     end
   end
 
   describe 'get_room method' do
     before do
-      @hotel = Booking_Manager.new
+      @hotel = Hotel::Booking_Manager.new
     end
 
     it 'returns an Array of rooms in hotel' do
@@ -35,12 +35,12 @@ describe "Hotel Manager class" do
 
   describe 'find_room_number method' do
     before do
-      @hotel = Booking_Manager.new
+      @hotel = Hotel::Booking_Manager.new
     end
 
     it 'returns an instance of Room' do
-      expect(@hotel.find_room_number(1)).must_be_kind_of Room
-      expect(@hotel.find_room_number(20)).must_be_kind_of Room
+      expect(@hotel.find_room_number(1)).must_be_kind_of Hotel::Room
+      expect(@hotel.find_room_number(20)).must_be_kind_of Hotel::Room
       # binding.pry
     end
 
@@ -54,7 +54,7 @@ describe "Hotel Manager class" do
 
   describe 'reserve_room method' do
     before do
-      @hotel = Booking_Manager.new
+      @hotel = Hotel::Booking_Manager.new
       @input = { name: "Dr. Frankenstein",
         room_number: 6,
         check_in_date: Date.new(2018, 6, 6),
@@ -70,7 +70,7 @@ describe "Hotel Manager class" do
 
   describe 'list_reservations method' do
     before do
-      @hotel = Booking_Manager.new
+      @hotel = Hotel::Booking_Manager.new
       @date = Date.new(2018, 6, 8)
       @input1 = { name: "Dr. Frankenstein",
         room_number: 6,
@@ -99,20 +99,20 @@ describe "Hotel Manager class" do
 
   describe 'total_cost_of_stay method' do
     before do
-      @hotel = Booking_Manager.new
+      @hotel = Hotel::Booking_Manager.new
       @input = {name:"Dr. Frankenstein", room_number: 6,check_in_date: Date.new(2018, 6, 6), check_out_date: Date.new(2018, 6, 9)}
-      @reservation = Reservation.new(@input)
+      @reservation = Hotel::Reservation.new(@input)
     end
 
     it 'correctly sums the cost of a stay at the hotel' do
-      expect(Booking_Manager.total_cost_of_stay(@reservation)).must_equal 600
+      expect(@hotel.total_cost_of_stay(@reservation)).must_equal 600
     end
   end
 
   describe 'connect_reservation_to_room' do
 
     it 'finds the room being reserved and adds the reservation to its list of reservations' do
-      @hotel = Booking_Manager.new
+      @hotel = Hotel::Booking_Manager.new
       @input = { name: "Mx Thing",
         room_number: 1,
         check_in_date: Date.new(2020,9,9),
@@ -127,7 +127,7 @@ describe "Hotel Manager class" do
   describe 'search_room_availability' do
 
     before do
-      @hotel = Booking_Manager.new
+      @hotel = Hotel::Booking_Manager.new
       @input = { name: "Mx Thing",
         room_number: 1,
         check_in_date: Date.new(2020,9,9),
@@ -152,7 +152,7 @@ describe "Hotel Manager class" do
       @hotel.reserve_room(@input2)
       @hotel.reserve_room(@input3)
       @hotel.reserve_room(@input)
-      expect(Booking_Manager.search_room_availability(@date1, @date2)).must_equal @available_rooms
+      expect(Hotel::Booking_Manager.search_room_availability(@date1, @date2)).must_equal @available_rooms
     end
 
   end
@@ -160,7 +160,7 @@ describe "Hotel Manager class" do
   describe 'sort_reservations' do
 
     it 'finds the room being reserved and adds the reservation to its list of reservations' do
-      @hotel = Booking_Manager.new
+      @hotel = Hotel::Booking_Manager.new
       @input = { name: "Mx Thing",
         room_number: 1,
         check_in_date: Date.new(2020,9,9),
@@ -180,7 +180,7 @@ describe "Hotel Manager class" do
       }
       @hotel.reserve_room(@input3)
 
-      Booking_Manager.sort_reservations(@hotel.hotel_reservations)
+      @hotel.sort_reservations(@hotel.hotel_reservations)
 
       expect(@hotel.hotel_reservations.first.name).must_equal "Teen Wolf"
       expect(@hotel.hotel_reservations.last.name).must_equal "Mx Thing"

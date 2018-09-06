@@ -27,14 +27,14 @@ module Hotel
       reservation = Reservation.new(reserve)
       connect_reservation_to_room(connected_room_number, reservation)
       @hotel_reservations << reservation
-      Booking_Manager.sort_reservations(@hotel_reservations)
+      sort_reservations(@hotel_reservations)
     end
 
-    def self.total_cost_of_stay(reservation)
+    def total_cost_of_stay(reservation)
       return (reservation.nights_of_stay.length * ROOM_COST)
     end
 
-    def self.sort_reservations(list_of_reservations)
+    def sort_reservations(list_of_reservations)
       list_of_reservations.sort! { |a,b| a.check_in_date <=> b.check_in_date }
     end
 
@@ -80,7 +80,7 @@ module Hotel
 
     def connect_reservation_to_room(connected_room_number, reservation)
       connected_room_number.reservations << reservation
-      Booking_Manager.sort_reservations(connected_room_number.reservations)
+      sort_reservations(connected_room_number.reservations)
     end
 
     def load_rooms
