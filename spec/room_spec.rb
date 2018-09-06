@@ -1,12 +1,11 @@
 require_relative 'spec_helper'
 
-describe 'Room Wave 1' do
+describe 'room class' do
   describe 'initialize' do
-    it 'creates a room number' do
-      new_room = Lodging::Room.new(46)
+    it 'creates a new instance of room' do
+      new_rooms = Lodging::Room.new(20)
 
-      expect(new_room).must_respond_to :room_number
-      expect(new_room).must_be_instance_of Lodging::Room
+      expect(new_rooms).must_be_instance_of Lodging::Room
     end
   end
 end

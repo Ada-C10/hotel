@@ -1,16 +1,20 @@
-# require_relative 'room'
-# require_relative 'hotel'
-# require_relative 'block'
-# require_relative 'reservation'
+require 'awesome_print'
+#room should STORE room information
+#room should STORE room status
+#room should STORE room costs
+#room should STORE all hotel rooms
 
-module Lodging #name space to contain all info, including non-inherited classes
+module Lodging
   class Room
-    attr_reader :room_number, :status, :cost
 
-    def initialize(room_number, cost = 200) #default price is 200/night
-      @room_number = room_number
-      @status = :AVAILABLE #available, unavailable, hold?
+    def initialize(room_count, cost = 200)
+      @room_count = room_count
       @cost = cost
     end
+
+    def create_rooms
+
+    end
+
   end
 end
