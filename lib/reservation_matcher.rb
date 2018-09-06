@@ -1,5 +1,5 @@
 module Hotel
-  class ReservationManager
+  class ReservationMatcher
 
     attr_reader :reservations, :rooms
 
@@ -11,33 +11,32 @@ module Hotel
     # As an administrator, I can reserve a room for a given date range
     def make_reservation(checkin_date, checkout_date)
 
+      #TO DO: check for valid date input
       #how to check invalid dates? #USE REGEX!!!! [MM/DD/YYYY]
       #put in range for months (0..31) and days (01..12) and year must start with 2
 
-      if @checkout_date <= @checkin_date
-        raise StandardError.new('Checkout can\'t be be or the same as checkin.')
-      end
+      #check for valid date range
+      raise StandardError.new('Checkout can\'t be be or the same as checkin.')  if @checkout_date <= @checkin_date
 
+      #find room available for this range
       range = (checkin_date..checkout_date).to_a
       room = @rooms.find_available_room(range)
+      raise StandardError.new("Fully booked for this date range.") if room == nil
 
-      reservation = Reservation.new(checkin_date, checkout_date, room)
+      #create a reservation with this checkin_date, checkout_date and room number
+      reservation = Reservation.new(checkin_date, checkout_date, room.room_number)
+      #add reservation to room
+      room.add_reservation(reservation)
 
-      # raise StandardError.new("Fully booked.")  if @rooms.empty?
-      #raise error if @rooms.each do {|room| room.is_available == false for all}
-      #save to new variable called booked rooms and check if that length is 20?
-
-      #need way to check the checkindate and range
+      #TO DO: maybe create room with checkout_date - 1 to make sure dont overlap???
 
     end
 
     #helper method for make_reservation
     def find_available_room(date_range)
-      #loop through @rooms. select/ .find |room| room.is_available?
 
-      #raise StandardError.new("No more rooms available for this date") if !is_available?
-
-
+      #return room if availabel found, else return nil
+      return @rooms.find { |room| room.is_available?(date_range) }
     end
 
     def add_reservation_to_list(reservation)
