@@ -36,6 +36,11 @@ class Admin
     return reservations
   end
 
+  #As an administrator, I can reserve a room for a given date range
+  def reserve_room(date)
+
+  end
+
   # As an administrator, I can access the list of all of the rooms in the hotel
   def view_rooms
     return @rooms
