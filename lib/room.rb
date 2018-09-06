@@ -1,7 +1,5 @@
 require_relative 'reservation'
 
-STATUS_OPTIONS = [:AVAILABLE, :UNAVAILABLE]
-
 module Hotel
   class Room
     attr_reader :room_number, :booked_reservations
@@ -16,6 +14,15 @@ module Hotel
     def add_booked_reservation(reservation)
       raise ArgumentError unless reservation.is_a? Reservation
       @booked_reservations << reservation
+    end
+
+    def is_available?(requested_dates)
+      @booked_reservations.all? do |reservation|
+        reservation_period = reservation.date_range
+
+        !reservation_period.overlap?(requested_dates)
+        !requested_dates.overlap?(reservation_period)
+      end
     end
   end
 end

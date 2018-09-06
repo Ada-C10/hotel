@@ -24,8 +24,11 @@ module Hotel
       return reservations_by_date
     end
 
-    def reserve_room(start_date, end_date)
-      #write code to reserve room by date
+    def reserve_room(requested_dates)
+      @rooms.each do |room|
+        return room if room.is_available?(requested_dates)
+      end
+      # Raise error if no rooms available for dates
     end
   end
 end

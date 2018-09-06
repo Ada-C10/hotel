@@ -6,7 +6,6 @@ module Hotel
   class Reservation
     attr_reader :id, :room, :cost, :date_range
 
-
     def initialize(input)
       @id = input[:id]
       @room = input[:room]
