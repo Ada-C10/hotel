@@ -75,4 +75,21 @@ describe 'ReservationTracker class' do
 
     expect(new_tracker.show_all_reservations.length).must_equal 2
   end
+
+  it 'returns the total cost of the reservation' do
+    new_tracker = ReservationTracker.new()
+
+    reservation_num = 5555
+    room_num = 1
+    start_date = "2018,9,6"
+    end_date = "2018,9,8"
+    room_type = :standard
+
+    new_reservation = Reservation.new(reservation_num, room_num, start_date, end_date, room_type)
+
+    new_tracker.all_reservations << new_reservation
+    total_cost = new_tracker.cost_of_reservation(reservation_num)
+    expect(total_cost).must_equal 400
+  end
+
 end
