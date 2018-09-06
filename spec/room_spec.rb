@@ -22,6 +22,16 @@ describe "Room" do
       expect(@room.reservations).kind_of? Array
     end
 
-  end
+    it "Returns true if room is available" do
+      expect(@room.is_available?(Date.new(2018, 9, 4))).must_equal TRUE
+    end
 
+    it "Returns false if room is not available" do
+      @room2 = Room.new(1,[
+        Reservation.new(1, Date.new(2018, 9, 01), Date.new(2018, 9, 02))
+        ])
+      expect(@room2.is_available?(Date.new(2018, 9, 1))).must_equal FALSE
+      # binding.pry
+    end
+  end
 end

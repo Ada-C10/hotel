@@ -40,6 +40,7 @@ describe "booking manager" do
     end
 
     it "Is able to list reservations for a date" do
+      skip
       # Adding a reservation to @manager
       @manager.add_reservation(1, Date.new(2018, 9, 1), Date.new(2018, 9, 2))
       @manager.add_reservation(2, Date.new(2018, 9, 1), Date.new(2018, 9, 2))
