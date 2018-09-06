@@ -1,40 +1,73 @@
 # Jacquelyn Cheng - Nodes
 
 # Room: Keeps track of the availability of hotel rooms.
+
 require 'date'
 
 module Hotel
   class Room
     attr_reader :room_num, :availability
-    AVAILABLE_STARTING = Date.parse("2019-01-01")
-    AVAILABLE_THRU = Date.parse("2019-12-31")
 
-    def initialize(room_num)
-      @room_num = room_num
-      @availability = {}
-      AVAILABLE_STARTING.upto(AVAILABLE_THRU) { |date|
-        @availability[date.to_s] = :AVAILABLE
-      }
+    NIGHTLY_RATE = 200.00
+    VALID_STATUSES = [:AVAILABLE, :BOOKED, :BLOCKED]
+
+    def initialize(room_num, available_starting, available_thru)
+      @room_num =       room_num
+      @availability =   {}
+      # add room status and rate by day to availability hash
+      add_inventory(available_starting, available_thru)
     end
 
-    def is_available?(checkin_date, final_night_date = nil)
-      if final_night_date == nil
-        final_night_date = checkin_date
+    # makes new dates available for the room
+    # raises ArgumentError if invalid dates provided, returns true if successful
+    def add_inventory(available_starting, available_thru)
+      if available_thru < available_starting
+        raise ArgumentError, "Start date must be before end date."
+      elsif availability[available_starting.to_s]
+        raise ArgumentError, "New dates of availbility overlap with existing inventory."
+      else # add new dates of availability to room
+        available_starting.upto(available_thru) do |date|
+          availability[date.to_s] = { :status => :AVAILABLE, :rate => NIGHTLY_RATE }
+        end
+        return true
       end
-      checkin_date.upto(final_night_date) { |date|
-        return false unless @availability[date.to_s] == :AVAILABLE
-      }
-      return true
     end
 
-    # updates availability for dates of reservation to :BOOKED or :BLOCKED
-    def change_room_status(checkin_date, final_night_date, room_status)
+    # checks availability for a specific night or date range
+    # returns true if available for date, false otherwise
+    def is_available?(date)
+      if availability[date.to_s]
+        return availability[date.to_s][:status] == :AVAILABLE
+      else
+        return false
+      end
+    end
+
+    # updates availability for date to :BOOKED or :BLOCKED
+    # raises an ArgumentError if invalid status, returns new status if successful
+    def change_room_status(date, room_status)
+      unless VALID_STATUSES.include? room_status
+        raise ArgumentError, "Invalid status: #{room_status}"
+      end
       # room is unavailable from checkin to night before checkout
       # room is available day of checkout for reservations starting that evening
-      checkin_date.upto(final_night_date) { |date|
-        @availability[date.to_s] = room_status
-      }
-      return self
+      availability[date.to_s][:status] = room_status
+      return availability[date.to_s][:status]
+    end
+
+    # gets the nightly rate for a specific night as a float with 2 decimals
+    def nightly_rate(date)
+      return availability[date.to_s][:rate].to_f.round(2)
+    end
+
+    # update the nightly rate for a specific night or date range
+    # raises an ArgumentError if invalid rate, returns new rate if successful
+    def change_nightly_rate(date, new_rate)
+      if new_rate < 0 || !(new_rate.is_a? Numeric)
+        raise ArgumentError, "Invalid rate: #{new_rate}"
+      end
+      availability[date.to_s][:rate] = new_rate
+      return availability[date.to_s][:rate]
     end
   end
 end
