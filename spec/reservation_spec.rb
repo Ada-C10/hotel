@@ -9,7 +9,7 @@ require_relative '../lib/reservation.rb'
 
 describe "initialize" do
   before do
-    @new_res = Hotel::Reservation.new(check_in = "2018-02-03" , check_out = "2018-02-06", cost = 600.00, reservation_id = "603-XOX")
+    @new_res = Hotel::Reservation.new(check_in = "2018-02-03" , check_out = "2018-02-06", cost = 600.00)
   end
 
   it "is an instance of Reservation" do
@@ -46,10 +46,10 @@ end
 
 describe "make a reservation" do
   before do
-    @new_res = Hotel::Reservation.new(check_in = "2018-02-03" , check_out = "2018-02-06", cost = 200.00, reservation_id = "")
+    @new_res = Hotel::Reservation.new(check_in = "2018-02-03" , check_out = "2018-02-06", cost = 200.00)
   end
   it "generates a reservation ID" do
-    expect(@new_res.generate_id.length).must_equal 7
+    expect(@new_res.reservation_id.length).must_equal 7
   end
 
   it "finds the duration of stay" do
