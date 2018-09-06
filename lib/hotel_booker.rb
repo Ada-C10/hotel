@@ -13,6 +13,8 @@ module Hotel
       return @all_rooms.map { |room_num| "Room #{room_num}"}.join("\n")
     end
 
+
+
     # def reserve_a_room(check_in, check_out)
     #   if is_Date(check_in) && is_Date(check_out)
     #     occupied_rooms_list = []

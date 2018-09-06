@@ -7,10 +7,15 @@ describe 'Reservation class' do
   let (:check_out) {
     check_in + 2
   }
+
+  let (:room) {
+    Hotel::Room.new(1)
+  }
+
   let (:reservation) {
     check_in = Date.new(2020, 1, 1)
     check_out = check_in + 2
-    Hotel::Reservation.new(check_in, check_out, 1)
+    Hotel::Reservation.new(check_in, check_out, room)
   }
 
   describe 'Reservation instantiation' do
@@ -20,24 +25,8 @@ describe 'Reservation class' do
 
       expect(reservation.date_range).must_respond_to :check_in
       expect(reservation.date_range).must_respond_to :check_out
-      expect(reservation.room_num).must_equal 1
+      expect(reservation.room.room_num).must_equal 1
     end
-
-    it 'raises an argument error if room_num is not a number' do
-      expect{
-        Hotel::Reservation.new(check_in, check_out, 'Not a number')
-      }.must_raise ArgumentError
-
-      expect{
-        Hotel::Reservation.new(check_in, check_out, nil)
-      }.must_raise ArgumentError
-
-      expect{
-        Hotel::Reservation.new(check_in, check_out, " ")
-      }.must_raise ArgumentError
-    end
-
-
 
   end
 

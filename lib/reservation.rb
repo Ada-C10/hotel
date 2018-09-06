@@ -4,16 +4,16 @@ module Hotel
 
   class Reservation
 
-    attr_reader :date_range, :room_num, :cost
+    attr_reader :date_range, :room, :cost
 
-    def initialize(check_in, check_out, room_num)
+    def initialize(check_in, check_out, room)
       @date_range = DateRange.new(check_in, check_out)
-      @room_num = room_num
+      @room = room
       @cost = get_cost
 
-      if !@room_num.to_s.match /\d+/
-        raise ArgumentError, "Invalid Room Number"
-      end
+      # if !@room.to_s.match /\d+/
+      #   raise ArgumentError, "Invalid Room Number"
+      # end
     end
 
     def get_cost
