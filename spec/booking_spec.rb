@@ -42,23 +42,12 @@ describe "booking manager" do
       expect(@manager.rooms.first.reservations.length).must_equal 1
     end
 
-    it "Is able to list reservations for a date" do
-      # Adding a reservation to @manager
-      @manager.add_reservation(1, Date.new(2018, 9, 1), Date.new(2018, 9, 2))
-      @manager.add_reservation(2, Date.new(2018, 9, 1), Date.new(2018, 9, 2))
-      # Checking length of returned array
-      # binding.pry
-      expect(@manager.list_reservations_for_date(Date.new(2018, 9, 1)).length).must_equal 2
-      # binding.pry
-    end
-
     it "Has an error if attempting to book a reserved room" do
       # When attempting to add a reservation,
         # Check to see if given date range is already booked
           # Do not include checkout day of prior reservations
       skip
     end
-
 
   end
 
@@ -72,9 +61,41 @@ describe "booking manager" do
     end
 
     # Access list of reserved rooms by date
+    it "Is able to list reservations for a date" do
+      # Adding a reservation to @manager
+      @manager.add_reservation(1, Date.new(2018, 9, 1), Date.new(2018, 9, 2))
+      @manager.add_reservation(2, Date.new(2018, 9, 1), Date.new(2018, 9, 2))
+      # Checking length of returned array
+      expect(@manager.list_reservations_for_date(Date.new(2018, 9, 1)).length).must_equal 2
+    end
+
+    it "Returns false if dates do not overlap" do
+      start_date_one = Date.new(2018, 9, 1)
+      end_date_one = Date.new(2018, 9, 2)
+      start_date_two = Date.new(2018, 9, 3)
+      end_date_two = Date.new(2018, 9, 4)
+      expect(@manager.date_range_overlap(start_date_one, end_date_one, start_date_two, end_date_two)).must_equal FALSE
+    end
+
+    it "Returns true if dates do overlap" do
+      start_date_one = Date.new(2018, 9, 1)
+      end_date_one = Date.new(2018, 9, 3)
+      start_date_two = Date.new(2018, 9, 2)
+      end_date_two = Date.new(2018, 9, 3)
+      expect(@manager.date_range_overlap(start_date_one, end_date_one, start_date_two, end_date_two)).must_equal TRUE
+    end
 
     # Access list of rooms not reserved for date range
+    it "Is able to access list of rooms not reserved for a date range" do
+      skip 
+      # Adding reservations for test
+      @manager.add_reservation(1, Date.new(2018, 9, 1), Date.new(2018, 9, 2))
+      @manager.add_reservation(2, Date.new(2018, 9, 2), Date.new(2018, 9, 3))
+      expect(@manager.list_rooms_available_for_date_range(Date.new(2018, 9, 1), Date.new(2018, 9, 3))).kind_of? Array
+      expect(@manager.list_rooms_available_for_date_range(Date.new(2018, 9, 1), Date.new(2018, 9, 3)).length).must_equal 18
+      expect(@manager.list_rooms_available_for_date_range(Date.new(2018, 9, 1), Date.new(2018, 9, 3)).first).kind_of? Room
 
+    end
 
     # List of block rooms
 

@@ -22,7 +22,7 @@ class Room
     # if not, return true
     !@reservations.any? do |reservation|
       date_range = DateRange.new(reservation.check_in, reservation.check_out)
-      date_range.within_range?(date)
+      date_range.date_within_range?(date)
     end
   end
 end

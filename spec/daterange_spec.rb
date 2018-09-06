@@ -37,16 +37,50 @@ describe 'DateRange' do
   ### SHOWING AS NOT COVERED IN COVERAGE PERCENTAGE? ###
   it "Returns true if a date is within a date range" do
     # Returns true if date is within check_in and check_out
-    expect(@date_range.within_range?(Date.new(2018, 9, 2))).must_equal TRUE
+    expect(@date_range.date_within_range?(Date.new(2018, 9, 2))).must_equal TRUE
   end
 
   it "Returns false if a date is not within a date range" do
-    expect(@date_range.within_range?(Date.new(2018, 9, 6))).must_equal FALSE
+    expect(@date_range.date_within_range?(Date.new(2018, 9, 6))).must_equal FALSE
   end
 
   it "Returns the number of days" do
     expect(@date_range.number_of_days).must_equal 1
     expect(@date_range.number_of_days).kind_of? Integer
+  end
+
+  describe "Date range overlap" do
+    it "Returns true if two date ranges have the same dates" do
+
+    end
+
+    it "Returns true if two date ranges overlap in the front" do
+
+    end
+
+    it "Returns true if two date ranges overlap in the back" do
+
+    end
+
+    it "Returns true if one of the date ranges is completly contained" do
+
+    end
+
+    it "Returns false if one of the date ranges is completely before" do
+
+    end
+
+    it "Returns false if one of the date ranges is completely after" do
+
+    end
+
+    it "Returns false if one of the date ranges ends on the checkin date" do
+
+    end
+
+    it "Returns false if one of the date ranges starts on the checkout date" do
+
+    end 
   end
 
 end

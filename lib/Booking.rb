@@ -39,14 +39,28 @@ class Booking
     room.reservations << reservation
   end
 
-  # TODO Can access the list of reservations for given date
-  ##### NEED HELP IS RETURNING ALL ROOMS #####
-  # Did I write my code backwards? Check this...
   def list_reservations_for_date(date)
+    # Access array of rooms
     @rooms.reject do |room|
+      # Check if room is available for the date
       room.is_available?(date)
-      # binding.pry
     end
+  end
+
+
+  def list_rooms_available_for_date_range(start_date, end_date)
+    # Create daterange helper method to check if ranges overlap
+    # It's okay if start_date and the last day of reservation are the same. (Do check_out - 1 for range end)
+    # If any of the room's reservations are within the given range, room is not available
+    @rooms.reject do |room|
+      room.reservations.each do |reservation|
+        # Check if date range given overlaps with reservation range of check_in to (check_out - 1)
+        # Method returns true if ranges overlap so reject method is used
+        end_date >= reservation.check_in && start_date <= (reservation.check_out - 1) == false
+      end
+    end
+    # Otherwise room is available
+
   end
 
 end

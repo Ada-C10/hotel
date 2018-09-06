@@ -15,13 +15,17 @@ class DateRange
     end
   end
 
-  def within_range?(date)
+  def date_within_range?(date)
     return (@check_in .. @check_out).cover?(date)
   end
 
   def number_of_days
     return (@check_out - @check_in).to_i
   end
+
+  # Create method to check if two date ranges overlap
+  # Use in booking to show rooms not reserved
+  
 
 end
 
