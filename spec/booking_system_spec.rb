@@ -30,17 +30,29 @@ describe 'BookingSystem class' do
   end
 
   describe 'reserve_room' do
-    it 'returns a new reservation of instance Reservation' do
-      expect(@booking.reserve_room("Feb 1st 2019", "Feb 5th 2019")).must_be_kind_of Reservation
+    before do
+      check_in = "Feb 1st 2019"
+      check_out = "Feb 5th 2019"
+      @booking.reserve_room(check_in, check_out)
+    end
+
+    it 'adds a new reservation to the list of reservations' do
+      expect(@booking.reservations.count).must_equal 1
     end
 
     it "shovels dates from new reservation to a room's dates_booked array" do
-      check_in = "Feb 1st 2019"
-      check_out = "Feb 5th 2019"
-      my_reservation = @booking.reserve_room(check_in, check_out)
       all_rooms = @booking.list_all_rooms
       expect(all_rooms[0].dates_booked.count).must_equal 4
       expect(all_rooms[1].dates_booked.count).must_equal 0
+    end
+
+    it "selects the next room with available dates" do
+      check_in = "Feb 1st 2019"
+      check_out = "Feb 6th 2019"
+      @booking.reserve_room(check_in, check_out)
+      all_rooms = @booking.list_all_rooms
+      expect(all_rooms[0].dates_booked.count).must_equal 4
+      expect(all_rooms[1].dates_booked.count).must_equal 5
     end
   end
 

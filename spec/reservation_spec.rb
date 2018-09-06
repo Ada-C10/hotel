@@ -38,6 +38,14 @@ describe 'Reservation class' do
       my_dates = valid_res.reservation_dates
       expect(my_dates).must_be_kind_of Array
     end
+
+    it 'returns an array with reservation dates but excluding check_out_date' do
+      my_dates = valid_res.reservation_dates
+      expect(my_dates[0]).must_equal Date.parse("Jan 11th 2019")
+      expect(my_dates[1]).must_equal Date.parse("Jan 12th 2019")
+      expect(my_dates[2]).must_equal Date.parse("Jan 13th 2019")
+      expect(my_dates[3]).must_equal Date.parse("Jan 14th 2019")
+    end
   end
 
 end

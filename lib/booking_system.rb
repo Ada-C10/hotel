@@ -2,6 +2,7 @@ require_relative 'room.rb'
 require_relative 'reservation.rb'
 require 'awesome_print'
 require 'date'
+require 'pry'
 
 class BookingSystem
   attr_reader :num_rooms, :rooms, :reservations
@@ -27,8 +28,8 @@ class BookingSystem
   def reserve_room(start_date, end_date)
     new_reservation = Reservation.new(start_date, end_date)
     dates_to_book = new_reservation.reservation_dates
-    is_it_available = []
     @rooms.each do |room|
+      is_it_available = []
       dates_to_book.each do |date|
         if room.dates_booked.include?(date)
           is_it_available << "no"
@@ -43,11 +44,14 @@ class BookingSystem
         break
       end
     end
-    return new_reservation
+    @reservations << new_reservation
+    return @reservations
   end
 
-
   # access the list of reservations for a specific date
+  def reservations_by_date(date)
+
+  end
 
   # get the total cost for a given reservation
 end
