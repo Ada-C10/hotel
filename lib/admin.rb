@@ -38,6 +38,8 @@ class Admin
 
   #As an administrator, I can reserve a room for a given date range
   def reserve_room(start_date, end_date)
+    start_date = Time.parse(start_date)
+    end_date = Time.parse(end_date)
     @rooms.first.change_status
   end
 

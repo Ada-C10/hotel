@@ -72,11 +72,11 @@ describe "#rooms information" do
   end
 
   it "can make a reservation" do
-    start_date = Time.parse("2018-08-07 00:00:00 -0700")
-    end_date = Time.parse("2018-08-09 00:00:00 -0700")
+    start_date = "2018-08-07 00:00:00 -0700"
+    end_date = "2018-08-09 00:00:00 -0700"
     @admin.reserve_room(start_date, end_date) # change status of room
 
-    rooms = @admin.view_rooms 
+    rooms = @admin.view_rooms
 
     expect(rooms.first.status).must_equal "unavailable"
   end
