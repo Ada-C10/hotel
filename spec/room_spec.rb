@@ -42,22 +42,20 @@ describe "Room" do
   end
 
   describe "add_reservation" do
-    let(:start_date) {Date.parse("2004, 7, 1")}
-    let(:end_date) {Date.parse("2004, 7, 4")}
     let(:reservation_hash_1) {{
       id: 2,
       room_num: 4,
-      start_date: start_date,
-      end_date: end_date,
+      start_date: "2004-7-1",
+      end_date: "2004-7-4",
       }}
-    let(:reservation_1) {Hotel::Reservation.new(reservation_hash)}
+    let(:reservation_1) {Hotel::Reservation.new(reservation_hash_1)}
 
     it "each item in array is a Reservation instance" do
       room.add_reservation(reservation_1)
       expect(room.reservations[0]).must_be_kind_of Hotel::Reservation
     end
   end
-end
+
 #
 #   it "all Reservation instances must have the same passenger's user id" do
 #   @user.trips.each do |trip|
