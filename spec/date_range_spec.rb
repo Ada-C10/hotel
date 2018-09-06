@@ -12,6 +12,10 @@ describe 'DateRange class' do
 
     it 'creates an instance of DateRange' do
       expect(Hotel::DateRange.new(@check_in, @check_out)).must_be_instance_of Hotel::DateRange
+
+      expect(Hotel::DateRange.new(@check_in, @check_out)).must_respond_to :check_in
+
+      expect(Hotel::DateRange.new(@check_in, @check_out)).must_respond_to :check_out
     end
 
     # # possibly unnecessary
@@ -22,6 +26,15 @@ describe 'DateRange class' do
     it 'raises an Argument error if end date is before the start date' do
       expect{
         Hotel::DateRange.new(@check_in, @check_in - 2)
+      }.must_raise ArgumentError
+    end
+
+    it 'raises an Argument error if given anything besides a Date object' do
+      expect{
+        Hotel::DateRange.new("2000-10-10", @check_in - 2)
+      }.must_raise ArgumentError
+      expect{
+        Hotel::DateRange.new(@check_in, 20001010)
       }.must_raise ArgumentError
     end
 
