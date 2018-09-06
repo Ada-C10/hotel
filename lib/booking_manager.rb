@@ -9,6 +9,7 @@ module Hotel
     def initialize(number_rooms)
       @rooms = populate_room_list(number_rooms) #(20)
       @reservations = make_reservation_list
+      @room_calendar = make_room_calendar(number_rooms)
     end # of def initialize
 
     # Create list of rooms as list of room Instances
@@ -37,7 +38,7 @@ module Hotel
       return @reservations
     end
     # binding.pry
-    
+
     # Method to list all rooms in hotel
     def list_rooms
       @rooms
@@ -52,6 +53,10 @@ module Hotel
       @reservations << reservation
     end
 
+    def make_room_calendar(number)
+      @room_calendar = {}
+    end
+
     # Method to get total cost of reservation
     # Get cost from reservation?
 
@@ -61,6 +66,6 @@ module Hotel
     # if none with nil, search from beginning for date with specific dates.
     # if found, move to next room to check.
     # do rooms have a list of reserved dates? or no knowledge of dates?
-
   end # of class BookingManager
+
 end # of module Hotel
