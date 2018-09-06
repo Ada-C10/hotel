@@ -39,11 +39,10 @@ class HotelAdmin
     reservation.cost
   end
 
-  # def available_rooms(check_in, check_out)
-  #   rooms.select do |room|
-  #     (check_in..check_out).each do |day|
-  #       (room.booking.date_range[0]..room.date_range[0]).include? day
-  #     end
-  #   end
-  # end
+  def available_rooms(check_in, check_out)
+    rooms.select do |room|
+      room.available?(check_in, check_out)
+    end
+  end
+  
 end
