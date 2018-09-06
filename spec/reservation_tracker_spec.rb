@@ -21,15 +21,18 @@ describe "TripDispatcher class" do
 
   describe "#load_rooms method" do
     it "loads the rooms" do
+      expect(@reservation_tracker.rooms).must_be_kind_of Array
+      expect(@reservation_tracker.rooms.length).must_equal NUM_OF_ROOMS
+      expect(@reservation_tracker.rooms.first).must_equal 1
+      expect(@reservation_tracker.rooms.last).must_equal 20
+    end
 
+    xit "raises an error if there are less than 1 room" do
+      expect{ @reservation_tracker.rooms.include? 21 }.must_raise ArgumentError
 
     end
 
-    it "raises an error if there are less than 1 room" do
-
-    end
-
-    it "raises an error if there are more than 20 rooms" do
+    xit "raises an error if there are more than 20 rooms" do
 
     end
 
@@ -37,7 +40,12 @@ describe "TripDispatcher class" do
 
   describe "#list_reservations_by_date method" do
     it "lists the reservations searched for by date" do
+      reservations = @reservation_tracker.list_reservations_by_date(Date.today)
+      expect(reservations).must_be_kind_of Array
 
+      reservations.each do |reservation|
+        expect(reservation.date_range).must_include Date.today
+      end
     end
   end
 

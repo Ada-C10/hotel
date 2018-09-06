@@ -2,7 +2,7 @@ require 'date'
 
 require_relative 'reservation'
 
-NUMBER_OF_ROOMS = 20
+NUM_OF_ROOMS = 20
 
 module Hotel
   class ReservationTracker
@@ -11,11 +11,16 @@ module Hotel
     def initialize
       @rooms = load_rooms
       @reservations = []
+
+      if [*1..NUM_OF_ROOMS] != @rooms
+
+        raise ArgumentError "Invalid number of rooms"
+      end
     end
 
     def load_rooms
       all_rooms = []
-      NUMBER_OF_ROOMS.times do |i|
+      NUM_OF_ROOMS.times do |i|
         all_rooms << i + 1
       end
       return all_rooms
@@ -46,7 +51,10 @@ module Hotel
     end
 
     def get_first_available_room(requested_dates)
-      first_available_room = find_available_rooms(requested_dates)
+      all_available_rooms = find_available_rooms(requested_dates)
+      frist_available_room = all_available_rooms.first
+      check_room_number(first_available_room)
+      return first_available_room
     end
 
     def reserve_room(requested_dates)
@@ -74,7 +82,7 @@ module Hotel
     private
 
     def check_room_number(room_number)
-      raise ArgumentError, "Room number cannot be blank or less than zero. (got #{room_number})" unless room_number.between?(1, 20)
+      raise ArgumentError, "Room number cannot be less than 1 or greater than 20. (got #{room_number})" unless room_number.between?(1, 20)
     end
   end
 end
