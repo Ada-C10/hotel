@@ -5,8 +5,7 @@ require 'date'
 
 module Hotel
   class Room
-    attr_reader :rooms_in_hotel, :room_num, :availability
-    @@rooms_in_hotel = 0
+    attr_reader :room_num, :availability
     AVAILABLE_STARTING = Date.parse("2019-01-01")
     AVAILABLE_THRU = Date.parse("2019-12-31")
 
@@ -16,7 +15,6 @@ module Hotel
       AVAILABLE_STARTING.upto(AVAILABLE_THRU) { |date|
         @availability[date.to_s] = :AVAILABLE
       }
-      @@rooms_in_hotel += 1
     end
 
     def is_available?(checkin_date, final_night_date = nil)
@@ -24,21 +22,19 @@ module Hotel
         final_night_date = checkin_date
       end
       checkin_date.upto(final_night_date) { |date|
-        return false if @availability[date.to_s] == :UNAVAILABLE
+        return false unless @availability[date.to_s] == :AVAILABLE
       }
       return true
     end
 
-    # updates availability for dates of reservation
-    def reserve(checkin_date, final_night_date)
+    # updates availability for dates of reservation to :BOOKED or :BLOCKED
+    def change_room_status(checkin_date, final_night_date, room_status)
       # room is unavailable from checkin to night before checkout
       # room is available day of checkout for reservations starting that evening
       checkin_date.upto(final_night_date) { |date|
-        @availability[date.to_s] = :UNAVAILABLE
+        @availability[date.to_s] = room_status
       }
       return self
     end
-
-
   end
 end

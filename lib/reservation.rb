@@ -8,11 +8,13 @@ module Hotel
   class Reservation
     attr_reader :checkin_date, :checkout_date, :nights, :nightly_rate, :room, :confirmation_number
 
-    def initialize(checkin_date, checkout_date, room, confirmation_number)
+    RATE = 200
+
+    def initialize(checkin_date, checkout_date, nightly_rate = RATE, room, confirmation_number)
       @checkin_date = checkin_date
       @checkout_date = checkout_date
       @nights = checkout_date - checkin_date
-      @nightly_rate = 200
+      @nightly_rate = nightly_rate
       @room = room
       @confirmation_number = confirmation_number
     end

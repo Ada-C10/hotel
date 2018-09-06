@@ -30,16 +30,16 @@ describe "Room class" do
     # end
   end
 
-  describe "Room#reserve" do
+  describe "Room#change_room_status" do
     before do
-      @room.reserve(Date.parse("2019-01-02"), Date.parse("2019-01-06"))
+      @room.change_room_status(Date.parse("2019-01-02"), Date.parse("2019-01-06"), :BOOKED)
     end
 
-    it "changes a room's status for specified dates only to unavailable" do
+    it "changes a room's status for specified dates only to booked" do
       expect(@room.availability["2019-01-01"]).must_equal :AVAILABLE
-      expect(@room.availability["2019-01-02"]).must_equal :UNAVAILABLE
-      expect(@room.availability["2019-01-05"]).must_equal :UNAVAILABLE
-      expect(@room.availability["2019-01-06"]).must_equal :UNAVAILABLE
+      expect(@room.availability["2019-01-02"]).must_equal :BOOKED
+      expect(@room.availability["2019-01-05"]).must_equal :BOOKED
+      expect(@room.availability["2019-01-06"]).must_equal :BOOKED
       # room is available on the night of a reservation's end date
       expect(@room.availability["2019-01-07"]).must_equal :AVAILABLE
     end

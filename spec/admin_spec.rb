@@ -51,7 +51,7 @@ describe "Admin" do
         21.times do
           @admin.make_reservation("2019-01-01", "2019-01-04")
         end
-      }.must_raise Hotel::NoRoomsAvailableError
+      }.must_raise Hotel::RoomAvailabilityError
     end
   end
 
