@@ -1,31 +1,24 @@
 require 'date'
 
 require_relative 'reservation'
-require_relative 'room'
 
 NUMBER_OF_ROOMS = 20
 
 module Hotel
-
   class ReservationTracker
-    attr_reader :reservations, :rooms, :date_range
+    attr_reader :reservations, :rooms
 
-    def initialize(reservations)
+    def initialize
       @rooms = load_rooms
-      @reservations = load_reservations
+      @reservations = []
     end
 
     def load_rooms
       all_rooms = []
-      NUMBER_OF_ROOMS.times do |room_index|
-        all_rooms << Hotel::Room.new(room_number: room_index + 1)
+      NUMBER_OF_ROOMS.times do |i|
+        all_rooms << i + 1
       end
       return all_rooms
-    end
-
-    def load_reservations
-      reservations = []
-      return reservations
     end
 
     def list_reservations_by_date(date)
@@ -33,39 +26,6 @@ module Hotel
         reservation.date_range.include?(date)
       end
       return reservations_by_date
-    end
-
-    def find_room(room_number)
-      check_room_number(room_number)
-      return @rooms.find { |room| room.room_number == room_number }
-    end
-
-    def reserve_room(requested_dates)
-      room = find_room(room_number)
-      reservation_data = {
-        id: id,
-        room: room,
-        start_date: start_date,
-        end_date: end_date
-      }
-
-      new_reservation = Hotel::Reservation.new(reservation_data)
-
-      room.add_booked_reservation(new_reservation)
-      @reservations<< new_reservation
-      return new_reservation
-    end
-
-    def get_first_available_room(requested_dates)
-      first_available_room = find_available_rooms(requested_dates)
-    end
-
-    def find_available_rooms(requested_dates)
-      unavailable_rooms = find_unavailable_rooms(requested_dates)
-
-      available_rooms = @rooms.map do |room|
-        room if !@rooms.include?(unavailable_rooms)
-      end
     end
 
     def find_unavailable_rooms(requested_dates)
@@ -76,6 +36,33 @@ module Hotel
           unavailable_rooms << reservations.room
         end
       end
+    end
+
+    def find_available_rooms(requested_dates)
+      unavailable_rooms = find_unavailable_rooms(requested_dates)
+
+      available_rooms = @rooms.reject { |room|  unavailable_rooms.include?(room) }
+
+      return available_rooms
+    end
+
+    def get_first_available_room(requested_dates)
+      first_available_room = find_available_rooms(requested_dates)
+    end
+
+    def reserve_room(requested_dates)
+      room = get_first_available_room(requested_dates)
+
+      reservation_data = {
+        id: id,
+        room: room,
+        start_date: start_date,
+        end_date: end_date
+      }
+
+      new_reservation = Hotel::Reservation.new(reservation_data)
+      @reservations << new_reservation
+      return new_reservation
     end
 
     # def find_available_rooms(requested_dates)

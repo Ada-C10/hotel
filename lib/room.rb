@@ -21,7 +21,7 @@ module Hotel
         reservation_period = reservation.date_range
 
         !reservation_period.overlap?(requested_dates)
-        # !requested_dates.overlap?(reservation_period)
+  
       end
     end
   end
