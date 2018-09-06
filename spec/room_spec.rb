@@ -41,8 +41,9 @@ describe "Room" do
       room2.add_booking(reservation2)
     end
 
-    it "will return true or false if a given room is available" do
-      expect(room.available?(Date.new(2018,10,21),Date.new(2018,10,22)))
+    it "returns true/false if room is available for given date range" do
+      expect(room.available?(Date.new(2018,10,19), Date.new(2018,10,21)).must_equal False
+      expect(room.available?(Date.new(2018,10,22), Date.new(2018,10,24)).must_equal True
     end
   end
 

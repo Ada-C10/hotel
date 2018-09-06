@@ -12,8 +12,8 @@ class Room
     @bookings << reservation
   end
 
-  def available?(start_date, end_date)
-
-  end
+  # def available?(date)
+  #
+  # end
 
 end
