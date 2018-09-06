@@ -1,6 +1,9 @@
 require 'time'
 require 'date'
 require 'pry'
+require_relative 'block_room'
+require_relative 'reservation'
+require_relative 'room'
 
 class ReservationTracker
   attr_accessor :all_rooms, :all_reservations
@@ -25,16 +28,22 @@ class ReservationTracker
     return @all_reservations
   end
 
-  # def show_reservations_per_date(date)
-  #   reservations_for_date = []
-  #   all_reservations = show_all_reservations
-  #
-  #   all_reservations.each do |reservation|
-  #     if reservation.
-  #   end
-  # end
+  def show_reservations_per_date(date)
+    reservations_for_date = []
+    formatted_date = format_date(date)
 
-  # date must be entered in the format: yyyy,mm,dd
+    @all_reservations.each do |reservation|
+      reservation_dates = reservation.dates_booked_for_reservation
+      
+      if reservation_dates.include?(formatted_date)
+        reservations_for_date << reservation
+      end
+    end
+
+    return reservations_for_date
+  end
+
+  # date must be entered in the format: "yyyy,mm,dd"
   def show_available_rooms(start_date, end_date)
     available_rooms = []
 
@@ -67,7 +76,7 @@ class ReservationTracker
     return available_rooms
   end
 
-  # date must be entered in the format: yyyy,mm,dd
+  # date must be entered in the format: "yyyy,mm,dd"
   def reserve_room(room_num, start_date, end_date)
     room_number = room_num.to_i
 
@@ -75,6 +84,7 @@ class ReservationTracker
     available_rooms_by_number = available_rooms.map do |room_instance|
                                 room_instance.room_number.to_i
                               end
+
     if available_rooms_by_number.include?(room_number)
       reservation_number = make_reservation_number
       new_reservation = Reservation.new(reservation_number, room_number, start_date, end_date, :standard)

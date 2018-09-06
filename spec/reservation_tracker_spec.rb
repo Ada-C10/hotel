@@ -92,4 +92,26 @@ describe 'ReservationTracker class' do
     expect(total_cost).must_equal 400
   end
 
+  it 'shows reservations for a specific date' do
+    new_tracker = ReservationTracker.new()
+    room_num_1 = 3
+    check_in_1 = "2018,9,10"
+    check_out_1 = "2018,9,12"
+    new_reservation_1 = new_tracker.reserve_room(room_num_1, check_in_1, check_out_1)
+
+    room_num_2 = 4
+    check_in_2 = "2018,9,10"
+    check_out_2 = "2018,9,12"
+    new_reservation_2 = new_tracker.reserve_room(room_num_2, check_in_2, check_out_2)
+
+    room_num_3 = 5
+    check_in_3 = "2018,5,10"
+    check_out_3 = "2018,5,12"
+    new_reservation_3 = new_tracker.reserve_room(room_num_3, check_in_3, check_out_3)
+
+    reservations_for_date = new_tracker.show_reservations_per_date("2018,9,10")
+
+    expect(reservations_for_date.length).must_equal 2
+  end
+
 end
