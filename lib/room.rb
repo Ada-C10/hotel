@@ -4,7 +4,7 @@ class Room
   def initialize(attributes)
     @room_num = attributes[:room_num]
     @price = attributes[:price]
-    @reserved_dates = []  #<--- this should be a list of date_ranges 
+    @reserved_dates = []  #<--- this should be a list of date_range hashes? like {checkin_time: checkin, checkout_time: checkout}
     @block_status = :AVAILABLE
   end
 end

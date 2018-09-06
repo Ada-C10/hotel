@@ -27,12 +27,12 @@ class TrackingSystem
     return @all_rooms
   end
 
-  # reserve a room for a given date range
-  def make_reservation(checkin_time: checkin, checkout_time: checkout)
+  # reserve an available room for a given date range
+  def make_reservation(start_time: nil, end_time: nil, number_of_rooms)
     # 1. pick a room that is available. the next available room?
     @all_rooms.each do |room|
-      room.reserved_dates.each do |reserved_date| # this is a hash containing {checkin_time: checkin, checkout_time: checkout}, can replace some fo this with helper method
-        if !(reserved_date[checkin_time:]..reserved_date[checkout_time:]).include?(checkin_time: checkin)
+      room.reserved_dates.each do |reserved_dates| # this is a hash containing {checkin_time: checkin, checkout_time: checkout}, can replace some fo this with helper method
+        if !(reserved_dates[:checkin_time]..reserved_dates[:checkout_time]).include?(:start_time) && room.block_status == :NA
           #create a new reservation with |room| that is iterated in and fits the reqs
         else
          # raise argument error if inside @all_rooms no room is available on this date range (then admin would need to input a new date range)
@@ -42,28 +42,34 @@ class TrackingSystem
     room.reserved_dates << {checkin_time: checkin, checkout_time: checkout}
   end
 
-  #access the list of reservations for a specific date
-  def view_reservations_on(date)
-    # list_of_res_on this date above = []
-    #@reservations.each do |reservation|
-    #if (reservation.checkin_time..reservation.checkout_time).include?(date)
-    #then list_of_res_on (date) << reservation
-    #return the array  list_of_res_on (date)
-    # end
+  # view a list of rooms that are not reserved(aka available) for a given date range
+  # def view_available_rooms_on(checkin_time, checkout_time)
+  #   #available_rooms = []
+  #   # @all_rooms.each do |room|
+  #   # room.reserved_dates.each do |date_range| <---date_range could be a hash like {checkin_time: checkin, checkout_time: checkout}
+  #   ###  if the date_range doesn't include date aka:
+  #   # if !date_range.include?(date)
+  #   # available_rooms << room
+  #   # end
+  #   # return available_rooms (this is an array of rooms avail on 'date' passed as param)
+  #
 
-  def view_available_rooms_on(date)
-    #available_rooms = []
-    # @all_rooms.each do |room|
-    # room.reserved_dates.each do |date_range| <---date_range could be a hash like {checkin_time: checkin, checkout_time: checkout}
-    ###  if the date_range doesn't include date aka:
-    # if !date_range.include?(date)
-    # available_rooms << room
-    # end 
+  # #access the list of reservations for a specific date
+  # def view_reservations_on(date)
+  #   # list_of_res_on this date ^ above = []<--create emtpy array
+  #   #@reservations.each do |reservation|
+  #   #if (reservation.checkin_time..reservation.checkout_time).include?(date)
+  #   #then list_of_res_on (date) << reservation
+  #   #return the array  list_of_res_on (date)
+  #   # end
+  #
 
+#
 
-  private #helper methods below
-  def view_two_dates_as_range()  #<--put params {checkin_time: checkin, checkout_time: checkout}
-  def check_if_rooms_available_on(date_range)
+  #
+  # private #helper methods below
+  # def view_two_dates_as_range()  #<--put params {checkin_time: checkin, checkout_time: checkout}
+  # def check_if_rooms_available_on(date_range)
 
   #############################  #############################   #############################
 end
