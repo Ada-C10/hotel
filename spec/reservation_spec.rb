@@ -1,4 +1,5 @@
 require_relative 'spec_helper'
+require 'pry'
 
 describe "Reservation class" do
 
@@ -16,10 +17,17 @@ describe "Reservation class" do
 
   describe "Generate date" do
     it "is a kind of date" do
-
       date = Date.new(2018,1,3)
       expect(date).must_be_kind_of Date
     end
   end
 
 end
+
+#As an administrator, I can access the list of all of the rooms in the hotel
+#As an administrator, I can reserve a room for a given date range
+#As an administrator, I can access the list of reservations for a specific date
+#def - find reservations (find all?) (date)
+#return array of reservations
+
+#As an administrator, I can get the total cost for a given reservation
