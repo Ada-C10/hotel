@@ -1,4 +1,7 @@
 require 'date'
+require_relative "reservation"
+require_relative "date_range"
+
 
 module Hotel
   class BookingSystem
@@ -13,7 +16,7 @@ module Hotel
       @reservations = []
       @availibility = availibility
 
-      
+
       # keep track of reservations - make sure # of reservations have increased by 1
 
       # method to make_reservation

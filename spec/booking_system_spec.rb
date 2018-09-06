@@ -12,7 +12,6 @@ describe "BookingSystem class" do
     end
 
     it "Takes check_in, check_out, cost, and reservation_id" do
-
       expect(@booking).must_respond_to :rooms
       expect(@booking).must_respond_to :reservations
       expect(@booking).must_respond_to :availibility
@@ -22,7 +21,6 @@ describe "BookingSystem class" do
       [:rooms, :reservations, :availibility].each do |initial|
         expect(@booking).must_respond_to initial
       end
-
       expect(@booking.rooms).must_be_kind_of Array
       expect(@booking.reservations).must_be_kind_of Array
       # expect(@booking_system.availibility).must_be_kind_of String
