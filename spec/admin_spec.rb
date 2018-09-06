@@ -3,7 +3,7 @@ require 'pry'
 
 describe "Booking" do
   describe "initialize" do
-    it "Create an instance of hotel" do
+    it "Creates an instance of hotel" do
       hotel = Admin.new
       hotel.must_be_kind_of Admin
     end
@@ -168,7 +168,7 @@ describe "Booking" do
         hotel.request_reservation("2018-4-11", "2018-4-12")
 
         rooms_available = hotel.available_rooms("2018-12-12", "2018-12-14")
-        binding.pry
+        # binding.pry
         rooms_available.must_be_kind_of Array
         rooms_available.length.must_equal 18
       end

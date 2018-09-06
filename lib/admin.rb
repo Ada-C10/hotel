@@ -24,7 +24,7 @@ class Admin
     room = available_rooms(start_date, end_date).sample
       if room.nil?
         raise ArgumentError, "no rooms available"
-      end 
+      end
     # binding.pry
     new_reservation = Reservation.new(id, room, start_date, end_date)
 
@@ -75,13 +75,4 @@ class Admin
     available_rooms = all_rooms - unavailable_rooms
     return available_rooms
   end
-  # need assign room when reservation is made
-  # def select_room
-  #   room = @rooms.find { |room| room.status == :available }
-  #   return room
-  # end
-
-  # def room_to_unavailable(room)
-  #   room.status = :unavialable
-  # end
 end

@@ -1,6 +1,4 @@
 
-
-
 class Room
   attr_reader :room_number, :status
 

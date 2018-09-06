@@ -1,7 +1,6 @@
 require 'date'
 require 'admin'
 
-
 class Reservation
   attr_reader :id, :room, :start_date, :end_date
 
