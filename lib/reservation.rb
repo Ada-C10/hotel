@@ -75,7 +75,7 @@ module Hotel
       found_reservations = Reservation.load_reservations.select do |reservation|
         reservation.booked_dates.include? search_date.to_s
       end
-      raise ArgumentError, 'No reservations on that date' if found_reservations.empty?
+      found_reservations = 0 if found_reservations.empty?
       return found_reservations
     end
 
@@ -92,7 +92,20 @@ module Hotel
       total = rsv.total_cost
       return total
     end
-
+    def self.find_available_rooms(inspect_date)
+      search_date = Date.parse(inspect_date)
+      # load reservations
+      rooms = find_reservations_by_date(search_date)
+      if rooms == 0
+        avail_rooms = Room.all
+      else
+        # map booked rooms to new array
+        booked = rooms.map {|rsv| rsv.included_rooms}
+        # search all room instances for rooms that don't match
+        avail_rooms = 
+      end
+      return avail_rooms
+    end
 
   end #class end
 end #module end

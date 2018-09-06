@@ -15,12 +15,12 @@ module Hotel
     def self.find_room(id)
       @id.find { |room| room.id == id }
     end
-    # method to populate an array with dates in reserved range
-    def get_date_range_arr(rsv_start, rsv_end)
-      @booked_dates << (rsv_start...rsv_end).map do |date|
-        date.strptime('%d-%m-%Y')
-      end
+
+    # method to find all available rooms
+    def self.find_available_rooms
+
     end
+
 
 
     def self.make_rooms

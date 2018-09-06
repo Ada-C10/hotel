@@ -94,8 +94,8 @@ describe 'it can find reservation data' do
   it 'returns an array of reservation instances' do
     expect(finder[0]).must_be_kind_of Hotel::Reservation
   end
-  it 'raises an argument error if no reservations are found on that date' do
-    expect{ Hotel::Reservation.find_reservations_by_date("May 4 2020") }.must_raise ArgumentError
+  it 'returns 0 if no reservations found on that day' do
+    expect(Hotel::Reservation.find_reservations_by_date("May 4 2020")).must_equal 0
   end
   it 'can find a reservation given an id' do
     id = 1
@@ -109,7 +109,11 @@ describe 'it can find reservation data' do
     id = 2 # 1 room, 1 night, baserate 200.00
     expect(Hotel::Reservation.get_reservation_total(id)).must_equal 1 * 1 * 200.00
     expect(Hotel::Reservation.get_reservation_total(id)).must_be_kind_of Float
-
+  end
+  it 'can find available rooms given a date' do
+    find_date = "October 25 2019"
+    expect(Hotel::Reservation.find_available_rooms(find_date)).be_kind_of Array
+    expect((Hotel::Reservation.find_available_rooms(find_date)).length).must_equal 17
   end
 
 
