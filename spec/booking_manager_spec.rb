@@ -95,9 +95,14 @@ describe "BookingManager class" do
       expect(@hotel_rooms.reservations.length).must_equal old_number + 1
     end
 
-    # it "adds an instance of Reservation to array of reservations" do
-    #
-    # end
+    it "adds new instance of Reservation to reservations array" do
+      room = Hotel::Room.new(1)
+      another_booking = Hotel::Reservation.new(room, guest_name: "Polly Pocket", start_date: "May 10, 2018", end_date: "May 12, 2018")
+      @hotel_rooms.add_reservation(another_booking)
+
+      expect(@hotel_rooms.reservations.last).must_be_instance_of Hotel::Reservation
+      expect(@hotel_rooms.reservations.last.guest_name).must_equal "Polly Pocket"
+    end
   end
 
 
