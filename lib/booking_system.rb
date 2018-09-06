@@ -12,6 +12,8 @@ module Hotel
 
       @reservations = []
       @availibility = availibility
+
+      
       # keep track of reservations - make sure # of reservations have increased by 1
 
       # method to make_reservation

@@ -34,8 +34,6 @@ module Hotel
 
       rand_array.insert(3, "-")
       return rand_array * "".to_s
-
-
     end
 
     # - Find duration of stay
