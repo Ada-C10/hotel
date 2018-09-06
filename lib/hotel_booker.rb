@@ -23,30 +23,15 @@ module Hotel
       end
 
       if is_room_available(check_in, check_out, room)
-
-        return Hotel::Reservation.new(check_in, check_out, room)
+        new_reservation = Hotel::Reservation.new(check_in, check_out, room)
+        @all_reservations << new_reservation
+        return new_reservation
 
       # TODO: response for if no rooms are available
       end
 
     end
 
-    # def reserve_a_room(check_in, check_out)
-    #   if is_Date(check_in) && is_Date(check_out)
-    #     occupied_rooms_list = []
-    #     [*check_in...check_out].each do |date|
-    #       if list_unavailable_rooms(date)
-    #         occupied_rooms_list.concat list_unavailable_rooms(date)
-    #       end
-    #     end
-    #
-    #     occupied_rooms_list.uniq!
-    #     available_rooms = @all_rooms - occupied_rooms_list
-    #     room_num = available_rooms.first
-    #   end
-    #
-    #   return Hotel::Reservation.new(check_in, check_out, room_num)
-    # end
 
     def get_reservations_by_date(date)
       return @all_reservations.select do |reservation|
@@ -93,13 +78,6 @@ module Hotel
       else
         raise ArgumentError, "Invalid Dates Given"
       end
-
-      # if is_Date(date)
-      #   occupied_rooms = list_unavailable_rooms(date)
-      #   return occupied_rooms ? @all_rooms - occupied_rooms : @all_rooms
-      # else
-      #   raise ArgumentError, "Not a valid date"
-      # end
     end
   end
 end

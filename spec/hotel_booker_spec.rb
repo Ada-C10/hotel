@@ -17,11 +17,6 @@ describe 'HotelBooker class' do
   let (:hotel_booker) {
     Hotel::HotelBooker.new(all_reservations: [reservation1, reservation2])
   }
-  #
-  # let (:empty_hotel_booker) {
-  #   Hotel::HotelBooker.new
-  # }
-
 
   describe 'HotelBooker instantiation' do
     it 'creates an instance of HotelBooker class' do
@@ -53,6 +48,13 @@ describe 'HotelBooker class' do
 
     it 'raises an error when given invalid dates' do
       expect{hotel_booker.reserve_a_room(Date.today + 1, Date.today - 4)}.must_raise ArgumentError
+    end
+
+    it 'adds the reservation to the list of all_reservations' do
+      num_of_reservations = hotel_booker.all_reservations.length
+      hotel_booker.reserve_a_room(Date.today + 1, Date.today + 4, 3)
+      expect(hotel_booker.all_reservations.length - 1).must_equal num_of_reservations
+
     end
 
     it 'reserves the first available room for the given date range' do
