@@ -1,4 +1,5 @@
 module Hotel
+
   class ReservationMatcher
 
     attr_reader :reservations, :rooms
@@ -16,26 +17,28 @@ module Hotel
       #put in range for months (0..31) and days (01..12) and year must start with 2
 
       #check for valid date range
-      raise StandardError.new('Checkout can\'t be be or the same as checkin.')  if @checkout_date <= @checkin_date
+      raise StandardError.new('Checkout can\'t be before or the same as checkin.') if @checkout_date <= @checkin_date
 
-      #find room available for this range
+      #assign range, pass it in to find available room for this range
       range = (checkin_date..checkout_date).to_a
       room = @rooms.find_available_room(range)
-      raise StandardError.new("Fully booked for this date range.") if room == nil
+      raise StandardError.new("Fully booked for this date range. Try again.") if room == nil
 
       #create a reservation with this checkin_date, checkout_date and room number
-      reservation = Reservation.new(checkin_date, checkout_date, room.room_number)
+      input = {checkin_date: checkin_date, checkout_date: checkout_date, room_number: room.room_number}
+      reservation = Reservation.new(input)
+
       #add reservation to room
       room.add_reservation(reservation)
 
-      #TO DO: maybe create room with checkout_date - 1 to make sure dont overlap???
+      #TO DO: maybe create room with checkout_date - 1 to make sure dont overlap??? (so pass in checkout_date -1 or update valid room method?)
 
     end
 
     #helper method for make_reservation
     def find_available_room(date_range)
 
-      #return room if availabel found, else return nil
+      #return room if available one found, else return nil
       return @rooms.find { |room| room.is_available?(date_range) }
     end
 
@@ -61,4 +64,5 @@ module Hotel
     end
 
   end
+
 end

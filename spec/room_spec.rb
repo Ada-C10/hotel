@@ -26,7 +26,7 @@ describe 'Room' do
     end
 
 # #THIS TEST BREAKS EVERYTHING BELOW IT
-# #UNSTABLE 
+# #UNSTABLE
 #     it 'will throw an error if you try to generate more than 20 rooms' do
 #       expect{rooms = []
 #         21.times do
@@ -36,11 +36,13 @@ describe 'Room' do
   end
 
   let(:one_reservation_added) {
-    @room.add_reservation(Hotel::Reservation.new("13/12/2018", "15/12/2018", 1))
+    input = {checkin_date: "13/12/2018", checkout_date: "15/12/2018", room_number: 1}
+    @room.add_reservation(Hotel::Reservation.new(input))
     @room.reservations }
 
   let(:another_reservation_added) {
-    @room.add_reservation(Hotel::Reservation.new("16/12/2018", "18/12/2018", 2))
+    input = {checkin_date: "16/12/2018", checkout_date: "18/12/2018", room_number: 2}
+    @room.add_reservation(Hotel::Reservation.new(input))
     @room.reservations }
 
   describe 'add_reservation' do
@@ -62,20 +64,24 @@ describe 'Room' do
     end
 
     let(:false_available) {
-      @room.add_reservation(Hotel::Reservation.new("12/12/2018", "15/12/2018", 1))
+      input = {checkin_date: "12/12/2018", checkout_date: "15/12/2018", room_number: 1}
+      @room.add_reservation(Hotel::Reservation.new(input))
       range = (Date.parse("13/12/2018")..Date.parse("15/12/2018")).to_a
       @room.is_available?(range)
     }
 
     let(:true_available) {
-      @room.add_reservation(Hotel::Reservation.new("13/12/2018", "15/12/2018", 1))
+      input = {checkin_date: "13/12/2018", checkout_date: "15/12/2018", room_number: 1}
+      @room.add_reservation(Hotel::Reservation.new(input))
       range = (Date.parse("19/12/2018")..Date.parse("20/12/2018")).to_a
       @room.is_available?(range)
     }
 
     let(:false_available_multiple) {
-      @room.add_reservation(Hotel::Reservation.new("09/12/2018", "11/12/2018", 1))
-      @room.add_reservation(Hotel::Reservation.new("12/12/2018", "15/12/2018", 1))
+      input1 = {checkin_date: "09/12/2018", checkout_date: "11/12/2018", room_number: 1}
+      @room.add_reservation(Hotel::Reservation.new(input1))
+      input2 = {checkin_date: "12/12/2018", checkout_date: "15/12/2018", room_number: 1}
+      @room.add_reservation(Hotel::Reservation.new(input2))
       range = (Date.parse("13/12/2018")..Date.parse("15/12/2018")).to_a
       @room.is_available?(range)
     }
