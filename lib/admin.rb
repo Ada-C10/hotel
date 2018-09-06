@@ -2,7 +2,7 @@ require 'csv'
 require 'pry'
 
 class Admin
-  attr_reader :reservations
+  attr_reader :reservations, :find_reservation
   def initialize
     @reservations = load_reservations('spec/test_data/test_reservation.csv')
     sort_reservations
@@ -22,13 +22,26 @@ class Admin
 
     return reservations
   end
-
-  def find_reservation(date)
-    @reservations.select {|instance| instance.start_time == start_time || instance.end_time == end_time}
+#As an administrator, I can access the list of reservations for a specific date
+  def find_reservations(date)
+    date = Time.parse(date)
+    reservations = @reservations.select do |instance|
+      start_date = instance.start_time
+      end_date = instance.end_time
+      if date_in_range(start_date, end_date, date)
+        instance
+      end
+    end
+    return reservations
   end
-  
+
   private
   def sort_reservations
     @reservations.sort_by { |object| object.start_time }
+  end
+
+  def date_in_range(start_date, first_date, date)
+    range = (start_date..first_date)
+    range.include?(date)
   end
 end

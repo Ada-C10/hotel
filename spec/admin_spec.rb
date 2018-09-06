@@ -26,14 +26,19 @@ describe "#Admin - initializer" do
     expect(last_reservation.cost).must_equal 400
     expect(last_reservation.id).must_equal 2
   end
+end
 
-  xdescribe "#find reservation" do
-    it "return the reservations that have a spicific date" do
-      skip
-      reservations = Reservation.find(Time.parse("2016-08-08"))
+describe "#find reservation" do
+  before do
+    @admin = Admin.new
+  end
+  it "return the reservations that have a specific date as a start date" do
+    #arrange
+    date = "2018-08-07 00:00:00 -0700"
 
-      expect(reservations).must_be_kind_of Array
-      expect(first.start_time).must_equal Time.parse("2016-08-08")
-    end
+    reservations = @admin.find_reservations(date)
+
+    expect(reservations).must_be_kind_of Array
+    expect(reservations.id).must_equal 1
   end
 end
