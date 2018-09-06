@@ -10,11 +10,12 @@ module Hotel
                 :total_cost, :booked_dates, :status
     def initialize(id, guest_name, included_rooms, rsv_start, rsv_end)
       raise ArgumentError if rsv_end < rsv_start
+      # TODO: raise error if booking longer than x days?
       raise ArgumentError if included_rooms.empty?
       # must check nil first to stacktrace error
       raise ArgumentError if guest_name.nil? || guest_name.empty?
 
-      @id = id # reservation id
+      @id = id.to_i # reservation id
       @guest_name = guest_name # name of guest holding reservation
       @included_rooms = included_rooms # array - list of rooms booked for reservation
       @rsv_start = Date.parse(rsv_start) # reservation start date
@@ -76,6 +77,20 @@ module Hotel
       end
       raise ArgumentError, 'No reservations on that date' if found_reservations.empty?
       return found_reservations
+    end
+
+    # method to find reservation based on id
+    def self.find_a_reservation(id)
+      reservation = Reservation.load_reservations.find { |rsv| rsv.id == id }
+      raise ArgumentError, 'ID does not exist' if reservation.nil?
+      return reservation
+    end
+
+    # method to return total cost based on reservation id
+    def self.get_reservation_total(id)
+      rsv = find_a_reservation(id)
+      total = rsv.total_cost
+      return total
     end
 
 

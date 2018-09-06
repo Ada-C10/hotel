@@ -73,7 +73,7 @@ describe 'it can load csv data' do
     expect(Hotel::Reservation.load_reservations).must_be_kind_of Array
   end
   it 'can parse data from csv correctly' do
-    expect(Hotel::Reservation.load_reservations[0].id).must_be_kind_of String
+    expect(Hotel::Reservation.load_reservations[0].id).must_be_kind_of Integer
     expect(Hotel::Reservation.load_reservations[0].guest_name).must_be_kind_of String
     expect(Hotel::Reservation.load_reservations[0].included_rooms).must_be_kind_of Array
     expect(Hotel::Reservation.load_reservations[0].included_rooms[0]).must_be_kind_of Integer
@@ -97,5 +97,20 @@ describe 'it can find reservation data' do
   it 'raises an argument error if no reservations are found on that date' do
     expect{ Hotel::Reservation.find_reservations_by_date("May 4 2020") }.must_raise ArgumentError
   end
-end
+  it 'can find a reservation given an id' do
+    id = 1
+    expect(Hotel::Reservation.find_a_reservation(id)).must_be_kind_of Hotel::Reservation
+  end
+  it 'raises an argument error if no reservation are found w/ that id' do
+    id = 9999
+    expect{ Hotel::Reservation.find_a_reservation(id) }.must_raise ArgumentError
+  end
+  it 'can get total cost given a reservation id' do
+    id = 2 # 1 room, 1 night, baserate 200.00
+    expect(Hotel::Reservation.get_reservation_total(id)).must_equal 1 * 1 * 200.00
+    expect(Hotel::Reservation.get_reservation_total(id)).must_be_kind_of Float
 
+  end
+
+
+end
