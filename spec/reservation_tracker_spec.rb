@@ -37,4 +37,28 @@ describe 'ReservationTracker class' do
     new_reservation_number = new_tracker.make_reservation_number
     expect(new_reservation_number).must_equal 1
   end
+
+  it 'will reserve an available room ' do
+    new_tracker = ReservationTracker.new()
+    room_num = 3
+    check_in = "2018,9,10"
+    check_out = "2018,9,15"
+    new_reservation = new_tracker.reserve_room(room_num, check_in, check_out)
+    expect(new_tracker.all_reservations.length).must_equal 1
+  end
+
+  it 'will not reserve an unavailable room' do
+    new_tracker = ReservationTracker.new()
+    date_booked_1 = Date.new(2018, 9, 10)
+    date_booked_2 = Date.new(2018, 9, 11)
+    first_room = new_tracker.all_rooms.first
+    first_room.dates_booked << date_booked_1
+    first_room.dates_booked << date_booked_2
+
+    conflicting_room_num = first_room.room_number
+    check_in = "2018,9,10"
+    check_out = "2018,9,11"
+    expect{new_tracker.reserve_room(conflicting_room_num, check_in, check_out)}.must_raise ArgumentError
+
+  end
 end

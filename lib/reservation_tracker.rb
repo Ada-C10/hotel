@@ -1,5 +1,6 @@
 require 'time'
 require 'date'
+require 'pry'
 
 class ReservationTracker
   attr_accessor :all_rooms, :all_reservations
@@ -58,7 +59,7 @@ class ReservationTracker
 
     available_rooms = show_available_rooms(start_date, end_date)
     available_rooms_by_number = available_rooms.map do |room_instance|
-                                room_instance.room_number
+                                room_instance.room_number.to_i
                               end
     if available_rooms_by_number.include?(room_number)
       reservation_number = make_reservation_number
