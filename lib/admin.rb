@@ -38,8 +38,6 @@ class Admin
 
   #As an administrator, I can reserve a room for a given date range
   def reserve_room(start_date, end_date)
-    start_date = Time.parse(start_date)
-    end_date = Time.parse(end_date)
     @rooms.first.change_status
   end
 
@@ -54,8 +52,7 @@ class Admin
     reservations = @reservations.select do |instance|
       start_date = instance.start_time
       end_date = instance.end_time
-      range = create_range(start_date, end_date)
-      if date_in_range(range, date)
+      if date_in_range(start_date, end_date, date)
         instance
       end
     end
@@ -74,11 +71,8 @@ class Admin
     @reservations.sort_by { |object| object.start_time }
   end
 
-  def date_in_range(range, date)
+  def date_in_range(start_date, first_date, date)
+    range = (start_date..first_date)
     range.include?(date)
-  end
-
-  def create_range(start_date, end_date)
-    range = (start_date..end_date)
   end
 end
