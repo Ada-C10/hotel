@@ -32,13 +32,18 @@ module Hotel
     end
 
     # checks availability for a specific night or date range
-    # returns true if available for date, false otherwise
-    def is_available?(date)
-      if availability[date.to_s]
-        return availability[date.to_s][:status] == :AVAILABLE
-      else
+    # returns true if available for entire date range, false otherwise
+    def is_available?(checkin_date, checkout_date = nil)
+      if checkout_date == nil
+        checkout_date = checkin_date.next_day
+      end
+      unless availability[checkin_date.to_s] && availability[checkout_date.prev_day.to_s]
         return false
       end
+      checkin_date.upto(checkout_date.prev_day) do |date|
+        return false if availability[date.to_s][:status] != :AVAILABLE
+      end
+      return true
     end
 
     # updates availability for date to :BOOKED or :BLOCKED
