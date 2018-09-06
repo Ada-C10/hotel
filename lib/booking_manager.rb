@@ -43,11 +43,15 @@ module Hotel
       vacant_rooms = []
       booked_rooms = []
       @rooms.each do |room|
+        if room.reservations.first == nil
+          vacant_rooms << room.room_number
+          next
+        end
         min = 0
         max = room.reservations.length
         while min < max
           mid = (min + max )/ 2
-          if room.reservations[mid].nights_of_stay.include?(check_in_date)
+          if room.reservations[mid].nights_of_stay.include?(check_in_date) || room.reservations[mid].nights_of_stay.include?(check_out_date)
             booked_rooms << room.room_number
             break
           elsif room.reservations[mid].check_in_date > check_in_date

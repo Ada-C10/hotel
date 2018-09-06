@@ -128,33 +128,63 @@ describe "Hotel Manager class" do
 
     before do
       @hotel = Hotel::Booking_Manager.new
+      #TEST RANGE
+      @date1 = Date.new(2020,9,9)
+      @date2 = Date.new(2020,9,13)
+      #INSIDE TEST RANGE
+      @date3 = Date.new(2020,9,10)
+      @date4 = Date.new(2020,9,12)
+      #OUTSIDE TEST RANGE
+      @date5 = Date.new(2020,9,4)
+      @date6 = Date.new(2020,9,16)
+
       @input = { name: "Mx Thing",
         room_number: 1,
-        check_in_date: Date.new(2020,9,9),
-        check_out_date: Date.new(2020,9,13),
+        check_in_date: @date1,
+        check_out_date: @date2,
       }
       @input2 = { name: "Teen Wolf",
         room_number: 2,
-        check_in_date: Date.new(2020,9,9),
-        check_out_date: Date.new(2020,9,13),
+        check_in_date: @date1,
+        check_out_date: @date2,
       }
       @input3 = { name: "Señor Dracula",
         room_number: 3,
-        check_in_date: Date.new(2020,9,9),
-        check_out_date: Date.new(2020,9,13),
+        check_in_date: @date1,
+        check_out_date: @date2,
       }
-      @date1 = Date.new(2020,9,9)
-      @date2 = Date.new(2020,9,13)
-      @available_rooms = [4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]
-    end
-
-    it 'given a range of dates, it returns a list of available rooms' do
       @hotel.reserve_room(@input2)
       @hotel.reserve_room(@input3)
       @hotel.reserve_room(@input)
+      @available_rooms = [4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]
+    end
+
+    it 'given a range of dates, it returns a list of available rooms, if the reservation shares the same dates as a reserved room' do
       expect(@hotel.search_room_availability(@date1, @date2)).must_equal @available_rooms
     end
 
+    it 'it returns a list of available rooms, leaving rooms out if the reservation check in date is in the middle dates of a reserved room'do
+      expect(expect(@hotel.search_room_availability(@date3, @date4)).must_equal @available_rooms)
+    end
+    it 'it returns a list of available rooms, leaving rooms out if the reservation check in date is in the middle dates of a reserved room'do
+          expect(expect(@hotel.search_room_availability(@date3, @date6)).must_equal @available_rooms)
+    end
+    it 'it returns a list of available rooms, leaving rooms out if the check out date is in the middle dates of a reserved room'do
+    expect(expect(@hotel.search_room_availability(@date5, @date4)).must_equal @available_rooms)
+  end
+    it 'it returns a list of available rooms, leaving rooms out if the reservation check in date and check out date is in the middle dates of a reserved room'do
+        expect(expect(@hotel.search_room_availability(@date3, @date4)).must_equal @available_rooms)
+    end
+    it 'it returns a list of available rooms, leaving rooms out if the reservation check in date is in the middle dates of a reserved room'do
+        expect(expect(@hotel.search_room_availability(@date3, @date6)).must_equal @available_rooms)
+    end
+    it 'it returns a list of available rooms, leaving rooms out if the dates of a reserved room fall within a proposed check in date or check out date'do
+        expect(expect(@hotel.search_room_availability(@date5, @date6)).must_equal @available_rooms)
+    end
+    it 'it returns a list of available rooms, returning rooms where the  reservation check in date is on the check out day of another reservation'do
+    end
+    it 'it returns a list of available rooms, returning rooms where the  reservation check out date is on the check in day of another reservation'do
+    end
   end
 
   describe 'sort_reservations' do
