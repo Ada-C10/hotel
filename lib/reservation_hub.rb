@@ -21,27 +21,45 @@ module Hotel
 
       reservation = Reservation.new(start_year, start_month, start_day, end_year, end_month, end_day)
 
-      all_reservations(reservation)
+      @reservations << reservation
+      # return @reservations
     end
 
 
-    def find_reservations(start_date)
+    def generate_date(year, month, day)
+      return Date.new(year, month, day)
+    end
+    
+
+    def find_reservations(year, month, day)
+      # binding.pry
+
+      start_date = Reservation.generate_date(year, month, day)
       reservations_by_date = []
-      ReservationHub.add_reservation.each do |reservation|
-        if reservation.start_date = start_date
-          reservations_by_date << reservation
+      index = 0
+      all_reservations.each do
+        # binding.pry
+        if all_reservations[index].start_date == start_date
+
+          reservations_by_date << all_reservations[index]
+          index +=1
         end
+        return reservations_by_date
 
       end
+    end
 
+
+    def all_reservations
+      @reservations
     end
 
 
 
-    def all_reservations(reservation)
-      @reservations << reservation
-      return @reservations
-    end
+
+    # def all_reservations(reservation)
+    #
+    # end
     #
     #
     # def find_reservations(start_date)

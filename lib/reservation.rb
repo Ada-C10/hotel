@@ -11,7 +11,7 @@ module Hotel
 
       @end_date = generate_date(end_year, end_month, end_day)
 
-      @total_cost = calculate_reservation_cost(@start_date, @end_date)
+      @total_cost = reservation_cost(@start_date, @end_date)
 
       validate_dates
 
@@ -29,12 +29,12 @@ module Hotel
 
 
 
-    def generate_date(year, month, day)
-      return Date.new(year, month, day)
-    end
+    # def generate_date(year, month, day)
+    #   return Date.new(year, month, day)
+    # end
 
 
-    def calculate_reservation_cost(start_date, end_date)
+    def reservation_cost(start_date, end_date)
       nightly_cost = 200
       total_days = (end_date - start_date).to_i
       total_cost = total_days * nightly_cost
