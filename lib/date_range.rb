@@ -5,7 +5,7 @@ module Hotel
     attr_reader :check_in, :check_out
 
     def initialize(check_in, check_out)
-      if check_in > check_out || check_in < Date.today || check_out < Date.today
+      if check_in > check_out || !is_Date(check_in) || !is_Date(check_out)#|| check_in < Date.today || check_out < Date.today
         raise ArgumentError, "Invalid dates given"
       else
         @check_in = check_in

@@ -26,6 +26,7 @@ describe 'DateRange class' do
     end
 
     it 'raises an Argument error is input dates have past' do
+      skip
       old_start = Date.new(2000, 1, 1)
 
       expect{
