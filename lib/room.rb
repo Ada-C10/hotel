@@ -24,10 +24,15 @@ module Hotel
     def is_available?(date_range)
 
       @reservations.each do |reservation|
+        #if date_range has nothing in common with reservation range, then set_difference is date_range
         set_difference = date_range - (reservation.checkin_date..reservation.checkout_date).to_a
-        #if equal, no elements shared with date_range, return true... else false
-        return set_difference == date_range
+
+        #if set difference not equal to date_range, return false
+        if !(set_difference == date_range)
+          return false
+        end
       end
+      return true
     end
 
     private

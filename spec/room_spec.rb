@@ -5,26 +5,6 @@ describe 'Room' do
     @room = Hotel::Room.new()
   end
 
-  let(:one_reservation_added) {
-    @room.add_reservation(Hotel::Reservation.new("13/12/2018", "15/12/2018", 1))
-    @room.reservations }
-
-  let(:another_reservation_added) {
-    @room.add_reservation(Hotel::Reservation.new("16/12/2018", "18/12/2018", 2))
-    @room.reservations }
-
-  let(:false_available) {
-    @room.add_reservation(Hotel::Reservation.new("13/12/2018", "15/12/2018", 1))
-    range = (Date.parse("13/12/2018")..Date.parse("15/12/2018")).to_a
-    @room.is_available?(range)
-  }
-
-  let(:true_available) {
-    @room.add_reservation(Hotel::Reservation.new("13/12/2018", "15/12/2018", 1))
-    range = (Date.parse("19/12/2018")..Date.parse("20/12/2018")).to_a
-    @room.is_available?(range)
-  }
-
   describe 'initialize' do
 
     it 'will initialize on instance of a room' do
@@ -47,7 +27,13 @@ describe 'Room' do
 
   end
 
+  let(:one_reservation_added) {
+    @room.add_reservation(Hotel::Reservation.new("13/12/2018", "15/12/2018", 1))
+    @room.reservations }
 
+  let(:another_reservation_added) {
+    @room.add_reservation(Hotel::Reservation.new("16/12/2018", "18/12/2018", 2))
+    @room.reservations }
 
   describe 'add_reservation' do
 
@@ -65,22 +51,41 @@ describe 'Room' do
         expect(one_reservation_added.length).must_equal 1
         expect(another_reservation_added.length).must_equal 2
       end
-
-
     end
+
+    let(:false_available) {
+      @room.add_reservation(Hotel::Reservation.new("12/12/2018", "15/12/2018", 1))
+      range = (Date.parse("13/12/2018")..Date.parse("15/12/2018")).to_a
+      @room.is_available?(range)
+    }
+
+    let(:true_available) {
+      @room.add_reservation(Hotel::Reservation.new("13/12/2018", "15/12/2018", 1))
+      range = (Date.parse("19/12/2018")..Date.parse("20/12/2018")).to_a
+      @room.is_available?(range)
+    }
+
+    let(:false_available_multiple) {
+      @room.add_reservation(Hotel::Reservation.new("09/12/2018", "11/12/2018", 1))
+      @room.add_reservation(Hotel::Reservation.new("12/12/2018", "15/12/2018", 1))
+      range = (Date.parse("13/12/2018")..Date.parse("15/12/2018")).to_a
+      @room.is_available?(range)
+    }
 
     describe 'is_available?' do
 
-      it 'will return true if date present in @reservations' do
+      it 'will return true if date range not present in first reservation' do
         expect(true_available).must_equal true
       end
 
-      it 'will return false if date not present @reservations' do
+      it 'will return false if date range present in first reservation' do
         expect(false_available).must_equal false
       end
 
+      it 'will return false if date range present in second reservation' do
+        expect(false_available_multiple).must_equal false
+      end
+
     end
-
-
 
   end
