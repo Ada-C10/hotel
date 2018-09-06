@@ -26,6 +26,13 @@ describe "#Admin - initializer" do
     expect(last_reservation.cost).must_equal 400
     expect(last_reservation.id).must_equal 2
   end
+
+  it "accurately create_rooms" do
+    first_room = @admin.rooms.first
+    last_room = @admin.rooms.last
+    expect(first_room.number).must_equal 1
+    expect(last_room.number).must_equal 20
+  end
 end
 
 describe "#reservation information" do

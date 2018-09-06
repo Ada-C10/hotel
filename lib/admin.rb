@@ -2,16 +2,24 @@ require 'csv'
 require 'pry'
 
 class Admin
-  attr_reader :reservations, :find_reservation
+  attr_reader :reservations, :find_reservation, :rooms
   def initialize
     @reservations = load_reservations('spec/test_data/test_reservation.csv')
-    @rooms = [1,2,4]
+    @rooms = create_rooms(20)
     sort_reservations
   end
 
-  # def create_rooms(20)
-  #
-  # end
+  def create_rooms(number)
+    rooms = []
+    number.times do |num|
+      input_data = {}
+      room_number = num + 1
+      input_data[:number] = room_number
+      input_data[:status] = "available"
+      rooms << Room.new(input_data)
+    end
+    return rooms
+  end
 
   def load_reservations(filename)
     reservations = []
@@ -32,7 +40,7 @@ class Admin
   def view_rooms
     return @rooms
   end
-  
+
   #As an administrator, I can reserve a room for a given date range
   def reserve_room(start_date, end_date)
 
