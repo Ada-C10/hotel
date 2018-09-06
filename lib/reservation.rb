@@ -4,10 +4,10 @@ module Hotel
     attr_accessor :guest_name, :start_date, :end_date, :cost_per_night
 
     def initialize(room, guest_name:, start_date:, end_date:, cost_per_night: 200.00)
-      @room_number = room.number
+      @room = room.number
       @guest_name = guest_name
-      @start_date = start_date
-      @end_date = end_date
+      @start_date = Date.parse(start_date)
+      @end_date = Date.parse(end_date)
       @cost_per_night = cost_per_night
     end # of initialize method
 
