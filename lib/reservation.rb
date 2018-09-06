@@ -5,11 +5,13 @@ module Hotel
   class Reservation
     attr_reader :start_date, :end_date
 
-
     def initialize(start_year, start_month, start_day, end_year, end_month, end_day)
 
       @start_date = generate_date(start_year, start_month, start_day)
+
       @end_date = generate_date(end_year, end_month, end_day)
+
+      @total_cost = calculate_reservation_cost(@start_date, @end_date)
 
       validate_dates
 
@@ -32,8 +34,12 @@ module Hotel
     end
 
 
+    def calculate_reservation_cost(start_date, end_date)
+      nightly_cost = 200
+      total_days = (end_date - start_date).to_i
+      total_cost = total_days * nightly_cost
+    end
+
+
   end
 end
-
-
-#tests: make sure params for start/end date are in the right format (else argument error)
