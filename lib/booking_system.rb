@@ -26,8 +26,10 @@ module Hotel
     # def assign_room
     # end
     #
-    # def rooms_in_hotel
-    # end
+    def rooms_in_hotel
+      all_rooms = [*1..20]
+      return all_rooms
+    end
   end
 end
 
