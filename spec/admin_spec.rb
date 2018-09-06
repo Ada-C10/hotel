@@ -30,7 +30,7 @@ describe "Admin" do
     end
 
     it "assigns a room to the Reservation" do
-      expect(@res1.room).must_be_instance_of Hotel::Room
+      expect(@res1.rooms).must_be_instance_of Hotel::Room
     end
 
     it "updates the assigned room's availability" do

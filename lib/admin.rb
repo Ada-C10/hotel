@@ -37,7 +37,7 @@ module Hotel
       valid_dates?(checkin_date, checkout_date) # check dates
       blocked_rooms = assign_rooms(room_quantity, checkin_date, checkout_date, :BLOCKED) # check availability and return available room
       confirmation_num = blocks.length + 1
-      new_block = Reservation.new(block, checkin_date, checkout_date, discount_rate, room_quantity, blocked_rooms, confirmation_num) # create res
+      new_block = Block.new(block, checkin_date, checkout_date, discount_rate, blocked_rooms, nil, confirmation_num) # create res
       blocks[confirmation_num] = new_block
       return blocked_rooms
     end

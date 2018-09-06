@@ -38,11 +38,14 @@
 
 module Hotel
   class Block < Reservation
+    attr_reader :block
+    attr_accessor :blocked_rooms_available, :blocked_rooms_booked
+
     def initialize(block, checkin_date, checkout_date, discount_rate, blocked_rooms_available = 5, rooms = nil, confirmation_number = nil)
       super(checkin_date, checkout_date, discount_rate, rooms, confirmation_number)
       @block = block
-      if blocked_rooms_available.length > 5
-        raise ArgumentError, "A max of 5 rooms can be blocked."
+      if blocked_rooms_available.length > 5 || blocked_rooms_available.length < 1
+        raise ArgumentError, "Between 1-5 rooms can be blocked at once."
       end
       @blocked_rooms_available = blocked_rooms_available
       @blocked_rooms_booked = []

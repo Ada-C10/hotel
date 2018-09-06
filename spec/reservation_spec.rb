@@ -26,7 +26,7 @@ describe "Reservation" do
     end
 
     it "has a room assigned" do
-      expect(@reservation.room).must_be_instance_of Hotel::Room
+      expect(@reservation.rooms).must_be_instance_of Hotel::Room
     end
 
     it "has a confirmation number" do
