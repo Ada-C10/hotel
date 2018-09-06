@@ -16,13 +16,13 @@
 ## Design
 
 
-- ruby returns array of all rooms
+<!-- - ruby returns array of all rooms
     - rooms are a hash
         - key1 = :room_number (1-20) make them symbols! (don't make anything dependent on this being an integer!)
         - key2 = :room_rate (float = 200.0)
     - is it easy for 200 to become a default later?
     - the block cost can go in the args hash!
-    - is it easy for this hash to become a class later?
+    - is it easy for this hash to become a class later? -->
 - provide :start_date and :end_date
     - later, reservation class comes up with a room number
     - ruby makes a reservation object
@@ -31,9 +31,8 @@
         - :room_number (default to default, define default as room 1)
 - provide :date
         - book class contains reservations []
-        - loader class loads book class with reservations
-        - loader class loads hotel class with rooms (argument is number of rooms) ##### really?
-        - hotel class can return a list of all rooms
+  -  (argument is number of rooms) ##### really?
+        <!-- - hotel class can return a list of all rooms -->
         - book class searches reservations by date
     - book class returns array of reservations for that date
 - provide reservation
