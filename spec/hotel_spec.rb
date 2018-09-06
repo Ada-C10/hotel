@@ -1,34 +1,50 @@
 require_relative "spec_helper"
 
 describe "HotBook::Hotel class" do
-  let(:room_count) {20}
-  let (:hotel) {HotBook::Hotel.new(:room_count)}
+  let(:input) {{room_count: 20, room_rate: 200.0}}
+  let(:hotel) {HotBook::Hotel.new(input)}
+  let(:room_count) {hotel.room_count}
+  let(:room_rate) {hotel.room_rate}
+  let(:all_rooms) {hotel.rooms}
+  let(:expected_room_rate) {200.0}
+  let(:expected_room_count) {20}
 
-  describe "#initialize" do
-    before {all_rooms = hotel.rooms}
-
-    it "Hotel has reader method for rooms" do
-      expect(hotel).must_respond_to rooms
+  describe "initialize arguments" do
+    it "loads room count correctly" do
+      expect(room_count).must_be_instance_of Integer
+      expect(room_count).must_equal expected_room_count
     end
 
-    it "rooms returns an array of hashes with the correct number of rooms" do
+    it "loads room rate correctly" do
+      expect(room_rate).must_be_instance_of Float
+      expect(room_rate).must_equal expected_room_rate
+    end
+  end
+
+  describe "loading and returning list of all rooms" do
+    it "rooms is initialized as array of hashes with correct number of rooms" do
       expect(all_rooms).must_be_instance_of Array
-      all_rooms.each {|room| expect(room).must_be_instance_of Hash}
+      all_rooms.each do |room|
+        expect(room).must_be_instance_of Hash
+      end
       expect(all_rooms.size).must_equal room_count
     end
 
     it "room numbers are all valid key/value pairs" do
       valid_room_numbers = %i(1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20)
-      all_room_numbers = rooms.flat_map{ |room| room.values_at(:room_number) }
-      expec(all_room_numbers).must_equal valid_room_numbers
+      all_rooms.each_with_index do |room, index|
+        expect(room[:room_number]).must_be_instance_of Symbol
+        expect(room[:room_number]).must_equal valid_room_numbers[index]
+      end
     end
 
     it "room rates are all valid key/value pairs" do
-      valid_room_rates = Array.new(size= room_count, default = 200.0)
-      all_room_rates = rooms.flat_map{ |room| room.values_at(:room_rate) }
-      expect(all_room_rates).must_equal valid_room_rates
+      valid_room_rates = Array.new(size= expected_room_count, default = expected_room_rate)
+      all_rooms.each_with_index do |room, index|
+        expect(room[:room_rate]).must_be_instance_of Float
+        expect(room[:room_rate]).must_equal valid_room_rates[index]
+      end
     end
-
   end
 
 end
