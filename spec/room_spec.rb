@@ -6,7 +6,7 @@ describe 'Room' do
   }
 
   it 'instantiates a room object' do
-    new_room = Hotel::Room.new(99, {})
+    new_room = Hotel::Room.new(99, [])
     expect(new_room).must_be_kind_of Hotel::Room
   end
 
@@ -22,9 +22,9 @@ describe 'Room' do
     expect(rooms.last.cost).must_be_close_to 200.00
   end
 
-  it "defaults an empty hash for 'booked_dates'" do
+  it "defaults an empty array for 'booked_dates'" do
     # binding.pry
-    expect((rooms.first).booked_dates).must_be_kind_of Hash
-    expect((rooms.first).booked_dates).must_be_kind_of Hash
+    expect((rooms.first).booked_dates).must_be_kind_of Array
+    expect((rooms.first).booked_dates).must_be_kind_of Array
   end
 end

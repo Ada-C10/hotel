@@ -10,40 +10,45 @@ describe 'Reservation' do
   # end
 
   it 'instantiates a reservation' do
-    new_res = Hotel::Reservation.new(110, "Coco deVille", [1, 3, 4], "March 3, 2019", "March 5, 2019", 400.00)
-    expect(new_res).must_be_kind_of Hotel::Reservation
+    @new_res = Hotel::Reservation.new(110, "Coco deVille", [1, 3, 4], "March 3, 2019", "March 5, 2019")
+    # binding.pry
+    expect(@new_res).must_be_kind_of Hotel::Reservation
+    # binding.pry
+    expect(@new_res.id).must_be_kind_of Integer
+    expect(@new_res.booked_dates).must_be_kind_of Array
+    # expect(@booked_dates).wont_be empty?
   end
 
   it 'raises an error if end date is before start date' do
     expect {
-      rs1 = Hotel::Reservation.new(104, "Dolly Raj", [4, 7, 8], "May 12, 2019", "May 10, 2019", 600.00 )
+      rs1 = Hotel::Reservation.new(104, "Dolly Raj", [4, 7, 8], "May 12, 2019", "May 10, 2019")
     }.must_raise ArgumentError
   end
 
   it 'raises an error if start or end data are nil' do
     expect {
-      rs2 = Hotel::Reservation.new(104, "Dolly Raj", [4, 7, 8], nil, "May 10, 2019", 600.00 )
+      rs2 = Hotel::Reservation.new(104, "Dolly Raj", [4, 7, 8], nil, "May 10, 2019")
     }.must_raise ArgumentError
   end
 
   it 'raises an error if start or end data are not dates' do
     expect {
-      rs3 = Hotel::Reservation.new(104, "Dolly Raj", [4, 7, 8], "keyboard", "test", 600.00 )
+      rs3 = Hotel::Reservation.new(104, "Dolly Raj", [4, 7, 8], "keyboard", "test")
     }.must_raise ArgumentError
   end
 
   it 'raises an error if no rooms are included in the booking' do
     expect {
-      rs4 = Hotel::Reservation.new(104, "Dolly Raj", [], "May 12, 2019", "May 14, 2019", 600.00 )
+      rs4 = Hotel::Reservation.new(104, "Dolly Raj", [], "May 12, 2019", "May 14, 2019")
     }.must_raise ArgumentError
   end
 
   it 'raises an error if no guest name is included in the booking' do
     expect {
-      rs5 = Hotel::Reservation.new(104, "", [8], "May 12, 2019", "May 14, 2019", 600.00 )
+      rs5 = Hotel::Reservation.new(104, "", [8], "May 12, 2019", "May 14, 2019")
     }.must_raise ArgumentError
     expect {
-      rs6 = Hotel::Reservation.new(104, nil, [8], "May 12, 2019", "May 14, 2019", 600.00 )
+      rs6 = Hotel::Reservation.new(104, nil, [8], "May 12, 2019", "May 14, 2019")
     }.must_raise ArgumentError
   end
 end
@@ -58,5 +63,11 @@ describe 'it can load csv data' do
     expect(Hotel::Reservation.all_reservations[0].guest_name).must_be_kind_of String
     expect(Hotel::Reservation.all_reservations[0].included_rooms).must_be_kind_of Array
     expect(Hotel::Reservation.all_reservations[0].included_rooms[0]).must_be_kind_of Integer
+  end
+end
+
+describe 'it can find reservation data' do
+  it 'given a date, can find a reservation'do
+
   end
 end
