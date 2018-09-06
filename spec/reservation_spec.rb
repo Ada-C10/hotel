@@ -10,11 +10,11 @@ describe 'reservation class' do
         check_in_date: Date.new(2020,9,9),
         check_out_date: Date.new(2020,9,13),
       }
-      @reservation = Reservation.new(input)
+      @reservation = Hotel::Reservation.new(input)
     end
     #
     it 'creates an instance of a Reservation' do
-      expect(@reservation).must_be_kind_of Reservation
+      expect(@reservation).must_be_kind_of Hotel::Reservation
     end
 
     it 'has a customer name' do
@@ -59,7 +59,7 @@ describe 'reservation class' do
         check_in_date: Date.new(2020,9,13),
         check_out_date: Date.new(2020,9,9),
       }
-      @reservation = Reservation.new(@input)
+      @reservation = Hotel::Reservation.new(@input)
     end
     #
     it 'generates an array of all nights in a reservation without including the checkout date' do
@@ -73,7 +73,7 @@ describe 'reservation class' do
     end
 
     it 'raises an Error if the the check out date is before the check in date date' do
-       expect { Reservation.new(@input2) }.must_raise ArgumentError
+       expect { Hotel::Reservation.new(@input2) }.must_raise ArgumentError
     end
   end
 end
