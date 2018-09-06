@@ -10,36 +10,25 @@ module Hotel
     end
 
     def list_all_rooms
-      list_of_rooms = @all_rooms.each_with_index.map { |room_num, order| "Room #{order + 1}: #{room_num}" }.join("\n")
-      return list_of_rooms
+      return @all_rooms.map { |room_num| "Room #{room_num}"}.join("\n")
     end
 
-    def list_unavailable_rooms(date)
-      if is_Date(date)
-        days_reservations = get_reservations_by_date(date)
-        occupied_rooms = get_occupied_rooms(days_reservations)
-        return occupied_rooms.empty? ? nil : occupied_rooms
-      else
-        raise ArgumentError, "Not a valid date"
-      end
-    end
-
-    def reserve_a_room(check_in, check_out)
-      if is_Date(check_in) && is_Date(check_out)
-        occupied_rooms_list = []
-        [*check_in...check_out].each do |date|
-          if list_unavailable_rooms(date)
-            occupied_rooms_list.concat list_unavailable_rooms(date)
-          end
-        end
-
-        occupied_rooms_list.uniq!
-        available_rooms = @all_rooms - occupied_rooms_list
-        room_num = available_rooms.first
-      end
-
-      return Hotel::Reservation.new(check_in, check_out, room_num)
-    end
+    # def reserve_a_room(check_in, check_out)
+    #   if is_Date(check_in) && is_Date(check_out)
+    #     occupied_rooms_list = []
+    #     [*check_in...check_out].each do |date|
+    #       if list_unavailable_rooms(date)
+    #         occupied_rooms_list.concat list_unavailable_rooms(date)
+    #       end
+    #     end
+    #
+    #     occupied_rooms_list.uniq!
+    #     available_rooms = @all_rooms - occupied_rooms_list
+    #     room_num = available_rooms.first
+    #   end
+    #
+    #   return Hotel::Reservation.new(check_in, check_out, room_num)
+    # end
 
     def get_reservations_by_date(date)
       return @all_reservations.select do |reservation|
@@ -51,13 +40,45 @@ module Hotel
       return days_reservations.map { |reservations| reservations.room_num }
     end
 
-    def list_available_rooms(date)
-      if is_Date(date)
-        occupied_rooms = list_unavailable_rooms(date)
-        return occupied_rooms ? @all_rooms - occupied_rooms : @all_rooms
-      else
-        raise ArgumentError, "Not a valid date"
+    def list_unavailable_rooms(date_range)
+      # days_reservations = get_reservations_by_date(date)
+
+      occupied_rooms = []
+      [*date_range.check_in...date_range.check_out].each do |date|
+        if get_reservations_by_date(date)
+
+          occupied_rooms.concat get_reservations_by_date(date).map { |reservation| reservation.room_num }
+        end
       end
+      # binding.pry
+      occupied_rooms.uniq!
+
+      # available_rooms = @all_rooms - occupied_rooms_list
+      # room_num = available_rooms.first
+      #   if list_unavailable_rooms(date)
+      #     occupied_rooms_list.concat list_unavailable_rooms(date)
+      #   end
+      # end
+
+      # occupied_rooms = get_occupied_rooms(days_reservations)
+      return occupied_rooms #occupied_rooms.empty? ? nil : occupied_rooms
+
+    end
+
+
+    def list_available_rooms(check_in, check_out)
+      date_range = DateRange.new(check_in, check_out)
+
+      occupied_rooms = list_unavailable_rooms(date_range)
+
+      return @all_rooms - occupied_rooms
+
+      # if is_Date(date)
+      #   occupied_rooms = list_unavailable_rooms(date)
+      #   return occupied_rooms ? @all_rooms - occupied_rooms : @all_rooms
+      # else
+      #   raise ArgumentError, "Not a valid date"
+      # end
     end
 
     def is_Date(date)

@@ -46,15 +46,19 @@ describe 'HotelBooker class' do
   end
 
   describe 'reserve_a_room method' do
+
     it 'returns an instance of reservation' do
+      skip
       expect(hotel_booker.reserve_a_room(Date.today + 1, Date.today + 4)).must_be_instance_of Hotel::Reservation
     end
 
     it 'raises an error when given invalid dates' do
+      skip
       expect{hotel_booker.reserve_a_room(Date.today + 1, Date.today - 4)}.must_raise ArgumentError
     end
 
     it 'reserves the first available room for the given date range' do
+      skip
       expect(hotel_booker.reserve_a_room(Date.today + 1, Date.today + 2).room_num).must_equal 2
       expect(hotel_booker.reserve_a_room(Date.today + 1, Date.today + 9).room_num).must_equal 3
     end
@@ -83,17 +87,19 @@ describe 'HotelBooker class' do
   end
 
   describe 'list_available_rooms method' do
-    it 'returns an array containing a list of available room numbers for a given date' do
-      expect(hotel_booker.list_available_rooms(Date.today + 2)).must_be_instance_of Array
+    it 'returns an array containing a list of available room numbers for a given date range' do
+      expect(hotel_booker.list_available_rooms(Date.today + 2, Date.today + 4)).must_be_instance_of Array
     end
 
     it 'correctly identifies the list of available room numbers for a given date' do
       all_rooms = [*1..20]
       available_rooms = [*3..20]
+      # date_range_1 = Hotel::DateRange.new(Date.today + 2, Date.today + 3)
+      # date_range_2 = Hotel::DateRange.new(Date.today + 7, Date.today + 8)
 
-      expect(hotel_booker.list_available_rooms(Date.today + 2)).must_equal available_rooms
+      expect(hotel_booker.list_available_rooms(Date.today + 2, Date.today + 3)).must_equal available_rooms
 
-      expect(hotel_booker.list_available_rooms(Date.today + 7)).must_equal all_rooms
+      expect(hotel_booker.list_available_rooms(Date.today + 7, Date.today + 8)).must_equal all_rooms
     end
 
     it 'raises an error if given an invalid date' do
