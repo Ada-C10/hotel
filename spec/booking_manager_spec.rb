@@ -154,7 +154,17 @@ describe "Hotel Manager class" do
         check_out_date: Date.new(2016,7,13),
       }
       @hotel.reserve_room(@input2)
-      expect(@hotel.hotel_reservations[0].name).must_equal "Teen Wolf"
+      @input3 = { name: "Señor Dracula",
+        room_number: 1,
+        check_in_date: Date.new(2018,7,9),
+        check_out_date: Date.new(2018,7,13),
+      }
+      @hotel.reserve_room(@input2)
+
+      Booking_Manager.sort_reservations(@hotel.hotel_reservations)
+
+      expect(@hotel.hotel_reservations.first.name).must_equal "Teen Wolf"
+      expect(@hotel.hotel_reservations.last.name).must_equal "Mx Thing"
     end
   end
 
