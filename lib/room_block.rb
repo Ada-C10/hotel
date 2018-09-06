@@ -4,15 +4,13 @@ module Hotel
 
     # attr_reader :room_num, :cost
     #
-    # def initialize(check_in, check_out, rooms, discounted_rate)
-    #   @date_range = DateRange.new(check_in, check_out)
-    #   @room_num = room_num
-    #   @cost = get_cost
-    #
-    #   if !@room_num.to_s.match /\d+/
-    #     raise ArgumentError, "Invalid Room Number"
-    #   end
-    # end
+    def initialize(check_in, check_out, blocked_rooms, discounted_rate)
+      @date_range = DateRange.new(check_in, check_out)
+      @blocked_rooms = blocked_rooms
+      @discounted_rate = discounted_rate
+
+      # TODO: check if blocked_rooms contains non-repeating rooms, only from 1 - 20
+    end
     #
     # def get_cost
     #   return @date_range.get_total_days * BASE_COST
