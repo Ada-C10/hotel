@@ -6,7 +6,7 @@ require 'date'
 # the reservation end date
 module Hotel
   class Reservation
-    attr_reader :id, :guest_name, :included_rooms, :rsv_start, :rsv_end, :total_cost
+    attr_reader :id, :guest_name, :included_rooms, :rsv_start, :rsv_end, :total_cost, :booked_dates, :status
     def initialize(id, guest_name, included_rooms, rsv_start, rsv_end)
       raise ArgumentError if rsv_end < rsv_start
       raise ArgumentError if included_rooms.empty?
@@ -19,7 +19,7 @@ module Hotel
       @rsv_start = Date.parse(rsv_start) # reservation start date
       @rsv_end = Date.parse(rsv_end) # reservation end data
       @status = :BASERATE # start w/ base rate, option to add BLOCKRATE for later dev
-      # call methods to define variables
+      # call methods to define booked dates and total cost instance variables
       @booked_dates = get_date_range_arr(@rsv_start, @rsv_end)
       @total_cost = get_total_cost(@included_rooms, @booked_dates, @status)
 
@@ -29,15 +29,15 @@ module Hotel
 
     # BookedDates = Struct.new(:rsv_start, :rsv_end) do
     # method to make an array of date ranges for reservation
+    # date range up to but not including rsv_end
     def get_date_range_arr(rsv_start, rsv_end)
-      # TODO:
       (rsv_start...rsv_end).to_a.map { |day| day.to_s }
     end
 
     def get_total_cost(included_rooms, booked_dates, status)
       a = included_rooms.length
       b = booked_dates.length
-      if status == :BASERATE
+      if status == :BASERATE # calc w/ base rate $200/night
         total = a * b * 200.00
       else # block rate w/ discount
         total = (a * b * 200.00) * 1

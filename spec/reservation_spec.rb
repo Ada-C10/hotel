@@ -10,13 +10,27 @@ describe 'Reservation' do
   # end
 
   it 'instantiates a reservation' do
-    @new_res = Hotel::Reservation.new(110, "Coco deVille", [1, 3, 4], "March 3, 2019", "March 5, 2019")
-    # binding.pry
-    expect(@new_res).must_be_kind_of Hotel::Reservation
-    # binding.pry
-    expect(@new_res.id).must_be_kind_of Integer
-    expect(@new_res.booked_dates).must_be_kind_of Array
-    # expect(@booked_dates).wont_be empty?
+    new_res = Hotel::Reservation.new(110, "Coco deVille", [1, 3, 4], "March 3, 2019", "March 5, 2019")
+    expect(new_res).must_be_kind_of Hotel::Reservation
+    expect(new_res.id).must_be_kind_of Integer
+    expect(new_res.booked_dates).must_be_kind_of Array
+    expect(new_res.booked_dates).wont_be_empty
+    expect(new_res.status).must_be_kind_of Symbol
+    expect(new_res.total_cost).must_be_kind_of Float
+    expect(new_res.total_cost).must_be :>, 0
+  end
+
+  it 'correctly populates booked_dates array with range of dates' do
+    new_res = Hotel::Reservation.new(110, "Coco deVille", [1, 3, 4], "March 3, 2019", "March 8, 2019")
+    expect(new_res.booked_dates.length).must_equal 5
+    expect(new_res.booked_dates.first).must_equal "2019-03-03"
+    expect(new_res.booked_dates.last).must_equal "2019-03-07"
+  end
+
+  it 'correctly tallies up the total cost' do
+    new_res = Hotel::Reservation.new(110, "Coco deVille", [1, 3, 4], "March 3, 2019", "March 5, 2019")
+    # total cost = 3 rooms x 2 nights x $200.00
+    expect(new_res.total_cost).must_be_close_to (3 * 2 * 200)
   end
 
   it 'raises an error if end date is before start date' do
