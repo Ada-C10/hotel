@@ -49,11 +49,26 @@ describe "BookingTracker class" do
       expect (@reservation.room_num).must_equal 4
     end
 
+    it "raises an ArgumentError if a request is made for an unavailable room" do
+      expect { 20.times do
+        @bookings.new_reservation('9-16-2018', '9-17-2018')
+        end }.must_raise ArgumentError
+    end
+
     it "can get the total cost for a given reservation" do
       reservation = @bookings.new_reservation('9-1-2018', '9-5-2018')
 
       expect (reservation.cost).must_equal 800
     end
+
+    it "A reservation is allowed start on the same day that another reservation for the same room ends" do
+      reservation = @bookings.new_reservation('9-18-2018', '9-20-2018')
+
+      expect (reservation.room_num).must_equal 2
+    end
+
+
+
   end
 
 

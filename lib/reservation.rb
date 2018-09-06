@@ -5,6 +5,7 @@ class Reservation
     @begin_date = begin_date
     @end_date = end_date
     @room_num = room_num
+    raise ArgumentError if @room_num == nil
     @rate = rate
     @cost = ( end_date - begin_date ) * rate
   end
