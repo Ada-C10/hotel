@@ -2,43 +2,43 @@ require_relative 'reservation'
 require 'date'
 require 'pry'
 
-class BlockReservation #< Reservation
+class BlockRooms
 
-attr_reader :start_date, :end_date, :cost, :reservation_id, :rooms_reserved, :checkout_date, :discounted_rate, :rooms_blocked
+attr_reader :start_date, :end_date, :cost, :block_id, :rooms_reserved, :checkout_date, :discounted_rate, :rooms_blocked
 
-  @@reservation_ids = []
+  @@block_ids = []
 
   def initialize(start_date, end_date, number_of_rooms, discounted_rate)
-    # super(start_date, end_date, number_of_rooms)
     @start_date = Date.parse(start_date)
     @end_date = Date.parse(end_date)
     @number_of_rooms = number_of_rooms
     @discounted_rate = discounted_rate
-    @cost = get_cost
-    @rooms_reserved = []
     @rooms_blocked = []
+    @rooms_reserved = []
     @checkout_date = @end_date - 1
-    @reservation_id = create_reservation_id
-
+    @block_id = create_block_id
 
     raise StandardError, 'Invalid date range!' if @start_date > @end_date
-
   end
 
   def add_rooms_reserved(room)
     @rooms_reserved << room
   end
 
-  def get_cost
-    return (((end_date - start_date).to_i ) * discounted_rate) * @number_of_rooms
+  def create_block_id
+    id = block_id_generator
+
+    while @@block_ids.include? id
+      id = block_id_generator
+    end
+
+    @@block_ids << id
+    return id
   end
 
-  def create_reservation_id
-    # return super
-  end
-
-  def id_generator
-    # return super
+  def block_id_generator
+    alpha = ('a'..'z').to_a
+    return id = alpha[rand(26)] + alpha[rand(26)] + rand(100..999).to_s
   end
 
   def add_rooms_blocked(room)

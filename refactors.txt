@@ -1,0 +1,13 @@
+Make availability hash?
+Use inheritance for blockrooms?
+
+Make DateRange class?/Date range check method
+Figure out what to do about the class method
+
+Undo dependencies
+
+if (end_a < start_b) || (start_a > end_b)
+  puts "not in range"
+end
+
+Rename hotel something else

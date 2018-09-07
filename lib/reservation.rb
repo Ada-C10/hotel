@@ -7,12 +7,13 @@ attr_reader :start_date, :end_date, :cost, :reservation_id, :rooms, :checkout_da
 
   @@reservation_ids = []
 
-  def initialize(start_date, end_date, number_of_rooms)
+  def initialize(start_date, end_date, number_of_rooms, room_rate = 200)
     @start_date = Date.parse(start_date)
     @end_date = Date.parse(end_date)
     @checkout_date = @end_date - 1
     @number_of_rooms = number_of_rooms
     @rooms = []
+    @room_rate = room_rate
     @cost = get_cost
     @reservation_id = create_reservation_id
 
@@ -25,7 +26,7 @@ attr_reader :start_date, :end_date, :cost, :reservation_id, :rooms, :checkout_da
   end
 
   def get_cost
-    return (((@end_date - @start_date).to_i ) * 200) * @number_of_rooms
+    return (((@end_date - @start_date).to_i ) * @room_rate) * @number_of_rooms
   end
 
   def create_reservation_id

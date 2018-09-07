@@ -154,16 +154,16 @@ end
 
 describe "Hotel Class: Wave Three: Blocks of Rooms" do
 
-  describe "reserve_room_block" do
+  describe "create_room_block" do
     before do
       @hotel = Hotel.new(20)
-      @hotel.reserve_room_block('2018-01-03', '2018-01-05', 5, 150)
-      @block_id = @hotel.block_reservations[0].reservation_id
+      @hotel.create_room_block('2018-01-03', '2018-01-05', 5, 150)
+      @block_id = @hotel.room_blocks[0].block_id
 
     end
 
     it "can create a block of rooms" do
-      expect(@hotel.block_reservations[0]).must_be_instance_of BlockReservation
+      expect(@hotel.room_blocks[0]).must_be_instance_of BlockRooms
     end
 
     it "can check whether a given block has any rooms available" do
@@ -174,46 +174,52 @@ describe "Hotel Class: Wave Three: Blocks of Rooms" do
       @hotel.reserve_block_room(@block_id, 1)
 
       expect(@hotel.list_available_block_rooms(@block_id).length).must_equal 4
-      expect(@hotel.block_reservations[0].rooms_reserved.length).must_equal 1
+      expect(@hotel.room_blocks[0].rooms_reserved.length).must_equal 1
 
     end
 
     it "a block can contain a maximum of 5 rooms" do
 
-      expect{@hotel.reserve_room_block('2018-09-05', '2018-09-10', 7, 150)}.must_raise ArgumentError
+      expect{@hotel.create_room_block('2018-09-05', '2018-09-10', 7, 150)}.must_raise ArgumentError
     end
 
     it "when a room is reserved from a block, the reservation dates will match the date range of the block" do
       @hotel.reserve_block_room(@block_id, 1)
 
-      expect(@hotel.block_reservations[0].rooms_reserved[0].block_reservations[0].start_date).must_equal @hotel.block_reservations[0].start_date
+      expect(@hotel.reservations[0].start_date).must_equal @hotel.room_blocks[0].start_date
+      expect(@hotel.reservations[0].end_date).must_equal @hotel.room_blocks[0].end_date
 
-      expect(@hotel.block_reservations[0].rooms_reserved[0].block_reservations[0].end_date).must_equal @hotel.block_reservations[0].end_date
     end
 
     it "if a room is set aside in a block, it is not available for reservation" do
-      @hotel.reserve_room_block('2018-05-03', '2018-05-08', 5, 150)
-      @hotel.reserve_room_block('2018-05-03', '2018-05-08', 5, 150)
-      @hotel.reserve_room_block('2018-05-03', '2018-05-08', 5, 150)
-      @hotel.reserve_room_block('2018-05-03', '2018-05-08', 5, 150)
+      @hotel.create_room_block('2018-05-03', '2018-05-08', 5, 150)
+      @hotel.create_room_block('2018-05-03', '2018-05-08', 5, 150)
+      @hotel.create_room_block('2018-05-03', '2018-05-08', 5, 150)
+      @hotel.create_room_block('2018-05-03', '2018-05-08', 5, 150)
 
       expect{@hotel.reserve_room('2018-05-03', '2018-05-10', 1)}.must_raise ArgumentError
     end
 
     it "if a room is set aside in a block it can't be included in another block" do
-      @hotel.reserve_room_block('2018-05-03', '2018-05-08', 5, 150)
-      @hotel.reserve_room_block('2018-05-03', '2018-05-08', 5, 150)
-      @hotel.reserve_room_block('2018-05-03', '2018-05-08', 5, 150)
-      @hotel.reserve_room_block('2018-05-03', '2018-05-08', 5, 150)
+      @hotel.create_room_block('2018-05-03', '2018-05-08', 5, 150)
+      @hotel.create_room_block('2018-05-03', '2018-05-08', 5, 150)
+      @hotel.create_room_block('2018-05-03', '2018-05-08', 5, 150)
+      @hotel.create_room_block('2018-05-03', '2018-05-08', 5, 150)
 
-      expect{@hotel.reserve_room_block('2018-05-05', '2018-05-08', 7, 150)}.must_raise ArgumentError
+      expect{@hotel.create_room_block('2018-05-05', '2018-05-08', 7, 150)}.must_raise ArgumentError
     end
 
     it "will give the block rooms a discounted rate" do
-      @hotel.reserve_room('2018-01-03', '2018-01-05', 5)
+      @hotel.reserve_block_room(@block_id, 1)
+      @hotel.reserve_room('2018-01-03', '2018-01-05', 1)
 
-      expect(@hotel.reservations[0].cost).must_equal 2000
-      expect(@hotel.block_reservations[0].cost).must_equal 1500
+      expect(@hotel.reservations[0].cost).must_equal 300
+      expect(@hotel.reservations[1].cost).must_equal 400
+    end
+
+    it "raises error for invalid block id" do
+
+      expect{@hotel.find_block_booking("hello")}.must_raise ArgumentError
     end
   end
 
