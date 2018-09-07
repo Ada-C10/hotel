@@ -24,26 +24,35 @@ describe 'BookingManager' do
     end
   end
 
-  describe '#find_available_room' do
-    it 'must return a valid room number' do
-      expect(sample_booking.find_available_room(sample_checkin, sample_checkout)).must_be_kind_of Integer
-    end
-
-    it 'must equal a number greater than 0' do
-      expect(sample_booking.find_available_room(sample_checkin, sample_checkout)).must_be :>, 0
-    end
-
-    it 'must equal a number less than 21' do
-      expect(sample_booking.find_available_room(sample_checkin, sample_checkout)).must_be :<, 21
-    end
+  describe '#list_rooms' do
+    it 'gives a list of all the rooms in the hotel'do
+    expect(sample_booking.list_rooms).must_be_kind_of  Array
+    expect(sample_booking.list_rooms.length).must_equal 20
+    expect(sample_booking.list_rooms[0]).must_be_kind_of Integer
   end
 
-  describe '#make_reservation' do
-    it 'must return a reservation object' do
-      expect(sample_booking.make_reservation(sample_checkin, sample_checkout)).must_be_kind_of Reservation
-    end
+end
 
-
+describe '#find_available_room' do
+  it 'must return a valid room number' do
+    expect(sample_booking.find_available_room(sample_checkin, sample_checkout)).must_be_kind_of Integer
   end
+
+  it 'must equal a number greater than 0' do
+    expect(sample_booking.find_available_room(sample_checkin, sample_checkout)).must_be :>, 0
+  end
+
+  it 'must equal a number less than 21' do
+    expect(sample_booking.find_available_room(sample_checkin, sample_checkout)).must_be :<, 21
+  end
+end
+
+describe '#make_reservation' do
+  it 'must return a reservation object' do
+    expect(sample_booking.make_reservation(sample_checkin, sample_checkout)).must_be_kind_of Reservation
+  end
+
+
+end
 
 end
