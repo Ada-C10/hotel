@@ -107,18 +107,87 @@ describe "HotelAdmin" do
 
   describe "HotelAdmin#available_rooms" do
     before do
-      Reservation.new({guest_id: "SoccerMom2010@gmail.com", room: 1, date_range: (Date.new(2018,10,20)...Date.new(2018,10,22))})
-      Reservation.new({guest_id: "Guccifer2.0@ada.com", room: 1, date_range: (Date.new(2018,12,02)...Date.new(2018,12,07))})
-      Reservation.new({guest_id: "Jfahmy07@gmail.com", room: 2, date_range: (Date.new(2018,12,03)...Date.new(2018,12,06))})
+      hotel.reserve_room("SoccerMom2010@gmail.com", 1, Date.new(2018,10,20), Date.new(2018,10,22))
+      hotel.reserve_room("Guccifer2.0@ada.com", 1, Date.new(2018,12,02), Date.new(2018,12,07))
+      hotel.reserve_room("Jfahmy07@gmail.com", 2, Date.new(2018,12,03), Date.new(2018,12,06))
     end
     it "provides a list of available room NUMBERS for a given date range" do
-      available = hotel.available_rooms(Date.new(2018,12,04),Date.new(2018,12,05))
+      available = hotel.available_rooms(Date.new(2018,12,04), Date.new(2018,12,05))
+      room_ids = []
+      available.each do |room|
+        room_ids << room.id
+      end
 
-      #WE ARE USING NUMBERS IN THIS TEST INSTEAD OF ROOM OBJECTS - MAYBE COME BACK AND ADJUST LATER TO ROOM OBJECTS
       expect(available).must_be_instance_of Array
-      expect(available).wont_include 1
-      expect(available).wont_include 2
+      expect(available.length).must_equal 18
+      expect(room_ids).wont_include 1
+      expect(room_ids).wont_include 2
     end
   end
+
+  describe "HotelAdmin#locate_block" do
+    before do
+      hotel.reserve_room("SoccerMom2010@gmail.com", 1, Date.new(2018,10,20), Date.new(2018,10,22))
+      hotel.reserve_room("Guccifer2.0@ada.com", 1, Date.new(2018,12,02), Date.new(2018,12,07))
+      hotel.reserve_room("Jfahmy07@gmail.com", 2, Date.new(2018,12,03), Date.new(2018,12,06))
+    end
+
+    it "finds 5 available rooms for a given date range" do
+      available = hotel.reserve_block(Date.new(2018,12,02), Date.new(2018,12,07))
+      available.each do |room|
+        room_ids << room.id
+      end
+
+      expect(available).must_be_instance_of Array
+      expect(available.first).must_be_instance_of Room
+      expect(available.length).must_equal 5
+      expect(room_ids).wont_include 1
+      expect(room_ids).wont_include 2
+    end
+
+    # need much more test data to conquer this part
+    # it "returns nil if no rooms available for given date range" do
+    #
+    # end
+
+  end
+  #
+  # describe "HotelAdmin#reserve_block" do
+  #   before do
+  #     hotel.reserve_room("SoccerMom2010@gmail.com", 1, Date.new(2018,10,20), Date.new(2018,10,22))
+  #     hotel.reserve_room("Guccifer2.0@ada.com", 1, Date.new(2018,12,02), Date.new(2018,12,07))
+  #     hotel.reserve_room("Jfahmy07@gmail.com", 2, Date.new(2018,12,03), Date.new(2018,12,06))
+  #   end
+  #   it "" do
+  #     available = hotel.reserve_block(Date.new(2018,12,02), Date.new(2018,12,07))
+  #     available.each do |room|
+  #       room_ids << room.id
+  #     end
+  #
+  #     expect(available).must_be_instance_of Array
+  #     expect(available.first).must_be_instance_of Room
+  #     expect(available.length).must_equal 5
+  #     expect(room_ids).wont_include 1
+  #     expect(room_ids).wont_include 2
+  #
+  #    end
+  #
+  #   it "creates reservations with :block_reserved status and custom price" do
+  #
+  #   end
+  #
+  #   it "gives all block reservation provided discounted price and date range" do
+  #
+  #   end
+  #
+  #   it "adds block reservations to appropriate rooms" do
+  #
+  #   end
+  #
+  #   it "raises an argument error if valid date range and cost not provided by administrator" do
+  #
+  #   end
+  #
+  # end
 
 end
