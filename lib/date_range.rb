@@ -1,5 +1,6 @@
 require 'date'
 require_relative 'room_booker'
+require 'pry'
 
 module Hotel
   class DateRange
@@ -30,19 +31,48 @@ module Hotel
     end
 
     def dates_overlap?(date_range)
-      booked_dates = (date_range.start_date...date_range.end_date)
-      new_dates = (@start_date...@end_date)
 
-      if booked_dates.include?(new_dates)
+      booked_dates = [*date_range.start_date..date_range.end_date]
+      new_dates = [*@start_date..@end_date]
+
+      # completely containing
+      if new_dates.first < booked_dates.first && new_dates.last > booked_dates.last
         return true
-      else
+      # back end
+      elsif new_dates.first < booked_dates.last && new_dates.last > booked_dates.last
+        return true
+      # in the middle
+      elsif new_dates.first > booked_dates.first && new_dates.last < booked_dates.last
+        return true
+      # in the front
+      elsif new_dates.first < booked_dates.first && new_dates.last > booked_dates.first
+        return true
+      # completely before
+      elsif new_dates.last < booked_dates.first
         return false
+      # completely after
+      elsif new_dates.first > booked_dates.last
+        return false
+      # ends on check-in date
+      elsif new_dates.last == booked_dates.first
+        return false
+      # same dates 
+      elsif new_dates.first == booked_dates.first || new_dates.last == booked_dates.first
+        return true
       end
 
+      return false
     end
 
 
+  end
+end
 
+
+#
+# date_range_1 = Hotel::DateRange.new('2018-09-01', '2018-09-05')
+#
+# reservation_1.dates_overlap?
 
 
 
@@ -65,6 +95,3 @@ module Hotel
 
     #think...what if there's no available rooms
     #what if (9/1-9/5) reservations: (9/1-9/2), (9/4-9/5), (9/1-9/1) (start, end)
-
-  end
-end
