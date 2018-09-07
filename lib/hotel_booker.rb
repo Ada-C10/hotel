@@ -4,7 +4,7 @@ require 'awesome_print'
 require 'date'
 require_relative 'room'
 require_relative 'reservation'
-require_relative 'booked_dates'
+require_relative 'date_range'
 
 module Hotel
   class HotelBooker
@@ -25,9 +25,9 @@ module Hotel
     def make_reservation(id, check_in, check_out)
       reservation = Hotel::Reservation.new(id, check_in, check_out)
       reservation.assign_room(@rooms)
-      room = reservation.room
-      room.reservations << reservation
-      @reservations << reservation 
+      # room = reservation.room
+      # room.reservations << reservation
+      @reservations << reservation
     end
 
     def all_rooms()

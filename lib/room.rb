@@ -5,12 +5,12 @@ require 'date'
 module Hotel
   class Room
     attr_reader :id
-    attr_accessor :reservations, :cost
+    attr_accessor :cost
 
     def initialize(id)
       @id = id
       @cost = 200
-      @reservations = []
+      # @reservations = []
     end
 
 
