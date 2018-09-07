@@ -39,12 +39,17 @@ class Admin
   end
 
   #As an administrator, I can reserve a room for a given date range
-  # must be updated to use vacant_rooms
+  # continue here: must be updated to use vacant_rooms
   def reserve_room(start_date, end_date)
     start_date = Time.parse(start_date)
     end_date = Time.parse(end_date)
     range = (start_date..end_date)
-    @rooms.first.add_reservation(range)
+    @vacant_rooms = view_vacant_rooms(range) if @vacant_rooms == []
+    #returns range
+    #room = @vacant_rooms.first.add_reservation(range)
+    vacant_rooms.first.add_reservation(range)
+    room = @vacant_rooms.first
+    @booked_rooms << room
   end
 
   # As an administrator, I can access the list of all of the rooms in the hotel
@@ -73,6 +78,7 @@ class Admin
   end
 
   #As an administrator, I can view a list of rooms that are not reserved for a given date range
+  ## broke because it I used this in reserve_room
   def view_vacant_rooms(target_range)
     @rooms.each do |room|
       ranges = room.ranges

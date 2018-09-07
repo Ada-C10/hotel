@@ -71,15 +71,17 @@ describe "#rooms information" do
     expect(rooms).must_be_kind_of Array
   end
 
+  # needs to update this test
+  # before and after from driver
   it "can make a reservation" do
     start_date = "2018-08-07 00:00:00 -0700"
     end_date = "2018-08-09 00:00:00 -0700"
     range = (start_date..end_date)
-    @admin.reserve_room(start_date, end_date) # change status of room
+    @admin.reserve_room(start_date, end_date)
 
-    rooms = @admin.view_all_rooms
 
-    expect(rooms.first.ranges).include?(range)
+    expect(@admin.booked_rooms.length).must_equal 1
+
   end
 
   it "view vacant rooms" do
