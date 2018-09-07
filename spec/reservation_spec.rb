@@ -2,11 +2,11 @@ require_relative 'spec_helper'
 
 describe "Reservation" do
   before do
-    @reservation = Hotel::Reservation.new(Hotel::Room.new(1),"2019-08-08" , "2019-08-10")
+    @reservation = Reservation.new(Room.new(1),"2019-08-08" , "2019-08-10")
   end
   describe "Reservation instatiation" do
     it "creates an object in reservation class" do
-      expect(@reservation).must_be_instance_of Hotel::Reservation
+      expect(@reservation).must_be_instance_of Reservation
     end
     it "must have a start day" do
       expect(@reservation.start_day).must_be_kind_of Date
@@ -15,10 +15,10 @@ describe "Reservation" do
       expect(@reservation.end_day).must_be_kind_of Date
     end
     it "must have a room" do
-      expect(@reservation.room).must_be_kind_of Hotel::Room
+      expect(@reservation.room).must_be_kind_of Room
     end
   it "must raise error if end date is before start date" do
-    expect{Hotel::Reservation.new(Hotel::Room.new(1),"2019-08-13" , "2019-08-10")}.must_raise StandardError
+    expect{Reservation.new(Room.new(1),"2019-08-13" , "2019-08-10")}.must_raise StandardError
   end
   end
   describe "calculating nights in a reservation" do

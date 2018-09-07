@@ -1,10 +1,11 @@
 require 'date'
-require 'room'
+require_relative 'room'
+require_relative 'front_desk'
 
-module Hotel
+
   class Reservation
-    attr_reader :start_day, :end_day, :room, :id
-    @reservations = []
+    attr_reader :start_day, :end_day, :room
+
     def initialize(room, start_day, end_day)
       @room = room
       @start_day = Date.parse(start_day)
@@ -26,4 +27,3 @@ module Hotel
       @total_nights * 200
     end
   end
-end

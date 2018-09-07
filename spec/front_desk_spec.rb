@@ -1,11 +1,13 @@
 require_relative 'spec_helper'
 require 'pry'
+require 'date'
 
 describe "FrontDesk class" do
 
   describe "create all rooms" do
     before do
-      @rooms = Hotel::FrontDesk.create_rooms
+      @front_desk = FrontDesk.new
+      @rooms = @front_desk.load_rooms
     end
     it "creates an array of 20 rooms " do
       expect(@rooms.length).must_equal 20
@@ -18,15 +20,28 @@ describe "FrontDesk class" do
     end
   end
 
-  describe "all method" do
+
+  describe "list of all rooms method" do
+    before do
+      @front_desk = FrontDesk.new
+    end
     it "Returns a list of all rooms in hotel" do
-      @rooms = Hotel::FrontDesk.all
-      expect(@rooms).must_be_kind_of Array
-      expect(@rooms.length).must_equal 20
-      @rooms.each do |room|
-        expect(room).must_be_kind_of Hotel::Room
+      expect(@front_desk.list_all_rooms.length).must_equal 20
+      (@front_desk.list_all_rooms).each do |room|
+        expect(room).must_be_kind_of Room
       end
     end
   end
 
+
+describe "create reservation" do
+  before do
+    @my_front_desk = FrontDesk.new
+    @my_front_desk.create_reservation(9,"2013-10-10","2013-10-13")
+  end
+  it "returns an instance of reservation and adds to reservation list" do
+    expect(@my_front_desk.reservations[0]).must_be_instance_of Reservation
+    expect(@my_front_desk.reservations.length).must_equal 1
+  end
+end
 end
