@@ -17,6 +17,9 @@ class Dates
     date_range[:begin_date] = date_format(date_range[:begin_date])
 
     date_range[:end_date] = date_format(date_range[:end_date])
+
+    raise ArgumentError, "Invalid dates. Begin date must be at least one day prior to end date." if date_range[:begin_date] > date_range[:end_date]
+    
     return date_range
   end
 end

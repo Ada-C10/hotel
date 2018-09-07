@@ -15,4 +15,8 @@ describe "Dates class" do
     expect (date_range_transformed[:begin_date]).must_be_kind_of Date
     expect (date_range_transformed[:end_date]).must_be_kind_of Date
   end
+
+  it "must raise ArgumentError for invalid dates" do
+    expect { Dates::date_range_format(begin_date: '10-10-2018', end_date: '9-15-2018')}.must_raise ArgumentError
+  end
 end

@@ -18,10 +18,6 @@ describe "ReservationTracker class" do
         @reservation = @reservations.new_reservation(begin_date: '9-15-2018', end_date: '9-17-2018')
     end
 
-    it "must raise ArgumentError for invalid dates" do
-      expect { @reservations.new_reservation(begin_date: '10-10-2018', end_date: '9-15-2018') }.must_raise ArgumentError
-    end
-
     it "must create a new reservation instance" do
         expect(@reservation).must_be_kind_of Reservation
     end
