@@ -212,6 +212,14 @@ describe 'HotelBooker class' do
       expect(hotel_booker.list_available_rooms(Date.today + 7, Date.today + 8)).must_equal all_rooms
     end
 
+
+    it 'correctly identifies the list of available room numbers for a given date range when there is an existing block' do
+
+      puts hotel_booker.create_a_block(Date.today + 2, Date.today + 7, 5, 150)
+
+      expect(hotel_booker.list_available_rooms(Date.today + 2, Date.today + 7)).must_equal [*8..20]
+    end
+
     it 'raises an error if not given a Date' do
       expect{hotel_booker.list_available_rooms("Not a Date", Date.today)}.must_raise ArgumentError
       expect{hotel_booker.list_available_rooms(Date.today, "Also not a Date")}.must_raise ArgumentError
@@ -223,8 +231,25 @@ describe 'HotelBooker class' do
 
   end
 
+  describe 'reserve_a_room_in_block' do
+    before do
+      hotel_booker.create_a_block(Date.today + 2, Date.today + 7, 5, 150)
+    end
+
+    it 'returns a reservation of a room within the room block' do
+
+      expect(hotel_booker.all_room_blocks[0].block_id).must_equal 1
+      expect(hotel_booker.reserve_a_room_in_block(1)).must_be_instance_of Hotel::Reservation
+      
+    end
+
+  end
+
   describe 'create_a_block method' do
     let (:room_block) {
+      hotel_booker.create_a_block(Date.today + 2, Date.today + 7, 5, 150)
+    }
+    let (:room_block_2) {
       hotel_booker.create_a_block(Date.today + 2, Date.today + 7, 5, 150)
     }
     it 'returns a RoomBlock object if given valid parameters' do
@@ -260,6 +285,14 @@ describe 'HotelBooker class' do
       expect{room_block}.must_raise StandardError
 
     end
+
+    it 'creates a block with blocked_rooms that do not include other blocked_rooms from other blocks' do
+
+      room_block
+
+      expect(room_block_2.blocked_rooms).must_equal [*8..12]
+    end
+
   end
 
   # describe 'is_Date method' do

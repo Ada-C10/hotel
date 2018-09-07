@@ -2,13 +2,14 @@ module Hotel
 
   class RoomBlock #< Reservation
 
-    attr_reader :date_range, :blocked_rooms, :discounted_rate, :block_reservations
+    attr_reader :date_range, :blocked_rooms, :discounted_rate, :block_reservations, :block_id
     #
-    def initialize(check_in, check_out, blocked_rooms, discounted_rate)
+    def initialize(check_in, check_out, blocked_rooms, discounted_rate, block_id)
       @date_range = DateRange.new(check_in, check_out)
       @blocked_rooms = blocked_rooms
       @discounted_rate = discounted_rate
       @block_reservations = []
+      @block_id = block_id
 
       if @blocked_rooms.length > 5
         raise ArgumentError, "A block can contain a maximum of 5 rooms"
@@ -38,6 +39,13 @@ module Hotel
 
     def is_number(num)
       return num.to_f.to_s == num.to_s || num.to_i.to_s == num.to_s
+    end
+
+    def get_block_availability
+      occupied_block_rooms = @block_reservations.map do |reservation|
+        reservation.room_num
+      end
+      return (@blocked_rooms - occupied_block_rooms).length > 0
     end
 
     # TODO: methods to create:

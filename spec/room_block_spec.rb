@@ -15,7 +15,7 @@ describe 'RoomBlock class' do
   }
 
   let (:block) {
-    Hotel::RoomBlock.new(check_in, check_out, blocked_rooms, discounted_rate)
+    Hotel::RoomBlock.new(check_in, check_out, blocked_rooms, discounted_rate, 1)
   }
 
 
@@ -37,8 +37,23 @@ describe 'RoomBlock class' do
     end
 
     it 'raises an error if given a list of rooms with an room number less than 1 or greater than 20' do
-      expect{Hotel::RoomBlock.new(check_in, check_out, [0, 1, 2, 3], discounted_rate)}.must_raise ArgumentError
-      expect{Hotel::RoomBlock.new(check_in, check_out, [19, 20, 21], discounted_rate)}.must_raise ArgumentError
+      expect{Hotel::RoomBlock.new(check_in, check_out, [0, 1, 2, 3], discounted_rate, 1)}.must_raise ArgumentError
+      expect{Hotel::RoomBlock.new(check_in, check_out, [19, 20, 21], discounted_rate, 1)}.must_raise ArgumentError
     end
   end
+
+  describe 'get_block_availability' do
+    it 'returns true if block has full availability' do
+      expect(block.get_block_availability).must_equal true
+    end
+
+    # TODO:
+    # it 'returns true if block any availability' do
+    # skip
+    # end
+
+    # TODO:
+    # it 'returns false if block has 0 availability' do
+  end
+
 end

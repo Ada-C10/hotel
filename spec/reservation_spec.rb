@@ -42,7 +42,8 @@ describe 'Reservation class' do
   describe 'get_cost method' do
 
     it 'returns the correct cost of a reservation' do
-      expect(reservation.get_cost).must_equal BASE_COST * 2
+      rate = 200
+      expect(reservation.get_cost(rate)).must_equal rate * 2
     end
 
 

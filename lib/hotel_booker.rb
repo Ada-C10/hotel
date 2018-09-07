@@ -10,6 +10,19 @@ module Hotel
       @all_room_blocks = []
     end
 
+    def check_id(id)
+      raise ArgumentError, "ID cannot be blank or less than zero. (got #{id})" if id.nil? || id <= 0
+    end
+
+    def find_block(id)
+      check(id)
+      return @all_room_blocks.find{ |block| block.id == id}
+    end
+
+    def reserve_a_room_in_block(id)
+
+    end
+
     def create_a_block(check_in, check_out, num_of_rooms, discounted_rate)
 
       # TODO: send message, rescue, or error if no available rooms or less than num_of_rooms
@@ -21,7 +34,8 @@ module Hotel
       end
 
       available_rooms = all_available_rooms[0..num_of_rooms - 1]
-      room_block = Hotel::RoomBlock.new(check_in, check_out, available_rooms, discounted_rate)
+      block_id = @all_room_blocks.length + 1
+      room_block = Hotel::RoomBlock.new(check_in, check_out, available_rooms, discounted_rate, block_id)
       @all_room_blocks << room_block
       return room_block
 
@@ -84,17 +98,14 @@ module Hotel
           occupied_rooms.concat get_occupied_rooms(get_reservations_by_date(date))
         end
         if !get_room_blocks_by_date(date).empty?
-          # binding.pry
           get_room_blocks_by_date(date).each do |room_block|
             occupied_rooms.concat room_block.blocked_rooms
           end
         end
-          # days_reservations.map { |reservations| reservations.room_num }
       end
-      # binding.pry
       occupied_rooms.uniq!
 
-      return occupied_rooms #occupied_rooms.empty? ? nil : occupied_rooms
+      return occupied_rooms
     end
 
 
