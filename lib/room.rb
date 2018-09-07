@@ -10,5 +10,7 @@ module Hotel
       @reservations = []
     end
 
+    def is_available(check_in: check_in, check_out: check_out)
+      self.reservations.include?
   end
 end
