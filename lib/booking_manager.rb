@@ -17,6 +17,8 @@ module Hotel
 
     def reserve_room(input)
 
+      search_room_availability(input[:check_in_date], input[:check_out_date])
+      
       connected_room_number = find_room_number(input[:room_number])
 
       reserve = { name: input[:name],
@@ -99,9 +101,11 @@ module Hotel
           min = mid + 1
         end
       end
+
       if !(array_of_possible_dates & array_of_reservations[0].nights_of_stay).empty?
         return true
       end
+
       return false
     end
 
