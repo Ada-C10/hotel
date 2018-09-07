@@ -2,25 +2,14 @@ require_relative 'spec_helper'
 require 'pry'
 
 describe "Reservation" do
-  let (:room) {
-    hotel = HotelAdmin.new
-    room_set = hotel.build_rooms
-    room_set[0]
-  }
-  let (:room2) {
-    hotel = HotelAdmin.new
-    room_set = hotel.build_rooms
-    room_set[1]
-  }
-
   let (:reservation) {
-    Reservation.new({guest_id: "SoccerMom2010@gmail.com", room: room, date_range: [Date.new(2018,10,20),Date.new(2018,10,22)]})
+    Reservation.new({guest_id: "SoccerMom2010@gmail.com", room: 1, date_range: [Date.new(2018,10,20),Date.new(2018,10,22)]})
   }
   let (:reservation2) {
-    Reservation.new({guest_id: "Guccifer2.0@ada.com", room: room, date_range: [Date.new(2018,12,02),Date.new(2018,12,07)]})
+    Reservation.new({guest_id: "Guccifer2.0@ada.com", room: 1, date_range: [Date.new(2018,12,02),Date.new(2018,12,07)]})
   }
   let (:reservation3) {
-    Reservation.new({guest_id: "Jfahmy07@gmail.com", room: room2, date_range: [Date.new(2018,12,03),Date.new(2018,12,06)]})
+    Reservation.new({guest_id: "Jfahmy07@gmail.com", room: 2, date_range: [Date.new(2018,12,03),Date.new(2018,12,06)]})
   }
 
   describe "#initialize" do
@@ -34,7 +23,7 @@ describe "Reservation" do
     end
 
     it "returns a room id" do
-      expect(reservation.room).must_be_instance_of Room
+      expect(reservation.room).must_equal 1
     end
 
     it "returns a date range for guests stay" do

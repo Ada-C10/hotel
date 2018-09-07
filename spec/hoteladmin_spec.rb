@@ -65,7 +65,7 @@ describe "HotelAdmin" do
 
     it "returns the new reservation object" do
       expect(@reservation.guest_id).must_equal "FishandChipsgrl@gmail.com"
-      expect(@reservation.room).must_be_instance_of Room
+      expect(@reservation.room).must_be_instance_of Integer
       expect(@reservation.date_range).must_equal [Date.new(2019,01,20), Date.new(2019,01,22)]
       expect(@reservation.cost).must_equal 400.00
     end

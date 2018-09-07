@@ -29,8 +29,8 @@ class HotelAdmin
 
   #This method does too much!
   def reserve_room(guest_email, room_number, check_in, check_out)
+    new_reservation = Reservation.new({guest_id: guest_email, room: room_number, date_range: [check_in, check_out]})
     room_object = retrieve_room(room_number)
-    new_reservation = Reservation.new({guest_id: guest_email, room: room_object, date_range: [check_in, check_out]})
     room_object.add_booking(new_reservation)
     reservations << new_reservation
     new_reservation
