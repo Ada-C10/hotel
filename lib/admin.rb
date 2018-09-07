@@ -20,7 +20,6 @@ class Admin
       input_data = {}
       room_number = num + 1
       input_data[:number] = room_number
-      input_data[:status] = "available"
       rooms << Room.new(input_data)
     end
     return rooms
@@ -47,10 +46,11 @@ class Admin
     start_date = Time.parse(start_date)
     end_date = Time.parse(end_date)
     range = create_hotel_range(start_date, end_date)
-    vacant_rooms = view_vacant_rooms(range) # needs to be updated
-    vacant_rooms.first.add_reservation(range)
-    room = vacant_rooms.first
-    @booked_rooms << room
+    @rooms.first.add_range(range) # temporary
+    # vacant_rooms = view_vacant_rooms(range) # needs to be updated
+    # vacant_rooms.first.add_range(range)
+    # room = vacant_rooms.first
+    #@booked_rooms << room
   end
 
   # As an administrator, I can access the list of all of the rooms in the hotel
@@ -87,12 +87,13 @@ class Admin
     vacant_rooms = []
     @rooms.each do |room|
       ranges = room.ranges
-      found = range_search(ranges, target_range)
-      if found
-        booked_rooms << room
-      else
-        vacant_rooms << room
-      end
+      binding.pry
+      # found = range_search(ranges, target_range)
+      # if found
+      #   booked_rooms << room
+      # else
+      #   vacant_rooms << room
+      # end
     end
     return vacant_rooms
   end
@@ -114,6 +115,7 @@ class Admin
   end
 
   #last day not counted
+  #expect input to be time instances
   def create_hotel_range(start_date, end_date)
     end_date = end_date - 1
     range = (start_date .. end_date)

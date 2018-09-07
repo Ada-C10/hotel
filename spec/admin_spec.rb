@@ -77,11 +77,17 @@ describe "#rooms information" do
   it "can make a reservation" do
     start_date = "2018-08-07 00:00:00 -0700"
     end_date = "2018-08-09 00:00:00 -0700"
-    range = (start_date..end_date)
     @admin.reserve_room(start_date, end_date)
 
-
-    expect(@admin.booked_rooms.length).must_equal 1
+    # reserve room removes last day because it is not counted as a paying night
+    start_date = "2018-08-07 00:00:00 -0700"
+    end_date = "2018-08-09 00:00:00 -0700"
+    start_date = Time.parse(start_date)
+    end_date = Time.parse(end_date)
+    end_date = end_date - 1
+    range = [(start_date..end_date)]
+    expect(@admin.rooms.first.ranges). must_equal range
+    #expect(@admin.booked_rooms.length).must_equal 1
 
   end
 
@@ -94,6 +100,7 @@ describe "#rooms information" do
     # for range and testing view vacant_rooms
     start_time = Time.parse("2018-08-07 00:00:00 -0700")
     end_time = Time.parse("2018-08-09 00:00:00 -0700")
+    end_date = end_date - 1
     range = (start_time..end_time)
     vacant_rooms_result = @admin.view_vacant_rooms(range)
     expect(vacant_rooms_result.length).must_equal 19
