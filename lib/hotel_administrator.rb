@@ -1,4 +1,9 @@
-#Command Line interface for the Hotel
+#This is an extremely basic Command Line interface for the Hotel
+#There is no error checking or pretty formatting.
+#Mostly for experimentation purposes.
+
+#No need to grade this or provide feedback :)
+
 require_relative 'hotel'
 require 'awesome_print'
 
