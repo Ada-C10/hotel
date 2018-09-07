@@ -63,7 +63,7 @@ describe 'TrackingSystem class' do
       end
 
       it "creates a new instance of Reservation" do
-        @reservation = @tracker.make_reservation(Date.new(2018,8,1), Date.new(2018,8,25), 1) #<---1 is the number of rooms
+        @reservation = @tracker.make_reservation(start_time: Date.new(2018,8,1), end_time: Date.new(2018,8,25), number_of_rooms:1) #<---1 is the number of rooms
         # binding.pry
         expect(@reservation).must_be_kind_of Reservation
       end

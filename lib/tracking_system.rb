@@ -29,9 +29,9 @@ class TrackingSystem
   end
 
   #reserve an available room for a given date range
-  def make_reservation(start_time, end_time, num)
+  def make_reservation(start_time: Date.now, end_time: Date.now + 1, number_of_rooms: 1)
     @all_rooms.each do |room|
-      num.times do
+      number_of_rooms.times do
         if room.reserved_dates.empty?
           reservation = Reservation.new({rooms: [room.room_num], start_time: start_time, end_time: end_time, price: 200.0})
           @reservations << reservation
@@ -58,8 +58,9 @@ class TrackingSystem
   #
   # view a list of rooms that are not reserved(aka available) for a given date range
 
-  def view_available_rooms_on(start_time: start_time, end_time: end_time)
+  def view_available_rooms_on(start_time: Date.now, end_time: Date.now + 1)
     raise ArgumentError.new"start_time must be before end_time" unless start_time < end_time
+    #another test to create is making sure its an instance of Date
     available_rooms = []
     unavailable_count = 0
     @all_rooms.each do |room|
