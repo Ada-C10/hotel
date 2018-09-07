@@ -13,7 +13,7 @@ class Hotel
 
   def set_up_rooms(number_of_rooms)
     number_of_rooms.times do |i|
-      @rooms << Room.new(i + 1, 200)
+      @rooms << Room.new(i + 1, 200) #Rooms will be refactored to eliminate the second parameter
     end
   end
 
@@ -21,14 +21,13 @@ class Hotel
     return @rooms
   end
 
-  def show_all_room_numbers
+  def show_all_room_numbers #this should be the UI's responsibility
     list = []
     room_list.each do |room|
       list << room.room_number
     end
     return list
   end
-
 
   def make_reservation(start_date, end_date, room_number, customer)
     check_availability(start_date, end_date, room_number)
@@ -82,7 +81,7 @@ class Hotel
     return new_reservation
   end
 
-  def convert_numbers_to_rooms(room_number_list)
+  def convert_numbers_to_rooms(room_number_list) #maybe this should be the UI's responsibility
     room_list = []
     room_number_list.each do |room_number|
       room_list << find_room_by_number(room_number)
@@ -112,7 +111,7 @@ class Hotel
     return reservation.price
   end
 
-  def find_available_rooms(start_date, end_date)
+  def find_available_rooms(start_date, end_date) #move some of this logic into Room class
     available_room_numbers = []
     room_list.each do |room|
       room_is_available = true
@@ -123,6 +122,6 @@ class Hotel
       end
       available_room_numbers << room.room_number if room_is_available
     end
-    return available_room_numbers
+    return available_room_numbers #should return Rooms and let UI convert to numbers
   end
 end

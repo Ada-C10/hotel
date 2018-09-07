@@ -1,0 +1,48 @@
+
+Usually by the end of a project, we can look back on what we made with a clearer understanding of what we actually needed. In industry, this is a great time to do a refactor of some sort. For this project however, you're off the hook... for the moment. We will be revisiting our hotels later on on the course, and you may want to make some changes at that point.
+
+Create a new file in the project called refactors.txt
+Make a short list of the changes that you could make, particularly in terms of naming conventions
+These notes will be used by you in a few weeks, so make sure that they are detailed enough that someone else could understand your thinking and follow your directions
+Do not make any further changes to your code at this time
+
+
+ROOM REFACTORS
+
+originally wanted a room to know its own price
+  as code developed, moved price to the Reservation class
+  should remove price_per_night and change associated tests
+
+is_available? method
+  only checks availability for a single day
+  Hotel class has the logic to check for multiple nights, but still calls Room.is_available?
+  move all availability-checking logic into the Room class
+
+
+RESERVATION REFACTORS
+
+initialize method has a long list of positional arguments
+  change to either keyword arguments or a hash to reduce dependencies
+  change associated tests
+
+ditto for BlockReservation initialize
+
+currently a BlockReservation gets overwritten by a Reservation when it is reserved from within the block (this happens in Hotel)
+  consider adding block_code attribute to a generic Reservation so that it is still associated with the block
+
+HOTEL REFACTORS
+
+probably should rename this to HotelManager or something similar
+
+probably should encapsulate everything into a Hotel module
+
+move availability-checking logic to Room
+
+dependencies on Reservation and BlockReservation.  Isolate these?  Duck typing?
+  wrap/isolate instance creation for new reservations?
+
+confusion with room/room_number getting passed in and out of methods
+  should all be Room.  user interface should be responsible for converting rooms to room numbers and vice versa?
+
+consider writing logic to automatically select an available room for a reservation
+  entering a specific room for a reservation should be optional
