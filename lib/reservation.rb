@@ -1,24 +1,24 @@
 require_relative 'date_range'
-require 'date'
-
 
 RATE_PER_NIGHT = 200
 
 module Hotel
   class Reservation
-    attr_reader :id, :room, :cost, :date_range
+    attr_reader :id, :room, :cost, :dates, :date_range
 
     def initialize(input)
       dates = Hotel::DateRange.new(input[:start_date], input[:end_date])
+      date_range = dates.get_range
 
       @id = input[:id]
       @room = input[:room]
-      @date_range = dates.get_range
+      @dates = dates
+      @date_range = date_range
       @cost = calculate_cost
     end
 
     def calculate_cost
-      cost = RATE_PER_NIGHT * @date_range.length
+      cost = RATE_PER_NIGHT * @dates.get_reservation_period
     end
   end
 end

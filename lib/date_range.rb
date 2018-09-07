@@ -1,6 +1,4 @@
 require 'pry'
-require 'date'
-
 module Hotel
   class DateRange
     attr_reader  :start_date, :end_date
@@ -15,12 +13,11 @@ module Hotel
     def overlaps?(other)
       other_range = other.get_range
       my_range = self.get_range
-      binding.pry
       return (other_range & my_range).empty?
     end
 
     def get_range
-      range = [*@start_date...@end_date]
+      return [*@start_date...@end_date]
     end
 
     def get_reservation_period
