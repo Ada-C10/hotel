@@ -68,7 +68,6 @@ describe "ReservationTracker class" do
       occupied_rooms = @reservations.occupied_rooms(date_range)
       available_rooms = @rooms.find_all_open_rooms(occupied_rooms)
       expect (available_rooms.include?(4)).must_equal false
-      # expect (available_rooms.include?{ |room| room == 4 } ).must_equal false
     end
   end
 
