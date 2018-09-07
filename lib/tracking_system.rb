@@ -45,7 +45,7 @@ class TrackingSystem
           end
         end
       end
-      return @reservations
+      return reservation
     end
   end
 # *********************************************************************************************************

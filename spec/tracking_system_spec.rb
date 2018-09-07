@@ -2,6 +2,7 @@ require_relative 'spec_helper'
 require_relative '../lib/tracking_system'
 require_relative '../lib/room'
 require_relative '../lib/reservation'
+require 'pry'
 
 
 # Wave 1 Tracking Reservations
@@ -14,7 +15,7 @@ require_relative '../lib/reservation'
 #making sure each instance variable in initialization is the correct class
 
 describe 'TrackingSystem class' do
-###### WAVE 1 ##################################################################
+  ###### WAVE 1 ##################################################################
   describe "#initialize" do
     before do
       @tracker = TrackingSystem.new
@@ -62,8 +63,8 @@ describe 'TrackingSystem class' do
 
     it "creates a new instance of Reservation" do
       @reservation = @tracker.make_reservation(Date.new(2018,8,1), Date.new(2018,8,25), 1) #<---1 is the number of rooms
-
-      expect(@reservation[0]).must_be_kind_of Reservation
+# binding.pry
+      expect(@reservation).must_be_kind_of Reservation
     end
 
     it "increases the number of reservations in the reservations list" do
@@ -78,6 +79,28 @@ describe 'TrackingSystem class' do
     # end
     # it "saves the checkout_time as a day before " do
     # end
+    # it "adds a hash of start/end time to each room.reserved_dates array" do
+    # end
+
+    # it "only selects rooms that are available  " do
+    #   expect(@reservation.)
+    # end
+    #
+    # it "creates reservations for the number_of_rooms requested " do
+    # end
+    #
+    # it "iterates through @all_rooms to find the first available rooms" do
+    # end
+    #
+    # it "raises ArgumentError if inside @all_rooms no room is available on this date range" do
+    # end
+    #
+    # it "creates a new instance of Reservation" do
+    #   @reservation = @tracker.make_reservation(start_time: Date.new(2018,8,1), end_time: Date.new(2018,8,25), rooms: 1) #<---1 is the number of rooms
+    #
+    #   expect(@reservation).must_be_kind_of Reservation
+    # end
+
   end
 
   # def make_reservation(start_time: nil, end_time: nil, number_of_rooms)

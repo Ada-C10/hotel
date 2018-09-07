@@ -3,7 +3,7 @@ class Reservation
   #need to write a test for these
 
   def initialize(attributes) #attributes is a hash , so theoretically from CSV it would be converted into a hash
-    @rooms = []  #the value of room_num could be an array later for rooms
+    @rooms = attributes[:rooms]  #the value of room_num could be an array later for rooms
     @start_time = attributes[:start_time]
     @end_time = attributes[:end_time]
     @price = attributes[:price]
