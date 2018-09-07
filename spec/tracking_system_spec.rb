@@ -56,22 +56,22 @@ describe 'TrackingSystem class' do
 
     # #method for making a reservation
     # # Admin can reserve a room for a given date range
-    describe "#make_reservation" do
+    describe "#add_reservation" do
       before do
         @tracker = TrackingSystem.new
         # @room = Room.new({room_num: 1, availability: :available })
       end
 
       it "creates a new instance of Reservation" do
-        @reservation = @tracker.make_reservation(start_time: Date.new(2018,8,1), end_time: Date.new(2018,8,25), number_of_rooms:1) #<---1 is the number of rooms
+        @reservation = @tracker.add_reservation(start_time: Date.new(2018,8,1), end_time: Date.new(2018,8,25), number_of_rooms:1) #<---1 is the number of rooms
         # binding.pry
-        expect(@reservation).must_be_kind_of Reservation
+        expect(@reservation).must_be_kind_of Array
       end
 
       # it "increases the number of reservations in the reservations list" do
       #   num_of_reservations = @tracker.reservations.length
-      #   @reservation = @tracker.make_reservation(Date.new(2018,8,1),Date.new(2018,8,25),1)
-      #   @reservation2 = @tracker.make_reservation(Date.new(2018,8,1),Date.new(2018,8,25),1)
+      #   @reservation = @tracker.add_reservation(Date.new(2018,8,1),Date.new(2018,8,25),1)
+      #   @reservation2 = @tracker.add_reservation(Date.new(2018,8,1),Date.new(2018,8,25),1)
       #   updated_num_of_reservations = @tracker.reservations.length
       #   binding.pry
       #   expect(updated_num_of_reservations - num_of_reservations).must_equal 1
@@ -98,14 +98,14 @@ describe 'TrackingSystem class' do
       # end
       #
       # it "creates a new instance of Reservation" do
-      #   @reservation = @tracker.make_reservation(start_time: Date.new(2018,8,1), end_time: Date.new(2018,8,25), rooms: 1) #<---1 is the number of rooms
+      #   @reservation = @tracker.add_reservation(start_time: Date.new(2018,8,1), end_time: Date.new(2018,8,25), rooms: 1) #<---1 is the number of rooms
       #
       #   expect(@reservation).must_be_kind_of Reservation
       # end
 
     end
 
-    # def make_reservation(start_time: nil, end_time: nil, number_of_rooms)
+    # def add_reservation(start_time: nil, end_time: nil, number_of_rooms)
     #   # 1. pick a room that is available. the next available room?
     #   @all_rooms.each do |room|
     #     room.reserved_dates.each do |reserved_dates| # this is a hash containing {checkin_time: checkin, checkout_time: checkout}, can replace some fo this with helper method
@@ -113,7 +113,7 @@ describe 'TrackingSystem class' do
     #         #create a new reservation with |room| that is iterated in and fits the reqs
     #       else
     #        # raise argument error if inside @all_rooms no room is available on this date range (then admin would need to input a new date range)
-    #   # else..make the new reservation below
+    #   # else..add the new reservation below
     #   reservation = Reservation.new(date_range: view_two_dates_as_range {start_time: checkin, end_time: checkout -1}, room: room)  # <----room object contains {room_num:, price: STANDARD_ROOM_PRICE, customer: ""}
     #   @reservations << reservation
     #   room.reserved_dates << {start_time: checkin, end_time: checkout}
@@ -149,7 +149,7 @@ describe 'TrackingSystem class' do
         @tracker.all_rooms.each do |room|
           room.reserved_dates << {start_time: Date.new(2018,1,1), end_time: Date.new(2018,1,2)}
         end
-        #need to create make_reservation and then call it 20 times on the same date then the 21st time it'll raise an error
+        #need to create add_reservation and then call it 20 times on the same date then the 21st time it'll raise an error
         expect{@tracker.view_available_rooms_on(start_time: Date.new(2018,1,1),end_time:Date.new(2018,1,2))}.must_raise ArgumentError
       end
 

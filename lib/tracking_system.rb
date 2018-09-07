@@ -29,33 +29,37 @@ class TrackingSystem
   end
 
   #reserve an available room for a given date range
-  def make_reservation(start_time: Date.now, end_time: Date.now + 1, number_of_rooms: 1)
-#     available_rooms = view_available_rooms_on(start_time, end_time) #<--returns an array of available rooms!
-#     raise ArgumentError.new"Not enough rooms available on those dates" if available_rooms.length < number_of_rooms
-#     number_of_rooms.times do |i|
-#       @reservations << Reservation.new({rooms: [available_rooms[i].room_num], start_time: start_time, end_time: end_time, price: 200.0})
-# #need to come back here and create i instances of reservation..but first need to change Reservation.rooms to hold an Integer instead of Array
-    # available_rooms.each do |room|
-    @all_rooms.each do |room|
-      number_of_rooms.times do
-        if room.reserved_dates.empty?
-          reservation = Reservation.new({rooms: [room.room_num], start_time: start_time, end_time: end_time, price: 200.0})
-          @reservations << reservation
-          room.reserved_dates << {start_time: start_time, end_time: end_time}
-        else
-          room.reserved_dates.each do |reserved_dates|
-            if !(reserved_dates[:start_time]...reserved_dates[:end_time]).include?(start_time) #&& room.block == :NA
-              reservation = Reservation.new({rooms: [room], start_time: start_time, end_time: end_time, price: 200.0})
-              @reservations << reservation
-              room.reserved_dates << {start_time: start_time, end_time: end_time}
-            else raise ArgumentError.new"There is no room available on that date"
-            end
-          end
-        end
-        return reservation
-      end
+  def add_reservation(start_time: Date.now, end_time: Date.now + 1, number_of_rooms: 1)
+    available_rooms = view_available_rooms_on(start_time: start_time, end_time: end_time) #<--returns an array of available rooms!
+    raise ArgumentError.new"Not enough rooms available on those dates" if available_rooms.length < number_of_rooms
+    number_of_rooms.times do |i|
+      @reservations << Reservation.new({room: [available_rooms[i].room_num], start_time: start_time, end_time: end_time, price: 200.0})
+      available_rooms[i].reserved_dates << {start_time: start_time, end_time: end_time}
     end
+    @reservations
   end
+#need to come back here and create i instances of reservation..but first need to change Reservation.rooms to hold an Integer instead of Array
+    # available_rooms.each do |room|
+  #   @all_rooms.each do |room|
+  #     number_of_rooms.times do
+  #       if room.reserved_dates.empty?
+  #         reservation = Reservation.new({room: [room.room_num], start_time: start_time, end_time: end_time, price: 200.0})
+  #         @reservations << reservation
+  #         room.reserved_dates << {start_time: start_time, end_time: end_time}
+  #       else
+  #         room.reserved_dates.each do |reserved_dates|
+  #           if !(reserved_dates[:start_time]...reserved_dates[:end_time]).include?(start_time) #&& room.block == :NA
+  #             reservation = Reservation.new({room: not array anymore[room], start_time: start_time, end_time: end_time, price: 200.0})
+  #             @reservations << reservation
+  #             room.reserved_dates << {start_time: start_time, end_time: end_time}
+  #           else raise ArgumentError.new"There is no room available on that date"
+  #           end
+  #         end
+  #       end
+  #       return reservation
+  #     end
+  #   end
+  # end
   # *********************************************************************************************************
   #block method idea
   #this method below is going to return a value that can into the Block.rooms << (aka list of rooms in a block), but how/when do i assign these available rooms a block id? Ah i think that i will
