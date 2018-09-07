@@ -23,26 +23,23 @@ module Hotel
       return @rooms.first
     end
 
-    def list_all_rooms_in_hotel
-      all_rooms = [*1..20]
-      return all_rooms
+    def list_all_rooms
+      return @rooms
     end
 
-    def calculate_booking_cost(reservation)
-      cost = reservation.booking_date_range.length * 200
-      return cost
-    end
+    def list_existing_reservations(date)
+      bookings_by_date = []
 
-    def list_bookings_by_date(specific_date)
-      @booked_dates.select do |date|
-        if date[0] == specific_date
-          return date
-        else
-          ################
-          #rescue later on
-          return nil
+      specific_date = Date.parse("#{date}")
+      @reservations.each do |booking|
+        booking.date_range.each do |date|
+          if specific_date == date
+            bookings_by_date << booking
+          end
         end
       end
+
+      return bookings_by_date
     end
   end
 end
