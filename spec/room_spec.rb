@@ -2,7 +2,7 @@ require_relative 'spec_helper'
 
 describe 'Room' do
   let (:rooms)  {
-    Hotel::Room.make_rooms
+    Hotel::Room.all
   }
 
   it 'instantiates a room object' do

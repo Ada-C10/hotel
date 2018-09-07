@@ -86,7 +86,7 @@ describe 'it can find reservation data' do
     Hotel::Reservation.find_reservations_by_date(find_date)
   end
   it 'given a date, can find a reservation' do
-    expect((finder).length).must_equal 2
+    expect((finder).length).must_equal 3
   end
   it 'returns an array of reservations on that date' do
     expect(finder).must_be_kind_of Array
@@ -111,9 +111,11 @@ describe 'it can find reservation data' do
     expect(Hotel::Reservation.get_reservation_total(id)).must_be_kind_of Float
   end
   it 'can find available rooms given a date' do
-    find_date = "October 25 2019"
-    expect(Hotel::Reservation.find_available_rooms(find_date)).be_kind_of Array
-    expect((Hotel::Reservation.find_available_rooms(find_date)).length).must_equal 17
+    find_date = "October 23 2019"
+    expect(Hotel::Reservation.find_available_rooms(find_date)).must_be_kind_of Array
+    expect((Hotel::Reservation.find_available_rooms(find_date)).length).must_equal 18
+    find_date2 = "March 15 2020"
+    expect((Hotel::Reservation.find_available_rooms(find_date2)).length).must_equal 20
   end
 
 

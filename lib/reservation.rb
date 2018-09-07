@@ -92,18 +92,22 @@ module Hotel
       total = rsv.total_cost
       return total
     end
+
     def self.find_available_rooms(inspect_date)
-      search_date = Date.parse(inspect_date)
       # load reservations
-      rooms = find_reservations_by_date(search_date)
+      rooms = find_reservations_by_date(inspect_date)
+      # all_rooms = Room.all
       if rooms == 0
-        avail_rooms = Room.all
+         avail_rooms = (Room.all).map { |room| room.id}
       else
-        # map booked rooms to new array
-        booked = rooms.map {|rsv| rsv.included_rooms}
+        # map booked rooms to new array - flatten it
+        booked = (rooms.map {|rsv| rsv.included_rooms }).flatten
+        # binding.pry
         # search all room instances for rooms that don't match
-        avail_rooms = 
+        rooms_arr = (Room.all).map { |room| room.id}
+        avail_rooms = rooms_arr - booked
       end
+      # binding.pry
       return avail_rooms
     end
 

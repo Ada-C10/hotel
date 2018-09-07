@@ -7,7 +7,7 @@ module Hotel
   class Room
     attr_reader(:id, :cost, :booked_dates)
     def initialize(id, cost = 200.00)
-      @id = id
+      @id = id.to_i
       @booked_dates = []
       @cost = cost
     end
@@ -23,7 +23,7 @@ module Hotel
 
 
 
-    def self.make_rooms
+    def self.all
       all_rooms = []
       20.times do |i|
         all_rooms << Room.new(i + 1)
