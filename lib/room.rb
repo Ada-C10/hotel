@@ -6,12 +6,11 @@ class Room
 
   def initialize(room_number)
     @room_number = room_number.to_i
+    # @dates_booked contains date instances
     @dates_booked = []
   end
 
   def is_available?(formatted_date)
-
-    # formated_date = format_date(date)
 
     if @dates_booked.include?(formatted_date)
       return false
@@ -20,14 +19,4 @@ class Room
     end
   end
 
-  # def format_date(date_string)
-  #
-  #   parsed_date = date_string.split(",")
-  #   year = parsed_date[0].to_i
-  #   month = parsed_date[1].to_i
-  #   day = parsed_date[2].to_i
-  #   formated_date = Date.new(year,month,day)
-  #
-  #   return formated_date
-  # end
 end
