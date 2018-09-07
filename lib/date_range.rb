@@ -6,7 +6,7 @@ module Hotel
       @start_date = start_date
       @end_date = end_date
 
-      raise ArgumentError.new("Start date must be before end date") if @end_date < @start_date
+      raise StandardError.new("Start date must be before end date") if @end_date < @start_date
     end
 
     def overlaps?(other)

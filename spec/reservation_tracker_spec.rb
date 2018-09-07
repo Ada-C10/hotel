@@ -105,6 +105,7 @@ describe "ReservationTracker class" do
       end
 
       expect{ reservation_tracker.find_available_rooms }.must_raise ArgumentError
+      # expect{ reservation_tracker.reserve_room(@input) }.must_raise ArgumentError
     end
   end
 

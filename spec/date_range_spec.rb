@@ -17,7 +17,7 @@ describe "DateRange class" do
       end_date = start_date - 5
       expect {
         reservation = Hotel::DateRange.new(start_date, end_date)
-      }.must_raise ArgumentError
+      }.must_raise StandardError
     end
   end
 
