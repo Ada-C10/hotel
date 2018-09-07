@@ -46,7 +46,7 @@ class ReservationTracker
     if end_date - start_date >= 1
       return true
     else
-      return false
+      raise StandardError.new("Invalid date range entered.")
     end
   end
 
@@ -93,8 +93,6 @@ class ReservationTracker
       end
       # returning room instances NOT room numbers
       return available_rooms
-    else
-      raise StandardError.new("Invalid date range entered.")
     end
   end
 
@@ -137,19 +135,16 @@ class ReservationTracker
       else
         raise StandardError.new("The specified room is not available for the date range provided")
       end
-    else
-      raise StandardError.new("The date range entered is invalid.")
+
     end
   end
 
   def cost_of_reservation(reservation_number)
-
     @all_reservations.each do |reservation|
       if reservation.reservation_num == reservation_number.to_i
         return reservation.total_cost
       end
     end
-
   end
 
 end
