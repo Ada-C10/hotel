@@ -15,13 +15,26 @@ describe 'Reservation Class' do
     proc {@hotel.assigns_a_reservation(@start_date, @end_date)}.must_raise ArgumentError
   end
 
-  it "returns reservation list" do
+  it "returns reservation list of all the current reservations" do
+
     @start_date = Date.parse("1/9/2018")
     @end_date = Date.parse("5/9/2018")
 
+
+    @start_date1 = Date.parse("4/9/2018")
+    @end_date1 = Date.parse("6/9/2018")
+
+
     reservation = @hotel.assigns_a_reservation(@start_date, @end_date)
-    expect(reservation.reservation_all).must_be_kind_of Array
+
+      reservation1 = @hotel.assigns_a_reservation(@start_date1, @end_date1)
+
+    expect(@hotel.reservations).must_be_kind_of Array
   end
+
+
+
+
 
 
 

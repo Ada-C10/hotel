@@ -7,6 +7,7 @@ module Hotel
 
 
   class Hotel
+
     attr_reader :rooms, :reservations
 
     PRICE = 200.00
@@ -44,9 +45,10 @@ module Hotel
     def assigns_a_reservation(start_date, end_date)
       room_num = get_available_room(start_date, end_date)
       reservation = Reservation.new(start_date, end_date, room_num)
+      @reservations << reservation
       return reservation
     end
-    
+
   end
 end
 

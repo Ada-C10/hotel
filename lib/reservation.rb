@@ -5,7 +5,6 @@ module Hotel
 
   class Reservation
 
-    @@reservations = []
 
     attr_reader :room_num
     attr_accessor :start_date, :end_date
@@ -16,19 +15,9 @@ module Hotel
       @room_num = room_num
 
       argument_error_dates(start_date, end_date)
-      reservation_all
+
     end
 
-
-    #pushes each reservation that comes through this class via the self method, @@reservation class variable defined up top as an empty array
-    def reservation_push
-      @@reservations.push(self)
-    end
-
-    #returns the array of all the reservations that have been instanced with this class
-    def reservation_all
-      return @@reservations
-    end
 
     def valid_dates? (start_date, end_date)
       return start_date < end_date
