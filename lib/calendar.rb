@@ -39,13 +39,13 @@ class Calendar
   def available_room?(room_number, reservation)
     dates = reservation.get_all_dates
     dates.each do |date|
-      unless @room_assignments[room_number].include? (date)
-        return true
+      if @room_assignments[room_number].include? (date)
+        return false
       end
-      return false
     end
-
+    return true
   end
+  
   def list_available_rooms(reservation)
     available_rooms = []
     ROOMS.each do |room|

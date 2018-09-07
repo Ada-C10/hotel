@@ -26,14 +26,16 @@ describe Calendar do
       # binding.pry
       @reservation2 = Reservation.new('181202', '181204')
       @reservation3 = Reservation.new('181204', '181206')
-      # binding.pry
+      @reservation4 = Reservation.new('181203', '181204')
     end
     it "returns false if room is reserved for given dates" do
 
+      # binding.pry
       expect(@calendar.available_room?(1, @reservation2)).must_equal false
     end
     it "returns true if room isn't reserved for given dates" do
       expect(@calendar.available_room?(1, @reservation3)).must_equal true
+      # expect(@calendar.available_room?(1, @reservation4)).must_equal false
     end
   end
 
