@@ -17,9 +17,6 @@ class ReservationTracker
     date_range = Dates::date_range_format(date_range)
 
     room_num = @rooms.find_available_room(occupied_rooms(date_range))
-    if  room_num == nil
-      raise ArgumentError, "No available rooms"
-    end
 
     rate = @rooms.rate
 

@@ -61,6 +61,12 @@ describe "ReservationTracker class" do
     it "adds block of rooms to occupied_rooms" do
       expect (@reservations.occupied_rooms(@date_range)).must_include [3, 4, 5, 6, 7]
     end
+    #
+    # it "prevents non-block reservation of block rooms" do
+    #   date_range = Dates::date_range_format(@date_range)
+    #   reservation = Reservation.new(date_range, 4, 150)
+    #   expect (reservation).must_be_kind_of Reservation
+    # end
   end
 
 
