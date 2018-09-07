@@ -7,13 +7,13 @@ require "pry"
 require "awesome_print"
 
 module HotBook
-
+# HOTEL CLASS KNOWS ABOUT ROOMS
   class Hotel
     attr_reader :room_count, :room_rate, :rooms
 
-    def initialize(input) #{room_count: 20, room_rate: 200.0}
-      @room_count = input[:room_count]
-      @room_rate = input[:room_rate]
+    def initialize(room_count: 20, room_rate: 200.0) #{room_count: 20, room_rate: 200.0}
+      @room_count = room_count
+      @room_rate = room_rate
       @rooms = load_rooms # [{room_number: :1, room_rate: 200.0}]
     end
 

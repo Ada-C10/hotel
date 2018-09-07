@@ -88,6 +88,9 @@ Remember that your job is only to build the classes that store information and h
 ### User Stories
 
 - As an administrator, I can view a list of rooms that are not reserved for a given date range
+
+    - reservation class returns reservations for that range
+    - book class looks at reservations
 - As an administrator, I can reserve an available room for a given date range
 
 ### Constraints
@@ -123,7 +126,7 @@ If you are not familiar with what a block of hotel rooms, here is a brief descri
 
 ## Before Submissions
 
-Usually by the end of a project, we can look back on what we made with a clearer understanding of what we actually needed. In industry, this is a great time to do a refactor of some sort. For this project however, you're off the hook... for the moment. We will be revisiting our hotels later on on the course, and you may want to make some changes at that point. 
+Usually by the end of a project, we can look back on what we made with a clearer understanding of what we actually needed. In industry, this is a great time to do a refactor of some sort. For this project however, you're off the hook... for the moment. We will be revisiting our hotels later on on the course, and you may want to make some changes at that point.
 
 - Create a new file in the project called `refactors.txt`
 - Make a short list of the changes that you could make, particularly in terms of naming conventions
@@ -139,4 +142,4 @@ You should not be working on these (or even thinking about them) until you have 
 - Create a CLI to interact with your hotel system
 
 ## What we're looking for
-You can find what instructors will be looking for in the [feedback](feedback.md) markdown document. 
+You can find what instructors will be looking for in the [feedback](feedback.md) markdown document.

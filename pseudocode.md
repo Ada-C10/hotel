@@ -24,7 +24,7 @@
     - the block cost can go in the args hash!
     - is it easy for this hash to become a class later? -->
 - provide :start_date and :end_date
-    - later, reservation class comes up with a room number
+    - later, hotel class comes up with a room number
     - ruby makes a reservation object
         - :start_date
         - :end_date
@@ -38,7 +38,7 @@
 - provide reservation
     - ruby returns number of nights to charge
         - reservation class calculates duration
-        - WHICH CLASS KNOWS TO CHARGE DURATION-1 NIGHTS? ######
+        - WHICH CLASS KNOWS TO CHARGE DURATION-1 NIGHTS? cost class? ######
     - cost class multiplies nights by room cost
         - reservation shouldn't know anything about cost -- cost class
     - ruby returns float of total cost

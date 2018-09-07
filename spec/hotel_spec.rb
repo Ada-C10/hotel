@@ -1,8 +1,8 @@
 require_relative "spec_helper"
 
 describe "HotBook::Hotel class" do
-  let(:input) {{room_count: 20, room_rate: 200.0}}
-  let(:hotel) {HotBook::Hotel.new(input)}
+  let(:args) {{room_count: 20, room_rate: 200.0}}
+  let(:hotel) {HotBook::Hotel.new(args)}
   let(:room_count) {hotel.room_count}
   let(:room_rate) {hotel.room_rate}
   let(:all_rooms) {hotel.rooms}
