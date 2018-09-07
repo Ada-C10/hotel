@@ -20,12 +20,12 @@ describe "Booking" do
 
     it "keeps track of last room accurately" do
       hotel = Admin.new
-      (hotel.rooms[0].room_number).must_equal 1
+      (hotel.rooms[0]).must_equal 1
     end
 
     it "keeps track of first room accurately" do
       hotel = Admin.new
-      (hotel.rooms[19].room_number).must_equal 20
+      (hotel.rooms[19]).must_equal 20
     end
 
     it "starts with no reservations" do
