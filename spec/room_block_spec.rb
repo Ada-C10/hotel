@@ -23,6 +23,12 @@ describe 'RoomBlock class' do
         Hotel::RoomBlock.new([2], Date.new(2018,7,4), Date.new(2018,7,8), -3)
       }.must_raise(ArgumentError)
     end
+
+    it 'raise argument error if trying to book more than 5 rooms' do
+      expect{
+        Hotel::RoomBlock.new([*1..6], Date.new(2018,7,4), Date.new(2018,7,8), 100)
+      }.must_raise(ArgumentError)
+    end
   end
 
   describe 'book_reservation' do

@@ -120,7 +120,6 @@ describe 'reservation_tracker class' do
       expect( reservation ).must_be_instance_of(Hotel::Reservation)
       expect( reservation.start_date ).must_equal(Date.new(2018,7,7))
       expect( reservation.end_date ).must_equal(Date.new(2018,7,10))
-
     end
 
     it 'successful book increases total reservations array by one' do
@@ -128,6 +127,14 @@ describe 'reservation_tracker class' do
       reservation = @hotel.book_reservation(5, Date.new(2018,7,7), Date.new(2018,7,10))
 
       expect( @hotel.reservations.length - initial_reservations).must_equal(1)
+    end
+
+    it 'raise error if trying to book a reservation that is reserved in a block' do
+      @hotel.create_block([1,2], Date.new(2018,1,1), Date.new(2018,2,1))
+
+      expect{
+        @hotel.book_reservation(1, Date.new(2017,12,31), Date.new(2018,1,1))
+      }.must_raise(StandardError)
     end
   end
 

@@ -153,3 +153,6 @@ You can find what instructors will be looking for in the [feedback](feedback.md)
 ## Questions
 
 1. Does it make more sense to return an empty array or nil if there are no available rooms for a given date range?
+2. Is class `ReservationTracker` doing too much?
+3. How best to organize/remember what functions I made and what I tested where?
+4. How does coverage work? Seems to return unreliable metrics, depending on which parts of the code I most recently ran. 
