@@ -41,50 +41,14 @@ class FrontDesk
   end
 
   def find_by_date(date)
-        @reservations.select {|reservation| reservation.start_day <= date && reservation.end_day >= date}
+      res = []
+      @reservations.each do |reservation|
+        if reservation.start_day == Date.parse(date)
+          res << reservation
       end
+    end
+    return res
+  end
 
 
-
-
-
-
-
-
-
-
-
-
-#
-#     def all_the_rooms
-#       return @all_rooms
-#     end
-#
-#     def self.all
-#       self.create_rooms
-#     end
-#
-#     def make_reservation(room_number, start_day, end_day)
-#       room = find_room(room_number)
-#       new_reservation = Hotel::Reservation.new(room, start_day, end_day)
-#       @reservations << new_reservation
-#       add_res_to_room(room, new_reservation)
-#       return new_reservation
-#     end
-#
-#     def find_room(room_number)
-#       all_the_rooms.find {|room| room.room_number == room_number}
-#     end
-#
-#     def add_res_to_room(room, new_reservation)
-#       room.room_reservations << new_reservation
-#     end
-#
-#     def find_by_date(date)
-#       @reservations.select {|reservation| reservation.start_day <= date && reservation.end_day >= date}
-#     end
-#
-#   end
-#
-# end
 end
