@@ -56,5 +56,8 @@ describe 'BookingSystem class' do
     end
   end
 
-
+  describe 'reservations_by_date' do
+    it 'returns a list of reservations for a specified date' do
+    end
+  end
 end

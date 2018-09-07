@@ -29,18 +29,8 @@ class BookingSystem
     new_reservation = Reservation.new(start_date, end_date)
     dates_to_book = new_reservation.reservation_dates
     @rooms.each do |room|
-      is_it_available = []
-      dates_to_book.each do |date|
-        if room.dates_booked.include?(date)
-          is_it_available << "no"
-        else
-          is_it_available << "yes"
-        end
-      end
-      if is_it_available.all?("yes")
-        dates_to_book.each do |date|
-          room.dates_booked << date
-        end
+      if room.is_available?(dates_to_book)
+        add_booked_dates(dates_to_book)
         break
       end
     end
@@ -54,4 +44,6 @@ class BookingSystem
   end
 
   # get the total cost for a given reservation
+  def find_reservation(id)
+  end
 end
