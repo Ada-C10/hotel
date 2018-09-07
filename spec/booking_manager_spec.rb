@@ -24,7 +24,7 @@ describe 'BookingManager' do
     end
   end
 
-  describe "#find_available_room" do
+  describe '#find_available_room' do
     it 'must return a valid room number' do
       expect(sample_booking.find_available_room(sample_checkin, sample_checkout)).must_be_kind_of Integer
     end
@@ -36,15 +36,14 @@ describe 'BookingManager' do
     it 'must equal a number less than 21' do
       expect(sample_booking.find_available_room(sample_checkin, sample_checkout)).must_be :<, 21
     end
+  end
+
+  describe '#make_reservation' do
+    it 'must return a reservation object' do
+      expect(sample_booking.make_reservation(sample_checkin, sample_checkout)).must_be_kind_of Reservation
+    end
+
 
   end
 
-  # describe "#find_avaliable_room"
-  # it ''
-
-  # it 'returns a Reservation object' do
-  #   expect(sample_booking.make_reservation).must_be_kind_of Reservation
-  # end
-  #
-  # it ''
 end
