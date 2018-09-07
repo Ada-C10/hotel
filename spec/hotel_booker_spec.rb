@@ -294,10 +294,4 @@ describe 'HotelBooker class' do
 
   end
 
-  # describe 'is_Date method' do
-  #   it 'returns true if given date is not a Date' do
-  #     expect(is_Date(Date.today)).must_equal true
-  #     expect(is_Date(Date.parse("2001-10-10"))).must_equal true
-  #   end
-  # end
 end

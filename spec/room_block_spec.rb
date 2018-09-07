@@ -15,7 +15,7 @@ describe 'RoomBlock class' do
   }
 
   let (:block) {
-    Hotel::RoomBlock.new(check_in, check_out, blocked_rooms, discounted_rate, 1)
+    Hotel::RoomBlock.new(Hotel::DateRange.new(check_in, check_out), blocked_rooms, discounted_rate, 1)
   }
 
 

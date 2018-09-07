@@ -8,7 +8,7 @@ describe 'Reservation class' do
     check_in + 2
   }
   let (:reservation) {
-    Hotel::Reservation.new(check_in, check_out, 1)
+    Hotel::Reservation.new(Hotel::DateRange.new(check_in, check_out), 1)
   }
 
   describe 'Reservation instantiation' do
