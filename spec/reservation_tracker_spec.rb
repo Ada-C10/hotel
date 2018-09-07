@@ -59,7 +59,7 @@ describe "ReservationTracker class" do
     end
 
     it "adds block of rooms to occupied_rooms" do
-      expect (@reservations.occupied_rooms(@date_range)).must_include [4, 5, 6, 7, 8]
+      expect (@reservations.occupied_rooms(@date_range)).must_include [3, 4, 5, 6, 7]
     end
   end
 
@@ -69,6 +69,11 @@ describe "ReservationTracker class" do
     it "creates a list of all reservations" do
       expect (@reservations.all_reservations).must_be_kind_of Array
       expect (@reservations.all_reservations.length).must_equal 3
+    end
+
+    it "can access the list of reservations for a specific date" do
+      current_reservations = @reservations.reservation_list_by_date('9-15-2018')
+      expect (current_reservations.length).must_equal 3
     end
   end
 

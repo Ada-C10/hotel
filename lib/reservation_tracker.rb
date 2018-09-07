@@ -41,9 +41,16 @@ class ReservationTracker
   def occupied_rooms(date_range)
     occupied_rooms = []
     date_range = Dates::date_range_format(date_range)
-    (date_range[:begin_date]..date_range[:end_date]).each do |date|
-      reservation_list_by_date(date).each do |reservation|
-        occupied_rooms << reservation.room_num if !occupied_rooms.include?(reservation.room_num)
+
+    @all_reservations.each do |reservation|
+      if date_range[:end_date] > reservation.begin_date && date_range[:end_date] <= reservation.end_date ||
+
+        date_range[:begin_date] >= reservation.begin_date && date_range[:begin_date] < reservation.end_date ||
+
+        date_range[:begin_date] <= reservation.begin_date && date_range[:end_date] >= reservation.end_date ||
+
+        date_range[:begin_date] > reservation.begin_date && date_range[:end_date] < reservation.end_date
+        occupied_rooms << reservation.room_num
       end
     end
     return occupied_rooms
