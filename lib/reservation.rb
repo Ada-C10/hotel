@@ -10,16 +10,6 @@ class Reservation
     @room_number = nil
   end
 
-  def reservation_dates
-    dates = []
-    date = @check_in_date
-    while date < @check_out_date
-      dates << date
-      date += 1
-    end
-    return dates
-  end
-
   def length_of_stay
     duration = check_out_date - check_in_date
     return duration

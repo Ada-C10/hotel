@@ -15,7 +15,7 @@ class BookingSystem
 
   def load_rooms
     rooms =[]
-    @num_rooms.times { |room| rooms << Room.new(room + 1)}
+    @num_rooms.times { |room| rooms << Room.new(room_num: room + 1) }
     return rooms
   end
 
@@ -26,16 +26,28 @@ class BookingSystem
 
   # reserve a room for a given date range
   def reserve_room(start_date, end_date)
-    new_reservation = Reservation.new(start_date, end_date)
-    dates_to_book = new_reservation.reservation_dates
+    dates = date_range(start_date, end_date)
     @rooms.each do |room|
-      if room.is_available?(dates_to_book)
-        add_booked_dates(dates_to_book)
+      if room.is_available?(dates)
+        room.add_booked_dates(dates)
+        new_reservation = Reservation.new(start_date, end_date)
+        @reservations << new_reservation
+        return new_reservation
         break
       end
     end
-    @reservations << new_reservation
-    return @reservations
+  end
+
+  def date_range(check_in_date, check_out_date)
+    check_in_date = Date.parse(check_in_date)
+    check_out_date = Date.parse(check_out_date)
+    dates = []
+    date = check_in_date
+    while date < check_out_date
+      dates << date
+      date += 1
+    end
+    return dates
   end
 
   # access the list of reservations for a specific date

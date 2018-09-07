@@ -54,7 +54,6 @@ describe 'Room class' do
       expect(room.is_available?(starts_on_checkout)).must_equal true
     end
 
-
     it 'returns false if room is not available' do
       room = Room.new(room_num: 1, dates_booked: date_range)
 
@@ -72,7 +71,6 @@ describe 'Room class' do
       expect(room.dates_booked).must_be_kind_of Array
       expect(room.dates_booked[0]).must_equal Date.parse("Oct 4 2018")
       expect(room.dates_booked[2]).must_equal Date.parse("Oct 6 2018")
-
     end
   end
 end
