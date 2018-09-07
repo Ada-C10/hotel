@@ -1,11 +1,13 @@
 class Room
-  attr_reader :room_num, :cost, :dates_booked, :reservations
+  attr_reader :room_num, :cost, :dates_booked
+  attr_accessor :blocked_status
 
-  def initialize(room_num: nil, cost: 200, dates_booked: [])
+  def initialize(room_num: nil, cost: 200, dates_booked: [], blocked_status: "unblocked")
     @room_num = room_num
     @cost = cost
     @dates_booked = dates_booked
-    @reservations = []
+    @blocked_status = blocked_status
+
   end
 
   def is_available?(dates)
@@ -28,9 +30,5 @@ class Room
     dates.each do |date|
       self.dates_booked << date
     end
-  end
-
-  def add_reservation(reservation)
-    self.reservations << reservation
   end
 end

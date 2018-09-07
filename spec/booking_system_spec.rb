@@ -97,17 +97,6 @@ describe 'BookingSystem class' do
       expect(@booking.rooms[1].dates_booked.count).must_equal 0
     end
 
-    it "adds the reservation to the room's list of reservations" do
-
-      first_reservation
-      expect(@booking.rooms[0].reservations.count).must_equal 1
-
-      no_overlap_before
-      expect(@booking.rooms[0].reservations.count).must_equal 2
-      expect(@booking.rooms[1].reservations.count).must_equal 0
-
-    end
-
     it "selects the next room with available dates" do
 
       first_reservation
@@ -154,10 +143,10 @@ describe 'BookingSystem class' do
       expect(@booking.rooms[1].dates_booked.count).must_equal 0
     end
 
-    it 'assigns a reservation_id to the new reservation consecutively' do
+    it 'assigns a reservation id to the new reservation consecutively' do
       first_reservation
       no_overlap_before
-      expect(no_overlap_before.reservation_id).must_equal first_reservation.reservation_id + 1
+      expect(no_overlap_before.id).must_equal first_reservation.id + 1
     end
 
     it 'raises an exception when there are no rooms available for specified date' do
@@ -212,7 +201,7 @@ describe 'BookingSystem class' do
 
   describe 'total_cost_of_reservation' do
     it 'returns the cost of a specified reservation' do
-      expect(@booking.total_cost_of_reservation(first_reservation.reservation_id)).must_equal (Date.parse("Oct 7 2018") - Date.parse("Oct 4 2018")) * 200
+      expect(@booking.total_cost_of_reservation(first_reservation.id)).must_equal (Date.parse("Oct 7 2018") - Date.parse("Oct 4 2018")) * 200
     end
 
     it 'returns nil if a reservation does not exist' do
@@ -227,6 +216,7 @@ describe 'BookingSystem class' do
       overlap_after
       contained_in_range
     end
+
     it 'returns an array of unreserved rooms given a date range that conflicts' do
 
       start_date = "Oct 4 2018"
@@ -237,7 +227,6 @@ describe 'BookingSystem class' do
       expect(unreserved_rooms).must_be_kind_of Array
       expect(unreserved_rooms[0]).must_be_kind_of Room
       expect(unreserved_rooms.count).must_equal 16
-
     end
 
     it "returns same number of unreserved_rooms given a date range that doesn't conflict" do
@@ -247,6 +236,18 @@ describe 'BookingSystem class' do
       unreserved_rooms = @booking.unreserved_rooms_by_date(start_date, end_date)
 
       expect(unreserved_rooms.count).must_equal 20
+    end
+  end
+
+  describe 'create_block_of_rooms' do
+    it 'returns an array with 5 elements max representing block of rooms' do
+      start_date = "Oct 4 2018"
+      end_date = "Oct 7 2018"
+      block_rooms = @booking.create_block_of_rooms(start_date, end_date)
+
+      expect(block_rooms).must_be_kind_of Array
+      expect(block_rooms[0]).must_be_kind_of Room
+      expect(block_rooms.count).must_be :<=, 5
     end
   end
 end

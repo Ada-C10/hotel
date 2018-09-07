@@ -6,31 +6,31 @@ describe 'Room class' do
   }
 
   let (:overlap_before) {
-    dates = [Date.parse("Oct 3 2018"), Date.parse("Oct 4 2018"), Date.parse("Oct 5 2018")]
+    [Date.parse("Oct 3 2018"), Date.parse("Oct 4 2018"), Date.parse("Oct 5 2018")]
   }
 
   let (:overlap_after) {
-    dates = [Date.parse("Oct 5 2018"), Date.parse("Oct 6 2018"), Date.parse("Oct 7 2018")]
+    [Date.parse("Oct 5 2018"), Date.parse("Oct 6 2018"), Date.parse("Oct 7 2018")]
   }
 
   let (:contained_in_range) {
-    dates = [Date.parse("Oct 5 2018"), Date.parse("Oct 6 2018")]
+    [Date.parse("Oct 5 2018"), Date.parse("Oct 6 2018")]
   }
 
   let (:no_overlap_before) {
-    dates = [Date.parse("Sep 4 2018"), Date.parse("Sep 5 2018"), Date.parse("Sep 6 2018")]
+    [Date.parse("Sep 4 2018"), Date.parse("Sep 5 2018"), Date.parse("Sep 6 2018")]
   }
 
   let (:no_overlap_after) {
-    dates = [Date.parse("Nov 4 2018"), Date.parse("Nov 5 2018"), Date.parse("Nov 6 2018")]
+    [Date.parse("Nov 4 2018"), Date.parse("Nov 5 2018"), Date.parse("Nov 6 2018")]
   }
 
   let (:end_on_checkin) {
-    dates = [Date.parse("Oct 1 2018"), Date.parse("Oct 2 2018"), Date.parse("Oct 3 2018")] # check out Oct 4 2018
+    [Date.parse("Oct 1 2018"), Date.parse("Oct 2 2018"), Date.parse("Oct 3 2018")] # check out Oct 4 2018
   }
 
   let (:starts_on_checkout) {
-    dates = [Date.parse("Oct 7 2018"), Date.parse("Oct 8 2018"), Date.parse("Oct 9 2018")]
+    [Date.parse("Oct 7 2018"), Date.parse("Oct 8 2018"), Date.parse("Oct 9 2018")]
   }
 
   describe 'Initializer' do
@@ -41,6 +41,7 @@ describe 'Room class' do
       expect(room.room_num).must_equal 1
       expect(room.cost).must_equal 200
       expect(room.dates_booked).must_equal date_range
+      expect(room.blocked_status).must_equal "unblocked"
     end
   end
 
@@ -74,14 +75,14 @@ describe 'Room class' do
     end
   end
 
-  describe 'add_reservation' do
-    it "adds a reservation instance to the room's array of reservations" do
-      room = Room.new(room_num: 1)
-      room.add_reservation(Reservation.new("Oct 5 2018", "Oct 8 2018"))
-
-      expect(room.reservations).must_be_kind_of Array
-      expect(room.reservations.count).must_equal 1
-      expect(room.reservations[0]).must_be_kind_of Reservation
-    end
-  end
+  # describe 'add_reservation' do
+  #   it "adds a reservation instance to the room's array of reservations" do
+  #     room = Room.new(room_num: 1)
+  #     room.add_reservation(Reservation.new("Oct 5 2018", "Oct 8 2018"))
+  #
+  #     expect(room.reservations).must_be_kind_of Array
+  #     expect(room.reservations.count).must_equal 1
+  #     expect(room.reservations[0]).must_be_kind_of Reservation
+  #   end
+  # end
 end

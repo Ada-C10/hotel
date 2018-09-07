@@ -32,9 +32,7 @@ class BookingSystem
       if room.is_available?(dates)
         room.add_booked_dates(dates)
         new_reservation = Reservation.new(start_date, end_date)
-        room.add_reservation(new_reservation)
-        new_reservation.reservation_id = assign_res_id
-        new_reservation.total_cost = room.cost * new_reservation.length_of_stay
+        new_reservation.id = assign_res_id
         @reservations << new_reservation
         break
       end
@@ -74,8 +72,8 @@ class BookingSystem
   end
 
   # get the total cost for a given reservation
-  def total_cost_of_reservation(id)
-    if reservation = @reservations.find { |reservation| reservation.reservation_id == id}
+  def total_cost_of_reservation(search_id)
+    if reservation = @reservations.find { |res| res.id == search_id}
       return reservation.total_cost
     else
       return nil
@@ -92,5 +90,36 @@ class BookingSystem
       end
     end
     return unreserved_rooms
+  end
+
+  # create block of rooms
+  def create_block_of_rooms(start_date, end_date, discounted_rate)
+    unreserved_rooms = unreserved_rooms_by_date(start_date, end_date)
+    unreserved_rooms.select { |room| room.blocked_status == "unblocked"}
+
+    5.times do |i|
+      block_room(unreserved_rooms[i].room_num)
+    end
+
+    new_block = BlockOfRooms.new(start_date, end_date, room_cost: discounted_rate)
+
+    5.times do |i|
+      new_block.add_room(unreserved_rooms[i])
+    end
+
+  end
+
+  def block_room(room_number)
+    selected_room = @rooms.find { |room| room.room_num}
+    selected_room.blocked_status = "blocked"
+    selected_room.cost = discounted_rate
+  end
+
+  # check if block of rooms has availability
+  def block_of_rooms_availability(block_id)
+  end
+
+  # reserve a room from within a block of rooms
+  def reserve_within_block(block_id)
   end
 end
