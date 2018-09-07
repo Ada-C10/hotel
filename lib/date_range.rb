@@ -1,5 +1,4 @@
 require 'date'
-require_relative 'room_booker'
 require 'pry'
 
 module Hotel
@@ -56,7 +55,7 @@ module Hotel
       # ends on check-in date
       elsif new_dates.last == booked_dates.first
         return false
-      # same dates 
+      # same dates
       elsif new_dates.first == booked_dates.first || new_dates.last == booked_dates.first
         return true
       end

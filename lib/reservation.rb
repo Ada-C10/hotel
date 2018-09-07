@@ -1,9 +1,3 @@
-require 'awesome_print'
-require_relative 'date_range'
-
-=begin
-1. This will keep track of one reservation
-=end
 
 module Hotel
   class Reservation

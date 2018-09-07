@@ -3,13 +3,13 @@ require_relative 'spec_helper'
 describe 'DateRange Class' do
   before do
     @date_range_1 = Hotel::DateRange.new('2018-09-01', '2018-09-05')
-    @reservation_1 = Hotel::RoomBooker.new()
+    @reservation_1 = Hotel::BookingSystem.new()
     @reservation_1.make_reservation(@date_range_1)
   end
 
   let (:date_range_2) { Hotel::DateRange.new('2018-09-01', '2018-09-05') }
   let (:reservation_2) {
-    Hotel::RoomBooker.new().make_reservation(date_range_2)
+    Hotel::BookingSystem.new().make_reservation(date_range_2)
   }
 
   let (:date_range_3) { Hotel::DateRange.new('2018-08-31', '2018-09-02') }
