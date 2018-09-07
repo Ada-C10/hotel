@@ -27,16 +27,6 @@ describe "ReservationTracker class" do
       expect(@reservation_tracker.rooms.first).must_equal 1
       expect(@reservation_tracker.rooms.last).must_equal 20
     end
-
-    xit "raises an error if there are less than 1 room" do
-      expect{ @reservation_tracker.rooms.include? 21 }.must_raise ArgumentError
-
-    end
-
-    xit "raises an error if there are more than 20 rooms" do
-
-    end
-
   end
 
   describe "#list_reservations_by_date method" do

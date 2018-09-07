@@ -14,10 +14,6 @@ module Hotel
       @rooms = load_rooms
       @reservations = []
 
-      if [*1..NUM_OF_ROOMS] != @rooms
-
-        raise ArgumentError "Invalid number of rooms"
-      end
     end
 
     def load_rooms
