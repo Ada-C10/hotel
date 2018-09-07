@@ -119,7 +119,13 @@ describe "ReservationTracker class" do
 
   describe "#reserve_room method" do
     it "reserves a room if one is available for requested dates" do
+      previous_num_res = @reservation_tracker.reservations.length
 
+      new_reservation = @reservation_tracker.reserve_room(@input)
+      current_num_res = @reservation_tracker.reservations.length
+
+      expect(new_reservation).must_be_kind_of Hotel::Reservation
+      expect(current_num_res).must_equal previous_num_res + 1
     end
   end
 end
