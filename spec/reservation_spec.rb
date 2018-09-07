@@ -33,6 +33,9 @@ describe 'Reservation class' do
     end
   end
 
-  
-
+  describe 'length_of_stay' do
+    it 'calculates the length_of_stay' do
+      expect(valid_res.length_of_stay).must_equal (Date.parse("Jan 15 2019") - Date.parse("Jan 11 2019"))
+    end
+  end
 end

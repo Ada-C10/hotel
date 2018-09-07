@@ -152,6 +152,12 @@ describe 'BookingSystem class' do
       expect(@booking.rooms[0].dates_booked.count).must_equal 15
       expect(@booking.rooms[1].dates_booked.count).must_equal 0
     end
+
+    it 'assigns a reservation_id to the new reservation consecutively' do
+      first_reservation
+      no_overlap_before
+      expect(no_overlap_before.reservation_id).must_equal first_reservation.reservation_id + 1
+    end
   end
 
   describe 'date_range' do
@@ -185,8 +191,15 @@ describe 'BookingSystem class' do
       expect(@booking.reservations_by_date("Oct 5 2018")[0]).must_be_kind_of Reservation
     end
 
-    it 'returns an empty array if no reservations exit for a specified date' do
+    it 'returns an empty array if no reservations exist for a specified date' do
       expect(@booking.reservations_by_date("Oct 5 2018")).must_equal []
+    end
+  end
+
+  describe 'total_cost_of_reservation' do
+    it 'returns the cost of a specified reservation' do
+
+      expect(@booking.total_cost_of_reservation(first_reservation.reservation_id)).must_equal (Date.parse("Oct 7 2018") - Date.parse("Oct 4 2018")) * 200
     end
   end
 end

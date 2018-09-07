@@ -33,6 +33,8 @@ class BookingSystem
         room.add_booked_dates(dates)
         new_reservation = Reservation.new(start_date, end_date)
         room.add_reservation(new_reservation)
+        new_reservation.reservation_id = assign_res_id
+        new_reservation.total_cost = room.cost * new_reservation.length_of_stay
         @reservations << new_reservation
         break
       end
@@ -56,6 +58,10 @@ class BookingSystem
     return dates
   end
 
+  def assign_res_id
+    return @reservations.count + 1
+  end
+
   # access the list of reservations for a specific date
   def reservations_by_date(date)
     date = Date.parse(date)
@@ -68,6 +74,11 @@ class BookingSystem
   end
 
   # get the total cost for a given reservation
-  def find_reservation(id)
+  def total_cost_of_reservation(id)
+    reservation = @reservations.find { |reservation| reservation.reservation_id == id}
+    return reservation.total_cost
+  end
+
+  def unreserved_rooms_by_date(date_range)
   end
 end
