@@ -17,14 +17,18 @@ describe "BookingSystem class" do
   end
 
   it "returns all dates that have been booked" do
+    expect(@booking.list_all_rooms_in_hotel).must_be_kind_of Array
     expect(@booking.new_reservation(@reservation)).must_equal [Date.parse("180904"), Date.parse("180905"), Date.parse("180906")]
   end
 
   it "returns array of dates with the assigned room" do
+    expect(@booking.list_all_rooms_in_hotel).must_be_kind_of Array
     expect(@booking.assign_room_to_booking(@reservation)).must_equal [[Date.parse("180904"), 1], [Date.parse("180905"), 1], [Date.parse("180906"), 1]]
   end
 
-  xit "" do
+  it "returns the total cost of the booking" do
+    expect(@booking.calculate_booking_cost(@reservation)).must_be_kind_of Integer
+    expect(@booking.calculate_booking_cost(@reservation)).must_equal 600
   end
 
   xit "" do
