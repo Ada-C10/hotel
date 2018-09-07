@@ -22,12 +22,11 @@ class BookingManager
     return room
   end
 
-  # def make_reservation(start_date, end_date)
-  #   # do work, figure out a room
-  #
-  #   reservation = Reservation.new(...)
-  #   @reservations << reservation
-  #   return reservation
-  # end
+  def make_reservation(start_date, end_date)
+    room = find_available_room(start_date, end_date)
+    reservation = Reservation.new(room, start_date, end_date)
+    @reservations << reservation
+    return reservation
+  end
 
 end
