@@ -74,6 +74,8 @@ describe "#rooms information" do
 
   # needs to update this test
   # before and after from driver
+  # needs to test when reservation is 1 - 2
+  # and another one with reservation 1 - 3, should include 2 rooms
   it "can make a reservation" do
     start_date = "2018-08-07 00:00:00 -0700"
     end_date = "2018-08-09 00:00:00 -0700"
@@ -99,7 +101,8 @@ describe "#rooms information" do
     @admin.reserve_room(start_date, end_date)
     # for range and testing view vacant_rooms
     start_time = Time.parse("2018-08-07 00:00:00 -0700")
-    end_time = Time.parse("2018-08-09 00:00:00 -0700")
+    # one day less because the last night is not payed and view_vacant_rooms takes care of that
+    end_time = Time.parse("2018-08-08 00:00:00 -0700")
     end_date = end_date - 1
     range = (start_time..end_time)
     vacant_rooms_result = @admin.view_vacant_rooms(range)
@@ -121,5 +124,12 @@ describe "#range tests" do
 
     result = @admin.create_hotel_range(start_date, end_date)
     expect(result.include?(test_date)).must_equal false
+  end
+
+  it "it creates an array of dates" do
+    start_date = Time.parse("2018-08-07 00:00:00 -0700")
+    end_date = Time.parse("2018-08-10 00:00:00 -0700")
+    result = @admin.create_array_of_dates(start_date, end_date)
+    expect(result.length).must_equal 3
   end
 end

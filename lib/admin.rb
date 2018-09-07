@@ -53,6 +53,23 @@ class Admin
     #@booked_rooms << room
   end
 
+  #As an administrator, I can view a list of rooms that are not reserved for a given date range
+  # raise argument error if array is empty
+  # must check if date for every single date is in the range
+  ## expects dates to be instances of time
+  def view_vacant_rooms(start_date, end_date)
+    vacant_rooms = []
+    @rooms.each do |room|
+      ranges = room.ranges
+      # found = range_search(ranges, target_range)
+      # if found
+      #   booked_rooms << room
+      # else
+      #   vacant_rooms << room
+      # end
+    end
+    return vacant_rooms
+  end
   # As an administrator, I can access the list of all of the rooms in the hotel
   def view_all_rooms
     return @rooms
@@ -79,25 +96,6 @@ class Admin
     return cost
   end
 
-  #As an administrator, I can view a list of rooms that are not reserved for a given date range
-  # it does this by seeing which rooms have the same range, but if not, it marks it as vacant
-  # raise argument error if array is empty
-  # must check if date for every single date is in the range
-  def view_vacant_rooms(target_range)
-    vacant_rooms = []
-    @rooms.each do |room|
-      ranges = room.ranges
-      binding.pry
-      # found = range_search(ranges, target_range)
-      # if found
-      #   booked_rooms << room
-      # else
-      #   vacant_rooms << room
-      # end
-    end
-    return vacant_rooms
-  end
-
   #As an administrator, I can create a block of rooms
   def create_block_rooms(start_date, end_date, discounted_rate)
     start_date = Time.parse(start_date)
@@ -120,6 +118,17 @@ class Admin
     end_date = end_date - 1
     range = (start_date .. end_date)
     return range
+  end
+
+  # expectes input to be isntances
+  def create_array_of_dates(start_date, end_date)
+    dates = []
+    difference = end_date - start_date
+    difference = difference/86400
+    difference.to_i.times do |i|
+      dates << start_date + (1+i)
+    end
+    return dates
   end
 
   private
