@@ -7,12 +7,14 @@ describe 'Reservation Class' do
   before do
     @hotel = Hotel::Hotel.new
     @start_date = Date.parse("5/9/2018")
-    @end_date = Date.parse("1/9/2018")
+    @end_date = Date.parse("10/9/2018")
   end
 
   it "raises an argument error for invalid dates" do
     #proc catches the error when .assigns_a_reservation is invoked
-    proc {@hotel.assigns_a_reservation(@start_date, @end_date)}.must_raise ArgumentError
+    proc {
+      @hotel.assigns_a_reservation(@end_date, @start_date)
+    }.must_raise ArgumentError
   end
 
   it "returns reservation list of all the current reservations" do
@@ -27,13 +29,27 @@ describe 'Reservation Class' do
 
     reservation = @hotel.assigns_a_reservation(@start_date, @end_date)
 
-      reservation1 = @hotel.assigns_a_reservation(@start_date1, @end_date1)
-
+    reservation1 = @hotel.assigns_a_reservation(@start_date1, @end_date1)
     expect(@hotel.reservations).must_be_kind_of Array
+
   end
 
 
+  it "return a reservation for a specific date" do
 
+    match_res = @hotel.assigns_a_reservation(@start_date, @end_date)
+
+    @start_date1 = Date.parse("4/9/2018")
+    @end_date1 = Date.parse("6/9/2018")
+
+    nomatch_res = @hotel.assigns_a_reservation(@start_date1, @end_date1)
+
+    reservations_fordate = @hotel.reservations_for_date(@start_date)
+    expect(reservations_fordate).must_be_kind_of Array
+    expect(reservations_fordate.length).must_equal 1
+    expect(reservations_fordate.first).must_equal match_res
+
+  end
 
 
 

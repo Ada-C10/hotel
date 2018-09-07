@@ -3,16 +3,11 @@ require_relative 'room'
 require_relative 'reservation'
 
 module Hotel
-
-
-
   class Hotel
 
     attr_reader :rooms, :reservations
 
     PRICE = 200.00
-
-    #invokes all_rooms method and stores that value of in ALL_ROOMS varaible
 
     def initialize
       @rooms = []
@@ -24,6 +19,10 @@ module Hotel
       @reservations = []
     end
 
+
+
+#copy of list of room, iterate though list of reservation---care
+
     #returns an array of numbers from a collection of room instances (room_num)
     def get_all_numbers
       room_nums = []
@@ -33,21 +32,32 @@ module Hotel
       return room_nums
     end
 
-    #assings random room from the available room's array
+    #assings room from the available room's array
     def get_available_room(start_date, end_date)
       # TODO: wave 2, add some logic to figure out which rooms are available
       room_numbers = get_all_numbers
       return room_numbers.first
     end
 
-    #assigns a reservation given a vaild date, and also calls the get_available_room method which will then return a room number
-
+    #assigns a reservation given a vaild date, and also calls the get_available_room method which will then return a room number. @reservation is storing all the reservations
     def assigns_a_reservation(start_date, end_date)
       room_num = get_available_room(start_date, end_date)
       reservation = Reservation.new(start_date, end_date, room_num)
       @reservations << reservation
       return reservation
     end
+
+    def reservations_for_date(date)
+      matches = []
+      @reservations.each do |reservation|
+        if reservation.start_date <= date && reservation.end_date > date
+          matches << reservation
+        end
+        return matches
+      end
+    end
+
+
 
   end
 end
