@@ -27,6 +27,22 @@ describe "DateRange class" do
         reservation = Hotel::DateRange.new(start_date, end_date)
       }.must_raise StandardError
     end
+
+    it "raises an error if start_date is a Date and but end_date is not" do
+      start_date = Date.today
+      end_date = "Date.today + 5"
+      expect {
+        reservation = Hotel::DateRange.new(start_date, end_date)
+      }.must_raise StandardError
+    end
+
+    it "raises an error if start_date not a Date and but end_date is" do
+      start_date = "Date.today"
+      end_date = Date.today + 5
+      expect {
+        reservation = Hotel::DateRange.new(start_date, end_date)
+      }.must_raise StandardError
+    end
   end
 
   describe "#get_range method" do
