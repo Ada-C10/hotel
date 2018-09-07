@@ -1,11 +1,10 @@
-# require 'pry'
 require_relative 'room'
 require_relative 'reservation'
 # require 'pry'
 
 module Hotel
   class BookingManager
-    attr_accessor :rooms, :reservations
+    attr_accessor :rooms, :reservations, :room_calendar
 
     def initialize(number_rooms)
       @rooms = populate_room_list(number_rooms) #(20)
@@ -42,7 +41,7 @@ module Hotel
         dates_reserved = {} #[]
         @room_calendar[num+1] = dates_reserved
       end
-
+        # binding.pry
       return @room_calendar
     end
 
@@ -61,11 +60,26 @@ module Hotel
 
     # Add reservation date to hash of room reserved dates
     def add_reservation_to_calendar(reservation)
-      @room_calendar[reservation.room][reservation.start_date] = reservation
+      # until reservation start date = reservation end date -1
+      # add to calendar. What changes is date.
+      @room_calendar[reservation.room][reservation.start_date] = reservation # dependency on instance variables
   # binding.pry
       return @room_calendar
 
     end
+
+ #    {1=>{},
+ # 2=>{},
+ # 3=>
+ #  {#<Date: 2018-06-11 ((2458281j,0s,0n),+0s,2299161j)>=>
+ #    #<Hotel::Reservation:0x00007ffc3f152dc0
+ #     @cost_per_night=200.0,
+ #     @end_date=
+ #      #<Date: 2018-06-14 ((2458284j,0s,0n),+0s,2299161j)>,
+ #     @guest_name="Kim Possible",
+ #     @room=3,
+ #     @start_date=
+ #      #<Date: 2018-06-11 ((2458281j,0s,0n),+0s,2299161j)>>}}
 
     # Method to list all reservations
     def list_reservations
