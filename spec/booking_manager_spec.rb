@@ -24,15 +24,20 @@ describe 'BookingManager' do
     end
   end
 
-  # describe "#book_reservation" do
-  #   # check info within the reservations array
-  #
-  #   it 'must fill the reservations array with stuff' do
-  #     expect(sample_booking.reservations).must_equal 4 # 4 nithgs from 1st to 5th
-  #   end
-  #
-  #   it 'must contain hashes' do
-  #     expect(sample_booking.reservations[0]).must_be_kind_of Hash
-  # end
+  describe "#find_room" do
+    # check info within the reservations array
+    it 'must return a valid room number' do
+      expect(sample_booking.find_room).must_be_kind_of Integer# 4 nithgs from 1st to 5th
+    end
+
+    it 'must equal a number greater than 0' do
+      expect(sample_booking.find_room).must_be :>, 0
+    end
+
+    it 'must equal a number less than 21' do
+      expect(sample_booking.find_room).must_be :<, 21
+    end
+
+  end
 
 end
