@@ -9,21 +9,15 @@ class Reservation
 
     if is_room_num_valid(room_num)
       @room_num = room_num.to_i
-    else
-      raise StandardError.new("Invalid room number entered.")
     end
 
     if is_date_range_valid(start_date, end_date)
       @start_date = start_date
       @end_date = end_date
-    else
-      raise StandardError.new("Invalid date range entered")
     end
 
     if is_room_type_valid(room_type)
       @room_type = room_type
-    else
-      raise StandardError.new("Invalid room type entered")
     end
 
     @dates_booked_for_reservation = dates_of_booking(@start_date, @end_date)
@@ -35,7 +29,7 @@ class Reservation
     if all_room_numbers.include?(room_num.to_i)
       return true
     else
-      return false
+      raise StandardError.new("Invalid room number entered.")
     end
   end
 
@@ -44,7 +38,7 @@ class Reservation
     if end_date - start_date >= 1
       return true
     else
-      return false
+      raise StandardError.new("Invalid date range entered")
     end
   end
 
@@ -53,7 +47,7 @@ class Reservation
     if room_type == :standard || room_type == :block
       return true
     else
-      return false
+      raise StandardError.new("Invalid room type entered")
     end
   end
 

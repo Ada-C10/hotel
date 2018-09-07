@@ -135,7 +135,7 @@ class ReservationTracker
         @all_reservations << new_reservation
 
       else
-        raise ArgumentError.new("The specified room is not available for the date range provided")
+        raise StandardError.new("The specified room is not available for the date range provided")
       end
     else
       raise StandardError.new("The date range entered is invalid.")
