@@ -24,12 +24,13 @@ class HotelAdmin
 
   def retrieve_by_date(date)
     raise ArgumentError, "Valid date format was not provided." if date.class != Date
-    reservations.select { |res| (res.date_range.first..res.date_range.last).include? date }
+    #change because of date range use?
+    reservations.select { |res| res.date_range.include? date }
   end
 
   #This method does too much!
   def reserve_room(guest_email, room_number, check_in, check_out)
-    new_reservation = Reservation.new({guest_id: guest_email, room: room_number, date_range: [check_in, check_out]})
+    new_reservation = Reservation.new({guest_id: guest_email, room: room_number, date_range: (check_in..check_out)})
     room_object = retrieve_room(room_number)
     room_object.add_booking(new_reservation)
     reservations << new_reservation
@@ -42,7 +43,7 @@ class HotelAdmin
 
   def available_rooms(check_in, check_out)
     rooms.select do |room|
-      room.available?(check_in, check_out)
+      room.available?((check_in..check_out))
     end
   end
 

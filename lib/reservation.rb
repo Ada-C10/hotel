@@ -10,7 +10,7 @@ class Reservation
   end
 
   def calculate_cost
-    nights = (date_range[0]..date_range[-1]).count - 1
+    nights = date_range.count - 1
     nights * 200.00
   end
 
