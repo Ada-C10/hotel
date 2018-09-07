@@ -64,15 +64,11 @@ class Booking
     # Create daterange helper method to check if ranges overlap
     # It's okay if start_date and the last day of reservation are the same. (Do check_out - 1 for range end)
     # If any of the room's reservations are within the given range, room is not available
-    @rooms.reject do |room|
-      room.reservations.each do |reservation|
-        # Check if date range given overlaps with reservation range of check_in to (check_out - 1)
-        # Method returns true if ranges overlap so reject method is used
-        end_date >= reservation.check_in && start_date <= (reservation.check_out - 1) == false
-      end
+    # available_rooms = []
+    # Select room if all reservations for the room return false for overlap with the given start date end date
+    @rooms.select do |room|
+     room.reservations.all? { |reservation| date_range_overlap?(start_date, end_date, reservation.check_in, reservation.check_out) == FALSE }
     end
-    # Otherwise room is available
-
   end
 
 end

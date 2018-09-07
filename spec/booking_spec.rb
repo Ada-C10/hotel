@@ -138,20 +138,19 @@ describe "booking manager" do
       reservation_end_date = Date.new(2018,9,7)
       # date_range_one = DateRange.new(start_date, end_date)
       # date_range_two = DateRange.new(reservation_start_date, reservation_end_date)
+      # binding.pry
       expect(@manager.date_range_overlap?(start_date, end_date, reservation_start_date, reservation_end_date)).must_equal FALSE
     end
   end
 
     # Access list of rooms not reserved for date range
     it "Is able to access list of rooms not reserved for a date range" do
-      skip
       # Adding reservations for test
       @manager.add_reservation(1, Date.new(2018, 9, 1), Date.new(2018, 9, 2))
       @manager.add_reservation(2, Date.new(2018, 9, 2), Date.new(2018, 9, 3))
-      expect(@manager.list_rooms_available_for_date_range(Date.new(2018, 9, 1), Date.new(2018, 9, 3))).kind_of? Array
-      expect(@manager.list_rooms_available_for_date_range(Date.new(2018, 9, 1), Date.new(2018, 9, 3)).length).must_equal 18
-      expect(@manager.list_rooms_available_for_date_range(Date.new(2018, 9, 1), Date.new(2018, 9, 3)).first).kind_of? Room
-
+      expect(@manager.list_rooms_available_for_date_range(Date.new(2018, 9, 1), Date.new(2018, 9, 4))).kind_of? Array
+      expect(@manager.list_rooms_available_for_date_range(Date.new(2018, 9, 1), Date.new(2018, 9, 4)).length).must_equal 18
+      expect(@manager.list_rooms_available_for_date_range(Date.new(2018, 9, 1), Date.new(2018, 9, 4)).first).kind_of? Room
     end
 
     # List of block rooms
