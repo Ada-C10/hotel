@@ -1,11 +1,13 @@
 require_relative 'spec_helper'
 require 'date'
+require 'pry'
 
 describe "Reservation class" do
   before do
-    @begin_date = Date.new(2018,9,1)
-    @end_date = Date.new(2018,9,15)
-    @reservation = Reservation.new(@begin_date, @end_date, 5, 200)
+    date_range = {}
+    date_range[:begin_date] = Date.new(2018,9,1)
+    date_range[:end_date] = Date.new(2018,9,15)
+    @reservation = Reservation.new(date_range, 5, 200)
   end
 
   describe "Creates a new reservation"do
