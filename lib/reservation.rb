@@ -22,9 +22,14 @@ module Hotel
       return Date.parse("#{check_out_date}")
     end
 
-    def booking_date_range
+    def date_range
       date_range = [*checkin_num_to_date...checkout_num_to_date]
       return date_range
+    end
+
+    def calculate_booking_cost
+      cost = date_range.length * 200
+      return cost
     end
   end
 end
