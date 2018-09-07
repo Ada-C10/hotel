@@ -128,7 +128,7 @@ describe 'TrackingSystem class' do
     #   # end
     #   # return available_rooms (this is an array of rooms avail on 'date' passed as param)
     #
-    describe "#view_available_rooms_on" do
+    describe "#view_available_rooms_on specifc date range" do
       before do
       end
 
@@ -136,6 +136,7 @@ describe 'TrackingSystem class' do
         @tracker = TrackingSystem.new
         @available_rooms = @tracker.view_available_rooms_on(start_time: Date.new(2018,8,1),end_time:Date.new(2018,9,5))
         expect(@available_rooms).must_be_kind_of Array
+        # binding.pry
       end
 
       it "raises ArgumentError if start_time is > end_time" do

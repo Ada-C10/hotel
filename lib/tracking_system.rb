@@ -75,15 +75,17 @@ class TrackingSystem
     raise ArgumentError.new"start_time must be before end_time" unless start_time < end_time
     available_rooms = []
     @all_rooms.each do |room|
-      room.reserved_dates.each do |dates_hash| #<---date_range could be a hash like {checkin_time: checkin, checkout_time: checkout}
-        if ranges_overlap?((dates_hash[:start_time]...dates_hash[:end_time]).to_a, (start_time..end_time).to_a) == false
-          available_rooms << room
+      if room.reserved_dates.empty?
+        available_rooms << room
+      else
+        room.reserved_dates.each do |dates_hash| #<---date_range could be a hash like {checkin_time: checkin, checkout_time: checkout}
+          if ranges_overlap?((dates_hash[:start_time]...dates_hash[:end_time]).to_a, (start_time..end_time).to_a) == false
+            available_rooms << room
+          end
         end
-        binding.pry
-
       end
-      return available_rooms
     end
+    return available_rooms
   end
 end
 # if !(dates_hash[:start_time]...dates_hash[:end_time]).include
