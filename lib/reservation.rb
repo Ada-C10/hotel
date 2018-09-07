@@ -24,11 +24,14 @@ class Reservation
 
   def self.new_booking(start_date, end_date)
     @request_array = []
+    #binding.pry
     new_request =
-    Reservation.new(@start_date, @end_date, @request_array)
+    Reservation.new(start_date, end_date, @request_array)
     @request_array<< new_request
     return @request_array
   end
+
+
 
 end
 #Reservation.new_booking(start_date:'2012-02-01', end_date:'2012-02-03')
