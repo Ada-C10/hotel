@@ -1,17 +1,18 @@
 require 'pry'
 class Reservation
-  attr_reader :guest_id, :room, :date_range, :cost
+  attr_reader :guest_id, :room, :date_range, :rate, :status
 
   def initialize(input)
     @guest_id = input[:guest_id]
     @room = input[:room]
     @date_range = input[:date_range]
-    @cost = calculate_cost
+    @rate = input[:rate] ||= 200.00
+    @status = input[:status] ||= :complete
   end
 
-  def calculate_cost
+  def stay_cost
     nights = date_range.count - 1
-    nights * 200.00
+    nights * rate
   end
 
 end

@@ -16,7 +16,7 @@ class Room
 
   def available?(requested_dates)
     bookings.each do |booking|
-      previously_reserved = booking.date_range.to_a
+      previously_reserved = booking.date_range
       previously_reserved.each do |night|
         return false if requested_dates.include? night
       end

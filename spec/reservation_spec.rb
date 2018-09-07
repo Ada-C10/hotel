@@ -30,10 +30,19 @@ describe "Reservation" do
         expect(reservation.date_range).must_equal (Date.new(2018,10,20)..Date.new(2018,10,22))
     end
 
-    it "can calculate guest's stay cost and return it" do
-      expect(reservation.cost).must_equal 400.00
+    it "returns default nightly rate" do
+      expect(reservation.rate).must_equal 200.00
+    end
+
+    it "return default status as complete" do
+      expect(reservation.status).must_equal :complete
     end
 
   end
+
+  # describe "#initialize block reservation" do
+  #   it ""
+  #
+  # end
 
 end

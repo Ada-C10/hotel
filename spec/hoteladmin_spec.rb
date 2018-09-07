@@ -67,7 +67,7 @@ describe "HotelAdmin" do
       expect(@reservation.guest_id).must_equal "FishandChipsgrl@gmail.com"
       expect(@reservation.room).must_be_instance_of Integer
       expect(@reservation.date_range).must_equal (Date.new(2019,01,20)..Date.new(2019,01,22))
-      expect(@reservation.cost).must_equal 400.00
+      expect(@reservation.stay_cost).must_equal 400.00
     end
 
     it "adds new reservation to the hoteladmin object's reservations array" do
@@ -89,7 +89,7 @@ describe "HotelAdmin" do
       Reservation.new({guest_id: "Guccifer2.0@ada.com", room: 1, date_range: (Date.new(2018,12,02)..Date.new(2018,12,07))})
     }
     it "returns the cost associated with a given reservation" do
-      expect(reservation.cost).must_equal 1000.00
+      expect(reservation.stay_cost).must_equal 1000.00
     end
 
   end
