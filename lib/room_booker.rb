@@ -33,7 +33,6 @@ module Hotel
 
     end
 
-
     def find_available_room
 
       return 1 if @reservations.empty?

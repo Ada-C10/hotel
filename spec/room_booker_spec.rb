@@ -23,9 +23,11 @@ describe "RoomBooker Class" do
     end
   end
 
-  # describe 'list_reservations_by_date method' do
-  #   it '' do
-  #   end
+  describe 'list_reservations_by_date method' do
+    it 'Returns an array' do
+      expect(@reservation_1.list_reservations_by_date(@date_range_1)).must_be_kind_of Array
+    end
+  end 
 
   describe 'find_available_room method' do
     before do
@@ -37,8 +39,9 @@ describe "RoomBooker Class" do
       expect(@reservation_2.find_available_room).must_equal 1
     end
 
-    it 'Returns the first available room' do
-    end 
+    # it 'Returns the first available room' do
+    # end
+
 
   end
 
