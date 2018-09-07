@@ -55,7 +55,7 @@ module Hotel
     def find_available_rooms(requested_dates)
       unavailable_rooms = find_unavailable_rooms(requested_dates)
       available_rooms = @rooms.reject { |room| unavailable_rooms.include?(room) }
-      raise ArgumentError "NO ROOMS AVAILABLE!!!" if available_rooms.empty?
+      raise ArgumentError.new("NO ROOMS AVAILABLE!!!") if available_rooms.empty?
       return available_rooms
     end
 
