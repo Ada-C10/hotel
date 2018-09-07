@@ -112,7 +112,6 @@ describe "DateRange class" do
     end
   end
 
-
   describe "#get_range method" do
     it "returns an array of the range with the first element as the start_date and the last being one day before end_date " do
       expect(@date_range.get_range).must_be_kind_of Array
