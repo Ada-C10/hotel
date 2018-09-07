@@ -4,12 +4,13 @@ require 'pry'
 module Hotel
 
   class Reservation
+
     @@reservations = []
 
     attr_reader :room_num
     attr_accessor :start_date, :end_date
 
-    def initalize (start_date, end_date, room_num)
+    def initialize (start_date, end_date, room_num)
       @start_date = start_date
       @end_date = end_date
       @room_num = room_num
@@ -28,8 +29,7 @@ module Hotel
 
 
 
-
-
+  #Date.parse format: Date.parse("10/5/2018"), 10 is day, 5 is month
     # def create_reservation(start_date, end_date)
     #   raise ArgumentError, "start date has to before end date start date: #{start_date}" if  !valid_dates?(start_date, end_date)
     # end
