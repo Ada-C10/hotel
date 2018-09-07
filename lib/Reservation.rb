@@ -4,7 +4,9 @@ require 'pry'
 require_relative 'Booking'
 
 class Reservation
-  # Do instance of room in initialize?
+  # Refactor Note: This would have been a lot easier if I had made thsi
+    # A hash. Having room_number required became difficult later when
+    # I attempted to assign a reservation based on a date range alone 
   attr_reader :room_number, :check_in, :check_out, :cost_per_night, :total
 
   def initialize(room_number, check_in, check_out, cost_per_night=200)

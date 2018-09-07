@@ -30,7 +30,6 @@ describe "Room" do
       not_reserved_start_date = Date.new(2020,1,1)
       not_reserved_end_date = Date.new(2020,1,2)
       expect(@room.find_reservation(1, not_reserved_start_date, not_reserved_end_date)).must_equal FALSE
-
     end
 
     it "ArgumentError if id is not between 1 and 20" do

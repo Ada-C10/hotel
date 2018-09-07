@@ -6,7 +6,7 @@ class Room
 
   attr_reader :room_number, :reservations
 
-  # Default reservations to an empty array?
+  # Refactor note: Might be better to default reservations to an empty array?
   def initialize(room_number, reservations)
     @room_number = room_number.to_i
     if room_number.between?(1,20) == false
@@ -15,7 +15,7 @@ class Room
     @reservations = reservations
   end
 
-  # Change arguments to a hash so roder doesn't matter?
+  # Refactor note: Change arguments to a hash so order doesn't matter
   def find_reservation(room_number_to_find, check_in_to_find, check_out_to_find, cost_per_night_to_find=200)
     # Access reservations
     # Returns true if any reservations match the given reservation
@@ -27,7 +27,6 @@ class Room
       reservation.check_out == check_out_to_find &&
       reservation.cost_per_night == cost_per_night_to_find
     end
-    # binding.pry
     if reservation_to_find == nil
       return false
     else

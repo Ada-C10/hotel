@@ -23,7 +23,6 @@ describe 'DateRange' do
       expect(@date_range).must_respond_to :end_date
       expect(@date_range.end_date).must_equal END_DATE
     end
-
   end
 
   it "Raises an ArgumentError if check_in is not a date" do
@@ -34,9 +33,7 @@ describe 'DateRange' do
     expect{ DateRange.new(Date.new(2018, 9, 2), "Not a date") }.must_raise ArgumentError
   end
 
-  ### SHOWING AS NOT COVERED IN COVERAGE PERCENTAGE? ###
   it "Returns true if a date is within a date range" do
-    # Returns true if date is within check_in and check_out
     expect(@date_range.date_within_range?(Date.new(2018, 9, 2))).must_equal TRUE
   end
 

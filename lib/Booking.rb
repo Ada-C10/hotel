@@ -9,6 +9,9 @@ require 'pry'
 class NoRoomsAvailableError < StandardError
 end
 
+class RoomUnavailableError < StandardError
+end
+
 class NoReservationExistsError < StandardError
 end
 
@@ -42,12 +45,23 @@ class Booking
     return Reservation.new(room_number, check_in, check_out)
   end
 
+  # Helper method to return first available room
+  def first_available_room(start_date, end_date)
+    return list_rooms_available_for_date_range(start_date, end_date).first.room_number
+    # binding.pry
+  end
+
   # Maybe have room_number default to first available room for date range?
   # Wave 2 - Room must be available to be reserved
-  def add_reservation(room_number, check_in, check_out)
-    # list_rooms_available_for_date_range
-    # If no rooms available this will return an error
-    # If available, do below with room_number set to first available room 
+  def add_reservation(check_in, check_out, room_number = nil)
+    # Raise an error if list of available rooms does not include the given room number
+    room_number ||= first_available_room(check_in, check_out)
+    available_rooms = list_rooms_available_for_date_range(check_in, check_out)
+    room = find_room(room_number)
+    if available_rooms.include?(room) == false
+      raise RoomUnavailableError, "Room #{room_number} is not available between #{check_in} and #{check_out}"
+    end
+    # If available, create the reservation and add it to the room
     # create reservation
     reservation = create_reservation(room_number, check_in, check_out)
     # find room based on room number in reservation

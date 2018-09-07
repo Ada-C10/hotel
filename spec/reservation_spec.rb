@@ -53,6 +53,4 @@ describe "Reservation" do
     expect(@test_reservation.number_of_days_reserved).must_equal (@test_reservation.check_out - @test_reservation.check_in).to_i
     expect(@test_reservation).kind_of? Integer
   end
-
-
 end
