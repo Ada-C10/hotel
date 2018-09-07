@@ -58,7 +58,7 @@ describe 'ReservationTracker class' do
     conflicting_room_num = first_room.room_number
     check_in = "2018,9,10"
     check_out = "2018,9,11"
-    expect{new_tracker.reserve_room(conflicting_room_num, check_in, check_out)}.must_raise ArgumentError
+    expect{new_tracker.reserve_room(conflicting_room_num, check_in, check_out)}.must_raise StandardError
   end
 
   it 'shows all reservations' do

@@ -42,6 +42,14 @@ class ReservationTracker
     return formatted_date
   end
 
+  def is_date_range_valid(start_date, end_date)
+    if end_date - start_date >= 1
+      return true
+    else
+      return false
+    end
+  end
+
   def show_reservations_per_date(date)
     reservations_for_date = []
     formatted_date = format_date(date)
@@ -59,31 +67,35 @@ class ReservationTracker
 
   # Expecting user will enter date in the format: "yyyy,mm,dd"
   def show_available_rooms(start_date, end_date)
-    available_rooms = []
-
     starting_date = format_date(start_date)
     ending_date = format_date(end_date)
 
-    date_to_check = starting_date
-    @all_rooms.each do |room|
-      room_status = []
+    if is_date_range_valid(starting_date, ending_date)
+      available_rooms = []
 
-      until date_to_check == ending_date
-        check = room.is_available?(date_to_check)
-        if check
-          room_status << true
-        else
-          room_status << false
+      date_to_check = starting_date
+      @all_rooms.each do |room|
+        room_status = []
+
+        until date_to_check == ending_date
+          check = room.is_available?(date_to_check)
+          if check
+            room_status << true
+          else
+            room_status << false
+          end
+          date_to_check += 1
         end
-        date_to_check += 1
-      end
 
-      if room_status.all?
-        available_rooms << room
+        if room_status.all?
+          available_rooms << room
+        end
       end
+      # returning room instances NOT room numbers
+      return available_rooms
+    else
+      raise StandardError.new("Invalid date range entered.")
     end
-    # returning room instances NOT room numbers
-    return available_rooms
   end
 
   def update_dates_booked_for_room(new_reservation)
@@ -105,25 +117,28 @@ class ReservationTracker
 
   # Expecting user will enter date in the format: "yyyy,mm,dd"
   def reserve_room(room_num, check_in, check_out)
-
     room_number = room_num.to_i
     start_date = format_date(check_in)
     end_date = format_date(check_out)
 
-    available_rooms = show_available_rooms(check_in, check_out)
-    available_rooms_by_number = available_rooms.map do |room_instance|
-                                room_instance.room_number.to_i
-                              end
+    if is_date_range_valid(start_date, end_date)
+      available_rooms = show_available_rooms(check_in, check_out)
+      available_rooms_by_number = available_rooms.map do |room_instance|
+                                  room_instance.room_number.to_i
+                                end
 
-    if available_rooms_by_number.include?(room_number)
-      reservation_number = make_reservation_number
-      new_reservation = Reservation.new(reservation_number, room_number, start_date, end_date, :standard)
+      if available_rooms_by_number.include?(room_number)
+        reservation_number = make_reservation_number
+        new_reservation = Reservation.new(reservation_number, room_number, start_date, end_date, :standard)
 
-      update_dates_booked_for_room(new_reservation)
-      @all_reservations << new_reservation
+        update_dates_booked_for_room(new_reservation)
+        @all_reservations << new_reservation
 
+      else
+        raise ArgumentError.new("The specified room is not available for the date range provided")
+      end
     else
-      raise ArgumentError.new("The specified room is not available for the date range provided")
+      raise StandardError.new("The date range entered is invalid.")
     end
   end
 
