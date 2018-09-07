@@ -21,7 +21,7 @@ class ReservationTracker
       raise ArgumentError, "No available rooms"
     end
 
-    rate = Room::RATE
+    rate = @rooms.rate
 
     reservation = Reservation.new(date_range, room_num, rate)
     @all_reservations << reservation
