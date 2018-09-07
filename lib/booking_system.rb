@@ -28,5 +28,10 @@ module Hotel
       all_rooms = [*1..20]
       return all_rooms
     end
+
+    def calculate_booking_cost(reservation)
+      cost = reservation.booking_date_range.length * 200
+      return cost
+    end
   end
 end
