@@ -7,9 +7,7 @@ class Reservation
   def initialize(reservation_num, room_num, start_date, end_date, room_type)
     @reservation_num = reservation_num.to_i
 
-    # Verify valid room number entered
-    all_room_numbers = [*1..20]
-    if all_room_numbers.include?(room_num.to_i)
+    if is_room_num_valid(room_num)
       @room_num = room_num.to_i
     else
       raise StandardError.new("Invalid room number entered.")
@@ -32,6 +30,15 @@ class Reservation
 
     # Recording the dates that the reservation is made for
     @dates_booked_for_reservation = dates_of_booking(@start_date, @end_date)
+  end
+
+  def is_room_num_valid(room_num)
+    all_room_numbers = [*1..20]
+    if all_room_numbers.include?(room_num.to_i)
+      return true
+    else
+      return false
+    end
   end
 
   def dates_of_booking(checkin, checkout)
