@@ -5,16 +5,21 @@ class Room
 
   RATE = 200
 
-  def self.find_all_open_rooms(array_of_used_rooms)
+  def initialize
+    @rooms = ROOMS
+    @rate = RATE
+  end
+
+  def find_all_open_rooms(array_of_used_rooms)
     available_rooms = ROOMS - array_of_used_rooms
     return available_rooms
   end
 
-  def self.find_available_room(array_of_used_rooms)
+  def find_available_room(array_of_used_rooms)
     return find_all_open_rooms(array_of_used_rooms).first
   end
 
-  def self.find_block_of_rooms(num_rooms, array_of_used_rooms)
+  def find_block_of_rooms(num_rooms, array_of_used_rooms)
     room_block = []
     num_rooms.times do
       first_available_room = find_available_room(array_of_used_rooms)

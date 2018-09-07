@@ -80,7 +80,7 @@ describe "ReservationTracker class" do
 
   describe "list of open rooms" do
     it "can report a list of rooms that are not reserved for a given date range" do
-      open_rooms = Room::find_all_open_rooms(@reservations.occupied_rooms(begin_date: '9-18-2018', end_date: '9-20-2018'))
+      open_rooms = @reservations.rooms.find_all_open_rooms(@reservations.occupied_rooms(begin_date: '9-18-2018', end_date: '9-20-2018'))
       expect (open_rooms).must_equal [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
     end
   end
