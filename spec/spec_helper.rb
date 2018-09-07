@@ -11,5 +11,5 @@ Minitest::Reporters.use! Minitest::Reporters::SpecReporter.new
 # Require_relative your lib files here!
 require_relative '../lib/hotel'
 require_relative '../lib/room'
-require_relative '../lib/reservation_keeper'
+require_relative '../lib/reservation_tracker'
 require_relative '../lib/reservation'
