@@ -13,12 +13,12 @@ require 'date'
       raise StandardError, 'The end date cannot be before the start date.' if check_out_date <= check_in_date
     end
 
-    def book_room
+    def nights_stayed
       return date_range = check_out_date - check_in_date
     end
 
     def rate
-      book_room * 200
+      nights_stayed * 200
     end
   end
 # end

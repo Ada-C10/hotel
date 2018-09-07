@@ -29,7 +29,7 @@ describe 'Reservation' do
     end
 
     it 'raises an ArgumentError for an invalid date range' do
-      expect{ (Rservation.new(invalid_range)) }.must_raise StandardError
+      expect{ (Reservation.new(check_out_date, check_in_date)) }.must_raise StandardError
     end
 
     describe 'rate' do
