@@ -153,6 +153,34 @@ describe "HotelAdmin" do
 
   end
   #
+  describe "HotelAdmin#reserve_block" do
 
+    it "creates block reservations with :block_reserved status and custom price" do
+      previous_reservations = hotel.reservations.length
+      hotel.reserve_block("Smith Wedding Party", [7,8,9,10], Date.new(2018,12,02), Date.new(2018,12,07), 145.00)
+
+      expect(hotel.reservations.length).must_equal (previous_reservations + 4)
+      expect(hotel.reservations.last.status).must_equal :block_reserved
+
+    end
+
+
+    it "adds block reservations to appropriate rooms" do
+      hotel.reserve_block("Smith Wedding Party", [7,8,9,10], Date.new(2018,12,02), Date.new(2018,12,07), 145.00)
+      room7 = hotel.retrieve_room(7)
+      room10 = hotel.retrieve_room(10)
+
+      expect(room7.bookings.count).must_equal 1
+      expect(room7.bookings.first).must_be_instance_of Reservation
+      expect(room10.bookings.count).must_equal 1
+      expect(room10.bookings.first).must_be_instance_of Reservation
+
+    end
+
+    # it "raises an argument error if valid date range and cost not provided by administrator" do
+    #
+    # end
+
+  end
 
 end
