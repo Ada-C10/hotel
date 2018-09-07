@@ -46,7 +46,6 @@ describe "BookingSystem class" do
 
       reservation3 = Hotel::Reservation.new(id: 3, room: @system.assign_available_room(Date.new(2018, 1, 6), Date.new(2018, 1, 9)), start_date: Date.new(2018, 1, 6), end_date: Date.new(2018, 1, 9), price_per_night: 200)
       @system.reservations << reservation3
-
       expect(reservation3.room).must_equal 2
     end
   end
@@ -143,3 +142,18 @@ end
 # (StartDate1 < EndDate2) and (StartDate2 <= EndDate1)
 #
 # true true
+
+
+# def search_reservations(start_date_2, end_date_2)
+#   reservations_within_date = []
+#   empty_rooms_within_date = []
+#   @reservations.each do |reservation|
+#     if
+#       reservation.start_date < end_date_2 && start_date_2 < reservation.end_date
+#       reservations_within_date << reservation
+#     else
+#       empty_rooms_within_date << reservation.room
+#     end
+#     # binding.pry
+#   end
+# end

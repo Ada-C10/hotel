@@ -23,19 +23,23 @@ module Hotel
     end
 
     def make_reservation(start_date, end_date)
-      assigned_room = assign_available_room(start_date, end_date)
-      reservation = Hotel::Reservation.new(id: 1, room: assigned_room, start_date: start_date, end_date: end_date, price_per_night: 200)
+      reservation = Hotel::Reservation.new(id: 1, room: assign_available_room(start_date, end_date), start_date: start_date, end_date: end_date, price_per_night: 200)
       @reservations << reservation
+      # binding.pry
     end
 
-    def assign_available_room(new_d1, new_d2)
+    def assign_available_room(start_date_2, end_date_2)
+      booked_rooms = []
+      available_rooms = []
       @reservations.each do |reservation|
-        old_d1 = reservation.start_date
-        old_d2 = reservation.end_date
-        if new_d1.between?(old_d1, old_d2) == false && new_d2.between?(old_d1, old_d2) == false && old_d1.between?(new_d1, new_d2) == false && old_d2.between?(new_d1, new_d2) == false
-        return reservation.room
+        if
+          reservation.start_date < end_date_2 && start_date_2 < reservation.end_date
+          booked_rooms << reservation.room
         end
       end
+      all_rooms = load_rooms
+      available_rooms = all_rooms - booked_rooms
+      return available_rooms[0]
     end
 
     def search_reservations(start_date_2, end_date_2)
@@ -50,22 +54,6 @@ module Hotel
       return reservations_within_date
     end
 
-    # def total_cost(id)
-
-
-    # def assign_available_room(start_date_2)
-    #   reservations_within_date = []
-    #   @reservations.each do |reservation|
-    #     if reservation.start_date < end_date_2 && start_date_2 <= reservation.end_date
-    #     elsif reservations_within_date << reservation
-    #       # binding.pry
-    #     end
-    #     return reservations_within_date
-    #   end
-    # end
-    #
-    #
-    #
     def find_reservation(id)
       reservation = @reservations.find { |reservation| reservation.id == id }
       return reservation
