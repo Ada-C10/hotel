@@ -13,6 +13,8 @@ module Hotel
 
       @total_cost = reservation_cost(@start_date, @end_date)
 
+      # @room_number = find_room #Room.find(@start_date, @end_date? - return id of ones that are available)
+
       validate_dates
 
     end
@@ -33,11 +35,16 @@ module Hotel
     #   return Date.new(year, month, day)
     # end
 
-
     def reservation_cost(start_date, end_date)
       nightly_cost = 200
       total_days = (end_date - start_date).to_i
       total_cost = total_days * nightly_cost
+    end
+
+
+    def find_room(start_date, end_date)
+
+
     end
 
 

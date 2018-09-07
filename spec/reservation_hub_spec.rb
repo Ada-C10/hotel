@@ -38,6 +38,7 @@ describe "Reservation Hub class" do
     end
   end
 
+
   describe "add reservation" do
 
     # before do
@@ -52,14 +53,8 @@ describe "Reservation Hub class" do
 
       expect(@reservation_hub.reservations.length).must_equal 2
     end
-
-
-    # it "accepts a Date argument for start and end dates" do
-    #   expect(start_date).must_be_kind_of Date
-    #   expect(end_date).must_be_kind_of Date
-    #
-    # end
   end
+
 
   describe "Generate date" do
     it "is a kind of date" do
@@ -67,6 +62,7 @@ describe "Reservation Hub class" do
       expect(date).must_be_kind_of Date
     end
   end
+
 
   describe "find reservation" do
 
@@ -76,8 +72,8 @@ describe "Reservation Hub class" do
       @reservation_hub.add_reservation(2018, 01, 03, 2018, 01, 07)
       @reservation_hub.add_reservation(2018, 04, 03, 2018, 04, 06)
       @reservation_hub.add_reservation(2018, 01, 03, 2018, 02, 12)
-
     end
+
 
     it "returns a list of reservations based on a start date" do
 
@@ -86,7 +82,6 @@ describe "Reservation Hub class" do
       expect(reservations).must_be_kind_of Array
 
       expect(reservations.length).must_equal 1
-
     end
   end
 
@@ -98,7 +93,6 @@ describe "Reservation Hub class" do
       @reservation_hub.add_reservation(2018, 01, 03, 2018, 01, 07)
       @reservation_hub.add_reservation(2018, 04, 03, 2018, 04, 06)
       @reservation_hub.add_reservation(2018, 01, 03, 2018, 02, 12)
-
     end
 
     it "returns an array of all reservations" do
@@ -109,27 +103,14 @@ describe "Reservation Hub class" do
       reservations.each do |res|
         expect(res).must_be_kind_of Hotel::Reservation
       end
-
     end
-
   end
-
-
-
 
 end
 
 
 
 
-
-  #As an administrator, I can access the list of all of the rooms in the hotel
-  #As an administrator, I can reserve a room for a given date range
-  #As an administrator, I can access the list of reservations for a specific date
-  #def - find reservations (find all?) (date)
-  #return array of reservations
-
-  #As an administrator, I can get the total cost for a given reservation
 
 
 
