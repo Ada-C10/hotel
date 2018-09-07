@@ -1,7 +1,6 @@
 require 'date'
-require 'pry'
-require 'awesome_print'
 
+require_relative 'date_range'
 require_relative 'reservation'
 
 NUM_OF_ROOMS = 20
@@ -46,21 +45,18 @@ module Hotel
 
     def find_available_rooms(requested_dates)
       unavailable_rooms = find_unavailable_rooms(requested_dates)
-
-      available_rooms = @rooms.reject { |room|  unavailable_rooms.include?(room) }
-
+      available_rooms = @rooms.reject { |room| unavailable_rooms.include?(room) }
       return available_rooms
     end
 
     def get_first_available_room(requested_dates)
       all_available_rooms = find_available_rooms(requested_dates)
       first_available_room = all_available_rooms.first
-      check_room_number(first_available_room)
       return first_available_room
     end
 
     def get_requested_dates_range(input)
-      requested_dates = Hotel::DateRange.new(input[:start_date], input[:end_date])
+      requested_dates = DateRange.new(input[:start_date], input[:end_date])
       requested_dates_range = requested_dates.get_range
       return requested_dates_range
     end
@@ -68,8 +64,8 @@ module Hotel
     def reserve_room(input)
       requested_dates = get_requested_dates_range(input)
 
-      room = get_first_available_room(requested_dates)
       id = @reservations.length + 1
+      room = get_first_available_room(requested_dates)
 
       reservation_data = {
         id: id,
@@ -78,22 +74,15 @@ module Hotel
         end_date: input[:end_date]
       }
 
-      new_reservation = Hotel::Reservation.new(reservation_data)
+      new_reservation = Reservation.new(reservation_data)
       @reservations << new_reservation
       return new_reservation
     end
 
-    # def find_available_rooms(requested_dates)
-    #   available_rooms = @rooms.map do |room|
-    #     return room if room.is_available?(requested_dates)
-    #   end
-    #   # Raise error if no rooms available for dates
-    # end
-
     private
 
-    def check_room_number(room_number)
-      raise ArgumentError, "Room number cannot be less than 1 or greater than 20. (got #{room_number})" unless room_number.between?(1, 20)
-    end
+    # def check_room_number(room_number)
+    #   # raise ArgumentError, "Room number cannot be less than 1 or greater than 20. (got #{room_number})" unless room_number.between?(1, 20)
+    # end
   end
 end

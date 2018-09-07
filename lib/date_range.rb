@@ -1,4 +1,3 @@
-require 'pry'
 module Hotel
   class DateRange
     attr_reader  :start_date, :end_date
@@ -20,9 +19,8 @@ module Hotel
       return [*@start_date...@end_date]
     end
 
-    def get_reservation_period
-      get_reservation_period = @end_date - @start_date
-      return get_reservation_period
+    def find_num_nights
+      return @end_date - @start_date
     end
   end
 end
