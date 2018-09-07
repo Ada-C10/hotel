@@ -1,6 +1,7 @@
 # require 'pry'
 require_relative 'room'
 require_relative 'reservation'
+# require 'pry'
 
 module Hotel
   class BookingManager
@@ -38,10 +39,32 @@ module Hotel
       @room_calendar = {}
 
       number.times do |num|
-        dates_reserved = []
-        @room_calendar[:num] = dates_reserved
+        dates_reserved = {} #[]
+        @room_calendar[num+1] = dates_reserved
       end
+
       return @room_calendar
+    end
+
+    # # Create a new instance of Reservation # should this and add_reservation be one method?
+    #   def reserve(room)
+    #   end
+
+    # Method to add a reservation to list of reservations
+    def add_reservation(reservation)
+      @reservations << reservation
+      # @room_calendar
+      #
+      # reserved_message = "Room successfully reserved"
+      # return reserved_message
+    end
+
+    # Add reservation date to hash of room reserved dates
+    def add_reservation_to_calendar(reservation)
+      @room_calendar[reservation.room][reservation.start_date] = reservation
+  # binding.pry
+      return @room_calendar
+
     end
 
     # Method to list all reservations
@@ -55,14 +78,7 @@ module Hotel
       return @rooms
     end
 
-  # # Create a new instance of Reservation # should this and add_reservation be one method?
-  #   def reserve(room)
-  #   end
 
-  # Method to add a reservation to list of reservations
-    def add_reservation(reservation)
-      @reservations << reservation
-    end
 
     # Method to get total cost of reservation
     # Get cost from reservation?
