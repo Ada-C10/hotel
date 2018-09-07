@@ -20,7 +20,7 @@ module Hotel
 
     def make_reservation(date_range, room=nil)
       #think...what if there's no available rooms, raise an exception
-      room_number = find_available_room
+      room_number = find_available_room(date_range)
       reservation = Reservation.new(date_range, room_number)
       @reservations << reservation
     end
@@ -33,7 +33,7 @@ module Hotel
 
     end
 
-    def find_available_room
+    def find_available_room(date_range)
 
       return 1 if @reservations.empty?
 
@@ -41,7 +41,8 @@ module Hotel
       available_rooms = []
 
       @reservations.each do |res|
-        if date_overlaps?(res.date_range)
+
+        if date_range.dates_overlap?(res.date_range)
           unavailable_rooms << res.room
         else
           available_rooms << res.room
@@ -59,3 +60,6 @@ module Hotel
 
   end
 end
+
+# a = Hotel::RoomBooker.new()
+# puts a.list_rooms
