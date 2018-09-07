@@ -45,35 +45,4 @@ describe 'reservation class' do
       end
     end
   end
-
-  describe 'reservation instantiation' do
-
-    before do
-      @input = { name: "Vlad the Impaler",
-        room_number:  9,
-        check_in_date: Date.new(2020,9,9),
-        check_out_date: Date.new(2020,9,13),
-      }
-      @input2 = { name: "Dr. Frankensteen",
-        room_number:  9,
-        check_in_date: Date.new(2020,9,13),
-        check_out_date: Date.new(2020,9,9),
-      }
-      @reservation = Hotel::Reservation.new(@input)
-    end
-    #
-    it 'generates an array of all nights in a reservation without including the checkout date' do
-      @nights = [Date.new(2020,9,9), Date.new(2020,9,10), Date.new(2020,9,11), Date.new(2020,9,12)]
-
-      expect(@reservation.nights_of_stay).must_be_kind_of Array
-
-      @nights.each do |night|
-        expect(@reservation.nights_of_stay.include?(night)).must_equal true
-      end
-    end
-
-    it 'raises an Error if the the check out date is before the check in date date' do
-       expect { Hotel::Reservation.new(@input2) }.must_raise ArgumentError
-    end
-  end
 end

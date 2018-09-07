@@ -8,7 +8,7 @@ module Hotel
   class Helper_Method
 
     def self.binary_search_list_of_reservations(array_of_reservations, array_of_possible_dates)
-
+      # RETURNS TRUE IF BOOKED, FALSE IF VACANT
       min = 0
       max = array_of_reservations.length
 
@@ -59,7 +59,7 @@ module Hotel
 
     def self.check_valid_date_range(check_in, check_out)
       if check_out < check_in
-        return raise ArgumentError, 'Check_out date before check_in date.'
+        return raise StandardError, 'Check_out date before check_in date.'
       end
     end
 
