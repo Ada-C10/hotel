@@ -1,5 +1,5 @@
-require_relative 'room'
-require_relative 'reservation'
+# require_relative 'room'
+# require_relative 'reservation'
 require 'date'
 
 class Admin
@@ -69,7 +69,7 @@ class Admin
         raise ArgumentError, "no rooms available"
       end
 
-    new_reservation = Reservation.new(id, room, start_date, end_date)
+    new_reservation = Reservation.new(id, room, start_date, end_date, room_cost: 150)
 
     add_reservation(new_reservation, reservation_location: block_reservation.reservations)
     # delete room number from available_rooms

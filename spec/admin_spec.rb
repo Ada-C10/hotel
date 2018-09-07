@@ -3,33 +3,36 @@ require 'pry'
 
 describe "Booking" do
   describe "initialize" do
+    let (:hotel) { Admin.new }
+
+
     it "Creates an instance of hotel" do
-      hotel = Admin.new
+      # hotel = Admin.new
       hotel.must_be_kind_of Admin
     end
 
     it "keeps track of rooms" do
-      hotel = Admin.new
+      # hotel = Admin.new
       hotel.rooms.must_be_kind_of Array
     end
 
     it "contains 20 rooms in rooms" do
-      hotel = Admin.new
+      # hotel = Admin.new
       hotel.rooms.length.must_equal 20
     end
 
     it "keeps track of last room accurately" do
-      hotel = Admin.new
+      # hotel = Admin.new
       (hotel.rooms[0]).must_equal 1
     end
 
     it "keeps track of first room accurately" do
-      hotel = Admin.new
+      # hotel = Admin.new
       (hotel.rooms[19]).must_equal 20
     end
 
     it "starts with no reservations" do
-      hotel = Admin.new
+      # hotel = Admin.new
       hotel.reservations.count.must_equal 0
     end
 
@@ -112,6 +115,22 @@ describe "Booking" do
         specific_date.length.must_equal 2
 
       end
+
+      it "accurately finds all reservation including those made in block reservations" do
+        #action
+        hotel = Admin.new
+        hotel.request_reservation("2018-12-09", "2018-12-15")
+        hotel.request_reservation("2018-12-11", "2018-12-17")
+        hotel.request_reservation("2018-4-11", "2018-4-12")
+        family_reunion = hotel.request_block_reservation(4, "2018-12-12", "2018-12-14")
+
+        jones = hotel.request_reservation_within_block(4, "2018-12-12", "2018-12-14")
+
+        specific_date = hotel.reservations_by_date("2018-12-12")
+
+        specific_date.length.must_equal 3
+        specific_date[2].reservations.must_include jones
+      end
     end
 
     describe "reservation_cost" do
@@ -122,6 +141,16 @@ describe "Booking" do
         cost = hotel.reservation_cost(reserve1)
 
         cost.must_equal 1200
+      end
+
+      it "accurately calculates cost of reservation for reservation within block" do
+        hotel = Admin.new
+        hotel.request_block_reservation(4, "2018-12-12", "2018-12-14")
+        smith = hotel.request_reservation_within_block(1, "2018-12-12", "2018-12-14")
+
+        smith_cost = hotel.reservation_cost(smith)
+        # binding.pry
+        smith_cost.must_equal 300
       end
     end
 
@@ -135,6 +164,22 @@ describe "Booking" do
         specific_dates = hotel.reservations_by_date_range("2018-12-12", "2018-12-14")
         # binding.pry
         specific_dates.length.must_equal 2
+      end
+
+      it "accurately finds all reservation including those made in block reservations" do
+        #action
+        hotel = Admin.new
+        hotel.request_reservation("2018-12-09", "2018-12-15")
+        hotel.request_reservation("2018-12-11", "2018-12-17")
+        hotel.request_reservation("2018-4-11", "2018-4-12")
+        family_reunion = hotel.request_block_reservation(4, "2018-12-12", "2018-12-14")
+
+        jones = hotel.request_reservation_within_block(4, "2018-12-12", "2018-12-14")
+
+        specific_dates = hotel.reservations_by_date_range("2018-12-12", "2018-12-14")
+
+        specific_dates.length.must_equal 3
+        specific_dates[2].reservations.must_include jones
       end
 
       it "will not include reservation if requested trip start is same date as end_time of other reservation" do
@@ -292,7 +337,7 @@ describe "Booking" do
 
       it "throws StandardError if reservation start does not match block start date" do
         hotel = Admin.new
-        family_reunion = hotel.request_block_reservation(4, "2018-12-12", "2018-12-14")
+        hotel.request_block_reservation(4, "2018-12-12", "2018-12-14")
 
         expect{hotel.request_reservation_within_block(1, "2018-12-13",
           "2018-12-14")}.must_raise StandardError
@@ -300,7 +345,7 @@ describe "Booking" do
 
       it "throws StandardError if reservation end date does not match block end date" do
         hotel = Admin.new
-        family_reunion = hotel.request_block_reservation(4, "2018-12-12", "2018-12-14")
+        hotel.request_block_reservation(4, "2018-12-12", "2018-12-14")
 
         expect{hotel.request_reservation_within_block(1, "2018-12-12",
           "2018-12-17")}.must_raise StandardError

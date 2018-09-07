@@ -19,7 +19,7 @@ describe "BlockReservation" do
 
     it "keeps track of room number" do
       rooms = [2, 4, 6]
-      family_reunion = BlockReservation.new(7, [2,4,6], "2018-4-17", "2018-4-20")
+      family_reunion = BlockReservation.new(7, rooms, "2018-4-17", "2018-4-20")
       family_reunion.must_respond_to :room
       family_reunion.room.must_equal [2, 4, 6]
     end

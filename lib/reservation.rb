@@ -1,5 +1,5 @@
 require 'date'
-require 'admin'
+# require 'admin'
 
 class Reservation
   attr_reader :id, :room, :start_date, :end_date, :room_cost
@@ -21,7 +21,6 @@ class Reservation
     end
 
     @room_cost = room_cost
-
   end
 
   # def check_date(date)
