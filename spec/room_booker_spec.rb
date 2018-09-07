@@ -7,7 +7,6 @@ describe "RoomBooker Class" do
     @reservation_1.make_reservation(@date_range_1)
   end
 
-
   describe "Initializer" do
     it 'Creates an array of room numbers' do
       expect(@reservation_1.room).must_be_kind_of Array
@@ -23,6 +22,27 @@ describe "RoomBooker Class" do
       expect(@reservation_1.list_rooms).must_be_kind_of Array
     end
   end
+
+  # describe 'list_reservations_by_date method' do
+  #   it '' do
+  #   end
+
+  describe 'find_available_room method' do
+    before do
+      @date_range_2 = Hotel::DateRange.new('2018-09-01', '2018-09-05')
+      @reservation_2 = Hotel::RoomBooker.new()
+    end
+
+    it 'Returns 1 if the reservations are empty' do
+      expect(@reservation_2.find_available_room).must_equal 1
+    end
+
+    it 'Returns the first available room' do
+    end 
+
+  end
+
+
 
 
 

@@ -18,25 +18,25 @@ module Hotel
       return @room
     end
 
-
-    def make_reservation(date_range)
+    def make_reservation(date_range, room=nil)
       #think...what if there's no available rooms, raise an exception
-      reservation = Reservation.new(date_range, find_available_room)
+      room_number = find_available_room
+      reservation = Reservation.new(date_range, room_number)
       @reservations << reservation
     end
 
     # If we need reservations for a particular room:
     # @reservations.select { |res| res.room_number == room_number }
 
-    def list_reservations_by_date(start_date, end_date)
-      start_date = Date.parse(start_date)
-    end_date = Date.parse(end_date)
+    def list_reservations_by_date(date_range)
+      return @reservations.select { |res| res.date_range == date_range }
+
     end
 
 
     def find_available_room
 
-      return 0 if @reservations.empty?
+      return 1 if @reservations.empty?
 
       unavailable_rooms = []
       available_rooms = []
@@ -50,7 +50,6 @@ module Hotel
       end
 
       return available_rooms.first
-
     end
 
 
