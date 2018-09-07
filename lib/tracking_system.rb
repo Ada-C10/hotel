@@ -30,6 +30,12 @@ class TrackingSystem
 
   #reserve an available room for a given date range
   def make_reservation(start_time: Date.now, end_time: Date.now + 1, number_of_rooms: 1)
+#     available_rooms = view_available_rooms_on(start_time, end_time) #<--returns an array of available rooms!
+#     raise ArgumentError.new"Not enough rooms available on those dates" if available_rooms.length < number_of_rooms
+#     number_of_rooms.times do |i|
+#       @reservations << Reservation.new({rooms: [available_rooms[i].room_num], start_time: start_time, end_time: end_time, price: 200.0})
+# #need to come back here and create i instances of reservation..but first need to change Reservation.rooms to hold an Integer instead of Array
+    # available_rooms.each do |room|
     @all_rooms.each do |room|
       number_of_rooms.times do
         if room.reserved_dates.empty?
@@ -42,7 +48,7 @@ class TrackingSystem
               reservation = Reservation.new({rooms: [room], start_time: start_time, end_time: end_time, price: 200.0})
               @reservations << reservation
               room.reserved_dates << {start_time: start_time, end_time: end_time}
-            else raise ArgumentError.new"There is no room available on that date, out of all 20 rooms"
+            else raise ArgumentError.new"There is no room available on that date"
             end
           end
         end

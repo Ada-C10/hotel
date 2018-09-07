@@ -1,9 +1,9 @@
 class Reservation
-  attr_reader :rooms, :start_time, :end_time, :price
+  attr_reader :room, :start_time, :end_time, :price
   #need to write a test for these
 
   def initialize(attributes) #attributes is a hash , so theoretically from CSV it would be converted into a hash
-    @rooms = attributes[:rooms]  #the value of room_num could be an array later for rooms
+    @room = attributes[:room]  #the value of room should be an Integer
     @start_time = attributes[:start_time]
     @end_time = attributes[:end_time]
     @price = attributes[:price]
