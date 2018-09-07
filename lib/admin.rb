@@ -73,18 +73,17 @@ class Admin
   end
 
   #As an administrator, I can view a list of rooms that are not reserved for a given date range
-  def view_vacant_rooms(date_range)
+  def view_vacant_rooms(target_range)
     @rooms.each do |room|
       ranges = room.ranges
-      length = ranges.length
-      vacant = binary_search(ranges, length, date_range)
-      if vacant
+      found = range_search(ranges, target_range)
+      if found
         booked_rooms << room
       else
         vacant_rooms << room
       end
     end
-  return vacant_rooms
+    return vacant_rooms
   end
 
   private
@@ -97,27 +96,12 @@ class Admin
     range.include?(date)
   end
 
-  def binary_search(array, length, value_to_find)
-    binding.pry
-
-    low = array[0]
-    high = array[length - 1]
-    index = 0
-
-    while low < high
-      mid = (low + high) / 2
-      if mid == value_to_find
+  def range_search(ranges, target)
+    ranges.each do |range|
+      if range == target
         return true
-      elsif mid > value_to_find
-        high = mid - 1
-      elsif mid < value_to_find
-        low = mid + 1
-      end
-      if low == value_to_find || high == value_to_find
-        return true
-      else
-        return false
       end
     end
+    return false
   end
 end

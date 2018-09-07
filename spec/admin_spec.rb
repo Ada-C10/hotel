@@ -83,13 +83,17 @@ describe "#rooms information" do
   end
 
   it "view vacant rooms" do
+    # for reserve_room
     start_date = "2018-08-07 00:00:00 -0700"
     end_date = "2018-08-09 00:00:00 -0700"
     @admin.reserve_room(start_date, end_date)
-    range = (start_date..end_date)
+    # for range and testing view vacant_rooms
+    start_time = Time.parse("2018-08-07 00:00:00 -0700")
+    end_time = Time.parse("2018-08-09 00:00:00 -0700")
+    range = (start_time..end_time)
     @admin.view_vacant_rooms(range)
 
-    expect(@admin.view_vacant_rooms.first).must_be_kind_of Room
-    expect(@admin.view_vacant_rooms.first.number).must_equal 1
+    expect(@admin.vacant_rooms.first).must_be_kind_of Room
+    expect(@admin.vacant_rooms.length).must_equal 19
   end
 end
