@@ -57,14 +57,12 @@ class ReservationTracker
     return reservations_for_date
   end
 
-  # Expecting user to enter date in the format: "yyyy,mm,dd"
+  # Expecting user will enter date in the format: "yyyy,mm,dd"
   def show_available_rooms(start_date, end_date)
     available_rooms = []
 
     starting_date = format_date(start_date)
     ending_date = format_date(end_date)
-
-    number_of_consecutive_days_to_check = ending_date - starting_date
 
     date_to_check = starting_date
     @all_rooms.each do |room|
@@ -72,13 +70,11 @@ class ReservationTracker
 
       until date_to_check == ending_date
         check = room.is_available?(date_to_check)
-
         if check
           room_status << true
         else
           room_status << false
         end
-
         date_to_check += 1
       end
 
@@ -107,7 +103,7 @@ class ReservationTracker
     return reservation_number
   end
 
-  # Expecting user to enter date in the format: "yyyy,mm,dd"
+  # Expecting user will enter date in the format: "yyyy,mm,dd"
   def reserve_room(room_num, check_in, check_out)
 
     room_number = room_num.to_i
