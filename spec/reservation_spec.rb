@@ -66,43 +66,67 @@ describe 'reservation class' do
     end
   end
 
-  describe 'date_within_reservation?' do
+  describe 'checking dates within reservation' do
     before do
       @reservation = Hotel::Reservation.new(1, Date.new(2018,7,4), Date.new(2018,7,10))
     end
 
-    it 'raise argumenterror for nondate inputs' do
-      expect{
-        @reservation.date_within_reservation?('datestring')
-      }.must_raise(ArgumentError)
-      expect{
-        @reservation.date_within_reservation?(23)
-      }.must_raise(ArgumentError)
-      expect{
-        @reservation.date_within_reservation?([])
-      }.must_raise(ArgumentError)
+    describe 'date_within_reservation?' do
+
+      it 'raise argumenterror for nondate inputs' do
+        expect{
+          @reservation.date_within_reservation?('datestring')
+        }.must_raise(ArgumentError)
+        expect{
+          @reservation.date_within_reservation?(23)
+        }.must_raise(ArgumentError)
+        expect{
+          @reservation.date_within_reservation?([])
+        }.must_raise(ArgumentError)
+      end
+
+      it 'returns false for dates out of range' do
+        expect(
+          @reservation.date_within_reservation?(Date.new(2018,5,1))
+        ).must_equal(false)
+        expect(
+          @reservation.date_within_reservation?(Date.new(2018,7,10))
+        ).must_equal(false)
+      end
+
+      it 'returns true for dates in range' do
+        expect(
+          @reservation.date_within_reservation?(Date.new(2018,7,4))
+        ).must_equal(true)
+        expect(
+          @reservation.date_within_reservation?(Date.new(2018,7,9))
+        ).must_equal(true)
+      end
     end
 
-    it 'returns false for dates out of range' do
-      expect(
-        @reservation.date_within_reservation?(Date.new(2018,5,1))
-      ).must_equal(false)
-      expect(
-        @reservation.date_within_reservation?(Date.new(2018,7,10))
-      ).must_equal(false)
-    end
 
-    it 'returns true for dates in range' do
-      expect(
-        @reservation.date_within_reservation?(Date.new(2018,7,4))
-      ).must_equal(true)
-      expect(
-        @reservation.date_within_reservation?(Date.new(2018,7,9))
-      ).must_equal(true)
-    end
-  end
+    describe 'daterange_within_reservation' do
 
-  # TODO: is testing this method necessary?
-  describe 'daterange_within_reservation' do
+      it 'returns false for dates completely out of range' do
+        expect(
+          @reservation.daterange_within_reservation?(Date.new(2018,5,3), Date.new(2018,6,3))
+        ).must_equal(false)
+        expect(
+          @reservation.daterange_within_reservation?(Date.new(2018,7,10), Date.new(2018,8,1))
+        ).must_equal(false)
+      end
+
+      it 'returns true for dates within reservation' do
+        expect(
+          @reservation.daterange_within_reservation?(Date.new(2018,7,5), Date.new(2018,7,6))
+        ).must_equal(true)
+        expect(
+          @reservation.daterange_within_reservation?(Date.new(2018,6,5), Date.new(2018,7,6))
+        ).must_equal(true)
+        expect(
+          @reservation.daterange_within_reservation?(Date.new(2018,7,9), Date.new(2018,7,15))
+        ).must_equal(true)
+      end
+    end
   end
 end

@@ -81,5 +81,9 @@ describe 'RoomBlock class' do
       @roomblock.book_reservation(5, Date.new(2018,9,5), Date.new(2018,9,17))
       expect( @roomblock.available_rooms).must_equal([1, 3, 4])
     end
+
+    it 'returns all rooms if none are booked' do
+      expect( @roomblock.available_rooms).must_equal([1, 2, 3, 4, 5])
+    end
   end
 end
