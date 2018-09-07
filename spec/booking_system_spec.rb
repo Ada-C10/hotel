@@ -74,7 +74,8 @@ describe 'BookingSystem class' do
 
   describe 'list_all_rooms' do
     it 'returns a list of all the rooms in the hotel' do
-      expect(@booking.rooms).must_be_kind_of Array
+      expect(@booking.list_all_rooms).must_be_kind_of Array
+      expect(@booking.list_all_rooms[0]).must_be_kind_of Room
     end
   end
 
@@ -158,6 +159,19 @@ describe 'BookingSystem class' do
       no_overlap_before
       expect(no_overlap_before.reservation_id).must_equal first_reservation.reservation_id + 1
     end
+
+    it 'raises an exception when there are no rooms available for specified date' do
+      check_in = "Oct 4 2018"
+      check_out = "Oct 7 2018"
+
+      20.times do |i|
+        @booking.reserve_room(check_in, check_out)
+      end
+
+      expect {
+        @booking.reserve_room(check_in, check_out)
+      }.must_raise ArgumentError
+    end
   end
 
   describe 'date_range' do
@@ -198,8 +212,41 @@ describe 'BookingSystem class' do
 
   describe 'total_cost_of_reservation' do
     it 'returns the cost of a specified reservation' do
-
       expect(@booking.total_cost_of_reservation(first_reservation.reservation_id)).must_equal (Date.parse("Oct 7 2018") - Date.parse("Oct 4 2018")) * 200
+    end
+
+    it 'returns nil if a reservation does not exist' do
+      expect(@booking.total_cost_of_reservation(9999)).must_be_nil
+    end
+  end
+
+  describe 'unreserved_rooms_by_date' do
+    before do
+      first_reservation
+      overlap_before
+      overlap_after
+      contained_in_range
+    end
+    it 'returns an array of unreserved rooms given a date range that conflicts' do
+
+      start_date = "Oct 4 2018"
+      end_date = "Oct 7 2018"
+
+      unreserved_rooms = @booking.unreserved_rooms_by_date(start_date, end_date)
+
+      expect(unreserved_rooms).must_be_kind_of Array
+      expect(unreserved_rooms[0]).must_be_kind_of Room
+      expect(unreserved_rooms.count).must_equal 16
+
+    end
+
+    it "returns same number of unreserved_rooms given a date range that doesn't conflict" do
+
+      start_date = "Nov 4 2018"
+      end_date = "Nov 7 2018"
+      unreserved_rooms = @booking.unreserved_rooms_by_date(start_date, end_date)
+
+      expect(unreserved_rooms.count).must_equal 20
     end
   end
 end

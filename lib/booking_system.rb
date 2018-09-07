@@ -75,10 +75,22 @@ class BookingSystem
 
   # get the total cost for a given reservation
   def total_cost_of_reservation(id)
-    reservation = @reservations.find { |reservation| reservation.reservation_id == id}
-    return reservation.total_cost
+    if reservation = @reservations.find { |reservation| reservation.reservation_id == id}
+      return reservation.total_cost
+    else
+      return nil
+    end
   end
 
-  def unreserved_rooms_by_date(date_range)
+  def unreserved_rooms_by_date(start_date, end_date)
+    dates = date_range(start_date, end_date)
+    dates << end_date
+    unreserved_rooms = []
+    @rooms.each do |room|
+      if room.is_available?(dates)
+        unreserved_rooms << room
+      end
+    end
+    return unreserved_rooms
   end
 end
