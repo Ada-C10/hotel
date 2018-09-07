@@ -14,6 +14,17 @@ class Room
     @reservations = reservations
   end
 
+  def find_reservation(room_number, check_in, check_out, cost_per_night=200)
+    # Access reservations
+    # Returns true if any reservations match the given reservation
+    # To be used as a helper method in Booking for finding a given reservation cost
+    @reservations.select do |reservation|
+
+
+    end
+
+  end
+
   def is_available?(date)
     # This way Booking can ask each room if they have availability
     # Check reservations to see if room is available

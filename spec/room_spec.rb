@@ -4,6 +4,7 @@
 describe "Room" do
   before do
     @room = Room.new(1,[] )
+    @room_with_reservation = Room.new(1, [Reservation.new(1, Date.new(2018,9,1), Date.new(2018,9,3))])
   end
   describe "Initialize" do
     it "Can create an instance of Room" do
@@ -20,6 +21,12 @@ describe "Room" do
       expect(@room.reservations).must_equal []
     end
 
+    it "Can find a reservation" do
+      expect(@room_with_reservation.find_reservation(1, Date.new(2018, 9, 1), Date.new(2018, 9, 3))).must_equal TRUE
+      expect(@room).respond_to? :find_reservation
+      expect(@room.find_reservation(1, Date.new(2018, 9, 1), Date.new(2018, 9, 3))).kind_of? Boolean
+    end
+
     it "ArgumentError if id is not between 1 and 20" do
       expect{Room.new(9999, [])}.must_raise ArgumentError
     end
@@ -33,10 +40,10 @@ describe "Room" do
     end
 
     it "Returns false if room is not available" do
-      @room2 = Room.new(1,[
+      @room3 = Room.new(1,[
         Reservation.new(1, Date.new(2018, 9, 01), Date.new(2018, 9, 02))
         ])
-      expect(@room2.is_available?(Date.new(2018, 9, 1))).must_equal FALSE
+      expect(@room3.is_available?(Date.new(2018, 9, 1))).must_equal FALSE
     end
   end
 end

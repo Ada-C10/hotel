@@ -47,6 +47,10 @@ class Booking
     end
   end
 
+  def total_cost_for_reservation
+
+  end 
+
   # Helper method to check if date ranges overlap
   def date_range_overlap?(start_date_one, end_date_one, start_date_two, end_date_two)
     # TRUE if dates match

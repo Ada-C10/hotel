@@ -42,6 +42,11 @@ describe "booking manager" do
       expect(@manager.rooms.first.reservations.length).must_equal 1
     end
 
+
+        it "Is able to get the total cost for a given reservation" do
+          expect(@manager.total_cost_for_reservation())
+        end
+
     it "Has an error if attempting to book a reserved room" do
       # When attempting to add a reservation,
         # Check to see if given date range is already booked
