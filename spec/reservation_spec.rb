@@ -24,4 +24,18 @@ describe "Reservation Test" do
       expect(new_Res.cost).must_equal 400
     end
   end
+  describe "Reservation.date method" do
+    it "Returns instance of reservation if includes date" do
+      new_Res = Reservation.new("2018-09-05","2018-09-07",1)
+      expect(new_Res.date("2018-09-05")[0]).must_equal new_Res
+      expect(new_Res.date("2018-09-06")[0]).must_equal new_Res
+      expect(new_Res.date("2018-09-07")[0]).must_equal new_Res
+      expect(new_Res.date("2018-09-07")[0]).must_be_kind_of Reservation
+
+    end
+    it "Returns nil if there are no instances of reservations on that day" do
+      new_Res = Reservation.new("2018-09-05","2018-09-07",1)
+      expect(new_Res.date("2018-09-03")).must_be_nil
+    end
+  end
 end
