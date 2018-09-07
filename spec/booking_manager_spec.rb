@@ -103,7 +103,17 @@ describe "BookingManager class" do
       expect(@hotel_rooms.reservations.last).must_be_instance_of Hotel::Reservation
       expect(@hotel_rooms.reservations.last.guest_name).must_equal "Polly Pocket"
     end
-  end
 
+  end # of add_reservation method
+
+  describe "add_reservation_to_calendar method" do
+    it "creates a hash with room number as key and dates as hash" do
+      hotel = Hotel::BookingManager.new(3)
+      room = Hotel::Room.new(3)
+      another_booking = Hotel::Reservation.new(room, guest_name: "Kim Possible", start_date: "June 11, 2018", end_date: "June 14, 2018")
+      expect(hotel.add_reservation_to_calendar(another_booking)).must_be_kind_of Hash
+    end # end of add reservation to calendar method hash room key it
+
+  end # of add reservation to calendar method
 
 end # end of describe BookingManager class
