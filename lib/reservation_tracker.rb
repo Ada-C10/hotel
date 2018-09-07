@@ -54,7 +54,6 @@ module Hotel
 
     def find_available_rooms(requested_dates)
       unavailable_rooms = find_unavailable_rooms(requested_dates)
-      # binding.pry
       available_rooms = @rooms.reject { |room| unavailable_rooms.include?(room) }
       return available_rooms
     end
