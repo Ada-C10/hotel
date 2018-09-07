@@ -1,4 +1,7 @@
 require_relative 'spec_helper'
+# REFACTOR IDEAS:
+# replace before with let inside of it, use a nested describe that way I only have to create a single let variable
+#
 
 # runs from project directory
 describe "#Admin - initializer" do

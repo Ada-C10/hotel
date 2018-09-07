@@ -1,6 +1,9 @@
 require 'csv'
 require 'pry'
 
+#REFACTOR_IDEAS:
+# create helper method that creates instance of time, and a range
+
 class Admin
   attr_reader :reservations, :find_reservation, :rooms, :vacant_rooms, :booked_rooms
   def initialize
@@ -39,14 +42,11 @@ class Admin
   end
 
   #As an administrator, I can reserve a room for a given date range
-  # continue here: must be updated to use vacant_rooms
   def reserve_room(start_date, end_date)
     start_date = Time.parse(start_date)
     end_date = Time.parse(end_date)
     range = (start_date..end_date)
     vacant_rooms = view_vacant_rooms(range)
-    #returns range
-    #room = @vacant_rooms.first.add_reservation(range)
     vacant_rooms.first.add_reservation(range)
     room = vacant_rooms.first
     @booked_rooms << room
@@ -91,6 +91,22 @@ class Admin
       end
     end
     return vacant_rooms
+  end
+
+  #As an administrator, I can create a block of rooms
+  def create_block_rooms(start_date, end_date, discounted_rate)
+    start_date = Time.parse(start_date)
+    end_date = Time.parse(end_date)
+    range = (start_date..end_date)
+    collection_rooms_options = view_vacant_rooms(range)
+    # create blocks of five every time?
+    # collections_rooms # it's an array
+    # collections_rooms.each do |room|
+    #   room
+    # end
+
+
+
   end
 
   private
