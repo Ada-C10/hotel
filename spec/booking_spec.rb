@@ -43,9 +43,18 @@ describe "booking manager" do
     end
 
 
-        it "Is able to get the total cost for a given reservation" do
-          expect(@manager.total_cost_for_reservation())
-        end
+    ######################## IN PROGRESS #############################
+    it "Can reserve an available room for a given date range" do
+      # Given date range
+      # Only reserve room if room is available
+      # Otherwise return an ArgumentError? MAybe a custom error
+    end
+
+    it "Is able to get the total cost for a given reservation" do
+      @manager.add_reservation(1, Date.new(2018, 9, 1), Date.new(2018, 9, 2))
+      # expect(@manager.total_cost_for_reservation(1, Date.new(2018, 9, 1), Date.new(2018, 9, 2))).must_equal @manager.rooms.first.reservations.first
+    end
+
 
     it "Has an error if attempting to book a reserved room" do
       # When attempting to add a reservation,

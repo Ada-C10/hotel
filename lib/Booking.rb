@@ -25,7 +25,6 @@ class Booking
     return @rooms.find { |room| room.room_number == room_number }
   end
 
-  # TODO Can reserve a room for a given date range
   def create_reservation(room_number, check_in, check_out)
     return Reservation.new(room_number, check_in, check_out)
   end
@@ -47,9 +46,13 @@ class Booking
     end
   end
 
-  def total_cost_for_reservation
-
-  end 
+  def total_cost_for_reservation(room_number, start_date, end_date, cost_per_night=200)
+    # See if any rooms have the given reservation
+    # If so, return the reservation cost
+    # @rooms.select do |room|
+      # room.find_reservation(room_number, start_date, end_date, cost_per_night)
+    # end
+  end
 
   # Helper method to check if date ranges overlap
   def date_range_overlap?(start_date_one, end_date_one, start_date_two, end_date_two)
