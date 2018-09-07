@@ -37,8 +37,8 @@ module Hotel
 
     def find_unavailable_rooms(requested_dates)
       unavailable_rooms = @reservations.find_all do |reservation|
-        reservation_period = reservation.date_range
-        reservation_period.overlaps?(requested_dates)
+        range = reservation.date_range
+        range.overlaps?(requested_dates)
         reservation.room
       end
       return unavailable_rooms

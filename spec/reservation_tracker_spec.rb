@@ -1,4 +1,5 @@
 require_relative 'spec_helper'
+require 'pry'
 
 describe "ReservationTracker class" do
   before do
@@ -64,6 +65,7 @@ describe "ReservationTracker class" do
 
   describe "#find_unavailable_rooms method" do
     it "finds all unavailable rooms for requested dates" do
+
       unavailable_rooms = @reservation_tracker.find_unavailable_rooms(@requested_dates)
       expect(unavailable_rooms).must_be_kind_of Array
       # expect(unavailable_rooms).length.must_equal 1
