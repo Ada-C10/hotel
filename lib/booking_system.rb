@@ -1,19 +1,26 @@
-require_relative 'reservation_creator'
+require_relative 'reservation'
 
 module Hotel
   class BookingSystem
-    attr_reader :booked_dates
+    attr_reader :rooms, :reservations
 
     def initialize
-      @booked_dates = []
+      @reservations = []
+      @rooms = [*1..20]
     end
 
-    def assign_room_to_booking(reservation)
-      @booked_dates = reservation.booking_date_range.map do |date|
-        room_selected = [date, list_all_rooms_in_hotel.first]
-      end
+    def make_reservation(check_in_date:, check_out_date:)
+      # TODO find a room that's available
+      room_number = get_available_room(check_in_date: check_in_date, check_out_date: check_out_date)
 
-      return @booked_dates
+      reservation = Reservation.new(check_in_date: check_in_date, check_out_date: check_out_date, room_number: room_number)
+
+      @reservations << reservation
+      return reservation
+    end
+
+    def get_available_room(check_in_date:, check_out_date:)
+      return @rooms.first
     end
 
     def list_all_rooms_in_hotel
@@ -26,8 +33,16 @@ module Hotel
       return cost
     end
 
-    def list_bookings_by_date(date)
-
+    def list_bookings_by_date(specific_date)
+      @booked_dates.select do |date|
+        if date[0] == specific_date
+          return date
+        else
+          ################
+          #rescue later on
+          return nil
+        end
+      end
     end
   end
 end
