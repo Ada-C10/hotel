@@ -3,6 +3,12 @@ require_relative 'room'
 require_relative 'reservation'
 
 module Hotel
+
+  def  valid_dates? (start_date, end_date)
+    return start_date < end_date
+  end
+
+  
   class Hotel
     attr_reader :rooms, :reservations
 
@@ -43,11 +49,10 @@ module Hotel
     end
 
     # return boolean if vaild date is right (true if right) false if not
-    def valid_dates? (start_date, end_date)
-      return start_date < end_date
-    end
+
 
     def assigns_a_reservation(start_date, end_date)
+
       room_num = get_available_room(start_date, end_date)
       reservation = Reservation.new(start_date, end_date, room_num)
       return reservation

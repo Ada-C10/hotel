@@ -14,25 +14,31 @@ module Hotel
       @start_date = start_date
       @end_date = end_date
       @room_num = room_num
+
+      argument_error_dates(start_date, end_date )
     end
 
 
-#pushes each reservation that comes through this class via the self method, @@reservation class variable defined up top as an empty array
+    #pushes each reservation that comes through this class via the self method, @@reservation class variable defined up top as an empty array
     def reservation_push
       @@reservations.push(self)
     end
 
-#returns the array of all the reservations that have been instanced with this class
+    #returns the array of all the reservations that have been instanced with this class
     def self.reservation_all
       return @@reservations
     end
 
+    def valid_dates? (start_date, end_date)
+      return start_date < end_date
+    end
 
-
-  #Date.parse format: Date.parse("10/5/2018"), 10 is day, 5 is month
-    # def create_reservation(start_date, end_date)
-    #   raise ArgumentError, "start date has to before end date start date: #{start_date}" if  !valid_dates?(start_date, end_date)
-    # end
+    #Date.parse format: Date.parse("10/5/2018"), 10 is day, 5 is month
+    def argument_error_dates (start_date, end_date)
+      if !valid_dates?(@start_date, @end_date)
+        raise ArgumentError, "start date has to before end date start date: #{@start_date}"
+      end
+    end
 
 
 

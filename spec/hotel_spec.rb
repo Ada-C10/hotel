@@ -28,7 +28,9 @@ describe 'Module Hotel' do
   it 'assigns_a_reservation give start_date and end_date' do
     reservation = @hotel.assigns_a_reservation(@start_date, @end_date)
     expect(reservation).must_be_kind_of Hotel::Reservation
-end
+  end
+
+
 
 
 end
