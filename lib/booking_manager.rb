@@ -63,7 +63,7 @@ module Hotel
       date = reservation.start_date
 
       reservation.number_nights.times do
-        @room_calendar[reservation.room][date] = reservation # dependency 
+        @room_calendar[reservation.room][date] = reservation # dependency
         date += 1
       end
   # binding.pry
@@ -94,12 +94,13 @@ module Hotel
       return @rooms
     end
 
-
-
     # Method to get total cost of reservation
-    # Get cost from reservation?
+    def get_reservation_cost(nights, cost_per_night)
+      total_cost = nights * cost_per_night
+      return total_cost
+    end
 
-    # Method to check room availability here? Or in room?
+    # Method to check room availability here? Or in room? Or calendar?
     # when check if something is available
     # search through reservations for room with nil -> reserve
     # if none with nil, search from beginning for date with specific dates.
