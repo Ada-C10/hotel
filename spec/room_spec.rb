@@ -2,7 +2,7 @@ require_relative 'spec_helper'
 
 describe "#Room - initialize method" do
   before do
-    @Room = Room.new(number: 1, status: "available")
+    @Room = Room.new(number: 1)
   end
 
   it "is an instance of a Room" do

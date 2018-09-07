@@ -67,7 +67,7 @@ describe "#rooms information" do
   end
   it "view all of the rooms" do
 
-    rooms = @admin.view_rooms
+    rooms = @admin.view_all_rooms
     expect(rooms).must_be_kind_of Array
   end
 
@@ -77,7 +77,7 @@ describe "#rooms information" do
     range = (start_date..end_date)
     @admin.reserve_room(start_date, end_date) # change status of room
 
-    rooms = @admin.view_rooms
+    rooms = @admin.view_all_rooms
 
     expect(rooms.first.ranges).include?(range)
   end

@@ -45,7 +45,7 @@ class Admin
   end
 
   # As an administrator, I can access the list of all of the rooms in the hotel
-  def view_rooms
+  def view_all_rooms
     return @rooms
   end
 
