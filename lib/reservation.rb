@@ -12,7 +12,7 @@ class Reservation
     if all_room_numbers.include?(room_num.to_i)
       @room_num = room_num.to_i
     else
-      raise ArgumentError.new("Invalid room number entered.")
+      raise StandardError.new("Invalid room number entered.")
     end
 
     # Verifying valid date ranges entered
@@ -20,14 +20,14 @@ class Reservation
       @start_date = start_date
       @end_date = end_date
     else
-      raise ArgumentError.new("Invalid date range entered")
+      raise StandardError.new("Invalid date range entered")
     end
 
     # Verifying valid room_type is entered
     if room_type == :standard || room_type == :block
       @room_type = room_type
     else
-      raise ArgumentError.new("Invalid room type entered")
+      raise StandardError.new("Invalid room type entered")
     end
 
     # Recording the dates that the reservation is made for

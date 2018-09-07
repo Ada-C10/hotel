@@ -14,34 +14,34 @@ describe 'Reservation' do
     expect(new_reservation).must_be_kind_of Reservation
   end
 
-  it 'raises an ArgumentError if an invalid room is entered' do
+  it 'raises an StandardError if an invalid room is entered' do
     reservation_num = 666
     room_num = 30
     start_date = Date.new(2018,10,6)
     end_date = Date.new(2018,10,8)
     room_type = :standard
 
-    expect{Reservation.new(reservation_num, room_num, start_date, end_date, room_type)}.must_raise ArgumentError
+    expect{Reservation.new(reservation_num, room_num, start_date, end_date, room_type)}.must_raise StandardError
   end
 
-  it 'raises an ArgumentError if the start date is later than the end date' do
+  it 'raises an StandardError if the start date is later than the end date' do
     reservation_num = 666
     room_num = 15
     start_date = Date.new(2018,10,11)
     end_date = Date.new(2018,10,6)
     room_type = :standard
 
-    expect{Reservation.new(reservation_num, room_num, start_date, end_date, room_type)}.must_raise ArgumentError
+    expect{Reservation.new(reservation_num, room_num, start_date, end_date, room_type)}.must_raise StandardError
   end
 
-  it 'raises an ArgumentError if an invalid room type is entered' do
+  it 'raises an StandardError if an invalid room type is entered' do
     reservation_num = 666
     room_num = 15
     start_date = Date.new(2018,10,10)
     end_date = Date.new(2018,10,15)
     room_type = :deluxe
 
-    expect{Reservation.new(reservation_num, room_num, start_date, end_date, room_type)}.must_raise ArgumentError
+    expect{Reservation.new(reservation_num, room_num, start_date, end_date, room_type)}.must_raise StandardError
   end
 
   it 'correctly calculates duration of trip' do
