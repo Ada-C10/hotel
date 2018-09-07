@@ -4,8 +4,8 @@ module Hotel
 
     attr_reader :date_range, :blocked_rooms, :discounted_rate, :block_reservations, :block_id
     #
-    def initialize(check_in, check_out, blocked_rooms, discounted_rate, block_id)
-      @date_range = DateRange.new(check_in, check_out)
+    def initialize(date_range, blocked_rooms, discounted_rate, block_id)
+      @date_range = date_range
       @blocked_rooms = blocked_rooms
       @discounted_rate = discounted_rate
       @block_reservations = []

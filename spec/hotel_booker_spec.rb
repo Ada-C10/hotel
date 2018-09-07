@@ -3,15 +3,15 @@ require_relative 'spec_helper'
 describe 'HotelBooker class' do
 
   let (:reservation1) {
-    check_in = Date.today + 1
+    check_in = Date.today
     check_out = check_in + 3
-    Hotel::Reservation.new(check_in, check_out, 1)
+    Hotel::Reservation.new(Hotel::DateRange.new(check_in, check_out), 1)
   }
 
   let (:reservation2) {
     check_in = Date.today + 2
     check_out = check_in + 5
-    Hotel::Reservation.new(check_in, check_out, 2)
+    Hotel::Reservation.new(Hotel::DateRange.new(check_in, check_out), 2)
   }
 
   let (:hotel_booker) {
@@ -76,6 +76,24 @@ describe 'HotelBooker class' do
 
     end
 
+
+    it 'raises an exception if no rooms are available for that date range' do
+      [*3..20].each do |room|
+        hotel_booker.reserve_a_room(Date.today + 1, Date.today + 4, room)
+      end
+
+      expect{room_block}.must_raise StandardError
+
+    end
+    it 'raises an exception if not enough rooms are available for that date range' do
+      [*7..20].each do |room|
+        hotel_booker.reserve_a_room(Date.today + 1, Date.today + 4, room)
+      end
+
+      expect{room_block}.must_raise StandardError
+
+    end
+
     it 'reserves the first available room for the given date range' do
       skip
       expect(hotel_booker.reserve_a_room(Date.today + 1, Date.today + 2).room_num).must_equal 2
@@ -93,13 +111,13 @@ describe 'HotelBooker class' do
 
   describe 'is_room_available helper method' do
     it 'returns true if room is available for the given date range' do
-      expect(hotel_booker.is_room_available(Date.today, Date.today + 2, 2)).must_equal true
-      expect(hotel_booker.is_room_available(Date.today + 4, Date.today + 5, 1)).must_equal true
+      expect(hotel_booker.is_room_available(Hotel::DateRange.new(Date.today, Date.today + 2), 2)).must_equal true
+      expect(hotel_booker.is_room_available(Hotel::DateRange.new(Date.today + 4, Date.today + 5), 1)).must_equal true
     end
 
     it 'returns false if room is unavailable for the given date range' do
-      expect(hotel_booker.is_room_available(Date.today, Date.today + 2, 1)).must_equal false
-      expect(hotel_booker.is_room_available(Date.today + 4, Date.today + 5, 2)).must_equal false
+      expect(hotel_booker.is_room_available(Hotel::DateRange.new(Date.today, Date.today + 2), 1)).must_equal false
+      expect(hotel_booker.is_room_available(Hotel::DateRange.new(Date.today + 4, Date.today + 5), 2)).must_equal false
     end
   end
 
@@ -134,98 +152,82 @@ describe 'HotelBooker class' do
     end
   end
 
-  describe 'list_unavailable_rooms method' do
+  describe 'list_unavailable_rooms helper method' do
+    let (:today) { Date.today }
+    let (:res1_checkout) { today + 3 }
+    let (:res2_checkout) { today + 7}
+    let (:today_minus_2) {today - 2}
+
+    let (:captures_both_res_dates) { Hotel::DateRange.new(today, res2_checkout)}
+    let (:overlap_res_1) {Hotel::DateRange.new(today, today + 1)}
+    let (:overlap_res_2) { Hotel::DateRange.new(res1_checkout, res2_checkout) }
+    #
+    let (:before_dates) { Hotel::DateRange.new(today_minus_2 - 1, today_minus_2) }
+    let (:after_dates) { Hotel::DateRange.new(res2_checkout, res2_checkout + 2) }
+
     it 'returns an array containing a list of unavailable room numbers for a given date range' do
-      expect(hotel_booker.list_available_rooms(Date.today + 2, Date.today + 4)).must_be_instance_of Array
+      expect(hotel_booker.list_available_rooms(Hotel::DateRange.new(Date.today + 2, Date.today + 4))).must_be_instance_of Array
     end
 
     it 'correctly identifies the list of unavailable room numbers for a given date range' do
+
       room_1 = [1]
       room_2 = [2]
       both_rooms = room_1 + room_2
 
-      # Two date ranges *do* overlap if range A compared to range B:
-      # - Same dates
-      expect(hotel_booker.list_unavailable_rooms(Date.today + 1, Date.today + 7)).must_equal both_rooms
-      # - Overlaps in the front
-      expect(hotel_booker.list_unavailable_rooms(Date.today, Date.today + 2)).must_equal room_1
-      # - Overlaps in the back
-      expect(hotel_booker.list_unavailable_rooms(Date.today + 5, Date.today + 7)).must_equal room_2
-      # - Completely contained
-      expect(hotel_booker.list_unavailable_rooms(Date.today + 2, Date.today + 6)).must_equal both_rooms
-      # - Completely containing
-      expect(hotel_booker.list_unavailable_rooms(Date.today, Date.today + 8)).must_equal both_rooms
-      #
-      # Two date ranges are *not* overlapping if range A compared to range B:
-      # - Completely before
-      expect(hotel_booker.list_unavailable_rooms(Date.today - 1, Date.today)).must_equal []
-      # - Completely after
-      expect(hotel_booker.list_unavailable_rooms(Date.today + 8, Date.today + 9)).must_equal []
-      # - Ends on the checkin date
-      expect(hotel_booker.list_unavailable_rooms(Date.today, Date.today + 2)).must_equal room_1
-      # - Starts on the checkout date (edited)
-      expect(hotel_booker.list_unavailable_rooms(Date.today + 4, Date.today + 5)).must_equal room_2
+      expect(hotel_booker.list_unavailable_rooms(captures_both_res_dates)).must_equal both_rooms
+      expect(hotel_booker.list_unavailable_rooms(overlap_res_1)).must_equal room_1
+      expect(hotel_booker.list_unavailable_rooms(overlap_res_2)).must_equal room_2
 
-
-      expect(hotel_booker.list_unavailable_rooms(Date.today + 2, Date.today + 3)).must_equal both_rooms
-
-      expect(hotel_booker.list_unavailable_rooms(Date.today + 7, Date.today + 8)).must_equal []
+      expect(hotel_booker.list_unavailable_rooms(before_dates)).must_equal []
+      expect(hotel_booker.list_unavailable_rooms(after_dates)).must_equal []
 
     end
 
     it 'correctly identifies the list of unavailable room numbers for a given date range when there is an existing block' do
 
-      puts hotel_booker.create_a_block(Date.today + 2, Date.today + 7, 5, 150)
+      hotel_booker.create_a_block(Date.today + 2, Date.today + 7, 5, 150)
 
-      expect(hotel_booker.list_unavailable_rooms(Date.today + 2, Date.today + 7)).must_equal [*1..7]
+      expect(hotel_booker.list_unavailable_rooms(Hotel::DateRange.new(Date.today + 2, Date.today + 7))).must_equal [*1..7]
     end
   end
 
-  describe 'list_available_rooms method' do
+  describe 'list_available_rooms helper method' do
+    let (:today) { Date.today }
+    let (:res1_checkout) { today + 3 }
+    let (:res2_checkout) { today + 7}
+    let (:today_minus_2) {today - 2}
+
+    let (:captures_both_res_dates) { Hotel::DateRange.new(today, res2_checkout)}
+    let (:overlap_res_1) {Hotel::DateRange.new(today, today + 1)}
+    let (:overlap_res_2) { Hotel::DateRange.new(res1_checkout, res2_checkout) }
+    #
+    let (:before_dates) { Hotel::DateRange.new(today_minus_2 - 1, today_minus_2) }
+    let (:after_dates) { Hotel::DateRange.new(res2_checkout, res2_checkout + 2) }
+
     it 'returns an array containing a list of available room numbers for a given date range' do
-      expect(hotel_booker.list_available_rooms(Date.today + 2, Date.today + 4)).must_be_instance_of Array
+      expect(hotel_booker.list_available_rooms(Hotel::DateRange.new(today + 2, today + 4))).must_be_instance_of Array
     end
 
     it 'correctly identifies the list of available room numbers for a given date range' do
       all_rooms = [*1..20]
-      available_rooms = [*3..20]
-      # date_range_1 = Hotel::DateRange.new(Date.today + 2, Date.today + 3)
-      # date_range_2 = Hotel::DateRange.new(Date.today + 7, Date.today + 8)
+      all_but_room1 = [*2..20]
+      all_but_room2 = [1, *3..20]
+      all_other_rooms = [*3..20]
 
-      # Two date ranges *do* overlap if range A compared to range B:
-      # - Same dates
-      expect(hotel_booker.list_available_rooms(Date.today + 1, Date.today + 7)).must_equal available_rooms
-      # - Overlaps in the front
-      expect(hotel_booker.list_available_rooms(Date.today, Date.today + 2)).must_equal [*2..20]
-      # - Overlaps in the back
-      expect(hotel_booker.list_available_rooms(Date.today + 5, Date.today + 7)).must_equal [1,*3..20]
-      # - Completely contained
-      expect(hotel_booker.list_available_rooms(Date.today + 2, Date.today + 6)).must_equal available_rooms
-      # - Completely containing
-      expect(hotel_booker.list_available_rooms(Date.today, Date.today + 8)).must_equal available_rooms
-      #
-      # Two date ranges are *not* overlapping if range A compared to range B:
-      # - Completely before
-      expect(hotel_booker.list_available_rooms(Date.today - 1, Date.today)).must_equal all_rooms
-      # - Completely after
-      expect(hotel_booker.list_available_rooms(Date.today + 8, Date.today + 9)).must_equal all_rooms
-      # - Ends on the checkin date
-      expect(hotel_booker.list_available_rooms(Date.today, Date.today + 2)).must_equal [*2..20]
-      # - Starts on the checkout date (edited)
-      expect(hotel_booker.list_available_rooms(Date.today + 4, Date.today + 5)).must_equal [1,*3..20]
+      expect(hotel_booker.list_available_rooms(captures_both_res_dates)).must_equal all_other_rooms
+      expect(hotel_booker.list_available_rooms(overlap_res_1)).must_equal all_but_room1
+      expect(hotel_booker.list_available_rooms(overlap_res_2)).must_equal all_but_room2
 
-
-      expect(hotel_booker.list_available_rooms(Date.today + 2, Date.today + 3)).must_equal available_rooms
-
-      expect(hotel_booker.list_available_rooms(Date.today + 7, Date.today + 8)).must_equal all_rooms
+      expect(hotel_booker.list_available_rooms(before_dates)).must_equal all_rooms
+      expect(hotel_booker.list_available_rooms(after_dates)).must_equal all_rooms
     end
-
 
     it 'correctly identifies the list of available room numbers for a given date range when there is an existing block' do
 
       puts hotel_booker.create_a_block(Date.today + 2, Date.today + 7, 5, 150)
 
-      expect(hotel_booker.list_available_rooms(Date.today + 2, Date.today + 7)).must_equal [*8..20]
+      expect(hotel_booker.list_available_rooms(Hotel::DateRange.new(Date.today + 2, Date.today + 7))).must_equal [*8..20]
     end
 
     it 'raises an error if not given a Date' do
@@ -281,23 +283,6 @@ describe 'HotelBooker class' do
 
       expect(num_new_blocks - 1).must_equal num_old_blocks
       expect(hotel_booker.all_room_blocks[0]).must_equal room_block
-    end
-
-    it 'raises an exception if no rooms are available for that date range' do
-      [*3..20].each do |room|
-        hotel_booker.reserve_a_room(Date.today + 1, Date.today + 4, room)
-      end
-
-      expect{room_block}.must_raise StandardError
-
-    end
-    it 'raises an exception if not enough rooms are available for that date range' do
-      [*7..20].each do |room|
-        hotel_booker.reserve_a_room(Date.today + 1, Date.today + 4, room)
-      end
-
-      expect{room_block}.must_raise StandardError
-
     end
 
     it 'creates a block with blocked_rooms that do not include other blocked_rooms from other blocks' do
