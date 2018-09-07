@@ -6,6 +6,17 @@ describe 'DateRange class' do
   let (:today_minus_2) {today - 2}
   let (:range) { Hotel::DateRange.new(today, today_plus_4) }
 
+  let (:same_dates) { Hotel::DateRange.new(today, today_plus_4) }
+  let (:overlap_front) { Hotel::DateRange.new(today_minus_2, today + 1) }
+  let (:overlap_back) { Hotel::DateRange.new(today + 1, today_plus_4 + 1) }
+  let (:contained) { Hotel::DateRange.new(today + 1, today_plus_4 - 1) }
+  let (:containing) { Hotel::DateRange.new(today_minus_2, today_plus_4 + 1) }
+
+  let (:before_dates) { Hotel::DateRange.new(today_minus_2 - 1, today_minus_2) }
+  let (:after_dates) { Hotel::DateRange.new(today_plus_4 + 1, today_plus_4 + 2) }
+  let (:ends_on_checkin) { Hotel::DateRange.new(today_minus_2, today) }
+  let (:starts_on_checkout) { Hotel::DateRange.new(today_plus_4, today_plus_4 + 1) }
+
   describe 'DateRange instantiation' do
 
     it 'creates an instance of DateRange' do
@@ -54,16 +65,6 @@ describe 'DateRange class' do
   end
 
   describe 'overlaps? method' do
-    let (:same_dates) { Hotel::DateRange.new(today, today_plus_4) }
-    let (:overlap_front) { Hotel::DateRange.new(today_minus_2, today + 1) }
-    let (:overlap_back) { Hotel::DateRange.new(today + 1, today_plus_4 + 1) }
-    let (:contained) { Hotel::DateRange.new(today + 1, today_plus_4 - 1) }
-    let (:containing) { Hotel::DateRange.new(today_minus_2, today_plus_4 + 1) }
-
-    let (:before_dates) { Hotel::DateRange.new(today_minus_2 - 1, today_minus_2) }
-    let (:after_dates) { Hotel::DateRange.new(today_plus_4 + 1, today_plus_4 + 2) }
-    let (:ends_on_checkin) { Hotel::DateRange.new(today_minus_2, today) }
-    let (:starts_on_checkout) { Hotel::DateRange.new(today_plus_4, today_plus_4 + 1) }
 
     it 'returns true if the given date range is the same' do
       expect(range.overlaps?(same_dates)).must_equal true

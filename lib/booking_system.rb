@@ -109,6 +109,11 @@ module Hotel
     end
 
 
+    def is_room_available(range, room)
+      return list_available_rooms(range).include?(room)
+    end
+
+
     def check_id(id)
       raise ArgumentError, "ID cannot be blank or less than zero. (got #{id})" if id.nil? || id <= 0
     end
@@ -118,11 +123,7 @@ module Hotel
       check_id(id)
       return @all_room_blocks.find{ |block| block.block_id == id}
     end
-
-
-    def is_room_available(range, room)
-      return list_available_rooms(range).include?(room)
-    end
+    
 
   end
 
