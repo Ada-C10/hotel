@@ -42,9 +42,6 @@ module Hotel
     end
 
     def get_block_availability
-      # occupied_block_rooms = @block_reservations.map do |reservation|
-      #   reservation.room_num
-      # end
       return list_available_block_rooms.length > 0
     end
 
@@ -55,14 +52,5 @@ module Hotel
 
       return (@blocked_rooms - occupied_block_rooms)
     end
-
-    # TODO: methods to create:
-    # make_block_reservation
-    # check_if_block_has_availabiliy
-    # make_blocked_room unavailable to be reserved by the public for that date range, or by another block
-
-
-
   end
-
 end

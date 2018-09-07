@@ -34,15 +34,15 @@ describe 'BookingSystem class' do
     end
   end
 
-  describe 'get_printable_all_rooms method' do
+  describe 'list_rooms method' do
     it 'returns a formatted string of all the rooms' do
-      expect(hotel_booker.get_printable_all_rooms).must_be_instance_of String
+      expect(hotel_booker.list_rooms).must_be_instance_of String
     end
   end
 
-  describe 'get_printable_available_rooms method' do
+  describe 'list_printable_available_rooms method' do
     it 'returns a formatted string of all the available rooms' do
-      available_rooms = hotel_booker.get_printable_available_rooms(Date.today, Date.today + 7)
+      available_rooms = hotel_booker.list_printable_available_rooms(Date.today, Date.today + 7)
       expect(available_rooms).must_be_instance_of String
     end
   end
@@ -121,18 +121,9 @@ describe 'BookingSystem class' do
     end
   end
 
-  describe 'get_occupied_rooms helper method' do
-    it 'returns an array containing a list of rooms' do
-      reservations = [reservation1, reservation2]
-      expect(hotel_booker.get_occupied_rooms(reservations)).must_equal [1, 2]
-      expect(hotel_booker.get_occupied_rooms([reservation1])).must_equal [1]
-      expect(hotel_booker.get_occupied_rooms([reservation2])).must_equal [2]
-    end
-  end
-
-  describe 'get_reservations_by_date method' do
+  describe 'list_reservations_by_date method' do
     it 'returns a list of all reservations for a given date ' do
-      matched_reservation = hotel_booker.get_reservations_by_date(Date.today + 2)
+      matched_reservation = hotel_booker.list_reservations_by_date(Date.today + 2)
 
       matched_reservation.each do |reservation|
         expect(reservation).must_be_instance_of Hotel::Reservation
@@ -140,13 +131,13 @@ describe 'BookingSystem class' do
 
       expect(matched_reservation.length).must_equal 2
 
-      matched_reservation_2 = hotel_booker.get_reservations_by_date(Date.today + 1)
+      matched_reservation_2 = hotel_booker.list_reservations_by_date(Date.today + 1)
 
       expect(matched_reservation_2[0].room_num).must_equal 1
     end
 
     it 'returns an empty array if no reservations match a given date' do
-      matched_reservation = hotel_booker.get_reservations_by_date(Date.today + 10)
+      matched_reservation = hotel_booker.list_reservations_by_date(Date.today + 10)
       expect(matched_reservation).must_be_instance_of Array
       expect(matched_reservation.length).must_equal 0
     end
