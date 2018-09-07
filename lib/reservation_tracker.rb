@@ -53,7 +53,7 @@ class ReservationTracker
     return reservations_for_date
   end
 
-  # date must be entered in the format: "yyyy,mm,dd"
+  # Expecting user to enter date in the format: "yyyy,mm,dd"
   def show_available_rooms(start_date, end_date)
     available_rooms = []
 
@@ -103,11 +103,14 @@ class ReservationTracker
     return reservation_number
   end
 
-  # date must be entered in the format: "yyyy,mm,dd"
-  def reserve_room(room_num, start_date, end_date)
-    room_number = room_num.to_i
+  # Expecting user to enter date in the format: "yyyy,mm,dd"
+  def reserve_room(room_num, check_in, check_out)
 
-    available_rooms = show_available_rooms(start_date, end_date)
+    room_number = room_num.to_i
+    start_date = format_date(check_in)
+    end_date = format_date(check_out)
+
+    available_rooms = show_available_rooms(check_in, check_out)
     available_rooms_by_number = available_rooms.map do |room_instance|
                                 room_instance.room_number.to_i
                               end

@@ -15,14 +15,10 @@ class Reservation
       raise ArgumentError.new("Invalid room number entered.")
     end
 
-    # dates must be entered in the format: yyyy,mm,dd
-    starting_date = format_date(start_date)
-    ending_date = format_date(end_date)
-
     # Verifying valid date ranges entered
-    if ending_date - starting_date >= 1
-      @start_date = starting_date
-      @end_date = ending_date
+    if end_date - start_date >= 1
+      @start_date = start_date
+      @end_date = end_date
     else
       raise ArgumentError.new("Invalid date range entered")
     end
@@ -70,14 +66,4 @@ class Reservation
     return reservation_duration
   end
 
-  # Helper method to the constructor
-  def format_date(date_string)
-    parsed_date = date_string.split(",")
-    year = parsed_date[0].to_i
-    month = parsed_date[1].to_i
-    day = parsed_date[2].to_i
-    formatted_date = Date.new(year, month, day)
-
-    return formatted_date
-  end
 end
