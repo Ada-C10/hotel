@@ -17,15 +17,15 @@ class Room
     end
   end
 
-  def add_reservation(new_reservation)
-    if new_reservation.class != Reservation
-        raise ArgumentError, "A reservation was not provided"
-    end
-    @reservations.each do |item|
-      if item == new_reservation
-        raise ArgumentError, "Duplicated reservation"
-      end
-    end
-    @reservations << new_reservation
-  end
+  # def add_reservation(new_reservation)
+  #   if new_reservation.class != Reservation
+  #       raise ArgumentError, "A reservation was not provided"
+  #   end
+  #   @reservations.each do |item|
+  #     if item == new_reservation
+  #       raise ArgumentError, "Duplicated reservation"
+  #     end
+  #   end
+  #   @reservations << new_reservation
+  # end
 end
