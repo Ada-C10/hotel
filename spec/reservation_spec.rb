@@ -3,7 +3,7 @@ require_relative 'spec_helper'
 describe "Reservation class" do
   describe "initialize method" do
     before do
-      @manager = Hotel::BookingManager.new(1)
+      @manager = Hotel::BookingManager.new(5)
       @room = @manager.rooms.first
     end
 
@@ -13,8 +13,10 @@ describe "Reservation class" do
     end # of new reservation is new instance it
 
     it "raises an ArgumentError for an invalid date range" do
-      new_booking = Hotel::Reservation.new(@room, guest_name: "Tina Fey", start_date: "June 11, 2018", end_date: "June 10, 2018")
-      expect(new_booking).must_raise ArgumentError
+      proc {
+        booking = Hotel::Reservation.new(@room, guest_name: "Tina Fey", start_date: "June 11, 2018", end_date: "June 10, 2018")
+      }.must_raise ArgumentError
+      #proc {booking.check_dates(booking.start_date, booking.end_date)}.must_raise ArgumentError
     end # of invalid date range ArgumentError
   end # of initialize method
 
