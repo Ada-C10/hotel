@@ -51,7 +51,31 @@ class Admin
   end
   # param: reservation number
   # returns - new reservation instance
-  def request_resevation_within_block(id)
+  def request_reservation_within_block(id, start_date, end_date)
+    #split this up into smaller methods
+    block_reservation = find_reservation_by_id(id)
+
+    if Date.parse(start_date) != block_reservation.start_date
+      raise StandardError, "start date must match block start"
+    end
+    if Date.parse(end_date) != block_reservation.end_date
+      raise StandardError, "end date must match block end"
+    end
+
+    id = block_reservation.reservations.length + 1
+
+    room = block_reservation.rooms_available.sample
+      if room.nil?
+        raise ArgumentError, "no rooms available"
+      end
+
+    new_reservation = Reservation.new(id, room, start_date, end_date)
+
+    add_reservation(new_reservation, reservation_location: block_reservation.reservations)
+    # delete room number from available_rooms
+    block_reservation.rooms_available.delete(new_reservation.room)
+
+    return new_reservation
   end
 
   def find_reservation_by_id(id)
@@ -70,8 +94,9 @@ class Admin
   end
 
   def reservations_by_date_range(trip_start, trip_end)
-    trip_start = Date.parse(trip_start)
-    trip_end = Date.parse(trip_end)
+      trip_start = Date.parse(trip_start)
+      trip_end = Date.parse(trip_end)
+
 
     @reservations.find_all do |reservation|
       unless reservation.end_date == trip_start

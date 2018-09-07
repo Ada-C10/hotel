@@ -248,6 +248,64 @@ describe "Booking" do
         correct_reservation.start_date.must_equal Date.parse("2018-12-12")
       end
     end
+
+    describe "request reservation within block" do
+      it "creates new reservation within block" do
+        hotel = Admin.new
+        family_reunion = hotel.request_block_reservation(4, "2018-12-12", "2018-12-14")
+        # action
+        hotel.request_reservation_within_block(1, "2018-12-12", "2018-12-14")
+
+        family_reunion.reservations.length.must_equal 1
+        # assert
+        # hotel.reservations[0].start_date.must_equal Date.parse("2018-12-09")
+      end
+
+      it "selects a room already designated for that block reservation" do
+        hotel = Admin.new
+        family_reunion = hotel.request_block_reservation(4, "2018-12-12", "2018-12-14")
+
+        jones = hotel.request_reservation_within_block(1, "2018-12-12", "2018-12-14")
+
+        family_reunion.room.must_include jones.room
+      end
+
+      it "will reduce the number of available rooms with each reservation in block" do
+        hotel = Admin.new
+        family_reunion = hotel.request_block_reservation(4, "2018-12-12", "2018-12-14")
+        hotel.request_reservation_within_block(1, "2018-12-12", "2018-12-14")
+        hotel.request_reservation_within_block(1, "2018-12-12", "2018-12-14")
+        hotel.request_reservation_within_block(1, "2018-12-12", "2018-12-14")
+
+        family_reunion.rooms_available.length.must_equal 1
+      end
+
+      it "keeps track of reservations made within block" do
+        hotel = Admin.new
+        family_reunion = hotel.request_block_reservation(4, "2018-12-12", "2018-12-14")
+        hotel.request_reservation_within_block(1, "2018-12-12", "2018-12-14")
+        hotel.request_reservation_within_block(1, "2018-12-12", "2018-12-14")
+        hotel.request_reservation_within_block(1, "2018-12-12", "2018-12-14")
+
+        family_reunion.reservations.length.must_equal 3
+      end
+
+      it "throws StandardError if reservation start does not match block start date" do
+        hotel = Admin.new
+        family_reunion = hotel.request_block_reservation(4, "2018-12-12", "2018-12-14")
+
+        expect{hotel.request_reservation_within_block(1, "2018-12-13",
+          "2018-12-14")}.must_raise StandardError
+      end
+
+      it "throws StandardError if reservation end date does not match block end date" do
+        hotel = Admin.new
+        family_reunion = hotel.request_block_reservation(4, "2018-12-12", "2018-12-14")
+
+        expect{hotel.request_reservation_within_block(1, "2018-12-12",
+          "2018-12-17")}.must_raise StandardError
+      end
+    end
   end
 
 end

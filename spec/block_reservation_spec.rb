@@ -40,10 +40,10 @@ describe "BlockReservation" do
       expect{BlockReservation.new(7, 4, "2018-4-17", "2018-4-14")}.must_raise StandardError
     end
 
-    it "keeps track of available rooms" do
-      family_reunion = BlockReservation.new(7, [2,4,6], "2018-4-17", "2018-4-20")
-      family_reunion.rooms_available.length.must_equal 0
-    end
+    # it "keeps track of available rooms" do
+    #   family_reunion = BlockReservation.new(7, [2,4,6], "2018-4-17", "2018-4-20")
+    #   family_reunion.rooms_available.length.must_equal 0
+    # end
 
     it "keeps track of reservations within block" do
       family_reunion = BlockReservation.new(7, [2,4,6], "2018-4-17", "2018-4-20")
