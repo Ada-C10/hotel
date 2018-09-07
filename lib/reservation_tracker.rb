@@ -1,4 +1,6 @@
 require 'date'
+require 'pry'
+require 'awesome_print'
 
 require_relative 'reservation'
 
@@ -26,9 +28,9 @@ module Hotel
       return all_rooms
     end
 
-    def list_reservations_by_date(date)
+    def list_reservations_by_date(specified_date)
       reservations_by_date = @reservations.find_all do |reservation|
-        reservation.date_range.include?(date)
+        reservation.date_range.include?(specified_date)
       end
       return reservations_by_date
     end
@@ -36,7 +38,7 @@ module Hotel
     def find_unavailable_rooms(requested_dates)
       unavailable_rooms = @reservations.map do |reservation|
         reservation_period = reservation.date_range
-        if reservation_period.overlap?(requested_dates)
+        if reservation_period.overlaps?(requested_dates)
           reservations.room
         end
       end
@@ -52,19 +54,28 @@ module Hotel
 
     def get_first_available_room(requested_dates)
       all_available_rooms = find_available_rooms(requested_dates)
-      frist_available_room = all_available_rooms.first
+      first_available_room = all_available_rooms.first
       check_room_number(first_available_room)
       return first_available_room
     end
 
-    def reserve_room(requested_dates)
+    def get_requested_dates_range(input)
+      requested_dates = Hotel::DateRange.new(input[:start_date], input[:end_date])
+      requested_dates_range = requested_dates.get_range
+      return requested_dates_range
+    end
+
+    def reserve_room(input)
+      requested_dates = get_requested_dates_range(input)
+
       room = get_first_available_room(requested_dates)
+      id = @reservations.length + 1
 
       reservation_data = {
         id: id,
         room: room,
-        start_date: start_date,
-        end_date: end_date
+        start_date: input[:start_date],
+        end_date: input[:end_date]
       }
 
       new_reservation = Hotel::Reservation.new(reservation_data)

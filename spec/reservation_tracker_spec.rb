@@ -1,8 +1,19 @@
 require_relative 'spec_helper'
+require 'pry'
+require 'date'
 
-describe "TripDispatcher class" do
+
+describe "ReservationTracker class" do
   before do
     @reservation_tracker = Hotel::ReservationTracker.new
+    # @start_date = Date.today
+    # @end_date = @start_date + 5
+    # @input = {
+    #   start_date: @start_date,
+    #   end_date: @end_date
+    # }
+    #
+    # @reservation_tracker.reserve_room(@input)
   end
 
   describe "Initializer" do
@@ -41,17 +52,32 @@ describe "TripDispatcher class" do
   describe "#list_reservations_by_date method" do
     it "lists the reservations searched for by date" do
       reservations = @reservation_tracker.list_reservations_by_date(Date.today)
-      expect(reservations).must_be_kind_of Array
 
+      expect(reservations).must_be_kind_of Array
       reservations.each do |reservation|
         expect(reservation.date_range).must_include Date.today
       end
     end
   end
 
-  describe "#find_unavailable_rooms method" do
-    it "finds all unavailable rooms for requested dates" do
+  before do
+    @reservation_tracker = Hotel::ReservationTracker.new
+    @start_date = Date.today
+    @end_date = @start_date + 5
+    @input = {
+      start_date: @start_date,
+      end_date: @end_date
+    }
 
+    @reservation_tracker.reserve_room(@input)
+
+  end
+
+  xdescribe "#find_unavailable_rooms method" do
+    it "finds all unavailable rooms for requested dates" do
+      unavailable_rooms = @reservation_tracker.find_unavailable_rooms(@requested_dates)
+      expect(unavailable_rooms).must_be_kind_of Array
+      expect(unavailable_rooms).length.must_equal 1
     end
 
     it "returns 0 if there are no unavailable rooms for requested dates" do

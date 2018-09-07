@@ -22,9 +22,9 @@ describe "DateRange class" do
   end
 
   describe "#get_range method" do
-    it "returns a range with the beginning with the start_date and ending in one day before end_date " do
-      expect(@date_range.get_range).must_be_kind_of Range
-      expect(@date_range.get_range).must_equal (@start_date...@end_date)
+    it "returns an array of the range with the first element as the start_date and the last being one day before end_date " do
+      expect(@date_range.get_range).must_be_kind_of Array
+      expect(@date_range.get_range).must_equal [*@start_date...@end_date]
       expect(@date_range.get_range).must_include @start_date
       expect(@date_range.get_range).wont_include @end_date
       expect(@date_range.get_range).must_include @end_date - 1
