@@ -189,10 +189,10 @@ describe "HotelAdmin" do
   end
 
   describe "HotelAdmin#reserve_room_in_block" do
-    it "takes a room and completes room reservation" do
+    it "takes a room and guest_id and completes room reservation" do
       hotel.reserve_block("Smith Wedding Party", [7,8,9,10], Date.new(2018,12,02), Date.new(2018,12,07), 145.00)
       room9 = hotel.retrieve_room(9)
-      reserve_room_in_block(room9)
+      hotel.reserve_room_in_block("Smith Wedding Party", 9)
 
       expect(room9.bookings.first.status).must_equal :complete
       expect(room9.bookings.first.guest_id).must_equal "Smith Wedding Party"
@@ -200,21 +200,20 @@ describe "HotelAdmin" do
   end
 
   describe "HotelAdmin#available_rooms_in_block" do
-    it "takes a block party name and returns available rooms" do
+    it "takes a block party name and returns an array of available blocked reservations" do
       hotel.reserve_block("Smith Wedding Party", [7,8,9,10], Date.new(2018,12,02), Date.new(2018,12,07), 145.00)
       room8 = hotel.retrieve_room(8)
-      reserve_room_in_block(room8)
+      hotel.reserve_room_in_block("Smith Wedding Party", 8)
       room9 = hotel.retrieve_room(9)
-      reserve_room_in_block(room9)
+      hotel.reserve_room_in_block("Smith Wedding Party", 9)
       room10 = hotel.retrieve_room(10)
-
-      available = available_rooms_in_block("Smith Wedding Party")
+#
+      available = hotel.available_rooms_in_block("Smith Wedding Party")
 
       expect(available).must_be_instance_of Array
-      expect(available.first).must_be_instance_of Room
-      expect(available).wont_include room8
-      expect(available).wont_include room9
-      expect(available).must_include room10
+      expect(available).wont_include 8
+      expect(available).wont_include 9
+      expect(available).must_include 10
     end
   end
 

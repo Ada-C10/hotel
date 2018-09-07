@@ -1,5 +1,5 @@
 class HotelAdmin
-  attr_accessor :rooms, :reservations
+  attr_reader :rooms, :reservations
 
   def initialize
     @rooms = build_rooms
@@ -57,12 +57,20 @@ class HotelAdmin
     end
   end
 
-  def reserve_block(party, rooms_array, check_in, check_out, rate)
+  def reserve_block(party, rooms, check_in, check_out, rate)
     block_reservations = []
-    rooms_array.each do |room_number|
+    rooms.each do |room_number|
       block_reservations << reserve_room(party, room_number, check_in, check_out, rate, status = :block_reserved)
     end
     block_reservations
+  end
+
+  def reserve_room_in_block(party, room_number)
+    retrieve_room(room_number).bookings.find {|res| res.guest_id == party}.complete_reservation
+  end
+
+  def available_rooms_in_block(party)
+    reservations.find_all {|res| res.guest_id == party && res.status == :block_reserved}.map {|res| res.room}
   end
 
 end

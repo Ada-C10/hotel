@@ -15,4 +15,8 @@ class Reservation
     nights * rate
   end
 
+  def complete_reservation
+    @status = :complete
+  end
+
 end
