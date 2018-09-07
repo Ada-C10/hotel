@@ -1,0 +1,3 @@
+1. Spec files have a lot of concrete dependencies to classes.
+2. There is some duplicate code in spec files when setting up tests.
+3. ReservationTracker class can possibly be refactored into two separate classes. One for tracking reservations, and one for tracking room blocks. 

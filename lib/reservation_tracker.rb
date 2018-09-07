@@ -66,7 +66,6 @@ class ReservationTracker
 
     block = find_matching_block(start_date, end_date)
     block.book_reservation(room, start_date, end_date)
-
   end
 
   def find_matching_block(start_date, end_date)
