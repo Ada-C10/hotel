@@ -3,10 +3,9 @@ require 'pry'
 
 describe "BlockReservation" do
   describe "initialize" do
-    it "creates an instance of a block reservation" do
+    let (:family_reunion) { BlockReservation.new(7, [2,4,6], "2018-4-17", "2018-4-20")}
 
-      family_reunion = BlockReservation.new(7, [2,4,6], "2018-4-17", "2018-4-20")
-      # binding.pry
+    it "creates an instance of a block reservation" do
       family_reunion.must_be_kind_of BlockReservation
     end
 
@@ -25,13 +24,11 @@ describe "BlockReservation" do
     end
 
     it "keeps track of start_date" do
-      family_reunion = BlockReservation.new(7, [2,4,6], "2018-4-17", "2018-4-20")
       family_reunion.must_respond_to :start_date
       family_reunion.start_date.must_equal Date.parse("2018-4-17")
     end
 
     it "keeps track of end_date" do
-      family_reunion = BlockReservation.new(7, [2,4,6], "2018-4-17", "2018-4-20")
       family_reunion.must_respond_to :end_date
       family_reunion.end_date.must_equal Date.parse("2018-4-20")
     end
@@ -40,13 +37,8 @@ describe "BlockReservation" do
       expect{BlockReservation.new(7, 4, "2018-4-17", "2018-4-14")}.must_raise StandardError
     end
 
-    # it "keeps track of available rooms" do
-    #   family_reunion = BlockReservation.new(7, [2,4,6], "2018-4-17", "2018-4-20")
-    #   family_reunion.rooms_available.length.must_equal 0
-    # end
 
     it "keeps track of reservations within block" do
-      family_reunion = BlockReservation.new(7, [2,4,6], "2018-4-17", "2018-4-20")
       family_reunion.reservations.length.must_equal 0
     end
   end

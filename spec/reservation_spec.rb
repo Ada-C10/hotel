@@ -3,14 +3,12 @@ require 'pry'
 
 describe "Reservation" do
   describe "initialize" do
-    #why is before block not working?
-    # before do
-    #   reservation = Reservation.new(7, "4-17-2018", "4-20-2018")
-    # end
-    it "Create an instance of reservation" do
+    let (:reservation) {
       reservation = Reservation.new(7, 4, "2018-4-17", "2018-4-20")
+    }
+
+    it "Create an instance of reservation" do
       reservation.must_be_kind_of Reservation
-      # binding.pry
     end
 
     it "keeps track of ID" do
@@ -28,13 +26,11 @@ describe "Reservation" do
     end
 
     it "keeps track of start_date" do
-      reservation = Reservation.new(7, 4, "2018-4-17", "2018-4-20")
       reservation.must_respond_to :start_date
       reservation.start_date.must_be_kind_of Date
     end
 
     it "keeps track of end_date" do
-      reservation = Reservation.new(7, 4, "2018-4-17", "2018-4-20")
       reservation.must_respond_to :end_date
       reservation.end_date.must_be_kind_of Date
     end
