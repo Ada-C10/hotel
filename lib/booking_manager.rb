@@ -43,28 +43,7 @@ module Hotel
       vacant_rooms = []
       booked_rooms = []
       @rooms.each do |room|
-        if room.reservations.first == nil
-          vacant_rooms << room.room_number
-          next
-        end
-
-        min = 0
-        max = room.reservations.length
-        while min < max
-          mid = (min + max )/ 2
-          if !(possible_nights_of_stay & room.reservations[mid].nights_of_stay).empty?
-            booked_rooms << room.room_number
-            break
-          elsif room.reservations[mid].check_in_date > check_in_date
-            max = mid - 1
-          elsif room.reservations[mid].check_in_date < check_in_date
-            min = mid + 1
-          end
-        end
-        if !(possible_nights_of_stay & room.reservations[0].nights_of_stay).empty?
-          booked_rooms << room.room_number
-        end
-        unless booked_rooms.include?(room.room_number)
+        if binary_search_list_of_reservations(room.reservations, possible_nights_of_stay) == false
           vacant_rooms << room.room_number
         end
       end
@@ -101,25 +80,30 @@ module Hotel
       return rooms
     end
 
-    # def binary_search_sorted_reservations(array_of_reservations, check_in_date, check_out_date)
-    #   min = 0
-    #   max = array_of_reservations.length
-    #
-    #   while min < max
-    #     mid = (min + max )/ 2
-    #     if array_of_reservations[] == check_in_date || array_of_reservations == check_out_date
-    #       return true
-    #     elsif array_of_reservations.first > check_in_date
-    #       max = mid - 1
-    #     elsif array.[](mid) < value_to_find
-    #       min = mid + 1
-    #     end
-    #   end
-    #   if array.[](min) == value_to_find
-    #     return true
-    #   end
-    #   return false
-    # end
+    def binary_search_list_of_reservations(array_of_reservations, array_of_possible_dates)
+
+      min = 0
+      max = array_of_reservations.length
+
+      if array_of_reservations.first == nil
+        return false
+      end
+
+      while min < max
+        mid = (min + max )/ 2
+        if !(array_of_possible_dates & array_of_reservations[mid].nights_of_stay).empty?
+          return true
+        elsif array_of_reservations[mid].check_in_date > array_of_possible_dates.first
+          max = mid - 1
+        elsif array_of_reservations[mid].check_in_date < array_of_possible_dates.first
+          min = mid + 1
+        end
+      end
+      if !(array_of_possible_dates & array_of_reservations[0].nights_of_stay).empty?
+        return true
+      end
+      return false
+    end
 
   end
 end
