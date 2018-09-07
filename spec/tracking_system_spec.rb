@@ -71,16 +71,8 @@ describe 'TrackingSystem class' do
       it "raises ArgumentError if there are not enough available-rooms on the requested date" do
         expect{@tracker.add_reservation(start_time: Date.new(2018,1,1),end_time:Date.new(2018,1,2),number_of_rooms:350)}.must_raise ArgumentError
       end
+    end
 
-      # def add_reservation(start_time: Date.now, end_time: Date.now + 1, number_of_rooms: 1)
-      #   available_rooms = view_available_rooms_on(start_time: start_time, end_time: end_time) #<--returns an array of available rooms!
-      #   raise ArgumentError.new"Not enough rooms available on those dates" if available_rooms.length < number_of_rooms
-      #   number_of_rooms.times do |i|
-      #     @reservations << Reservation.new({room: [available_rooms[i].room_num], start_time: start_time, end_time: end_time, price: 200.0})
-      #     available_rooms[i].reserved_dates << {start_time: start_time, end_time: end_time}
-      #   end
-      #   @reservations
-      # end
       # it "increases the number of reservations in the reservations list" do
       #   num_of_reservations = @tracker.reservations.length
       #   @reservation = @tracker.add_reservation(Date.new(2018,8,1),Date.new(2018,8,25),1)
@@ -116,31 +108,8 @@ describe 'TrackingSystem class' do
       #   expect(@reservation).must_be_kind_of Reservation
       # end
 
-    end
 
-    # def add_reservation(start_time: nil, end_time: nil, number_of_rooms)
-    #   # 1. pick a room that is available. the next available room?
-    #   @all_rooms.each do |room|
-    #     room.reserved_dates.each do |reserved_dates| # this is a hash containing {checkin_time: checkin, checkout_time: checkout}, can replace some fo this with helper method
-    #       if !(reserved_dates[:start_time]..reserved_dates[:end_time]).include?(:checkin) && room.block == :NA
-    #         #create a new reservation with |room| that is iterated in and fits the reqs
-    #       else
-    #        # raise argument error if inside @all_rooms no room is available on this date range (then admin would need to input a new date range)
-    #   # else..add the new reservation below
-    #   reservation = Reservation.new(date_range: view_two_dates_as_range {start_time: checkin, end_time: checkout -1}, room: room)  # <----room object contains {room_num:, price: STANDARD_ROOM_PRICE, customer: ""}
-    #   @reservations << reservation
-    #   room.reserved_dates << {start_time: checkin, end_time: checkout}
-    # end
-    # def view_available_rooms_on(start_time, end_time)
-    #   #available_rooms = []
-    #   # @all_rooms.each do |room|
-    #   # room.reserved_dates.each do |date_range| <---date_range could be a hash like {checkin_time: checkin, checkout_time: checkout}
-    #   ###  if the date_range doesn't include date aka:
-    #   # if !date_range.include?(date)
-    #   # available_rooms << room
-    #   # end
-    #   # return available_rooms (this is an array of rooms avail on 'date' passed as param)
-    #
+
     describe "#view_available_rooms_on specifc date range" do
       before do
       end
@@ -170,6 +139,18 @@ describe 'TrackingSystem class' do
         @tracker = TrackingSystem.new
         expect{@tracker.view_available_rooms_on(start_time: Date.new(2018,10,5),end_time:Date.new(2018,9,5))}.must_raise ArgumentError
       end
+
+    end
+
+    describe "#total_cost_of_reservation" do
+      before do
+        @tracker = TrackingSystem.new
+      end
+
+      it "returns an instance of Float" do
+        expect(@tracker.total_cost_of_reservation).must_be_kind_of Float
+      end 
+
 
     end
 

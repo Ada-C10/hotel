@@ -13,8 +13,8 @@ class TrackingSystem
     @reservations = []
   end
 
-  # def reservation_total_cost
-  # end
+  def total_cost_of_reservation
+  end
 
   def add_rooms
     all_rooms = []
