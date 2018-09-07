@@ -58,7 +58,14 @@ describe "booking manager" do
     it "Is able to get the total cost for a given reservation" do
       @manager.add_reservation(1, Date.new(2018, 9, 1), Date.new(2018, 9, 2))
       ####### Below code is not working properly, debug ########
-      # expect(@manager.total_cost_for_reservation(1, Date.new(2018, 9, 1), Date.new(2018, 9, 2))).must_equal @manager.rooms.first.reservations.first
+      # binding.pry
+      expect(@manager.total_cost_for_reservation(1, Date.new(2018, 9, 1), Date.new(2018, 9, 2))).must_equal @manager.rooms.first.reservations.first.total
+    end
+
+    it "Raises a NoReservationExistsError if the reservation cannot be found" do
+      expect{
+        @manager.total_cost_for_reservation(1, Date.new(2018, 1, 1), Date.new(2018, 1, 2))
+      }.must_raise NoReservationExistsError
     end
 
 

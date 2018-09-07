@@ -16,15 +16,22 @@ class Room
   end
 
   # Change arguments to a hash so roder doesn't matter?
-  def find_reservation(room_number, check_in, check_out, cost_per_night=200)
+  def find_reservation(room_number_to_find, check_in_to_find, check_out_to_find, cost_per_night_to_find=200)
     # Access reservations
     # Returns true if any reservations match the given reservation
     # To be used as a helper method in Booking for finding a given reservation cost
-    @reservations.any? do |reservation|
-      reservation.room_number == room_number &&
-      reservation.check_in == check_in &&
-      reservation.check_out == check_out &&
-      reservation.cost_per_night == cost_per_night
+    # Should this use select to return array with reservation?
+    reservation_to_find = @reservations.find do |reservation|
+      reservation.room_number == room_number_to_find &&
+      reservation.check_in == check_in_to_find &&
+      reservation.check_out == check_out_to_find &&
+      reservation.cost_per_night == cost_per_night_to_find
+    end
+    # binding.pry
+    if reservation_to_find == nil
+      return false
+    else
+      return reservation_to_find
     end
   end
 

@@ -9,6 +9,9 @@ require 'pry'
 class NoRoomsAvailableError < StandardError
 end
 
+class NoReservationExistsError < StandardError
+end
+
 class Booking
   # manages reservations
     # Will have most methods
@@ -59,13 +62,6 @@ class Booking
   end
 
   ##### In Progress #####
-  def total_cost_for_reservation(room_number, start_date, end_date, cost_per_night=200)
-    # See if any rooms have the given reservation
-    # If so, return the reservation cost
-    # @rooms.select do |room|
-      # room.find_reservation(room_number, start_date, end_date, cost_per_night)
-    # end
-  end
 
   # Helper method to check if date ranges overlap
   # Depends on order of arguments, maybe refactor as a hash
@@ -94,16 +90,31 @@ class Booking
     end
     # binding.pry
     if rooms_available.empty?
-      # return rooms_available
       raise NoRoomsAvailableError, "No rooms are available for this date range"
     else
       return rooms_available
     end
   end
 
-end
+  def total_cost_for_reservation(room_number, start_date, end_date, cost_per_night=200)
+    # See if any rooms have the given reservation
+    # If so, return the reservation cost
+    # This is a bit messy, would like to refactor if there's time
+    room_with_reservation = @rooms.select do |room|
+      # find_reservation is only returning true/false, need actual reservation
+      room.find_reservation(room_number, start_date, end_date, cost_per_night)
+    end
+    # binding.pry
+    if room_with_reservation.empty?
+      # If the reservation can't be found, raise an error
+      raise NoReservationExistsError, "Sorry, your reservation is not in our system."
+    else
+      # if the reservation is found, return the total
+      room_with_reservation[0].find_reservation(room_number, start_date, end_date, cost_per_night).total
+    end
+  end
 
-  # TODO Can get the total cost for a given reservation
+end
 
   # TODO Can view a list of rooms that are not reserved for a given date range
 
