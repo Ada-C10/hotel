@@ -10,19 +10,17 @@ Minitest::Reporters.use! Minitest::Reporters::SpecReporter.new
 
 
 describe "Reservation" do
-  # QUESTION: needed for creation: id, room_num, date_start, date_end, cost=200
-  # ^^ keyword args? hash input??
+
   # TODO: test end date AFTER start date
   # TODO: test cost as float?
   # TODO: test id as any pos int
   # TODO: test room_num as 1-20
   # TODO: test cost nil or 200 or other value
-  # QUESTION: let vs before/do --> preference and use case diff?
   let(:reservation) {Hotel::Reservation.new({
     id: "2",
     room_num: "3",
-    start_date: "2004-7-1",
-    end_date: "2004-7-4"})}
+    check_in: "2004-7-1",
+    check_out: "2004-7-4"})}
 
   describe "#initialize" do
     it "can create a new instance of reservation" do
@@ -30,22 +28,49 @@ describe "Reservation" do
       expect(reservation.id).must_equal 2
     end
 
-    it "throws a StandardError if end_date occurs before start_date" do
+    it "throws a StandardError if fed improper date format for check_in or check_out" do
     expect {
       Hotel::Reservation.new({
         id: "5",
         room_num: "8",
-        start_date: "2009-7-2",
-        end_date: "2009-7-1"
+        check_in: "2009,7,2",
+        check_out: "2009-7-1"
+        })}.must_raise StandardError
+
+    expect {
+      Hotel::Reservation.new({
+        id: "5",
+        room_num: "8",
+        check_in: "2009-7-2",
+        check_out: "2009,7,1"
         })}.must_raise StandardError
     end
+
+    it "throws a StandardError if check_out occurs before or on same day as check_in" do
+    expect {
+      Hotel::Reservation.new({
+        id: "5",
+        room_num: "8",
+        check_in: "2009-7-2",
+        check_out: "2009-7-1"
+        })}.must_raise StandardError
+
+    expect {
+      Hotel::Reservation.new({
+        id: "5",
+        room_num: "8",
+        check_in: "2009-7-1",
+        check_out: "2009-7-1"
+        })}.must_raise StandardError
+    end
+
     it "can create a reservation with a one-night stay" do
       # edge case
       one_night_stay = Hotel::Reservation.new({
         id: "66",
         room_num: "19",
-        start_date:"2009-7-29",
-        end_date: "2009-7-29"})
+        check_in:"2009-7-29",
+        check_out: "2009-7-30"})
       expect(one_night_stay).must_be_kind_of Hotel::Reservation
       expect(one_night_stay.id).must_equal 66
     end
