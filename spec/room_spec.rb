@@ -73,4 +73,15 @@ describe 'Room class' do
       expect(room.dates_booked[2]).must_equal Date.parse("Oct 6 2018")
     end
   end
+
+  describe 'add_reservation' do
+    it "adds a reservation instance to the room's array of reservations" do
+      room = Room.new(room_num: 1)
+      room.add_reservation(Reservation.new("Oct 5 2018", "Oct 8 2018"))
+
+      expect(room.reservations).must_be_kind_of Array
+      expect(room.reservations.count).must_equal 1
+      expect(room.reservations[0]).must_be_kind_of Reservation
+    end
+  end
 end

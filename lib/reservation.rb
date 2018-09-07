@@ -7,7 +7,7 @@ class Reservation
     @check_in_date = Date.parse(check_in_date)
     @check_out_date = Date.parse(check_out_date)
     raise ArgumentError, "invalid dates" if @check_in_date >= @check_out_date
-    @room_number = nil
+    @reservation_id = nil
   end
 
   def length_of_stay

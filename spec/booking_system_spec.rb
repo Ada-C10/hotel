@@ -74,66 +74,83 @@ describe 'BookingSystem class' do
 
   describe 'list_all_rooms' do
     it 'returns a list of all the rooms in the hotel' do
-      expect(@booking.list_all_rooms).must_be_kind_of Array
+      expect(@booking.rooms).must_be_kind_of Array
     end
   end
 
   describe 'reserve_room' do
 
     it 'adds a new reservation to the list of reservations' do
+
       first_reservation
+
       expect(@booking.reservations.count).must_equal 1
     end
 
     it "shovels dates from new reservation to a room's dates_booked array" do
+
       first_reservation
-      all_rooms = @booking.list_all_rooms
-      expect(all_rooms[0].dates_booked.count).must_equal 3
-      expect(all_rooms[1].dates_booked.count).must_equal 0
+
+      expect(@booking.rooms[0].dates_booked.count).must_equal 3
+
+      expect(@booking.rooms[1].dates_booked.count).must_equal 0
+    end
+
+    it "adds the reservation to the room's list of reservations" do
+
+      first_reservation
+      expect(@booking.rooms[0].reservations.count).must_equal 1
+
+      no_overlap_before
+      expect(@booking.rooms[0].reservations.count).must_equal 2
+      expect(@booking.rooms[1].reservations.count).must_equal 0
+
     end
 
     it "selects the next room with available dates" do
+
       first_reservation
       overlap_before
-      all_rooms = @booking.list_all_rooms
-      expect(all_rooms[0].dates_booked.count).must_equal 3
-      expect(all_rooms[1].dates_booked.count).must_equal 3
+
+      expect(@booking.rooms[0].dates_booked.count).must_equal 3
+      expect(@booking.rooms[1].dates_booked.count).must_equal 3
 
       overlap_after
-      all_rooms = @booking.list_all_rooms
-      expect(all_rooms[0].dates_booked.count).must_equal 3
-      expect(all_rooms[1].dates_booked.count).must_equal 3
-      expect(all_rooms[2].dates_booked.count).must_equal 3
+
+      expect(@booking.rooms[0].dates_booked.count).must_equal 3
+      expect(@booking.rooms[1].dates_booked.count).must_equal 3
+      expect(@booking.rooms[2].dates_booked.count).must_equal 3
 
       contained_in_range
-      all_rooms = @booking.list_all_rooms
-      expect(all_rooms[0].dates_booked.count).must_equal 3
-      expect(all_rooms[1].dates_booked.count).must_equal 3
-      expect(all_rooms[2].dates_booked.count).must_equal 3
-      expect(all_rooms[3].dates_booked.count).must_equal 1
+
+      expect(@booking.rooms[0].dates_booked.count).must_equal 3
+      expect(@booking.rooms[1].dates_booked.count).must_equal 3
+      expect(@booking.rooms[2].dates_booked.count).must_equal 3
+      expect(@booking.rooms[3].dates_booked.count).must_equal 1
     end
 
     it 'selects the same room due to availability' do
+
       first_reservation
       no_overlap_before
-      all_rooms = @booking.list_all_rooms
-      expect(all_rooms[0].dates_booked.count).must_equal 6
-      expect(all_rooms[1].dates_booked.count).must_equal 0
+
+      expect(@booking.rooms[0].dates_booked.count).must_equal 6
+      expect(@booking.rooms[1].dates_booked.count).must_equal 0
 
       no_overlap_after
-      all_rooms = @booking.list_all_rooms
-      expect(all_rooms[0].dates_booked.count).must_equal 9
-      expect(all_rooms[1].dates_booked.count).must_equal 0
+
+      expect(@booking.rooms[0].dates_booked.count).must_equal 9
+      expect(@booking.rooms[1].dates_booked.count).must_equal 0
 
       end_on_checkin
-      all_rooms = @booking.list_all_rooms
-      expect(all_rooms[0].dates_booked.count).must_equal 12
-      expect(all_rooms[1].dates_booked.count).must_equal 0
+
+      expect(@booking.rooms[0].dates_booked.count).must_equal 12
+      expect(@booking.rooms[1].dates_booked.count).must_equal 0
 
       starts_on_checkout
-      all_rooms = @booking.list_all_rooms
-      expect(all_rooms[0].dates_booked.count).must_equal 15
-      expect(all_rooms[1].dates_booked.count).must_equal 0
+
+      expect(@booking.rooms[0].dates_booked.count).must_equal 15
+      expect(@booking.rooms[1].dates_booked.count).must_equal 0
     end
   end
 
@@ -158,6 +175,18 @@ describe 'BookingSystem class' do
 
   describe 'reservations_by_date' do
     it 'returns a list of reservations for a specified date' do
+      first_reservation
+      overlap_before
+      overlap_after
+      contained_in_range
+
+      expect(@booking.reservations_by_date("Oct 5 2018")).must_be_kind_of Array
+      expect(@booking.reservations_by_date("Oct 5 2018").count).must_equal 4
+      expect(@booking.reservations_by_date("Oct 5 2018")[0]).must_be_kind_of Reservation
+    end
+
+    it 'returns an empty array if no reservations exit for a specified date' do
+      expect(@booking.reservations_by_date("Oct 5 2018")).must_equal []
     end
   end
 end

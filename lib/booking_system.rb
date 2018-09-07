@@ -27,14 +27,20 @@ class BookingSystem
   # reserve a room for a given date range
   def reserve_room(start_date, end_date)
     dates = date_range(start_date, end_date)
+    new_reservation = nil
     @rooms.each do |room|
       if room.is_available?(dates)
         room.add_booked_dates(dates)
         new_reservation = Reservation.new(start_date, end_date)
+        room.add_reservation(new_reservation)
         @reservations << new_reservation
-        return new_reservation
         break
       end
+    end
+    if new_reservation != nil
+      return new_reservation
+    else
+      raise ArgumentError, 'no rooms available in date range'
     end
   end
 
@@ -52,7 +58,13 @@ class BookingSystem
 
   # access the list of reservations for a specific date
   def reservations_by_date(date)
-
+    date = Date.parse(date)
+    list_res = []
+    @reservations.each do |reservation|
+      if reservation.check_in_date <= date && reservation.check_out_date >= date
+        list_res << reservation
+      end
+    end
   end
 
   # get the total cost for a given reservation
