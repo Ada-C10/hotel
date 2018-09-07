@@ -2,6 +2,8 @@
 require "pry"
 require "awesome_print"
 
+#TODO: .parse method!
+
 module HotBook
 # The DateRange class compares and does calculations on other DateRanges
 # Refer to Date gem documentation to understand what date format to use (i.e. y-m-d)
@@ -28,6 +30,10 @@ module HotBook
       if self.is_valid?
         return oldrange.end_date <= start_date
       end
+    end
+
+    def to_range
+      return (@start_date..@end_date)
     end
 
   end
