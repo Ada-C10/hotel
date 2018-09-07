@@ -38,7 +38,10 @@ class Admin
 
   #As an administrator, I can reserve a room for a given date range
   def reserve_room(start_date, end_date)
-    @rooms.first.change_status
+    start_date = Time.parse(start_date)
+    end_date = Time.parse(end_date)
+    range = (start_date..end_date)
+    @rooms.first.add_reservation(range)
   end
 
   # As an administrator, I can access the list of all of the rooms in the hotel
@@ -71,8 +74,8 @@ class Admin
     @reservations.sort_by { |object| object.start_time }
   end
 
-  def date_in_range(start_date, first_date, date)
-    range = (start_date..first_date)
+  def date_in_range(start_date, end_date, date)
+    range = (start_date..end_date)
     range.include?(date)
   end
 end
