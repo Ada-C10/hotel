@@ -21,7 +21,7 @@ module Hotel
 
       # TODO: this should be rescued?
       if @discounted_rate > 200
-        raise ArgumentError, "Discounted rate is greater than Base rate: #{BASE_COST}."
+        raise ArgumentError, "Discounted rate is greater than Base rate: 200."
       end
 
       if @blocked_rooms.uniq.length != @blocked_rooms.length

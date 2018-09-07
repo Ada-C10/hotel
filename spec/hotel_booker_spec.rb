@@ -81,6 +81,13 @@ describe 'HotelBooker class' do
       expect(hotel_booker.reserve_a_room(Date.today + 1, Date.today + 2).room_num).must_equal 2
       expect(hotel_booker.reserve_a_room(Date.today + 1, Date.today + 9).room_num).must_equal 3
     end
+
+    # TODO: write tests to account for blocked rooms
+
+    # TODO
+    # it 'raises an error if trying to reserve a room in a different block' do
+    #
+    # end
   end
 
   describe 'is_room_available helper method' do
@@ -242,6 +249,10 @@ describe 'HotelBooker class' do
       expect(hotel_booker.reserve_a_room_in_block(1)).must_be_instance_of Hotel::Reservation
 
       # @room_block.
+      # TODO: WRITE MORE TESTS
+
+      # TODO:
+
 
     end
 
