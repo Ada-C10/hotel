@@ -233,14 +233,16 @@ describe 'HotelBooker class' do
 
   describe 'reserve_a_room_in_block' do
     before do
-      hotel_booker.create_a_block(Date.today + 2, Date.today + 7, 5, 150)
+      @room_block = hotel_booker.create_a_block(Date.today + 2, Date.today + 7, 5, 150)
     end
 
     it 'returns a reservation of a room within the room block' do
 
       expect(hotel_booker.all_room_blocks[0].block_id).must_equal 1
       expect(hotel_booker.reserve_a_room_in_block(1)).must_be_instance_of Hotel::Reservation
-      
+
+      # @room_block.
+
     end
 
   end

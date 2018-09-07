@@ -15,11 +15,24 @@ module Hotel
     end
 
     def find_block(id)
-      check(id)
-      return @all_room_blocks.find{ |block| block.id == id}
+      check_id(id)
+      return @all_room_blocks.find{ |block| block.block_id == id}
     end
 
     def reserve_a_room_in_block(id)
+      block = find_block(id)
+
+      unless block
+        raise ArgumentError, "Block not found in system"
+      end
+
+      unless block.get_block_availability
+        raise ArgumentError, "Block has no availability"
+      end
+
+      room_num = block.list_available_block_rooms.first
+      # rate = block.discounted_rate
+      reserve_a_room(block.date_range.check_in, block.date_range.check_out, room_num, block: block) #, id: id, rate: rate)
 
     end
 
@@ -53,15 +66,26 @@ module Hotel
     end
 
 
-    def reserve_a_room(check_in, check_out, room)
-      if check_if_invalid_dates(check_in, check_out)
-        raise ArgumentError, "Invalid Dates Given"
-      end
-      if !is_room_available(check_in, check_out, room)
-        raise UnavailableRoomError, "Room not available"
-      else
+    def reserve_a_room(check_in, check_out, room, block: false) #, id: nil, rate: nil)
+      unless block
+        if check_if_invalid_dates(check_in, check_out)
+          raise ArgumentError, "Invalid Dates Given"
+        end
+
+        if !is_room_available(check_in, check_out, room)
+          raise UnavailableRoomError, "Room not available"
+        end
+
         new_reservation = Hotel::Reservation.new(check_in, check_out, room)
         @all_reservations << new_reservation
+        return new_reservation
+
+      else
+
+        # block = find_block(id)
+        new_reservation = Hotel::Reservation.new(check_in, check_out, room, rate: block.discounted_rate)
+        # @all_reservations << new_reservation
+        block.block_reservations << new_reservation
         return new_reservation
       end
     end

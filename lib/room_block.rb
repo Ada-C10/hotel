@@ -42,10 +42,18 @@ module Hotel
     end
 
     def get_block_availability
+      # occupied_block_rooms = @block_reservations.map do |reservation|
+      #   reservation.room_num
+      # end
+      return list_available_block_rooms.length > 0
+    end
+
+    def list_available_block_rooms
       occupied_block_rooms = @block_reservations.map do |reservation|
         reservation.room_num
       end
-      return (@blocked_rooms - occupied_block_rooms).length > 0
+
+      return (@blocked_rooms - occupied_block_rooms)
     end
 
     # TODO: methods to create:
