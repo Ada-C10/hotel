@@ -24,5 +24,16 @@ module Hotel
     def is_within_date_range(date)
       return is_Date(date) && date >= @check_in && date < @check_out
     end
+
+    def overlaps?(date_range)
+      if date_range.check_out <= @check_in || date_range.check_in >= @check_out
+        return false
+      end
+
+      if (date_range.check_in >= @check_in || date_range.check_out <= @check_out) || (date_range.check_in < @check_in && date_range.check_out> @check_out)
+        return true
+      end
+    end
+
   end
 end
