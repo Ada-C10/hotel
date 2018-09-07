@@ -10,4 +10,7 @@ class Room
     @ranges << range
   end
 
+  def sort_ranges
+    @ranges.sort_by { |range| object.start_time }
+  end
 end

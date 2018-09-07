@@ -2,11 +2,13 @@ require 'csv'
 require 'pry'
 
 class Admin
-  attr_reader :reservations, :find_reservation, :rooms
+  attr_reader :reservations, :find_reservation, :rooms, :vacant_rooms, :booked_rooms
   def initialize
     @reservations = load_reservations('spec/test_data/test_reservation.csv')
     @rooms = create_rooms(20)
     sort_reservations
+    @vacant_rooms = []
+    @booked_rooms = []
   end
 
   def create_rooms(number)
@@ -37,6 +39,7 @@ class Admin
   end
 
   #As an administrator, I can reserve a room for a given date range
+  # must be updated to use vacant_rooms
   def reserve_room(start_date, end_date)
     start_date = Time.parse(start_date)
     end_date = Time.parse(end_date)
@@ -69,6 +72,21 @@ class Admin
     return cost
   end
 
+  #As an administrator, I can view a list of rooms that are not reserved for a given date range
+  def view_vacant_rooms(date_range)
+    @rooms.each do |room|
+      ranges = room.ranges
+      length = ranges.length
+      vacant = binary_search(ranges, length, date_range)
+      if vacant
+        booked_rooms << room
+      else
+        vacant_rooms << room
+      end
+    end
+  return vacant_rooms
+  end
+
   private
   def sort_reservations
     @reservations.sort_by { |object| object.start_time }
@@ -77,5 +95,29 @@ class Admin
   def date_in_range(start_date, end_date, date)
     range = (start_date..end_date)
     range.include?(date)
+  end
+
+  def binary_search(array, length, value_to_find)
+    binding.pry
+
+    low = array[0]
+    high = array[length - 1]
+    index = 0
+
+    while low < high
+      mid = (low + high) / 2
+      if mid == value_to_find
+        return true
+      elsif mid > value_to_find
+        high = mid - 1
+      elsif mid < value_to_find
+        low = mid + 1
+      end
+      if low == value_to_find || high == value_to_find
+        return true
+      else
+        return false
+      end
+    end
   end
 end
