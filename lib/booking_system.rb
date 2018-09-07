@@ -41,13 +41,17 @@ module Hotel
     def search_reservations(start_date_2, end_date_2)
       reservations_within_date = []
       @reservations.each do |reservation|
-        if reservation.start_date < end_date_2 && start_date_2 <= reservation.end_date
+        if
+          reservation.start_date < end_date_2 && start_date_2 < reservation.end_date
           reservations_within_date << reservation
-          # binding.pry
         end
       end
+      # binding.pry
       return reservations_within_date
     end
+
+    # def total_cost(id)
+
 
     # def assign_available_room(start_date_2)
     #   reservations_within_date = []

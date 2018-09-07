@@ -51,50 +51,53 @@ describe "BookingSystem class" do
     end
   end
 
-  describe "search reservation" do
+  describe "search reservation dates" do
     before do
+
       reservation1 = Hotel::Reservation.new(id: 1, room: 1, start_date: Date.new(2018, 1, 1), end_date: Date.new(2018, 1, 8), price_per_night: 200)
       @system.reservations << reservation1
 
-      reservation2 = Hotel::Reservation.new(id: 2, room: 2, start_date: Date.new(2018, 1, 1), end_date: Date.new(2018, 1, 8), price_per_night: 200)
+      reservation2 = Hotel::Reservation.new(id: 2, room: 2, start_date: Date.new(2018, 1, 7), end_date: Date.new(2018, 1, 15), price_per_night: 200)
       @system.reservations << reservation2
+
     end
     it "returns an array of reservations" do
-
-      # reservation1 = Hotel::Reservation.new(id: 1, room: 1, start_date: Date.new(2018, 1, 1), end_date: Date.new(2018, 1, 8), price_per_night: 200)
-      # @system.reservations << reservation1
-      #
-      # reservation2 = Hotel::Reservation.new(id: 2, room: 2, start_date: Date.new(2018, 1, 1), end_date: Date.new(2018, 1, 3), price_per_night: 200)
-      # @system.reservations << reservation2
-
-      # reservation3 = Hotel::Reservation.new(id: 3, room: 3, start_date: Date.new(2018, 1, 4), end_date: Date.new(2018, 1, 8), price_per_night: 200)
-      # @system.reservations << reservation3
 
       expect(@system.search_reservations(Date.new(2018, 1, 4), Date.new(2018, 1, 8))).must_be_instance_of Array
     end
 
-    it "returns reservations that fall within a specific date" do
+    it "returns reservations that overlap on the existing reservation start date" do
 
-      # reservation1 = Hotel::Reservation.new(id: 1, room: 1, start_date: Date.new(2018, 1, 1), end_date: Date.new(2018, 1, 8), price_per_night: 200)
-      # @system.reservations << reservation1
-
-      expect(@system.search_reservations(Date.new(2018, 1, 4), Date.new(2018, 1, 8))[0].id).must_equal 1
+      expect(@system.search_reservations(Date.new(2017, 12, 30), Date.new(2018, 1, 5))[0].id).must_equal 1
 
     end
 
-    it "returns reservations that are on the same date" do
-      # reservation1 = Hotel::Reservation.new(id: 1, room: 1, start_date: Date.new(2018, 1, 1), end_date: Date.new(2018, 1, 8), price_per_night: 200)
-      # @system.reservations << reservation1
-      #
-      # reservation2 = Hotel::Reservation.new(id: 2, room: 2, start_date: Date.new(2018, 1, 1), end_date: Date.new(2018, 1, 8), price_per_night: 200)
-      # @system.reservations << reservation2
-      #
-      # reservation3 = Hotel::Reservation.new(id: 3, room: 3, start_date: Date.new(2018, 1, 4), end_date: Date.new(2018, 1, 8), price_per_night: 200)
-      # @system.reservations << reservation3
+    it "returns reservations that overlap on the existing reservation end" do
 
-      expect(@system.search_reservations(Date.new(2018, 1, 4), Date.new(2018, 1, 8)).length).must_equal 2
+      expect(@system.search_reservations(Date.new(2018, 1, 10), Date.new(2018, 1, 20))[0].id).must_equal 2
+
     end
+
+    it "returns multiple reservations that are on the same date" do
+
+      expect(@system.search_reservations(Date.new(2018, 1, 7), Date.new(2018, 1, 15)).length).must_equal 2
+
+    end
+
+    it "does not return reservations that end on the new reservation's start date" do
+
+      expect(@system.search_reservations(Date.new(2018, 1, 15), Date.new(2018, 1, 20)).length).must_equal 0
+
+    end
+
+    it "does not return reservations that start on the new reservation's end date" do
+
+      expect(@system.search_reservations(Date.new(2017, 12, 20), Date.new(2018, 1, 1)).length).must_equal 0
+
+    end
+
   end
+
 end
 
 # Hi! In Edges we talked about interesting test cases for date overlaps this afternoon. Here is a full list of all the cases I’ll be looking for when I give feedback:
