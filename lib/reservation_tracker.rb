@@ -18,9 +18,7 @@ module Hotel
 
     def load_rooms
       all_rooms = []
-      NUM_OF_ROOMS.times do |i|
-        all_rooms << i + 1
-      end
+      NUM_OF_ROOMS.times { |i| all_rooms << i + 1 }
       return all_rooms
     end
 
