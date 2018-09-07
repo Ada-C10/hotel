@@ -7,6 +7,8 @@ NUM_OF_ROOMS = 20
 
 module Hotel
   class ReservationTracker
+    class NoRoomsError < StandardError; end
+
     attr_reader :reservations, :rooms
 
     def initialize
@@ -81,7 +83,7 @@ module Hotel
     private
 
     def check_availablity?(available_rooms)
-      raise ArgumentError.new("NO ROOMS AVAILABLE!!!") if available_rooms.empty?
+      raise NoRoomsError.new("NO ROOMS AVAILABLE!!!") if available_rooms.empty?
     end
   end
 end

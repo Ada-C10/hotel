@@ -93,8 +93,8 @@ describe "ReservationTracker class" do
         reservation_tracker.reserve_room(@input)
       end
 
-      expect{ reservation_tracker.find_available_rooms(@requested_dates) }.must_raise ArgumentError
-      expect{ reservation_tracker.reserve_room(@input) }.must_raise ArgumentError
+      expect{ reservation_tracker.find_available_rooms(@requested_dates) }.must_raise Hotel::ReservationTracker::NoRoomsError
+      expect{ reservation_tracker.reserve_room(@input) }.must_raise Hotel::ReservationTracker::NoRoomsError
     end
   end
 
