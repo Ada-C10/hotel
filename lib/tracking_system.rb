@@ -74,6 +74,7 @@ class TrackingSystem
   def view_available_rooms_on(start_time: start_time, end_time: end_time)
     raise ArgumentError.new"start_time must be before end_time" unless start_time < end_time
     available_rooms = []
+    unavailable_count = 0
     @all_rooms.each do |room|
       if room.reserved_dates.empty?
         available_rooms << room
@@ -81,49 +82,55 @@ class TrackingSystem
         room.reserved_dates.each do |dates_hash| #<---date_range could be a hash like {checkin_time: checkin, checkout_time: checkout}
           if ranges_overlap?((dates_hash[:start_time]...dates_hash[:end_time]).to_a, (start_time..end_time).to_a) == false
             available_rooms << room
+          else
+            unavailable_count += 1
           end
         end
       end
     end
-    return available_rooms
+    if unavailable_count == all_rooms.length
+      raise ArgumentError.new"no rooms available on that date range"
+    else
+      return available_rooms
+    end
   end
 end
-# if !(dates_hash[:start_time]...dates_hash[:end_time]).include
-# if !dates_hash.include?(date)
-#   # available_rooms << room
-#   # end
-#   # return available_rooms (this is an array of rooms avail on 'date' passed as param)
-# def ranges_overlap?(r1, r2)
-#   r1.include?(r2.first) || r2.include?(r1.first)
-# end
-#
+  # if !(dates_hash[:start_time]...dates_hash[:end_time]).include
+  # if !dates_hash.include?(date)
+  #   # available_rooms << room
+  #   # end
+  #   # return available_rooms (this is an array of rooms avail on 'date' passed as param)
+  # def ranges_overlap?(r1, r2)
+  #   r1.include?(r2.first) || r2.include?(r1.first)
+  # end
+  #
 
-# #access the list of reservations for a specific date
-# def view_reservations_on(date)
-#   # list_of_res_on this date ^ above = []<--create emtpy array
-#   #@reservations.each do |reservation|
-#   #if (reservation.checkin_time..reservation.checkout_time).include?(date)
-#   #then list_of_res_on (date) << reservation
-#   #return the array  list_of_res_on (date)
-#   # end
-#
+  # #access the list of reservations for a specific date
+  # def view_reservations_on(date)
+  #   # list_of_res_on this date ^ above = []<--create emtpy array
+  #   #@reservations.each do |reservation|
+  #   #if (reservation.checkin_time..reservation.checkout_time).include?(date)
+  #   #then list_of_res_on (date) << reservation
+  #   #return the array  list_of_res_on (date)
+  #   # end
+  #
 
-#
+  #
 
-#
-# private #helper methods below
-# def view_two_dates_as_range()  #<--put params {checkin_time: checkin, checkout_time: checkout}
-# def check_if_rooms_available_on(date_range)
+  #
+  # private #helper methods below
+  # def view_two_dates_as_range()  #<--put params {checkin_time: checkin, checkout_time: checkout}
+  # def check_if_rooms_available_on(date_range)
 
-#############################  #############################   #############################
+  #############################  #############################   #############################
 
-#think about how each room can be reserved thru time
+  #think about how each room can be reserved thru time
 
 
 
-# The hotel has 20 rooms, and they are numbered 1 through 20
-# Every room is identical, and a room always costs $200/night
-# The last day of a reservation is the checkout day, so the
-# guest should not be charged for that night
-# For this wave, any room can be reserved at any time, and
-# you don't need to check whether reservations conflict with each other (this will come in wave 2!)
+  # The hotel has 20 rooms, and they are numbered 1 through 20
+  # Every room is identical, and a room always costs $200/night
+  # The last day of a reservation is the checkout day, so the
+  # guest should not be charged for that night
+  # For this wave, any room can be reserved at any time, and
+  # you don't need to check whether reservations conflict with each other (this will come in wave 2!)

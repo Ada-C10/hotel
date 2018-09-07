@@ -146,7 +146,10 @@ describe 'TrackingSystem class' do
 
       it "raises ArgumentError if no rooms are available on these dates" do
         @tracker = TrackingSystem.new
-        #need to create make_reservation and then call it 20 times on the same date then the 21st time it'll raise an error 
+        @tracker.all_rooms.each do |room|
+          room.reserved_dates << {start_time: Date.new(2018,1,1), end_time: Date.new(2018,1,2)}
+        end
+        #need to create make_reservation and then call it 20 times on the same date then the 21st time it'll raise an error
         expect{@tracker.view_available_rooms_on(start_time: Date.new(2018,1,1),end_time:Date.new(2018,1,2))}.must_raise ArgumentError
       end
 
