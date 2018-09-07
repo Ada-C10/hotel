@@ -1,6 +1,6 @@
 require_relative 'spec_helper'
 
-describe 'HotelBooker class' do
+describe 'BookingSystem class' do
 
   let (:reservation1) {
     check_in = Date.today
@@ -15,16 +15,16 @@ describe 'HotelBooker class' do
   }
 
   let (:hotel_booker) {
-    Hotel::HotelBooker.new(all_reservations: [reservation1, reservation2])
+    Hotel::BookingSystem.new(all_reservations: [reservation1, reservation2])
   }
 
-  describe 'HotelBooker instantiation' do
-    it 'creates an instance of HotelBooker class' do
-      expect(Hotel::HotelBooker.new).must_be_instance_of Hotel::HotelBooker
+  describe 'BookingSystem instantiation' do
+    it 'creates an instance of BookingSystem class' do
+      expect(Hotel::BookingSystem.new).must_be_instance_of Hotel::BookingSystem
     end
 
-    it 'creates an instance of HotelBooker class with reservations as input'do
-      expect(hotel_booker).must_be_instance_of Hotel::HotelBooker
+    it 'creates an instance of BookingSystem class with reservations as input'do
+      expect(hotel_booker).must_be_instance_of Hotel::BookingSystem
     end
 
     it 'if reservations passed in, it stores all reservations in an array of Reservations' do
@@ -269,7 +269,7 @@ describe 'HotelBooker class' do
       hotel_booker.create_a_block(Date.today + 2, Date.today + 7, 5, 150)
     }
     it 'returns a RoomBlock object if given valid parameters' do
-      expect(room_block).must_be_instance_of Hotel::RoomBlock
+      expect(room_block).must_be_instance_of Hotel::Block
     end
 
     it 'returns a RoomBlock with only available rooms for that time range' do

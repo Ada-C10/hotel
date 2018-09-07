@@ -1,6 +1,6 @@
 module Hotel
 
-  class HotelBooker
+  class BookingSystem
 
     attr_reader :all_rooms, :all_reservations, :all_room_blocks
 
@@ -49,7 +49,7 @@ module Hotel
 
       available_rooms = all_available_rooms[0..num_of_rooms - 1]
       block_id = @all_room_blocks.length + 1
-      room_block = Hotel::RoomBlock.new(range, available_rooms, discounted_rate, block_id)
+      room_block = Hotel::Block.new(range, available_rooms, discounted_rate, block_id)
       @all_room_blocks << room_block
       return room_block
 

@@ -1,6 +1,6 @@
 module Hotel
 
-  class RoomBlock #< Reservation
+  class Block #< Reservation
 
     attr_reader :date_range, :blocked_rooms, :discounted_rate, :block_reservations, :block_id
     #
