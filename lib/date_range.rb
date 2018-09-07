@@ -6,6 +6,7 @@ module Hotel
     attr_reader :start_date, :end_date
 
     # TODO: change class name to date range?
+     # change start_date t0 check-in
 
     def initialize(start_date, end_date)
       @start_date = Date.parse(start_date)
@@ -28,18 +29,20 @@ module Hotel
       end
     end
 
+    def dates_overlap?(date_range)
+      booked_dates = (date_range.start_date...date_range.end_date)
+      new_dates = (@start_date...@end_date)
 
-    def dates_overlap?(start_booked_date, end_booked_date)
+      if booked_dates.include?(new_dates)
+        return true
+      else
+        return false
+      end
 
-
-      dates_ranges = @reservations.select { |r| r.date_range }
-
-      reservation_date_range = (@start_date...@end_date)
-      booked_dated_range = (
-        Date.parse(start_booked_date)...Date.parse(end_booked_date)
-      )
-      return reservation_date_range.include?(booked_dated_range) ? true : false
     end
+
+
+
 
 
 

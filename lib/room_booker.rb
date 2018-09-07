@@ -3,29 +3,25 @@ require_relative 'date_range'
 
 module Hotel
   class RoomBooker
-    attr_reader :rooms, :reservations
+    attr_reader :room, :reservations
 
     # TODO: Change class name to booking system?
 
     def initialize
       # All my rooms
-      @rooms = (1..20).to_a
+      @room = (1..20).to_a
       # List of reservations. Organized by room?
       @reservations = []
     end
 
     def list_rooms
-      return @rooms
+      return @room
     end
 
-    def make_reservation(start_date, end_date)
-      check_valid_dates
 
-        #think...what if there's no available rooms, raise an exception
-
-      date_range = Hotel::DateRange.new(start_date, end_date)
+    def make_reservation(date_range)
+      #think...what if there's no available rooms, raise an exception
       reservation = Reservation.new(date_range, find_available_room)
-
       @reservations << reservation
     end
 
@@ -34,22 +30,33 @@ module Hotel
 
     def list_reservations_by_date(start_date, end_date)
       start_date = Date.parse(start_date)
-      end_date = Date.parse(end_date)
+    end_date = Date.parse(end_date)
     end
-
 
 
     def find_available_room
-      # begin
 
-        if dates_overlap?(dates_array)
-          raise ArgumentError
+      return 0 if @reservations.empty?
+
+      unavailable_rooms = []
+      available_rooms = []
+
+      @reservations.each do |res|
+        if date_overlaps?(res.date_range)
+          unavailable_rooms << res.room
         else
-          @reservations
+          available_rooms << res.room
         end
+      end
 
-      # rescue
+      return available_rooms.first
+
     end
+
+
+
+
+
 
 
   end

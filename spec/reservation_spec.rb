@@ -1,6 +1,5 @@
-require 'pry'
-
 require_relative 'spec_helper'
+require 'pry'
 
 describe "Reservation Class" do
   let (:date_range) { Hotel::DateRange.new('2018-09-01', '2018-09-05') }
