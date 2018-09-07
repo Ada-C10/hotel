@@ -62,10 +62,14 @@ module Hotel
     def add_reservation_to_calendar(reservation)
       # until reservation start date = reservation end date -1
       # add to calendar. What changes is date.
-      @room_calendar[reservation.room][reservation.start_date] = reservation # dependency on instance variables
+      date = reservation.start_date
+
+      reservation.number_nights.to_i.times do
+        @room_calendar[reservation.room][date] = reservation # dependency on instance variables
+        date += 1
+      end
   # binding.pry
       return @room_calendar
-
     end
 
  #    {1=>{},
