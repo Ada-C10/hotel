@@ -28,6 +28,16 @@ class ReservationTracker
     return @all_reservations
   end
 
+  def format_date(date_string)
+    parsed_date = date_string.split(",")
+    year = parsed_date[0].to_i
+    month = parsed_date[1].to_i
+    day = parsed_date[2].to_i
+    formatted_date = Date.new(year, month, day)
+
+    return formatted_date
+  end
+
   def show_reservations_per_date(date)
     reservations_for_date = []
     formatted_date = format_date(date)
@@ -76,6 +86,23 @@ class ReservationTracker
     return available_rooms
   end
 
+  def update_dates_booked_for_room(new_reservation)
+    dates_booked_for_new_reservation = new_reservation.dates_booked_for_reservation
+
+    @all_rooms.each do |room|
+      if room.room_number == new_reservation.room_num
+        dates_booked_for_new_reservation.each do |date|
+          room.dates_booked << date
+        end
+      end
+    end
+  end
+
+  def make_reservation_number
+    reservation_number = @all_reservations.length + 1
+    return reservation_number
+  end
+
   # date must be entered in the format: "yyyy,mm,dd"
   def reserve_room(room_num, start_date, end_date)
     room_number = room_num.to_i
@@ -97,18 +124,6 @@ class ReservationTracker
     end
   end
 
-  def update_dates_booked_for_room(new_reservation)
-    dates_booked_for_new_reservation = new_reservation.dates_booked_for_reservation
-
-    @all_rooms.each do |room|
-      if room.room_number == new_reservation.room_num
-        dates_booked_for_new_reservation.each do |date|
-          room.dates_booked << date
-        end
-      end
-    end
-  end
-
   def cost_of_reservation(reservation_number)
 
     @all_reservations.each do |reservation|
@@ -117,21 +132,6 @@ class ReservationTracker
       end
     end
 
-  end
-
-  def make_reservation_number
-    reservation_number = @all_reservations.length + 1
-    return reservation_number
-  end
-
-  def format_date(date_string)
-    parsed_date = date_string.split(",")
-    year = parsed_date[0].to_i
-    month = parsed_date[1].to_i
-    day = parsed_date[2].to_i
-    formatted_date = Date.new(year, month, day)
-
-    return formatted_date
   end
 
 end
