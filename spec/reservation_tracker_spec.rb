@@ -114,4 +114,12 @@ describe 'ReservationTracker class' do
     expect(reservations_for_date.length).must_equal 2
   end
 
+  it 'raises a StandardError if an invalid date range is entered' do
+    new_tracker = ReservationTracker.new()
+    check_in = Date.new(2018,9,10)
+    check_out = Date.new(2018,9,5)
+
+    expect{new_tracker.is_date_range_valid(check_in, check_out)}.must_raise StandardError
+  end
+
 end
