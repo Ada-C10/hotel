@@ -1,4 +1,5 @@
 require 'date'
+require 'pry'
 
 require_relative 'date_range'
 require_relative 'reservation'
@@ -35,10 +36,17 @@ module Hotel
       return reservations_by_date
     end
 
-    def find_unavailable_rooms(requested_dates)
-      unavailable_rooms = @reservations.find_all do |reservation|
+    def reservations_overlaps?(requested_dates)
+      matching_reservations = @reservations.find_all do |reservation|
         range = reservation.date_range
         range.overlaps?(requested_dates)
+        reservation
+      end
+    end
+
+    def find_unavailable_rooms(requested_dates)
+      matching_reservations = reservations_overlaps?(requested_dates)
+      unavailable_rooms = matching_reservations.map do |reservation|
         reservation.room
       end
       return unavailable_rooms
@@ -46,6 +54,7 @@ module Hotel
 
     def find_available_rooms(requested_dates)
       unavailable_rooms = find_unavailable_rooms(requested_dates)
+      # binding.pry
       available_rooms = @rooms.reject { |room| unavailable_rooms.include?(room) }
       return available_rooms
     end

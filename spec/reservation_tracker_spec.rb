@@ -63,25 +63,42 @@ describe "ReservationTracker class" do
     @requested_dates = Hotel::DateRange.new(@start_date, @end_date)
   end
 
+  describe "#reservations_overlaps? method" do
+    it "checks if the requested dates overlap with all existing reservations" do
+      matching_reservations = @reservation_tracker.reservations_overlaps?(@requested_dates)
+      expect(matching_reservations).must_be_kind_of Array
+      expect(matching_reservations.length).must_equal 1
+      expect(matching_reservations.first).must_be_kind_of Hotel::Reservation
+
+    end
+  end
+
   describe "#find_unavailable_rooms method" do
     it "finds all unavailable rooms for requested dates" do
-
       unavailable_rooms = @reservation_tracker.find_unavailable_rooms(@requested_dates)
       expect(unavailable_rooms).must_be_kind_of Array
-      # expect(unavailable_rooms).length.must_equal 1
+      expect(unavailable_rooms.length).must_equal 1
+      expect(unavailable_rooms.first).must_be_kind_of Integer
     end
 
-    it "returns 0 if there are no unavailable rooms for requested dates" do
+    it "returns [] if there are no unavailable rooms for requested dates" do
+      reservation_tracker = Hotel::ReservationTracker.new
+      unavailable_rooms = reservation_tracker.find_unavailable_rooms(@requested_dates)
+      expect(unavailable_rooms).must_equal []
     end
-
   end
 
   describe "#find_available_rooms method" do
     it "finds all available rooms for requested dates" do
+      available_rooms = @reservation_tracker.find_available_rooms(@requested_dates)
+      expect(available_rooms).must_be_kind_of Array
+      expect(available_rooms.length).must_equal 19
+      expect(available_rooms.first).must_be_kind_of Integer
 
     end
 
     it "raises an error if there are no rooms available for requested dates" do
+      # 20.times do
 
     end
   end
