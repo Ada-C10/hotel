@@ -33,15 +33,18 @@ class Admin
   end
 
   def request_block_reservation(number_of_rooms, start_date, end_date)
+    if number_of_rooms > 5
+      raise StandardError, "cannot reserve more than 5 rooms"
+    end 
     # individual reservations in block will be reached by going to block reservation first
     # individual reservations with have different id's (1-5) depending on size of block
     id = reservations.length + 1
-    rooms = available_rooms(start_date, end_date).sample(number_of_rooms)
-      if rooms.length < number_of_rooms
+    room = available_rooms(start_date, end_date).sample(number_of_rooms)
+      if room.length < number_of_rooms
         raise StandardError, "not enough rooms available"
       end
 
-    new_block = BlockReservation.new(id, rooms, start_date, end_date)
+    new_block = BlockReservation.new(id, room, start_date, end_date)
 
     add_reservation(new_block)
 
@@ -83,10 +86,12 @@ class Admin
     specific_reservations = reservations_by_date_range(trip_start, trip_end)
     all_rooms = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]
     unavailable_rooms = []
+    # binding.pry
     specific_reservations.each do |reservation|
       unavailable_rooms << reservation.room
     end
 
+    unavailable_rooms.flatten!
     available_rooms = all_rooms - unavailable_rooms
     return available_rooms
   end

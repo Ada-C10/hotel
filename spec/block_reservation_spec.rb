@@ -20,8 +20,8 @@ describe "BlockReservation" do
     it "keeps track of room number" do
       rooms = [2, 4, 6]
       family_reunion = BlockReservation.new(7, [2,4,6], "2018-4-17", "2018-4-20")
-      family_reunion.must_respond_to :rooms
-      family_reunion.rooms.must_equal [2, 4, 6]
+      family_reunion.must_respond_to :room
+      family_reunion.room.must_equal [2, 4, 6]
     end
 
     it "keeps track of start_date" do
@@ -38,6 +38,16 @@ describe "BlockReservation" do
 
     it "raises StandardError for invalid date range" do
       expect{BlockReservation.new(7, 4, "2018-4-17", "2018-4-14")}.must_raise StandardError
+    end
+
+    it "keeps track of available rooms" do
+      family_reunion = BlockReservation.new(7, [2,4,6], "2018-4-17", "2018-4-20")
+      family_reunion.rooms_available.length.must_equal 0
+    end
+
+    it "keeps track of reservations within block" do
+      family_reunion = BlockReservation.new(7, [2,4,6], "2018-4-17", "2018-4-20")
+      family_reunion.reservations.length.must_equal 0
     end
   end
 end

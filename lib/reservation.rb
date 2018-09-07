@@ -16,9 +16,11 @@ class Reservation
 
     @end_date = Date.parse(end_date)
       # check_date(end_date)
+    
     if @end_date < @start_date
       raise StandardError, "invalid date range"
     end
+
   end
 
   # def check_date(date)

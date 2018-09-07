@@ -172,6 +172,19 @@ describe "Booking" do
         rooms_available.must_be_kind_of Array
         rooms_available.length.must_equal 18
       end
+
+      it "returns available rooms including block reservations" do
+        hotel = Admin.new
+        hotel.request_reservation("2018-12-09", "2018-12-15")
+        hotel.request_reservation("2018-12-11", "2018-12-17")
+        hotel.request_reservation("2018-4-11", "2018-4-12")
+        # binding.pry
+        hotel.request_block_reservation(4, "2018-12-12", "2018-12-14")
+
+        rooms_available = hotel.available_rooms("2018-12-12", "2018-12-14")
+         # binding.pry
+        rooms_available.length.must_equal 14
+      end
     end
 
     describe "request block reservation" do
@@ -191,6 +204,12 @@ describe "Booking" do
         new_reservation = hotel.reservations[0]
 
         new_reservation.id.must_equal 1
+      end
+
+      it "increases raises StandardError when more than 5 rooms are requested" do
+        hotel = Admin.new
+        expect{hotel.request_block_reservation(6, "2018-12-09", "2018-12-15")}.must_raise StandardError
+
       end
 
       it "raises an ArgumentError when no rooms are available" do

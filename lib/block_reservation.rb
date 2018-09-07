@@ -3,17 +3,12 @@ require 'admin'
 require 'reservation'
 
 class BlockReservation < Reservation
-  attr_reader :id, :rooms, :start_date, :end_date
+  attr_reader :id, :room, :start_date, :end_date, :rooms_available, :reservations
 
-  def initialize(id, rooms, start_date, end_date)
-    #can't use super because room is different than rooms?
-    @id = id
-    @start_date = Date.parse(start_date)
-    @end_date = Date.parse(end_date)
-    @rooms = rooms
+  def initialize(id, room, start_date, end_date, rooms_available: [], reservations: [])
+    super(id, room, start_date, end_date)
 
-    if @end_date < @start_date
-      raise StandardError, "invalid date range"
-    end
+    @rooms_available  = rooms_available
+    @reservations = reservations
   end
 end
