@@ -23,12 +23,15 @@ describe "ReservationMaker" do
 
       expect(@example.create_reservation).must_be_kind_of Reservation
       expect(ReservationMaker.reservations).must_be_kind_of Array
+      expect(ReservationMaker.reservations.length).must_equal 1
       expect(@example.start_date).must_be_kind_of Date
       expect(@example.end_date).must_be_kind_of Date
       expect(@example.rooms).must_be_kind_of Array
       expect(@example.rooms[0]).must_be_kind_of Integer
-
+      expect(@example.booked_rooms).must_be_kind_of Array
     end
+
+
   end
 
   describe "test for errors in input" do
@@ -57,27 +60,54 @@ describe "ReservationMaker" do
     end
   end
 
-  describe "tests for booked rooms being added to the booked rooms list, given a specific date range" do
-    it "collates all reservations that have competing dates with the given one into master @booked_rooms array" do
+  describe "tests for StandardError if no rooms are available. " do
+    it "it will throw an error if all rooms are already booked" do
+
+      available_rooms = nil
 
       start_date1 = Date.new(2018,2,3)
       end_date1 = Date.new(2018,2,5)
-      ReservationMaker.new(start_date1, end_date1)
-      # binding.pry
+      example1 = ReservationMaker.new(start_date1, end_date1).create_reservation
 
-      start_date2 = Date.new(2018,3,1)
-      end_date2 = Date.new(2018,3,2)
-      ReservationMaker.new(start_date2, end_date2)
-      # binding.pry
-
-      start_date3 = Date.new(2018,3,1)
-      end_date3 = Date.new(2018,3,3)
-      example = ReservationMaker.new(start_date3, end_date3)
-      # binding.pry
-
-      expect(example.length).must_equal 1
-      expect(example[0]).must_be_kind_of Integer
+      expect(ReservationMaker.reservations.length).must_raise StandardError
 
     end
   end
+
+  describe "tests for StandardError if all rooms are booked. " do
+    it "it will throw an error if there are 20 reservations already booked for that date range" do
+
+      available_rooms = nil
+
+      start_date = Date.new(2018,2,3)
+      end_date = Date.new(2018,2,5)
+      example = nil
+      20.times do |i|
+        ReservationMaker.new(start_date, end_date).create_reservation
+      end
+
+      expect(ReservationMaker.reservations.length).must_equal 20
+
+    end
+  end
+
+  describe "tests whether another reservation will be made if all rooms are booked. " do
+    it "it will not create another reservation because there are no rooms available for that dates range" do
+
+      available_rooms = nil
+
+      start_date = Date.new(2018,2,3)
+      end_date = Date.new(2018,2,5)
+      example = nil
+      20.times do |i|
+        ReservationMaker.new(start_date, end_date).create_reservation
+      end
+
+      example = ReservationMaker.new(start_date, end_date).create_reservation
+
+      expect(example.create_reservation).must_raise StandardError
+
+    end
+  end
+
 end
