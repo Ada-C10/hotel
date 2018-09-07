@@ -43,7 +43,14 @@ describe "FrontDesk class" do
       expect(@my_front_desk.reservations[0]).must_be_instance_of Reservation
       expect(@my_front_desk.reservations.length).must_equal 1
     end
+    it "raises an argument error if a room is not availbe to book" do
+    expect{@my_front_desk.create_reservation(9,"2013-10-11","2013-10-12")}.must_raise StandardError
   end
+  it "will allow a reservation on the the last day of the previous reservation" do
+    @my_front_desk.create_reservation(9,"2013-10-13","2013-10-15")
+    expect(@my_front_desk.reservations.length).must_equal 2
+  end
+end
 
   describe 'find reservations by date' do
     before do
