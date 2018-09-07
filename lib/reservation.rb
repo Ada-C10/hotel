@@ -11,7 +11,7 @@ class Reservation
   end
 
   def stay_cost
-    nights = date_range.count - 1
+    nights = date_range.count
     nights * rate
   end
 

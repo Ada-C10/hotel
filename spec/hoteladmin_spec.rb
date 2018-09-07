@@ -66,7 +66,8 @@ describe "HotelAdmin" do
     it "returns the new reservation object" do
       expect(@reservation.guest_id).must_equal "FishandChipsgrl@gmail.com"
       expect(@reservation.room).must_be_instance_of Integer
-      expect(@reservation.date_range).must_equal (Date.new(2019,01,20)..Date.new(2019,01,22))
+      expect(@reservation.status).must_equal :complete
+      expect(@reservation.date_range).must_equal (Date.new(2019,01,20)...Date.new(2019,01,22))
       expect(@reservation.stay_cost).must_equal 400.00
     end
 
@@ -86,7 +87,7 @@ describe "HotelAdmin" do
 
   describe "HotelAdmin#reservation_charge" do
     let (:reservation){
-      Reservation.new({guest_id: "Guccifer2.0@ada.com", room: 1, date_range: (Date.new(2018,12,02)..Date.new(2018,12,07))})
+      Reservation.new({guest_id: "Guccifer2.0@ada.com", room: 1, date_range: (Date.new(2018,12,02)...Date.new(2018,12,07))})
     }
     it "returns the cost associated with a given reservation" do
       expect(reservation.stay_cost).must_equal 1000.00
@@ -152,9 +153,8 @@ describe "HotelAdmin" do
     # end
 
   end
-  #
-  describe "HotelAdmin#reserve_block" do
 
+  describe "HotelAdmin#reserve_block" do
     it "creates block reservations with :block_reserved status and custom price" do
       previous_reservations = hotel.reservations.length
       new_reservations = hotel.reserve_block("Smith Wedding Party", [7,8,9,10], Date.new(2018,12,02), Date.new(2018,12,07), 145.00)
@@ -162,29 +162,60 @@ describe "HotelAdmin" do
       expect(hotel.reservations.length).must_equal (previous_reservations + 4)
       expect(hotel.reservations.last.status).must_equal :block_reserved
       expect(hotel.reservations.last.rate).must_equal 145.00
+      expect(hotel.reservations.last.date_range).must_equal (Date.new(2018,12,02)...Date.new(2018,12,07))
       expect(new_reservations.length).must_equal 4
       expect(new_reservations.first).must_be_instance_of Reservation
-      expect(new_reservations.last).must_equal hotel.reservations.last
+      expect(new_reservations.last).must_equal (hotel.reservations.last)
 
     end
-
 
     it "adds block reservations to appropriate rooms" do
       hotel.reserve_block("Smith Wedding Party", [7,8,9,10], Date.new(2018,12,02), Date.new(2018,12,07), 145.00)
       room7 = hotel.retrieve_room(7)
+      room8 = hotel.retrieve_room(8)
+      room9 = hotel.retrieve_room(9)
       room10 = hotel.retrieve_room(10)
 
       expect(room7.bookings.count).must_equal 1
       expect(room7.bookings.first).must_be_instance_of Reservation
+      expect(room8.bookings.count).must_equal 1
+      expect(room8.bookings.first).must_be_instance_of Reservation
+      expect(room9.bookings.count).must_equal 1
+      expect(room9.bookings.first).must_be_instance_of Reservation
       expect(room10.bookings.count).must_equal 1
       expect(room10.bookings.first).must_be_instance_of Reservation
 
     end
+  end
 
-    # it "raises an argument error if valid date range and cost not provided by administrator" do
-    #
-    # end
+  describe "HotelAdmin#reserve_room_in_block" do
+    it "takes a room and completes room reservation" do
+      hotel.reserve_block("Smith Wedding Party", [7,8,9,10], Date.new(2018,12,02), Date.new(2018,12,07), 145.00)
+      room9 = hotel.retrieve_room(9)
+      reserve_room_in_block(room9)
 
+      expect(room9.bookings.first.status).must_equal :complete
+      expect(room9.bookings.first.guest_id).must_equal "Smith Wedding Party"
+    end
+  end
+
+  describe "HotelAdmin#available_rooms_in_block" do
+    it "takes a block party name and returns available rooms" do
+      hotel.reserve_block("Smith Wedding Party", [7,8,9,10], Date.new(2018,12,02), Date.new(2018,12,07), 145.00)
+      room8 = hotel.retrieve_room(8)
+      reserve_room_in_block(room8)
+      room9 = hotel.retrieve_room(9)
+      reserve_room_in_block(room9)
+      room10 = hotel.retrieve_room(10)
+
+      available = available_rooms_in_block("Smith Wedding Party")
+
+      expect(available).must_be_instance_of Array
+      expect(available.first).must_be_instance_of Room
+      expect(available).wont_include room8
+      expect(available).wont_include room9
+      expect(available).must_include room10
+    end
   end
 
 end
