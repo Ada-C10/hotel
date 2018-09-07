@@ -93,9 +93,7 @@ describe "#rooms information" do
     start_time = Time.parse("2018-08-07 00:00:00 -0700")
     end_time = Time.parse("2018-08-09 00:00:00 -0700")
     range = (start_time..end_time)
-    @admin.view_vacant_rooms(range)
-
-    expect(@admin.vacant_rooms.first).must_be_kind_of Room
-    expect(@admin.vacant_rooms.length).must_equal 19
+    vacant_rooms_result = @admin.view_vacant_rooms(range)
+    expect(vacant_rooms_result.length).must_equal 19
   end
 end

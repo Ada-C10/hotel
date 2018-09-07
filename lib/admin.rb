@@ -7,7 +7,7 @@ class Admin
     @reservations = load_reservations('spec/test_data/test_reservation.csv')
     @rooms = create_rooms(20)
     sort_reservations
-    @vacant_rooms = []
+    #@vacant_rooms = []
     @booked_rooms = []
   end
 
@@ -44,11 +44,11 @@ class Admin
     start_date = Time.parse(start_date)
     end_date = Time.parse(end_date)
     range = (start_date..end_date)
-    @vacant_rooms = view_vacant_rooms(range) if @vacant_rooms == []
+    vacant_rooms = view_vacant_rooms(range)
     #returns range
     #room = @vacant_rooms.first.add_reservation(range)
     vacant_rooms.first.add_reservation(range)
-    room = @vacant_rooms.first
+    room = vacant_rooms.first
     @booked_rooms << room
   end
 
@@ -80,6 +80,7 @@ class Admin
   #As an administrator, I can view a list of rooms that are not reserved for a given date range
   ## broke because it I used this in reserve_room
   def view_vacant_rooms(target_range)
+    vacant_rooms = []
     @rooms.each do |room|
       ranges = room.ranges
       found = range_search(ranges, target_range)
