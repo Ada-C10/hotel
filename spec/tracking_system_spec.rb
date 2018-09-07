@@ -61,14 +61,14 @@ describe 'TrackingSystem class' do
     end
 
     it "creates a new instance of Reservation" do
-      @reservation = @tracker.make_reservation(start_time: Date.new(2018,8,1), end_time: Date.new(2018,8,25), rooms: 1) #<---1 is the number of rooms
+      @reservation = @tracker.make_reservation(Date.new(2018,8,1), Date.new(2018,8,25), 1) #<---1 is the number of rooms
 
-      expect(@reservation).must_be_kind_of Reservation
+      expect(@reservation[0]).must_be_kind_of Reservation
     end
 
     it "increases the number of reservations in the reservations list" do
       num_of_reservations = @tracker.reservations.length
-      @reservation = @tracker.make_reservation(start_time: Date.new(2018,8,1), end_time: Date.new(2018,8,25), rooms: 1)
+      @reservation = @tracker.make_reservation(Date.new(2018,8,1),Date.new(2018,8,25),1)
       updated_num_of_reservations = @tracker.reservations.length
 
       expect(updated_num_of_reservations - num_of_reservations).must_equal 1

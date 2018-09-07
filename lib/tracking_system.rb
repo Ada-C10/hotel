@@ -29,18 +29,24 @@ class TrackingSystem
 
   # reserve an available room for a given date range
   # ******************************************************************************************
-  def make_reservation(start_time: nil, end_time: nil, rooms: num)
-  #   # 1. pick a room that is available. the next available room?
-  #   @all_rooms.each do |room|
-  #     room.reserved_dates.each do |reserved_dates| # this is a hash containing {checkin_time: checkin, checkout_time: checkout}, can replace some fo this with helper method
-  #       if !(reserved_dates[:start_time]..reserved_dates[:end_time]).include?(:checkin) && room.block == :NA
-  #         #create a new reservation with |room| that is iterated in and fits the reqs
-  #       else
-  #        # raise argument error if inside @all_rooms no room is available on this date range (then admin would need to input a new date range)
-  #   # else..make the new reservation below
-  #   reservation = Reservation.new(date_range: view_two_dates_as_range {start_time: checkin, end_time: checkout -1}, room: room)  # <----room object contains {room_num:, price: STANDARD_ROOM_PRICE, customer: ""}
-  #   @reservations << reservation
-  #   room.reserved_dates << {start_time: checkin, end_time: checkout}
+  def make_reservation(start_time, end_time, num)
+    @all_rooms.each do |room|
+      if room.reserved_dates.empty?
+         reservation = Reservation.new({rooms: [room.room_num], start_time: start_time, end_time: end_time, price: 200.0})
+         @reservations << reservation
+        room.reserved_dates << {start_time: start_time, end_time: end_time}
+      else
+        room.reserved_dates.each do |reserved_dates|
+          if !(reserved_dates[:start_time]..reserved_dates[:end_time]).include?(start_time) #&& room.block == :NA
+            reservation = Reservation.new({rooms: [room], start_time: start_time, end_time: end_time, price: 200.0})
+            @reservations << reservation
+            room.reserved_dates << {start_time: start_time, end_time: end_time}
+          else raise ArgumentError.new"There is no room available on that date, out of all 20 rooms"
+          end
+        end
+      end
+      return @reservations
+    end
   end
 # *********************************************************************************************************
   #block method idea
