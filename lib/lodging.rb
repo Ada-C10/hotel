@@ -1,5 +1,5 @@
-#module methods go here
-require_relative 'room'
+require 'awesome_print'
+
 module Lodging
 
   #creates multiple rooms at once, and assigns room number
@@ -11,5 +11,5 @@ module Lodging
       i += 1
     end
   end
-  
+
 end

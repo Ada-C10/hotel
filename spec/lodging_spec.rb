@@ -2,6 +2,10 @@ require_relative 'spec_helper'
 
 
   describe 'create rooms' do
+    before(:each) do
+      Lodging::Room.class_variable_set(:@@room_list, []) 
+    end
+
     it 'creates mulitiple instances of room' do
       Lodging.create_rooms(10)
 
@@ -19,7 +23,7 @@ require_relative 'spec_helper'
       expect(last.room_number).must_equal 10
     end
 
-    it 'errrors if argument passed is not integer' do
+    it 'errors if argument passed is not integer' do
       expect{Lodging.create_rooms('forty')}.must_raise ArgumentError
       expect{Lodging.create_rooms(3.5)}.must_raise ArgumentError
     end

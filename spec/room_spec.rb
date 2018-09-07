@@ -2,7 +2,9 @@ require_relative 'spec_helper'
 
 describe 'room class' do
   #clears the class variable back to empty array before each test
-  before(:each) { Lodging::Room.class_variable_set :@@room_list, [] }
+  before(:each) do
+    Lodging::Room.class_variable_set(:@@room_list, [])
+  end
 
   describe 'initialize' do
     it 'creates a new instance of room' do

@@ -5,20 +5,20 @@ require 'awesome_print'
 
 module Lodging
 
-  def room_status #check room_status
-    #if no room available, error
-    #else, reservation
-
+  def self.room_status(input) #check room_status
+    input.find do |room|
+      room[:status] == :available #returns first instance it finds of available room
+    end
   end
 
-  def reservation #creates reservation
-    #check status, if available 
+  def self.reservation #creates reservation
+    #check status, if available
     #takes date range
     #switches status to unavailable
     #
   end
 
-  def receipt #calculates total cost of stay
+  def self.receipt #calculates total cost of stay
     #counts days in range
     #multiply count by
 
