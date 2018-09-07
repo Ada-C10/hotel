@@ -20,17 +20,16 @@ class Reservation
       raise StandardError.new("Invalid date range entered")
     end
 
-    # Verifying valid room_type is entered
-    if room_type == :standard || room_type == :block
+    if is_room_type_valid(room_type)
       @room_type = room_type
     else
       raise StandardError.new("Invalid room type entered")
     end
 
-    # Recording the dates that the reservation is made for
     @dates_booked_for_reservation = dates_of_booking(@start_date, @end_date)
   end
 
+  # Verifying that the room number entered is between 1-20
   def is_room_num_valid(room_num)
     all_room_numbers = [*1..20]
     if all_room_numbers.include?(room_num.to_i)
@@ -40,6 +39,7 @@ class Reservation
     end
   end
 
+  # Verifying that the end_date is after the start date AND ensuring that the reservation is at least for 1 full day (across two separate days)
   def is_date_range_valid(start_date, end_date)
     if end_date - start_date >= 1
       return true
@@ -48,9 +48,18 @@ class Reservation
     end
   end
 
+  # Verifying that a valid room type is entered. This is needed for calculating total_cost.
+  def is_room_type_valid(room_type)
+    if room_type == :standard || room_type == :block
+      return true
+    else
+      return false
+    end
+  end
+
+  # Recording the range of dates that the reservation is for
   def dates_of_booking(checkin, checkout)
     dates_for_booking = []
-
     duration_of_booking = checkout - checkin
 
     booking_date = checkin
@@ -58,7 +67,6 @@ class Reservation
       dates_for_booking << booking_date
       booking_date += 1
     end
-
     return dates_for_booking
   end
 
