@@ -34,7 +34,7 @@ class Admin
       input_data = {}
       input_data[:id] = data["id"].to_i
       input_data[:start_time] = Time.parse(data["start_time"])
-      input_data[:end_time] = Time.parse(data["end_time"])
+      input_data[:end_time] = Time.parse(data["end_time"]) # no need to subtract last day because reservation class only calculates cost
       reservations << Reservation.new(input_data)
     end
 
@@ -44,6 +44,8 @@ class Admin
   #As an administrator, I can reserve a room for a given date range
   # uses view_vacant_rooms create range with one day less
   def reserve_room(start_date, end_date)
+    start_date = Time.parse(start_date)
+    end_date = Time.parse(end_date)
     range = create_hotel_range(start_date, end_date)
     vacant_rooms = view_vacant_rooms(range) # needs to be updated
     vacant_rooms.first.add_reservation(range)
@@ -57,7 +59,7 @@ class Admin
   end
 
   #As an administrator, I can access the list of reservations for a specific date
-  # do I have to return a reservation that has specific date at the end? No
+  # I do not have to return a reservation that has specific date at the end
   def find_reservations(date)
     date = Time.parse(date)
     reservations = @reservations.select do |instance|
@@ -71,7 +73,7 @@ class Admin
   end
 
   #As an administrator, I can get the total cost for a given reservation
-  #input to be a reservation instance?
+  #input is a reservation instance
   def find_cost(reservation)
     cost = reservation.cost
     return cost
@@ -113,8 +115,6 @@ class Admin
 
   #last day not counted
   def create_hotel_range(start_date, end_date)
-    start_date = Time.parse(start_date)
-    end_date = Time.parse(end_date)
     end_date = end_date - 1
     range = (start_date .. end_date)
     return range
@@ -126,9 +126,9 @@ class Admin
     @reservations.sort_by { |object| object.start_time }
   end
 
-  # it returns true if last day is the target date. Okay for listing all reservations with a specific date
+  # does not take into account last day of reservation
   def date_in_range(start_date, end_date, date)
-    range = (start_date..end_date)
+    range = create_hotel_range(start_date, end_date)
     range.include?(date)
   end
 

@@ -45,11 +45,10 @@ describe "#reservation information" do
   it "return the reservations that have a specific date as a start date" do
     #arrange
     date = "2018-08-07 00:00:00 -0700"
-
     reservations = @admin.find_reservations(date)
 
     expect(reservations).must_be_kind_of Array
-    expect(reservations.first.id).must_equal 2
+    expect(reservations.length).must_equal 1
   end
 
   it "return the cost of a reservation" do
@@ -109,6 +108,8 @@ describe "#range tests" do
   it "does not count the last day" do
     start_date = "2018-08-07 00:00:00 -0700"
     end_date = "2018-08-09 00:00:00 -0700"
+    start_date = Time.parse(start_date)
+    end_date = Time.parse(end_date)
     test_date = Time.parse("2018-08-09 00:00:00 -0700") # last day
 
     result = @admin.create_hotel_range(start_date, end_date)
