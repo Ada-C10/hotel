@@ -14,7 +14,7 @@ module Hotel
       @room = input[:room] # num-->obj in BookingSystem create_reservation??
       @check_in = Date.parse(input[:check_in])
       @check_out = Date.parse(input[:check_out])
-      @daily_rate = input[:cost] ? input[:cost] : 200
+      @daily_rate = input[:daily_rate] ? input[:daily_rate] : 200
 
       unless @check_out > @check_in
         raise StandardError, "Invalid date range: end date must occur after start date."
@@ -26,6 +26,7 @@ module Hotel
       return (@check_in...@check_out).to_a
     end
 
+# QUESTION: daily_rate as a CONSTANT??
     def total_stay_cost()
       length_in_days = dates_reserved().length
       return @daily_rate * length_in_days
