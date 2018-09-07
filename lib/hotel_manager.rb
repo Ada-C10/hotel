@@ -28,6 +28,9 @@ module Hotel
       end
     end
 
+    # As an administrator, I can create a block of rooms
+    
+
     # As an administrator, I can access the list of reservations for a specific date
     def find_reservations(date)
       found_reservations = []
@@ -46,6 +49,8 @@ module Hotel
     def find_available_rooms(rooms, start_date, end_date)
       return Calendar.available_rooms(rooms, start_date, end_date)
     end
+
+    # As an administrator, I can create a block of rooms
 
     def load_rooms(filename)
       all_rooms = []

@@ -4,12 +4,13 @@ require_relative 'hotel_helper'
 # (with room number and a calendar of availability)
 module Hotel
   class Room
-    attr_reader :id
+    attr_reader :id, :block
     attr_accessor :status_by_date
 
     def initialize(id)
       @id = id
       @status_by_date = create_calendar
+      @block = false
     end
 
     def self.change_status_of_room(rooms, id, check_in, check_out)

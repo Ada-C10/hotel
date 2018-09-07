@@ -26,7 +26,7 @@ describe "Calendar" do
       end
 
       new_list = Hotel::Calendar.available_rooms(my_hotel.rooms, check_in, check_out)
-      expect(list).must_be_nil
+      expect(new_list).must_be_nil
     end
   end
 end
