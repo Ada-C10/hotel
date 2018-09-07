@@ -2,17 +2,13 @@ require_relative 'spec_helper'
 
 describe 'Room' do
   before do
-    @room = Hotel::Room.new()
+    @room = Hotel::Room.new(1)
   end
 
   describe 'initialize' do
 
     it 'will initialize on instance of a room' do
       expect(@room).must_be_instance_of Hotel::Room
-    end
-
-    it 'will initialize one new room with a room_number 1-20' do
-      expect((1..20).include?(@room.room_number)).must_equal true
     end
 
     it 'is set up for specific attributes and data types' do
@@ -25,15 +21,20 @@ describe 'Room' do
       expect(@room.room_number).must_be_kind_of Integer
     end
 
-# #THIS TEST BREAKS EVERYTHING BELOW IT
-# #UNSTABLE
+# #THROW THIS TEST IN ReservationMatcher?
 #     it 'will throw an error if you try to generate more than 20 rooms' do
 #       expect{rooms = []
 #         21.times do
 #         room = Hotel::Room.new
 #       rooms << room end }.must_raise StandardError
 #     end
-  end
+
+#room numbers initialized
+#make not constant so can access length and test
+# it 'will initialize one new room with a room_number 1-20' do
+#   expect((1..20).include?(@room.room_number)).must_equal true
+# end
+    end
 
   let(:one_reservation_added) {
     input = {checkin_date: "13/12/2018", checkout_date: "15/12/2018", room_number: 1}
@@ -50,7 +51,7 @@ describe 'Room' do
     it 'raise error if passed in value is not a reservation object' do
 
       expect{
-        room = Hotel::Room.new()
+        room = Hotel::Room.new(2)
         room.add_reservation("AB23246")}.must_raise ArgumentError
 
       end
@@ -77,7 +78,7 @@ describe 'Room' do
       @room.is_available?(range)
     }
 
-    let(:false_available_multiple) {
+    let(:false_available_second) {
       input1 = {checkin_date: "09/12/2018", checkout_date: "11/12/2018", room_number: 1}
       @room.add_reservation(Hotel::Reservation.new(input1))
       input2 = {checkin_date: "12/12/2018", checkout_date: "15/12/2018", room_number: 1}
@@ -86,18 +87,29 @@ describe 'Room' do
       @room.is_available?(range)
     }
 
+    let(:end_start_overlap) {
+      input = {checkin_date: "08/10/2018", checkout_date: "10/10/2018", room_number: 1}
+      @room.add_reservation(Hotel::Reservation.new(input))
+      range = (Date.parse("10/10/2018")..Date.parse("14/10/2018")).to_a
+      @room.is_available?(range)
+    }
+
     describe 'is_available?' do
 
-      it 'will return true if date range not present in first reservation' do
+      it 'will return true if given date range not present in first reservation' do
         expect(true_available).must_equal true
       end
 
-      it 'will return false if date range present in first reservation' do
+      it 'will return false if given date range present in first reservation' do
         expect(false_available).must_equal false
       end
 
-      it 'will return false if date range present in second reservation' do
-        expect(false_available_multiple).must_equal false
+      it 'will return false if given date range present in second reservation' do
+        expect(false_available_second).must_equal false
+      end
+
+      it 'will return true even if given date range checkin date is same as a reservation end date' do
+        expect(end_start_overlap).must_equal true
       end
     end
 
