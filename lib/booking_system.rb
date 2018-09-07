@@ -2,41 +2,31 @@ require_relative 'reservation_creator'
 
 module Hotel
   class BookingSystem
-    attr_reader :reservation_date
+    # attr_reader :reservation_date
 
-    def initialize(reservation_date)
-      @reservation_date = Date.parse("#{reservation_date}")
+    def initialize
+      @booked_dates = []
     end
-    #
-    # def available_rooms?
-    #   return available_rooms
-    #
-    # end
-    #
-    # def load_pending_reservation(check_in_date, check_out_date)
-    #   pending = Reservation.new(check_in_date, check_out_date)
-    #   # need to figure out date range before doing this
-    #   # need to check if date is already there
-    #
-    #   unless booked_dates.empty?(pending.check_in_date)
-    #     booked_dates << pending
-    #   end
-    # end
-    #
-    # def assign_room
-    # end
-    #
-    def rooms_in_hotel
+
+    def new_reservation(reservation)
+      @booked_dates << reservation.booking_date_range
+      return @booked_dates.flatten!
+    end
+
+    def assign_room_to_booking(reservation)
+      assigned_room = []
+
+      reservation.booking_date_range.each do |date|
+        room_selected = [date, list_all_rooms_in_hotel.first]
+        assigned_room << room_selected
+      end
+
+      return assigned_room
+    end
+
+    def list_all_rooms_in_hotel
       all_rooms = [*1..20]
       return all_rooms
     end
   end
 end
-
-
-# , :booked_rooms, :booked_dates, :available_rooms, :available_dates
-# , booked_rooms, booked_dates, available_rooms, available_dates
-# @booked_rooms = []
-# @booked_dates = []
-# @available_rooms = [*1..20]
-# @available_dates = []
