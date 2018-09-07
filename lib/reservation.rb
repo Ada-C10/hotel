@@ -1,9 +1,11 @@
 require 'date'
 require 'pry'
 
+require_relative 'room_booking'
+
 module Hotel
   class Reservation
-    attr_reader :start_date, :end_date
+    attr_reader :start_date, :end_date, :room_id
 
     def initialize(start_date, end_date)
 
@@ -13,7 +15,9 @@ module Hotel
 
       @total_cost = reservation_cost(@start_date, @end_date)
 
-      # @room_number = find_room #Room.find(@start_date, @end_date? - return id of ones that are available)
+      @room_booking = Hotel::RoomBooking.new(start_date, end_date)
+
+      # @room_id = Hotel::RoomBooking.find_room_id(start_date, end_date)
 
       validate_dates
 
@@ -27,6 +31,18 @@ module Hotel
       raise ArgumentError.new("The start date can't be nil") if @start_date == nil
 
       raise ArgumentError.new("The end date can't be nil") if @end_date == nil
+    end
+
+
+    #create array for all nights in the reservation
+    def create_date_array(start_date, end_date)
+      number_of_nights = (end_date - start_date).to_i
+      date_array = []
+      number_of_nights.times do
+        date_array << start_date
+        start_date +=1
+      end
+      return date_array
     end
 
 
