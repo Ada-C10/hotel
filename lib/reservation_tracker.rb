@@ -1,5 +1,4 @@
 require 'date'
-require 'pry'
 
 require_relative 'date_range'
 require_relative 'reservation'
@@ -13,7 +12,6 @@ module Hotel
     def initialize
       @rooms = load_rooms
       @reservations = []
-
     end
 
     def load_rooms
