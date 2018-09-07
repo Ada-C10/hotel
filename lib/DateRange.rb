@@ -4,6 +4,7 @@ require 'date'
 class DateRange
   attr_reader :start_date, :end_date
 
+  # Maybe change initalize so arguments are in a hash/order doesn't matter?
   def initialize(start_date_one, end_date_one)
     @start_date = start_date_one
     if start_date_one.class != Date
@@ -23,11 +24,4 @@ class DateRange
     return (@end_date - @start_date).to_i
   end
 
-  # Create method to check if two date ranges overlap
-  # Use in booking to show rooms not reserved
-
-
 end
-
-
-# True if given date range overlaps with another date range (can't be reserved)

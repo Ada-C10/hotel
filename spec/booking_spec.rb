@@ -45,13 +45,19 @@ describe "booking manager" do
 
     ######################## IN PROGRESS #############################
     it "Can reserve an available room for a given date range" do
-      # Given date range
+      # Given date range (list_rooms_available_for_date_range)
       # Only reserve room if room is available
-      # Otherwise return an ArgumentError? MAybe a custom error
+      # Otherwise return a custom error
+    end
+
+    it "Raises an NoRoomAvailable error if no rooms are available for given date range" do
+      # Will need to create a custom error class
+
     end
 
     it "Is able to get the total cost for a given reservation" do
       @manager.add_reservation(1, Date.new(2018, 9, 1), Date.new(2018, 9, 2))
+      ####### Below code is not working properly, debug ########
       # expect(@manager.total_cost_for_reservation(1, Date.new(2018, 9, 1), Date.new(2018, 9, 2))).must_equal @manager.rooms.first.reservations.first
     end
 
@@ -167,6 +173,17 @@ describe "booking manager" do
       expect(@manager.list_rooms_available_for_date_range(Date.new(2018, 9, 1), Date.new(2018, 9, 4)).first).kind_of? Room
     end
 
+    it "Returns a NoRoomsAvailableError if no rooms are available" do
+      # Adding a reservation to all rooms for 9/2/18 - 9/3/18
+      i = 1
+      @manager.rooms.each do |room|
+        @manager.add_reservation(i, Date.new(2018, 9, 2), Date.new(2018, 9, 3))
+        i += 1
+      end
+      expect{
+        @manager.list_rooms_available_for_date_range(Date.new(2018, 9, 2), Date.new(2018, 9, 3))
+        }.must_raise NoRoomsAvailableError
+    end
     # List of block rooms
 
   end

@@ -1,5 +1,14 @@
 require_relative 'DateRange'
 require 'pry'
+######## Refactor Notes ########
+# TODO: Refactor so check_in default is a keyword with default of today,
+# check_out is a keyword with default of today + 2
+# TODO Refactor initialize methods so initialize is in a wrapper method?
+
+
+class NoRoomsAvailableError < StandardError
+end
+
 class Booking
   # manages reservations
     # Will have most methods
@@ -25,10 +34,12 @@ class Booking
     return @rooms.find { |room| room.room_number == room_number }
   end
 
+
   def create_reservation(room_number, check_in, check_out)
     return Reservation.new(room_number, check_in, check_out)
   end
 
+  # Maybe have room_number default to first available room for date range?
   def add_reservation(room_number, check_in, check_out)
     # create reservation
     reservation = create_reservation(room_number, check_in, check_out)
@@ -38,6 +49,7 @@ class Booking
     room.reservations << reservation
   end
 
+  # Would it make sense for date to default to today?
   def list_reservations_for_date(date)
     # Access array of rooms
     @rooms.reject do |room|
@@ -46,6 +58,7 @@ class Booking
     end
   end
 
+  ##### In Progress #####
   def total_cost_for_reservation(room_number, start_date, end_date, cost_per_night=200)
     # See if any rooms have the given reservation
     # If so, return the reservation cost
@@ -55,6 +68,7 @@ class Booking
   end
 
   # Helper method to check if date ranges overlap
+  # Depends on order of arguments, maybe refactor as a hash
   def date_range_overlap?(start_date_one, end_date_one, start_date_two, end_date_two)
     # TRUE if dates match
     # if start_date_one == start_date_two && end_date_one == end_date_two
@@ -67,14 +81,23 @@ class Booking
     end
   end
 
+  # Default start date to today/end date to today + 2?
+  # Change to keyword arguments or maybe a hash so order doesn't matter
   def list_rooms_available_for_date_range(start_date, end_date)
     # Create daterange helper method to check if ranges overlap
     # It's okay if start_date and the last day of reservation are the same. (Do check_out - 1 for range end)
     # If any of the room's reservations are within the given range, room is not available
     # available_rooms = []
     # Select room if all reservations for the room return false for overlap with the given start date end date
-    @rooms.select do |room|
+    rooms_available = @rooms.select do |room|
      room.reservations.all? { |reservation| date_range_overlap?(start_date, end_date, reservation.check_in, reservation.check_out) == FALSE }
+    end
+    # binding.pry
+    if rooms_available.empty?
+      # return rooms_available
+      raise NoRoomsAvailableError, "No rooms are available for this date range"
+    else
+      return rooms_available
     end
   end
 

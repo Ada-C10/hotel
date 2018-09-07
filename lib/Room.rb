@@ -6,6 +6,7 @@ class Room
 
   attr_reader :room_number, :reservations
 
+  # Default reservations to an empty array?
   def initialize(room_number, reservations)
     @room_number = room_number.to_i
     if room_number.between?(1,20) == false
@@ -14,6 +15,7 @@ class Room
     @reservations = reservations
   end
 
+  # Change arguments to a hash so roder doesn't matter?
   def find_reservation(room_number, check_in, check_out, cost_per_night=200)
     # Access reservations
     # Returns true if any reservations match the given reservation
