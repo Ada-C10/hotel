@@ -114,7 +114,16 @@ describe "BookingManager class" do
       expect(hotel.add_reservation_to_calendar(another_booking)).must_be_kind_of Hash
       expect(hotel.room_calendar[3]).must_include Date.parse("June 11, 2018")
     end # end of add reservation to calendar method hash room key it
-
   end # of add reservation to calendar method
+
+  describe "get_reservation_cost method" do
+    it "returns the total cost of the reservation" do
+      hotel = Hotel::BookingManager.new(3)
+      room = Hotel::Room.new(3)
+      booking = Hotel::Reservation.new(room, guest_name: "Tony Tonson", start_date: "June 10, 2018", end_date: "June 12, 2018")
+
+      expect(hotel.get_reservation_cost(booking.cost_per_night, booking.number_nights)).must_be_close_to 400
+    end # returns product it
+  end # of get_reservation_cost method"
 
 end # end of describe BookingManager class
