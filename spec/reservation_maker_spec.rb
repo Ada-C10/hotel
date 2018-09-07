@@ -62,17 +62,17 @@ describe "ReservationMaker" do
 
       start_date1 = Date.new(2018,2,3)
       end_date1 = Date.new(2018,2,5)
-      ReservationMaker.new(start_date1, end_date1).create_reservation
+      ReservationMaker.new(start_date1, end_date1)
       # binding.pry
 
       start_date2 = Date.new(2018,3,1)
       end_date2 = Date.new(2018,3,2)
-      ReservationMaker.new(start_date2, end_date2).create_reservation
+      ReservationMaker.new(start_date2, end_date2)
       # binding.pry
 
       start_date3 = Date.new(2018,3,1)
       end_date3 = Date.new(2018,3,3)
-      example = ReservationMaker.new(start_date3, end_date3).booked_rooms
+      example = ReservationMaker.new(start_date3, end_date3)
       # binding.pry
 
       expect(example.length).must_equal 1
