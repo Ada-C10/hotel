@@ -10,16 +10,13 @@ class Reservation
     @room = room
     @check_in = check_in
     @check_out = check_out
-    # @reservation_dates = []
+    @reservation_dates = (@check_in...@check_out).to_a
+    
 
-
+    # Errors
     if check_out < check_in
       raise StandardError.new("Check out date is before check in date")
     end
-    @reservation_dates = (@check_in...@check_out).to_a
-    # binding.pry
-    # @reservation_dates = reservation_dates.to_a
-
 
   end
 
