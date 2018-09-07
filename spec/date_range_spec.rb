@@ -45,6 +45,47 @@ describe "DateRange class" do
     end
   end
 
+  describe "#overlaps? method when true" do
+    it "checks if the range in a reservation overlaps with the requested_dates if the requested_dates for the same dates" do
+
+    end
+
+    it "checks if the range in a reservation overlaps with the requested_dates if they do so in the front" do
+
+    end
+
+    it "checks if the range in a reservation overlaps with the requested_dates if they do so in the back" do
+
+    end
+
+    it "checks if the range in a reservation overlaps with the requested_dates if they are completely contained" do
+
+    end
+
+    it "checks if the range in a reservation overlaps with the requested_dates if they are completely containing" do
+
+    end
+  end
+
+  describe "#overlaps? method when false" do
+    it "checks if the range in a reservation overlaps with the requested_dates if the requested_dates completely before" do
+
+    end
+
+    it "checks if the range in a reservation overlaps with the requested_dates if they do so in the completely after" do
+
+    end
+
+    it "checks if the range in a reservation overlaps with the requested_dates if it ends on the checkin date" do
+
+    end
+
+    it "checks if the range in a reservation overlaps with the requested_dates if it starts on the checkout date " do
+
+    end
+  end
+
+
   describe "#get_range method" do
     it "returns an array of the range with the first element as the start_date and the last being one day before end_date " do
       expect(@date_range.get_range).must_be_kind_of Array
@@ -55,7 +96,7 @@ describe "DateRange class" do
     end
   end
 
-  describe "#reservation_period method" do
+  describe "#find_num_nights method" do
     it "Finds difference between end_date and start_date not including the checkout_date" do
       reservation_period = @end_date - @start_date
       expect(@date_range.find_num_nights).must_be_kind_of Numeric
