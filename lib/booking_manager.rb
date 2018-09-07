@@ -58,14 +58,12 @@ module Hotel
       # return reserved_message
     end
 
-    # Add reservation date to hash of room reserved dates
+    # Add reservation date range to hash of room reserved dates
     def add_reservation_to_calendar(reservation)
-      # until reservation start date = reservation end date -1
-      # add to calendar. What changes is date.
       date = reservation.start_date
 
-      reservation.number_nights.to_i.times do
-        @room_calendar[reservation.room][date] = reservation # dependency on instance variables
+      reservation.number_nights.times do
+        @room_calendar[reservation.room][date] = reservation # dependency 
         date += 1
       end
   # binding.pry

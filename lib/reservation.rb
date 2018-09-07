@@ -9,7 +9,7 @@ module Hotel
       @start_date = Date.parse(start_date)
       @end_date = Date.parse(end_date)
       @cost_per_night = cost_per_night
-      @number_nights = @end_date - @start_date
+      @number_nights = (@end_date - @start_date).to_i
     end # of initialize method
 
   end# of class Reservation
