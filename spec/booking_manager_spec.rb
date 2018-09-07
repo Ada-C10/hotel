@@ -188,6 +188,17 @@ describe "Hotel Manager class" do
     it 'it returns a list of available rooms, returning rooms where the  reservation check out date is on the check in day of another reservation'do
         expect(expect(@hotel.search_room_availability(@date5, @date1)).must_equal @all_rooms_available)
     end
+    it 'returns an Argument Error if no rooms are vacant'do
+        @available_rooms.each do |i|
+          @input4 = { name: "Señor Dracula",
+          room_number: i,
+          check_in_date: @date1,
+          check_out_date: @date2,
+          }
+          @hotel.reserve_room(@input4)
+        end
+          expect{@hotel.search_room_availability(@date1, @date2)}.must_raise ArgumentError
+    end
   end
 
   describe 'sort_reservations' do

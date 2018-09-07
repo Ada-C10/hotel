@@ -1,4 +1,4 @@
-require 'Date'
+require 'date'
 require 'pry'
 require_relative 'room'
 require_relative 'reservation'
@@ -61,17 +61,18 @@ module Hotel
             min = mid + 1
           end
         end
-        # if !(possible_nights_of_stay & room.reservations[min].nights_of_stay).empty?
-        #   booked_rooms << room.room_number
-        # end
+        if !(possible_nights_of_stay & room.reservations[0].nights_of_stay).empty?
+          booked_rooms << room.room_number
+        end
         unless booked_rooms.include?(room.room_number)
           vacant_rooms << room.room_number
         end
       end
-
+      if vacant_rooms.empty?
+        return raise ArgumentError, 'No Rooms Availble in date range'
+      end
       return vacant_rooms
     end
-
 
     def get_rooms
       return @rooms

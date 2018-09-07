@@ -1,4 +1,4 @@
-require 'Date'
+require 'date'
 require 'pry'
 require_relative 'room'
 
