@@ -3,9 +3,10 @@ require 'date'
 
 module Hotel
   class Reservation
-    attr_accessor :room, :check_in, :check_out, :cost
+    attr_accessor :reservation_id, :room, :check_in, :check_out, :cost
 
     def initialize(input)
+      @reservation_id = input[:reservation_id]
       @room = input[:room]
       @check_in = Date.strptime(input[:check_in], '%m/%d/%Y')
       @check_out = Date.strptime(input[:check_out], '%m/%d/%Y')

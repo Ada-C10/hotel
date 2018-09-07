@@ -7,7 +7,7 @@ describe 'Reservation class' do
   describe "Reservation instantiation" do
     before do
       @honeymoon_suite = Hotel::Room.new({room_number: 1, price: 200})
-      @res_1 = Hotel::Reservation.new({room: @honeymoon_suite, check_in: "01/10/1988", check_out: "01/17/1988", cost: 1000})
+      @res_1 = Hotel::Reservation.new({reservation_id: 1, room: @honeymoon_suite, check_in: "01/10/1988", check_out: "01/17/1988", cost: 1000})
     end
 
     it "it is an instance of Reservation" do
@@ -19,6 +19,7 @@ describe 'Reservation class' do
         expect(@res_1).must_respond_to prop
       end
 
+      expect(@res_1.reservation_id).must_be_kind_of Integer
       expect(@res_1.room).must_be_kind_of Hotel::Room
       expect(@res_1.check_in).must_be_kind_of Date
       expect(@res_1.check_out).must_be_kind_of Date
@@ -29,7 +30,7 @@ describe 'Reservation class' do
   describe 'room_reserved' do
     before do
       @honeymoon_suite = Hotel::Room.new({room_number: 1, price: 200})
-      @res_2 = Hotel::Reservation.new({room: @honeymoon_suite, check_in: "01/10/1988", check_out: "01/17/1988", cost: 1000})
+      @res_2 = Hotel::Reservation.new({reservation_id: 1, room: @honeymoon_suite, check_in: "01/10/1988", check_out: "01/17/1988", cost: 1000})
     end
 
     it "returns the room instance associated with this reservation" do
@@ -41,7 +42,7 @@ describe 'Reservation class' do
   describe 'calculate_cost' do
     before do
       @honeymoon_suite = Hotel::Room.new({room_number: 1, price: 200})
-      @res_3 = Hotel::Reservation.new({room: @honeymoon_suite, check_in: "01/10/1988", check_out: "01/17/1988", cost: nil})
+      @res_3 = Hotel::Reservation.new({reservation_id: 2, room: @honeymoon_suite, check_in: "01/10/1988", check_out: "01/17/1988", cost: nil})
     end
 
     it "returns cost of room based on days reserved" do

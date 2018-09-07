@@ -28,11 +28,3 @@ describe 'Room class' do
 
   end
 end
-#
-#   describe 'hotel' do
-#     it 'returns the string "this is a hotel"' do
-#       result = hotel()
-#       expect(result).must_equal "this is a hotel"
-#     end
-#   end
-# end
