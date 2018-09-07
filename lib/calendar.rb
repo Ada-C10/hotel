@@ -26,18 +26,42 @@ class Calendar
       20 => []
     }
   end
+  # def add_reservation(room_number, reservation)
+  #   # reservation.get_all_dates.each do |date|
+  #   dates = reservation.get_all_dates
+  #   @room_assignments[room_number].empty?
+  #   dates.each do |date|
+  #     @room_assignments[room_number] << date
+  #   end
+  #   return "Added!"
+  # end
+
+  def available_room?(room_number, reservation)
+    dates = reservation.get_all_dates
+    dates.each do |date|
+      unless @room_assignments[room_number].include? (date)
+        return true
+      end
+      return false
+    end
+
+  end
+  def list_available_rooms(reservation)
+    available_rooms = []
+    ROOMS.each do |room|
+      available_rooms << room if available_room?(room, reservation)
+    end
+    return available_rooms
+  end
+
   def add_reservation(reservation)
     # reservation.get_all_dates.each do |date|
+    list = list_available_rooms(reservation)
+    room = list.first
     dates = reservation.get_all_dates
-    @room_assignments.each do |k, v|
-      if v.empty?
-        dates.each do |date|
-          @room_assignments[k] << date
-        end
-        return "Added!"
-      end
+    dates.each do |date|
+      @room_assignments[room] << date
     end
+    return "Added!"
   end
 end
-
-# end
