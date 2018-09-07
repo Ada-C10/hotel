@@ -8,15 +8,13 @@ module Hotel
     attr_reader :rooms, :reservations
 
     def initialize()
-      @rooms = load_rooms() #<-- array of all room objects
+      @rooms = list_rooms() #<-- array of all room objects
       @reservations = []
     end
 
-    def load_rooms()
-      nums = (1..20).to_a
-      all_rooms = nums.map { |num| Hotel::Room.new(num: num)}
-
-      return all_rooms
+    def list_rooms()
+      return (1..20).to_a
+      # all_rooms = nums.map { |num| Hotel::Room.new(num: num)}
     end
 
     # TODO: maybe use date range instead of start/end?

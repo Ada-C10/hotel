@@ -12,7 +12,7 @@ module Hotel
       end
 
       @id = input[:id].to_i
-      @room = input[:room] # num-->obj in BookingSystem create_reservation??
+      @room_num = input[:room_num]
       @check_in = Date.parse(input[:check_in])
       @check_out = Date.parse(input[:check_out])
       @daily_rate = input[:daily_rate] ? input[:daily_rate] : 200

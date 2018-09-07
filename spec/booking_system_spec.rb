@@ -1,12 +1,4 @@
-require 'minitest'
-require 'minitest/spec'
-require 'minitest/autorun'
-require 'minitest/reporters'
-require 'minitest/pride'
-
-require_relative '../lib/booking_system'
-
-Minitest::Reporters.use! Minitest::Reporters::SpecReporter.new
+require_relative 'spec_helper'
 
 # TODO: fix the order of these methods!
 # QUESTION: wave 2 -- Your code should raise an exception when asked to reserve a room that is not available -- huhhh? i thought they book with a date range!
@@ -17,6 +9,8 @@ describe "BookingSystem class" do
   describe "#initialize" do
     it "can create a new instance of BookingSystem" do
       expect(booking_system).must_be_kind_of Hotel::BookingSystem
+
+    it "creates accurate attribute types"
       expect(booking_system.rooms).must_be_kind_of Array
       expect(booking_system.reservations).must_be_kind_of Array
     end
