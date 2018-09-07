@@ -9,7 +9,7 @@ class TrackingSystem
   attr_reader :all_rooms, :reservations
 
   def initialize
-    @all_rooms = add_rooms #should i add << avail and unavail?
+    @all_rooms = add_rooms
     @reservations = []
   end
 
@@ -28,20 +28,7 @@ class TrackingSystem
     return @all_rooms
   end
 
-  # reserve an available room for a given date range
-  # ******************************************************************************************
-  # def overlap?(x,y)
-  #   (x.first - y.end) * (y.first - x.end) > 0
-  # end
-
-  def ranges_overlap?(r1, r2)
-    r1.include?(r2.first) || r2.include?(r1.first)
-  end
-
-  # def reserve(start_time: start_time, end_time: end_time, num_of_rooms: num)
-  #
-  # end
-
+  #reserve an available room for a given date range
   def make_reservation(start_time, end_time, num)
     @all_rooms.each do |room|
       num.times do
@@ -88,24 +75,15 @@ class TrackingSystem
         end
       end
     end
-    if unavailable_count == all_rooms.length
+    if unavailable_count == NUMBER_OF_ROOMS
       raise ArgumentError.new"no rooms available on that date range"
     else
       return available_rooms
     end
   end
 end
-  # if !(dates_hash[:start_time]...dates_hash[:end_time]).include
-  # if !dates_hash.include?(date)
-  #   # available_rooms << room
-  #   # end
-  #   # return available_rooms (this is an array of rooms avail on 'date' passed as param)
-  # def ranges_overlap?(r1, r2)
-  #   r1.include?(r2.first) || r2.include?(r1.first)
-  # end
-  #
 
-  # #access the list of reservations for a specific date
+#access the list of reservations for a specific date
   # def view_reservations_on(date)
   #   # list_of_res_on this date ^ above = []<--create emtpy array
   #   #@reservations.each do |reservation|
@@ -115,18 +93,18 @@ end
   #   # end
   #
 
-  #
 
-  #
+
+  #############################  #############################   #############################
   # private #helper methods below
   # def view_two_dates_as_range()  #<--put params {checkin_time: checkin, checkout_time: checkout}
-  # def check_if_rooms_available_on(date_range)
-
+  # def check_if_rooms_available_on(date_range) <--or does the view_available_rooms_on() already do this pretty much?
+  def ranges_overlap?(r1, r2)
+    r1.include?(r2.first) || r2.include?(r1.first)
+  end
   #############################  #############################   #############################
 
   #think about how each room can be reserved thru time
-
-
 
   # The hotel has 20 rooms, and they are numbered 1 through 20
   # Every room is identical, and a room always costs $200/night
@@ -134,3 +112,7 @@ end
   # guest should not be charged for that night
   # For this wave, any room can be reserved at any time, and
   # you don't need to check whether reservations conflict with each other (this will come in wave 2!)
+
+  # def overlap?(x,y)
+  #   (x.first - y.end) * (y.first - x.end) > 0
+  # end
