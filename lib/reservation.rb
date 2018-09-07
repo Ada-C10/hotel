@@ -28,13 +28,12 @@ class Reservation
     return total_cost
   end
 
-  def date(date)
-    if @check_in.class != Date
+  def date?(date)
+    if date.class != Date
       date = Date.parse(date)
     end
 
-    if (@check_in..@check_out).to_a.include?(date)
-      return self
-    end
+    return (@check_in..@check_out).to_a.include?(date)
+
   end
 end

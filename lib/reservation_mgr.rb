@@ -47,7 +47,7 @@ class ReservationMgr
   def reservations_by_date(date)
     reservations_on_date = []
     @reservations.each do |reservation|
-      if reservation.date(date).class == Reservation
+      if reservation.date?(date)
         reservations_on_date << reservation
       end
     end

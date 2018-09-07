@@ -67,6 +67,7 @@ describe "ReservationMgr Test" do
     it "creates an array of all the reservations for a particular day" do
       expect(@new_ResMgr.reservations_by_date("2018-09-05")).must_be_kind_of Array
       expect(@new_ResMgr.reservations_by_date("2018-09-05")[0]).must_be_kind_of Reservation
+      expect(@new_ResMgr.reservations_by_date("2018-09-05").length).must_equal 3
     end
   end
 
