@@ -112,6 +112,7 @@ describe "BookingManager class" do
       room = Hotel::Room.new(3)
       another_booking = Hotel::Reservation.new(room, guest_name: "Kim Possible", start_date: "June 11, 2018", end_date: "June 14, 2018")
       expect(hotel.add_reservation_to_calendar(another_booking)).must_be_kind_of Hash
+      expect(hotel.room_calendar[3]).must_include Date.parse("June 11, 2018")
     end # end of add reservation to calendar method hash room key it
 
   end # of add reservation to calendar method
