@@ -19,4 +19,11 @@ require_relative 'front_desk'
     def add_reservation_to_room (reservation)
       @room_reservations << reservation
   end
+
+  def is_available?(date)
+    @room_reservations.each do |reservation|
+      return false if reservation.start_day <= date && reservation.end_day > date
+    end
+    return true
+  end
 end

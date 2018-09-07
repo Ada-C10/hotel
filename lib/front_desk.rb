@@ -50,5 +50,19 @@ class FrontDesk
     return res
   end
 
+  def find_available_rooms(start_day, end_day)
+    available_rooms = []
+    @rooms.each do |room|
+      room_is_available = true
+      (start_day...end_day).each do |date|
+        if !room.is_available?(date)
+          room_is_available = false
+        end
+      end
+      available_rooms << room.room_number if room_is_available
+    end
+    return available_rooms
+  end
+
 
 end

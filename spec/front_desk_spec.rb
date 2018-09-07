@@ -34,31 +34,42 @@ describe "FrontDesk class" do
   end
 
 
-describe "create reservation" do
-  before do
-    @my_front_desk = FrontDesk.new
-    @my_front_desk.create_reservation(9,"2013-10-10","2013-10-13")
+  describe "create reservation" do
+    before do
+      @my_front_desk = FrontDesk.new
+      @my_front_desk.create_reservation(9,"2013-10-10","2013-10-13")
+    end
+    it "returns an instance of reservation and adds to reservation list" do
+      expect(@my_front_desk.reservations[0]).must_be_instance_of Reservation
+      expect(@my_front_desk.reservations.length).must_equal 1
+    end
   end
-  it "returns an instance of reservation and adds to reservation list" do
-    expect(@my_front_desk.reservations[0]).must_be_instance_of Reservation
-    expect(@my_front_desk.reservations.length).must_equal 1
+
+  describe 'find reservations by date' do
+    before do
+      @front_desk = FrontDesk.new
+      @front_desk.create_reservation(3, "2012-4-12", "2012-4-22")
+      @front_desk.create_reservation(4, "2012-4-12", "2012-4-22")
+      @front_desk.create_reservation(5, "2012-4-23", "2012-4-29")
+      @front_desk.create_reservation(6, "2012-4-25", "2012-4-28")
+    end
+    it "returns reservations for a specific date date" do
+      expect(@front_desk.find_by_date("2012-4-12").length).must_equal 2
+    end
   end
-end
 
-describe 'find reservations by date' do
-  before do
-    @front_desk = FrontDesk.new
-    @front_desk.create_reservation(3, "2012-4-12", "2012-4-22")
-    @front_desk.create_reservation(4, "2012-4-12", "2012-4-22")
-    @front_desk.create_reservation(5, "2012-4-23", "2012-4-29")
-    @front_desk.create_reservation(6, "2012-4-25", "2012-4-28")
+  describe "Find a list of all available rooms" do
+    before do
+      @front_desk = FrontDesk.new
+      @front_desk.create_reservation(3, "2012-4-12", "2012-4-14")
+      @front_desk.create_reservation(4, "2012-4-12", "2012-4-14")
+      @front_desk.create_reservation(5, "2012-4-12", "2012-4-16")
+      @front_desk.create_reservation(6, "2012-4-12", "2012-4-16")
+    end
+    it "correctly lists all available_rooms" do
+      expect(@front_desk.find_available_rooms(Date.new(2012, 4, 12), Date.new(2012, 4, 14)).length).must_equal (20-4)
+    end
   end
-  it "returns reservations for a specific date date" do
-    expect(@front_desk.find_by_date("2012-4-12").length).must_equal 2
-end
-end
-
-
 
 
 end
