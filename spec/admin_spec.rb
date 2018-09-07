@@ -54,12 +54,11 @@ describe "#reservation information" do
 
   it "return the cost of a reservation" do
     #arrange
-    reservation_id = 2
-
-    reservation_cost = @admin.find_cost(reservation_id)
+    reservation = @admin.reservations.first
+    reservation_cost = @admin.find_cost(reservation)
 
     expect(reservation_cost).must_be_kind_of Integer
-    expect(reservation_cost).must_equal 400
+    expect(reservation_cost).must_equal 200
   end
 
 end
@@ -88,6 +87,7 @@ describe "#rooms information" do
   end
 
   it "view vacant rooms" do
+    skip
     # for reserve_room
     start_date = "2018-08-07 00:00:00 -0700"
     end_date = "2018-08-09 00:00:00 -0700"

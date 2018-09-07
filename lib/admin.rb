@@ -44,10 +44,8 @@ class Admin
   #As an administrator, I can reserve a room for a given date range
   # uses view_vacant_rooms create range with one day less
   def reserve_room(start_date, end_date)
-    start_date = Time.parse(start_date)
-    end_date = Time.parse(end_date)
-    range = (start_date..end_date)
-    vacant_rooms = view_vacant_rooms(range)
+    range = create_hotel_range(start_date, end_date)
+    vacant_rooms = view_vacant_rooms(range) # needs to be updated
     vacant_rooms.first.add_reservation(range)
     room = vacant_rooms.first
     @booked_rooms << room
@@ -59,7 +57,7 @@ class Admin
   end
 
   #As an administrator, I can access the list of reservations for a specific date
-  # do I have to return a reservation that has specific date at the end?
+  # do I have to return a reservation that has specific date at the end? No
   def find_reservations(date)
     date = Time.parse(date)
     reservations = @reservations.select do |instance|
@@ -74,8 +72,7 @@ class Admin
 
   #As an administrator, I can get the total cost for a given reservation
   #input to be a reservation instance?
-  def find_cost(reservation_id)
-    reservation = @reservations.select { |instance| instance.id == reservation_id }[0]
+  def find_cost(reservation)
     cost = reservation.cost
     return cost
   end
