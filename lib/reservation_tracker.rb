@@ -9,15 +9,19 @@ class ReservationTracker
   attr_accessor :all_rooms, :all_reservations
 
   def initialize()
-    @all_rooms = []
+    @all_rooms = room_factory
+    @all_reservations = []
+  end
+
+  def room_factory
+    all_rooms = []
 
     room_numbers = [*1..20]
     room_numbers.each do |room_num|
       new_room = Room.new(room_num)
-      @all_rooms << new_room
+      all_rooms << new_room
     end
-
-    @all_reservations = []
+    return all_rooms
   end
 
   def show_all_hotel_rooms
