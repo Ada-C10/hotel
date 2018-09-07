@@ -38,17 +38,29 @@ module Hotel
       end
     end
 
-    def search_reservations(specific_date)
+    def search_reservations(start_date_2, end_date_2)
       reservations_within_date = []
       @reservations.each do |reservation|
-        if specific_date.between?(reservation.start_date, reservation.end_date)
+        if reservation.start_date < end_date_2 && start_date_2 <= reservation.end_date
           reservations_within_date << reservation
-          binding.pry
-          return reservations_within_date
+          # binding.pry
         end
       end
+      return reservations_within_date
     end
 
+    # def assign_available_room(start_date_2)
+    #   reservations_within_date = []
+    #   @reservations.each do |reservation|
+    #     if reservation.start_date < end_date_2 && start_date_2 <= reservation.end_date
+    #     elsif reservations_within_date << reservation
+    #       # binding.pry
+    #     end
+    #     return reservations_within_date
+    #   end
+    # end
+    #
+    #
     #
     # def find_reservation(id)
     #   return @reservations.find { |reservation| reservation.id == id }
