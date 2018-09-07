@@ -10,11 +10,7 @@ class Admin
       @rooms.length.times do |x|
         @rooms[x] = x + 1
       end
-    # @rooms = Array.new(20)
-    #   @rooms.length.times do |x|
-    #     room_number = x + 1
-    #     @rooms[x] = Room.new(room_number, :available)
-    #   end
+
     @reservations = []
   end
 
@@ -52,6 +48,16 @@ class Admin
     add_reservation(new_block)
 
     return new_block
+  end
+  # param: reservation number
+  # returns - new reservation instance
+  def request_resevation_within_block(id)
+  end
+
+  def find_reservation_by_id(id)
+    specific_reservation = @reservations.find { |reservation|
+      reservation.id == id }
+    return specific_reservation
   end
   #param - date
   #returns - array of reservations within that date

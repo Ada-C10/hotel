@@ -118,7 +118,7 @@ describe "Booking" do
       it "accurately calculates cost of reservation" do
         hotel = Admin.new
         reserve1 = hotel.request_reservation("2018-12-09", "2018-12-15")
-
+        # binding.pry
         cost = hotel.reservation_cost(reserve1)
 
         cost.must_equal 1200
@@ -234,6 +234,18 @@ describe "Booking" do
         hotel.request_reservation("2018-12-09", "2018-12-15")
 
         expect{hotel.request_block_reservation(5, "2018-12-09", "2018-12-15")}.must_raise StandardError
+      end
+    end
+
+    describe "find reservation by id" do
+      it "find correct reservation instance from argument" do
+        hotel = Admin.new
+        hotel.request_reservation("2018-12-09", "2018-12-15")
+        hotel.request_block_reservation(4, "2018-12-12", "2018-12-14")
+
+        correct_reservation = hotel.find_reservation_by_id(2)
+
+        correct_reservation.start_date.must_equal Date.parse("2018-12-12")
       end
     end
   end
