@@ -11,3 +11,4 @@ Minitest::Reporters.use! Minitest::Reporters::SpecReporter.new
 # Require_relative your lib files here!
 require_relative '../lib/reservation.rb'
 require_relative '../lib/calendar.rb'
+require_relative '../lib/booking_manager.rb'
