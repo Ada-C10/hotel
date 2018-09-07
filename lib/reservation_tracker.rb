@@ -49,4 +49,18 @@ class ReservationTracker
     end
     return occupied_rooms
   end
+
+  def reserve_block(date_range, num_rooms, discount_rate)
+    date_range = Dates::date_range_format(date_range)
+    # room_block = []
+
+    raise ArgumentError, "Invalid dates. Begin date must be at least one day prior to end date." if date_range[:begin_date] > date_range[:end_date]
+
+    room_block = Room::find_block_of_rooms(num_rooms, occupied_rooms(date_range))
+
+    reservation = Reservation.new(date_range, room_block, discount_rate)
+    
+    @all_reservations << reservation
+    return reservation
+  end
 end

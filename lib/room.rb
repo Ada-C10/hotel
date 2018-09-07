@@ -22,6 +22,5 @@ class Room
       array_of_used_rooms << first_available_room
     end
     return room_block
-
   end
 end
