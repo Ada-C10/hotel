@@ -51,13 +51,19 @@ describe "ReservationTracker class" do
 
 
 
-  describe "Create room block reservations" do
-    it "can set aside a block of rooms at a discount rate" do
-      date_range = {begin_date: '9-10-2018', end_date: '9-15-2018'}
-      room_block = @reservations.reserve_block(date_range, 5, 150)
-      expect (room_block).must_be_kind_of Reservation
-      expect (room_block.rate).must_equal 150
-      expect (@reservations.occupied_rooms(date_range)).must_include [4, 5, 6, 7, 8]
+  describe "Room block reservations" do
+    before do
+      @date_range = {begin_date: '9-10-2018', end_date: '9-15-2018'}
+      @room_block = @reservations.reserve_block(@date_range, 5, 150)
+    end
+
+    it "reserves a block of rooms" do
+      expect (@room_block).must_be_kind_of Reservation
+      expect (@room_block.rate).must_equal 150
+    end
+
+    it "adds block of rooms to occupied_rooms" do
+      expect (@reservations.occupied_rooms(@date_range)).must_include [4, 5, 6, 7, 8]
     end
   end
 
