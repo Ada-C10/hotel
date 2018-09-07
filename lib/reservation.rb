@@ -9,26 +9,22 @@ require_relative 'room'
 
 class Reservation
 
-#@@request_array
-  attr_writer :start_date, :end_date, :request_array
+  @@request_array = []
+  attr_writer :start_date, :end_date
 
+  def request_array
+    return @@request_array
+  end
 
-
-  def initialize(start_date, end_date,request_array )
+  def initialize(start_date, end_date)
     @start_date = start_date
     @end_date = end_date
-    @request_array = request_array
-
-
+    @@request_array << self
   end
 
   def self.new_booking(start_date, end_date)
     @request_array = []
-    #binding.pry
-    new_request =
-    Reservation.new(start_date, end_date, @request_array)
-    @request_array<< new_request
-    return @request_array
+    Reservation.new(start_date, end_date)
   end
 
 
