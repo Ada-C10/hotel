@@ -3,7 +3,7 @@ require_relative 'spec_helper'
 describe "DateRange class" do
   before do
     @start_date = Date.today
-    @end_date = Date.today + 5
+    @end_date = @start_date + 5
     @date_range = Hotel::DateRange.new(@start_date, @end_date)
   end
 
@@ -45,43 +45,70 @@ describe "DateRange class" do
     end
   end
 
-  describe "#overlaps? method when true" do
+  describe "#overlaps? method (when it does overlap)" do
     it "checks if the range in a reservation overlaps with the requested_dates if the requested_dates for the same dates" do
-
+      start_date = Date.today
+      end_date = start_date + 5
+      requested_dates = Hotel::DateRange.new(start_date, end_date)
+      expect(@date_range.overlaps? requested_dates).must_equal false
     end
 
     it "checks if the range in a reservation overlaps with the requested_dates if they do so in the front" do
-
+      start_date = Date.today - 1
+      end_date = start_date + 5
+      requested_dates = Hotel::DateRange.new(start_date, end_date)
+      expect(@date_range.overlaps? requested_dates).must_equal false
     end
 
     it "checks if the range in a reservation overlaps with the requested_dates if they do so in the back" do
-
+      start_date = Date.today + 4
+      end_date = start_date + 5
+      requested_dates = Hotel::DateRange.new(start_date, end_date)
+      expect(@date_range.overlaps? requested_dates).must_equal false
     end
 
     it "checks if the range in a reservation overlaps with the requested_dates if they are completely contained" do
-
+      start_date = Date.today + 1
+      end_date = start_date + 3
+      requested_dates = Hotel::DateRange.new(start_date, end_date)
+      expect(@date_range.overlaps? requested_dates).must_equal false
     end
 
     it "checks if the range in a reservation overlaps with the requested_dates if they are completely containing" do
-
+      start_date = Date.today - 1
+      end_date = start_date + 7
+      requested_dates = Hotel::DateRange.new(start_date, end_date)
+      expect(@date_range.overlaps? requested_dates).must_equal false
     end
   end
 
-  describe "#overlaps? method when false" do
-    it "checks if the range in a reservation overlaps with the requested_dates if the requested_dates completely before" do
-
+  describe "#overlaps? method (when it does NOT overlap)" do
+    it "checks if the requested_dates is completely before the reservation range" do
+      start_date = Date.today - 5
+      end_date = start_date + 5
+      requested_dates = Hotel::DateRange.new(start_date, end_date)
+      expect(@date_range.overlaps? requested_dates).must_equal true
     end
 
-    it "checks if the range in a reservation overlaps with the requested_dates if they do so in the completely after" do
-
+    it "checks if the requested_dates is completely after the reservation range" do
+      start_date = Date.today + 10
+      end_date = start_date + 5
+      requested_dates = Hotel::DateRange.new(start_date, end_date)
+      expect(@date_range.overlaps? requested_dates).must_equal true
     end
 
-    it "checks if the range in a reservation overlaps with the requested_dates if it ends on the checkin date" do
-
+    it "checks if the range checkout date does not conflickt with the requested_dates checkin date" do
+      start_date = @start_date - 5
+      end_date = @start_date
+      requested_dates = Hotel::DateRange.new(start_date, end_date)
+      expect(@date_range.overlaps? requested_dates).must_equal true
     end
 
-    it "checks if the range in a reservation overlaps with the requested_dates if it starts on the checkout date " do
-
+    it "checks if the range checkin date does not conflict with requested_dates checkout date" do
+      start_date = @end_date
+      end_date = start_date + 5
+      requested_dates = Hotel::DateRange.new(start_date, end_date)
+      expect(@date_range.overlaps? requested_dates).must_equal true
     end
   end
 
