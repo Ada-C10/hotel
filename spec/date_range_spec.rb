@@ -10,7 +10,7 @@ require_relative '../lib/reservation'
 
 describe "initialize" do
   before do
-    @dates = Hotel::DateRange.new(check_in = "2018-02-03", check_out = "2018-02-06")
+    @dates = Hotel::DateRange.new("2018-02-03", "2018-02-06")
   end
 
   it "is an instance of Reservation" do
@@ -38,16 +38,25 @@ describe "initialize" do
 
   describe "find_duration_of_stay" do
     before do
-      @dates = Hotel::DateRange.new(check_in = "2018-02-03", check_out = "2018-02-06")
+      @dates = Hotel::DateRange.new("2018-02-03", "2018-02-06")
+      # @dates2 = Hotel::DateRange.new("2018-04-03", "2018-04-06")
+      # @dates3 = Hotel::DateRange.new("2018-06-03", "2018-06-06")
     end
 
     it "finds the duration of stay" do
       expect(@dates.duration_of_stay).must_equal 3
     end
 
-    # it "finds the total cost of reservation" do
-    #   expect(@new_res.total_cost).must_equal 600.00
-    # end
+    describe "find if dates are included" do
+      before do
+        @dates = Hotel::DateRange.new("2018-02-03", "2018-02-06")
+      end
+      it "finds if there are overlapping dates" do
+        date_to_find = Date.parse("2018-02-04")
+        reservations_by_date = @dates.included_in_date_range(date_to_find)
+        expect(reservations_by_date).must_equal true
+      end
+    end
   end
 
 end

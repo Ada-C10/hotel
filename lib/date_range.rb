@@ -16,10 +16,16 @@ module Hotel
       end
 
     end
-    # - Find duration of stay
+    # -Find duration of stay
     def duration_of_stay
-      duration_of_stay = @check_out - @check_in
+      duration_of_stay = (@check_out - @check_in).to_i
       return duration_of_stay
+    end
+
+    # overlap? method
+    # include? method
+    def included_in_date_range(date)
+      return date.between?(check_in, check_out)
     end
 
   end
