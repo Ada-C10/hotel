@@ -8,7 +8,7 @@ describe "Reservation class" do
     it "is an instance of Reservation" do
       start_date = Date.new(2015, 03, 01)
       end_date = Date.new(2015, 03, 05)
-      @reservation = Hotel::Reservation.new(start_date, end_date)
+      @reservation = Hotel::Reservation.new(start_date, end_date, 4)
       expect(@reservation).must_be_kind_of Hotel::Reservation
     end
 
@@ -25,7 +25,7 @@ describe "Reservation class" do
     it "returns the total amount of the new reservation" do
       start_date = Date.new(2015, 03, 01)
       end_date = Date.new(2015, 03, 05)
-      @reservation = Hotel::Reservation.new(start_date, end_date)
+      @reservation = Hotel::Reservation.new(start_date, end_date, 3)
 
       start_date = @reservation.start_date
       end_date = @reservation.end_date

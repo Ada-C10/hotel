@@ -14,9 +14,10 @@ describe "Reservation Hub class" do
     end_date2 = Date.new(2018, 04, 06)
     end_date3 = Date.new(2018, 02, 12)
 
-    @reservation1 = Hotel::Reservation.new(start_date1, end_date1)
-    @reservation2 = Hotel::Reservation.new(start_date2, end_date2)
-    @reservation3 = Hotel::Reservation.new(start_date3, end_date3)
+    @reservation1 = Hotel::Reservation.new(start_date1, end_date1, 3)
+    @reservation2 = Hotel::Reservation.new(start_date2, end_date2, 4)
+    @reservation3 = Hotel::Reservation.new(start_date3, end_date3, 5)
+    # binding.pry
 
   end
 
@@ -28,7 +29,7 @@ describe "Reservation Hub class" do
     end
 
     it "can access all rooms in the hotel" do
-      expect(@reservation_hub.rooms.length).must_equal 20
+      expect(@room_bookings.keys.length).must_equal 20
     end
 
     it "must initialize with an empty array of reservations" do

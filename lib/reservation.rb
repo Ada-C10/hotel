@@ -7,15 +7,16 @@ module Hotel
   class Reservation
     attr_reader :start_date, :end_date, :room_id
 
-    def initialize(start_date, end_date)
+    def initialize(start_date, end_date, room_id)
 
       @start_date = start_date
 
       @end_date = end_date
 
+      @room_id = room_id
+
       @total_cost = reservation_cost(@start_date, @end_date)
 
-      @room_booking = Hotel::RoomBooking.new(start_date, end_date)
 
       # @room_id = Hotel::RoomBooking.find_room_id(start_date, end_date)
 
@@ -35,15 +36,15 @@ module Hotel
 
 
     #create array for all nights in the reservation
-    def create_date_array(start_date, end_date)
-      number_of_nights = (end_date - start_date).to_i
-      date_array = []
-      number_of_nights.times do
-        date_array << start_date
-        start_date +=1
-      end
-      return date_array
-    end
+    # def create_date_array(start_date, end_date)
+    #   number_of_nights = (end_date - start_date).to_i
+    #   date_array = []
+    #   number_of_nights.times do
+    #     date_array << start_date
+    #     start_date +=1
+    #   end
+    #   return date_array
+    # end
 
 
 

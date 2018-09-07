@@ -5,15 +5,15 @@ require_relative 'reservation'
 
 module Hotel
   class ReservationHub
-    attr_reader :start_date, :end_date, :rooms, :reservations
+    attr_reader :start_date, :end_date, :rooms, :reservations, :room_bookings
 
     # ROOMS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
-
 
     def initialize
       @reservations = []
       @room_bookings = {1 => [], 2 => [], 3 => [], 4 => [], 5 => [], 6 => [], 7 => [], 8 => [], 9 => [], 10 => [], 11 => [], 12 => [], 13 => [], 14 => [], 15 => [], 16 => [], 17 => [], 18 => [], 19 => [], 20 => []}
     end
+
 
 
     def add_reservation(start_year, start_month, start_day, end_year, end_month, end_day)
@@ -22,7 +22,9 @@ module Hotel
 
       end_date = generate_date(end_year, end_month, end_day)
 
-      reservation = Reservation.new(start_date, end_date)
+      room_id = check_available_rooms(start_date, end_date)
+
+      reservation = Reservation.new(start_date, end_date, room_id)
 
       @reservations << reservation
     end
@@ -48,9 +50,10 @@ module Hotel
       reservation_dates = create_date_array(start_date, end_date)
 
       @room_bookings.each do |room|
-
         reservation_dates.each do |date|
-          if @room_bookings[room].include?(date)
+          # binding.pry
+
+          if room.include?(date)
             break
           end
         end
@@ -67,7 +70,6 @@ module Hotel
       @room_bookings[room_id] << reservation_dates
       return room_id
     end
-
 
 
     def find_reservations(year, month, day)
