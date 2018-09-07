@@ -47,7 +47,12 @@ class ReservationTracker
         date_range[:begin_date] <= reservation.begin_date && date_range[:end_date] >= reservation.end_date ||
 
         date_range[:begin_date] > reservation.begin_date && date_range[:end_date] < reservation.end_date
-        occupied_rooms << reservation.room_num
+        if reservation.room_num.class == Array
+          reservation.room_num.each do |num| occupied_rooms << num
+          end
+        else
+          occupied_rooms << reservation.room_num
+        end
       end
     end
     return occupied_rooms
@@ -60,6 +65,7 @@ class ReservationTracker
 
     reservation = Reservation.new(date_range, room_block, discount_rate)
 
+    # @block_reservations << reservation
     @all_reservations << reservation
     return reservation
   end
