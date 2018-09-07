@@ -157,10 +157,14 @@ describe "HotelAdmin" do
 
     it "creates block reservations with :block_reserved status and custom price" do
       previous_reservations = hotel.reservations.length
-      hotel.reserve_block("Smith Wedding Party", [7,8,9,10], Date.new(2018,12,02), Date.new(2018,12,07), 145.00)
+      new_reservations = hotel.reserve_block("Smith Wedding Party", [7,8,9,10], Date.new(2018,12,02), Date.new(2018,12,07), 145.00)
 
       expect(hotel.reservations.length).must_equal (previous_reservations + 4)
       expect(hotel.reservations.last.status).must_equal :block_reserved
+      expect(hotel.reservations.last.rate).must_equal 145.00
+      expect(new_reservations.length).must_equal 4
+      expect(new_reservations.first).must_be_instance_of Reservation
+      expect(new_reservations.last).must_equal hotel.reservations.last
 
     end
 
