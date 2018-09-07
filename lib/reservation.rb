@@ -13,8 +13,7 @@ class Reservation
       raise StandardError.new("Invalid room number entered.")
     end
 
-    # Verifying valid date ranges entered
-    if end_date - start_date >= 1
+    if is_date_range_valid(start_date, end_date)
       @start_date = start_date
       @end_date = end_date
     else
@@ -35,6 +34,14 @@ class Reservation
   def is_room_num_valid(room_num)
     all_room_numbers = [*1..20]
     if all_room_numbers.include?(room_num.to_i)
+      return true
+    else
+      return false
+    end
+  end
+
+  def is_date_range_valid(start_date, end_date)
+    if end_date - start_date >= 1
       return true
     else
       return false
