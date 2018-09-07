@@ -14,9 +14,12 @@ describe "Reservation Hub class" do
     end_date2 = Date.new(2018, 04, 06)
     end_date3 = Date.new(2018, 02, 12)
 
-    @reservation1 = Hotel::Reservation.new(start_date1, end_date1, 3)
-    @reservation2 = Hotel::Reservation.new(start_date2, end_date2, 4)
-    @reservation3 = Hotel::Reservation.new(start_date3, end_date3, 5)
+
+
+    #
+    # @reservation1 = Hotel::Reservation.new(start_date1, end_date1, 3)
+    # @reservation2 = Hotel::Reservation.new(start_date2, end_date2, 4)
+    # @reservation3 = Hotel::Reservation.new(start_date3, end_date3, 5)
     # binding.pry
 
   end
@@ -29,7 +32,7 @@ describe "Reservation Hub class" do
     end
 
     it "can access all rooms in the hotel" do
-      expect(@room_bookings.keys.length).must_equal 20
+      expect(@reservation_hub.room_bookings.keys.length).must_equal 20
     end
 
     it "must initialize with an empty array of reservations" do
@@ -41,18 +44,25 @@ describe "Reservation Hub class" do
 
 
   describe "add reservation" do
+    before do
+      @reservation1 = @reservation_hub.add_reservation(2018,06,12,2018,07,01)
 
-    # before do
-    #   @reservation_hub = Hotel::ReservationHub.new
-    # end
+      @reservation2 = @reservation_hub.add_reservation(2017,01,02,2017,01,06)
+
+      @reservation3 = @reservation_hub.add_reservation(2018,06,12,2018,06,15)
+
+      @reservation4 = @reservation_hub.add_reservation(2018,06,12,2018,07,01)
+    end
+
+
+    it "returns an array of reservations" do
+      expect(@reservation4).must_be_kind_of Array
+    end
 
     it "adds a new reservation to array of all reservations" do
 
-      @reservation4 = @reservation_hub.add_reservation(2018,06,12,2018,07,01)
+      expect(@reservation_hub.reservations.length).must_equal 4
 
-      @reservation4 = @reservation_hub.add_reservation(2017,01,02,2017,01,06)
-
-      expect(@reservation_hub.reservations.length).must_equal 2
     end
   end
 
@@ -62,6 +72,8 @@ describe "Reservation Hub class" do
       date = Date.new(2018,1,3)
       expect(date).must_be_kind_of Date
     end
+
+
   end
 
 
@@ -107,8 +119,21 @@ describe "Reservation Hub class" do
     end
   end
 
-end
+  describe "create date array" do
 
+    it "returns an array of all dates within a reservation, excluding the start date" do
+
+      start_date = Date.new(2018,01,06)
+      end_date = Date.new(2018,01,18)
+      date_array = @reservation_hub.create_date_array(start_date, end_date)
+
+      expect(date_array).must_be_kind_of Array
+      expect(date_array.length).must_equal 12
+
+    end
+
+  end
+end
 
 
 
