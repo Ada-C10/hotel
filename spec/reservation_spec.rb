@@ -4,14 +4,12 @@ describe "Reservation class" do
   before do
     @start_date = Date.today
     @end_date = Date.today + 5
+    @date_range = Hotel::DateRange.new(@start_date, @end_date)
 
     @reservation_data = {
       id: 8,
-      room: Hotel::Room.new(
-        room_number: 1
-      ),
-      start_date: Date.today,
-      end_date: Date.today + 5
+      room: 1,
+      date_range: @date_range
     }
 
     @reservation = Hotel::Reservation.new(@reservation_data)
@@ -21,9 +19,13 @@ describe "Reservation class" do
     it "is an instance of Reservation" do
       expect(@reservation).must_be_kind_of Hotel::Reservation
     end
+  end
 
-    it "stores an instance of room" do
-      expect(@reservation.room).must_be_kind_of Hotel::Room
+  describe "#calculate_cost method" do
+    it "calculates the total with the rate per nights stayed" do
+      total_nights_stayed = @date_range.find_num_nights
+      expect(@reservation.calculate_cost).must_be_kind_of Numeric
+      expect(@reservation.calculate_cost).must_equal RATE * total_nights_stayed
     end
   end
 end

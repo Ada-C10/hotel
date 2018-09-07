@@ -29,14 +29,15 @@ module Hotel
 
     def list_reservations_by_date(specified_date)
       reservations_by_date = @reservations.find_all do |reservation|
-        reservation.date_range.include?(specified_date)
+        range = reservation.date_range.get_range
+        range.include?(specified_date)
       end
       return reservations_by_date
     end
 
     def find_unavailable_rooms(requested_dates)
       unavailable_rooms = @reservations.find_all do |reservation|
-        reservation_period = reservation.dates
+        reservation_period = reservation.date_range
         reservation_period.overlaps?(requested_dates)
         reservation.room
       end
@@ -55,14 +56,12 @@ module Hotel
       return first_available_room
     end
 
-    def get_requested_dates_range(input)
-      requested_dates = DateRange.new(input[:start_date], input[:end_date])
-      requested_dates_range = requested_dates.get_range
-      return requested_dates_range
+    def get_requested_dates(input)
+      return DateRange.new(input[:start_date], input[:end_date])
     end
 
     def reserve_room(input)
-      requested_dates = get_requested_dates_range(input)
+      requested_dates = get_requested_dates(input)
 
       id = @reservations.length + 1
       room = get_first_available_room(requested_dates)
@@ -70,8 +69,7 @@ module Hotel
       reservation_data = {
         id: id,
         room: room,
-        start_date: input[:start_date],
-        end_date: input[:end_date]
+        date_range: requested_dates
       }
 
       new_reservation = Reservation.new(reservation_data)

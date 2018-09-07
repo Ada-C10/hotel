@@ -34,8 +34,8 @@ describe "DateRange class" do
   describe "#reservation_period method" do
     it "Finds difference between end_date and start_date not including the checkout_date" do
       reservation_period = @end_date - @start_date
-      expect(@date_range.get_reservation_period).must_be_kind_of Numeric
-      expect(@date_range.get_reservation_period).must_equal reservation_period
+      expect(@date_range.find_num_nights).must_be_kind_of Numeric
+      expect(@date_range.find_num_nights).must_equal reservation_period
     end
   end
 end
