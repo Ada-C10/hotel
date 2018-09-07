@@ -98,8 +98,13 @@ describe "ReservationTracker class" do
     end
 
     it "raises an error if there are no rooms available for requested dates" do
-      # 20.times do
+      reservation_tracker = Hotel::ReservationTracker.new
 
+      20.times do
+        reservation_tracker.reserve_room(@input)
+      end
+
+      expect{ reservation_tracker.find_available_rooms }.must_raise ArgumentError
     end
   end
 
