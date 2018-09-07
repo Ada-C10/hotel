@@ -47,4 +47,13 @@ class HotelAdmin
     end
   end
 
+  def locate_block(check_in, check_out)
+    available =[]
+    rooms.each do |room|
+      return available if available.length == 5
+        available << room if room.available?((check_in..check_out))
+    end
+  end
+
+
 end
