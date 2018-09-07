@@ -55,7 +55,7 @@ module Hotel
     def find_available_rooms(requested_dates)
       unavailable_rooms = find_unavailable_rooms(requested_dates)
       available_rooms = @rooms.reject { |room| unavailable_rooms.include?(room) }
-      raise ArgumentError.new("NO ROOMS AVAILABLE!!!") if available_rooms.empty?
+      check_availablity?(available_rooms)
       return available_rooms
     end
 
@@ -88,8 +88,8 @@ module Hotel
 
     private
 
-    # def check_room_number(room_number)
-    #   # raise ArgumentError, "Room number cannot be less than 1 or greater than 20. (got #{room_number})" unless room_number.between?(1, 20)
-    # end
+    def check_availablity?(available_rooms)
+      raise ArgumentError.new("NO ROOMS AVAILABLE!!!") if available_rooms.empty?
+    end
   end
 end
