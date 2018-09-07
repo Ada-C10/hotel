@@ -62,12 +62,25 @@ describe 'TrackingSystem class' do
         # @room = Room.new({room_num: 1, availability: :available })
       end
 
-      it "creates a new instance of Reservation" do
-        @reservation = @tracker.add_reservation(start_time: Date.new(2018,8,1), end_time: Date.new(2018,8,25), number_of_rooms:1) #<---1 is the number of rooms
+      it "returns an array of reservations" do
+        @reservation = @tracker.add_reservation(start_time: Date.new(2018,8,1), end_time: Date.new(2018,8,25), number_of_rooms:1)
         # binding.pry
         expect(@reservation).must_be_kind_of Array
       end
 
+      it "raises ArgumentError if there are not enough available-rooms on the requested date" do
+        expect{@tracker.add_reservation(start_time: Date.new(2018,1,1),end_time:Date.new(2018,1,2),number_of_rooms:350)}.must_raise ArgumentError
+      end
+
+      # def add_reservation(start_time: Date.now, end_time: Date.now + 1, number_of_rooms: 1)
+      #   available_rooms = view_available_rooms_on(start_time: start_time, end_time: end_time) #<--returns an array of available rooms!
+      #   raise ArgumentError.new"Not enough rooms available on those dates" if available_rooms.length < number_of_rooms
+      #   number_of_rooms.times do |i|
+      #     @reservations << Reservation.new({room: [available_rooms[i].room_num], start_time: start_time, end_time: end_time, price: 200.0})
+      #     available_rooms[i].reserved_dates << {start_time: start_time, end_time: end_time}
+      #   end
+      #   @reservations
+      # end
       # it "increases the number of reservations in the reservations list" do
       #   num_of_reservations = @tracker.reservations.length
       #   @reservation = @tracker.add_reservation(Date.new(2018,8,1),Date.new(2018,8,25),1)

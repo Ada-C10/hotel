@@ -13,6 +13,9 @@ class TrackingSystem
     @reservations = []
   end
 
+  # def reservation_total_cost
+  # end
+
   def add_rooms
     all_rooms = []
     NUMBER_OF_ROOMS.times do |i|
