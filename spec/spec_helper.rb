@@ -1,4 +1,3 @@
-
 require 'simplecov'
 SimpleCov.start
 
@@ -6,7 +5,6 @@ SimpleCov.start
 require 'minitest'
 require 'minitest/autorun'
 require 'minitest/reporters'
-require_relative '../lib/room.rb'
 require_relative '../lib/reservation.rb'
 require_relative '../lib/booking_manager.rb'
 # Add simplecov
