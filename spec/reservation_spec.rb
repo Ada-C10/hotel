@@ -16,11 +16,11 @@ describe "Reservation class" do
   end
 
   it "returns array of all dates user wants to book" do
-    expect(@reservation.booking_date_range).must_be_kind_of Array
+    expect(@reservation.date_range).must_be_kind_of Array
 
   end
 
   it "returns the array of dates except the check out date" do
-  expect(@reservation.booking_date_range).must_equal [Date.parse("180904")]
+  expect(@reservation.date_range).must_equal [Date.parse("180904")]
 end
 end
