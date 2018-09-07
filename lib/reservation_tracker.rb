@@ -34,7 +34,7 @@ class ReservationTracker
 
     @all_reservations.each do |reservation|
       reservation_dates = reservation.dates_booked_for_reservation
-      
+
       if reservation_dates.include?(formatted_date)
         reservations_for_date << reservation
       end
@@ -88,10 +88,24 @@ class ReservationTracker
     if available_rooms_by_number.include?(room_number)
       reservation_number = make_reservation_number
       new_reservation = Reservation.new(reservation_number, room_number, start_date, end_date, :standard)
+
+      update_dates_booked_for_room(new_reservation)
       @all_reservations << new_reservation
 
     else
       raise ArgumentError.new("The specified room is not available for the date range provided")
+    end
+  end
+
+  def update_dates_booked_for_room(new_reservation)
+    dates_booked_for_new_reservation = new_reservation.dates_booked_for_reservation
+
+    @all_rooms.each do |room|
+      if room.room_number == new_reservation.room_num
+        dates_booked_for_new_reservation.each do |date|
+          room.dates_booked << date
+        end
+      end
     end
   end
 
