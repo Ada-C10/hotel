@@ -1,5 +1,4 @@
 require_relative 'spec_helper'
-require 'pry'
 
 describe "HotelAdmin" do
   let (:hotel) {
@@ -89,8 +88,9 @@ describe "HotelAdmin" do
     let (:reservation){
       Reservation.new({guest_id: "Guccifer2.0@ada.com", room: 1, date_range: (Date.new(2018,12,02)...Date.new(2018,12,07))})
     }
+
     it "returns the cost associated with a given reservation" do
-      expect(reservation.stay_cost).must_equal 1000.00
+      expect(hotel.reservation_charge(reservation)).must_equal 1000.00
     end
 
   end

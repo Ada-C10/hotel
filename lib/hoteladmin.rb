@@ -24,11 +24,9 @@ class HotelAdmin
 
   def retrieve_by_date(date)
     raise ArgumentError, "Valid date format was not provided." if date.class != Date
-    #change because of date range use?
     reservations.select { |res| res.date_range.include? date }
   end
 
-  #This method does too much!
   def reserve_room(reservation_details)
     new_reservation = retrieve_room(reservation_details[:room]).add_booking(Reservation.new(reservation_details))
     reservations << new_reservation
@@ -46,20 +44,18 @@ class HotelAdmin
   end
 
   def reservation_charge(reservation)
-    reservation.cost
+    reservation.stay_cost
   end
 
   def available_rooms(check_in, check_out)
-    rooms.select do |room|
-      room.available?((check_in..check_out))
-    end
+    rooms.select {|room| room.available?((check_in..check_out))}
   end
 
   def locate_block(check_in, check_out)
-    available =[]
+    available_rooms =[]
     rooms.each do |room|
-      return available if available.length == 5
-        available << room if room.available?((check_in..check_out))
+      return available_rooms if available_rooms.length == 5
+        available_rooms << room if room.available?((check_in..check_out))
     end
   end
 
