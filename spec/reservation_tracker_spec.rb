@@ -111,7 +111,9 @@ describe "ReservationTracker class" do
 
   describe "#get_first_available_room method for requested dates" do
     it "returns the first available room for requested dates" do
-
+      first_available_room = @reservation_tracker.get_first_available_room(@requested_dates)
+      expect(first_available_room).must_be_kind_of Integer
+      expect(first_available_room).must_equal 2
     end
   end
 
