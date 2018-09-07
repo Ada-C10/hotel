@@ -1,15 +1,9 @@
 require_relative 'spec_helper'
 
 describe 'Reservation class' do
-  let (:check_in) {
-    Date.today
-  }
-  let (:check_out) {
-    check_in + 2
-  }
-  let (:reservation) {
-    Hotel::Reservation.new(Hotel::DateRange.new(check_in, check_out), 1)
-  }
+  let (:check_in) { Date.today }
+  let (:check_out) { check_in + 2 }
+  let (:reservation) { Hotel::Reservation.new(Hotel::DateRange.new(check_in, check_out), 1)}
 
   describe 'Reservation instantiation' do
 
@@ -45,16 +39,14 @@ describe 'Reservation class' do
       }.must_raise ArgumentError
 
     end
-
   end
 
   describe 'get_cost method' do
 
     it 'returns the correct cost of a reservation' do
       rate = 200
-      expect(reservation.get_cost(rate)).must_equal rate * 2
+      expect(reservation.get_cost).must_equal rate * 2
     end
 
   end
-
 end
