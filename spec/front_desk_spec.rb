@@ -41,6 +41,16 @@ describe "Front Desk Class" do
       expect(@admin.reservations).must_include(@new_reservation)
     end
 
+    it "returns reservations all reservation within that date" do
+      expect(@admin.search_reserved_by_date('2018-02-05').length).must_equal 1
+    end
+
+    it "returns reservations all reservation within that date" do
+      expect(@admin.search_reserved_by_date('2018-02-15').length).must_equal 0
+    end
+
+
+
 
 
 

@@ -37,9 +37,13 @@ class Front_Desk
     return new_reservation
   end
 
-#method to grab reservation by Date
-
-
+  #method to grab reservation by Date
+  def search_reserved_by_date(search_date)
+    search_date = Date.parse(search_date)
+    @reservations.select do |reservation|
+      reservation.start_date <= search_date && search_date <= reservation.end_date
+    end
+  end
 
 
 end
