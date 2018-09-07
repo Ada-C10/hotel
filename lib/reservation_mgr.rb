@@ -42,12 +42,7 @@ class ReservationMgr
       raise ArgumentError.new('The check-out date is before the check-in')
     end
 
-    available_rooms = []
-    @rooms.each do |room|
-      if room.is_available?(check_in,check_out)
-        available_rooms << room.id
-      end
-    end
+    available_rooms = available_rooms(check_in,check_out)
 
     if available_rooms.length == 0 || available_rooms.length < rooms
       raise ArgumentError.new('There are not enough room/rooms available')
@@ -55,8 +50,8 @@ class ReservationMgr
 
     i = 0
     rooms.times do |room|
-      @reservations << Reservation.new(check_in,check_out,available_rooms[i])
-      update_room = @rooms.find {|room| room.id == available_rooms[i]}
+      @reservations << Reservation.new(check_in,check_out,available_rooms[i].id)
+      update_room = @rooms.find {|room| room.id == available_rooms[i].id}
       update_room.add_unavailable_dates(check_in,check_out)
       i + 1
     end
