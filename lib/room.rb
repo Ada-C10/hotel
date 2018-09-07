@@ -1,20 +1,62 @@
 #Room Class
+#The physical space also has nightly rate
+
 require 'pry'
+require 'awesome_print'
 
 class Room
 
   attr_reader :id
 
-  attr_accessor :status, :cost
+  attr_accessor :cost
 
   def initialize(id, cost = 200 )
     @id = id
     @cost = cost
+
+  end
+
+
+def self.rooms
+  room_id = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]
+  i = 0
+  room_id.map do |num| num
+    id = num
+    cost = 200
+    i +=1
+    rooms = Room.new(id,cost)
   end
 end
+ap self.rooms
 
+end
+
+# class HotelMngr
+#   @room
+#
+# def book_room(start,end)
+#   @room.is_available(start:today)
+# end
+# end
+#
+# class Room
+#   def.is_available?(start: start_date, end: end_date)
+#   end
+#new_room = Room.new(1, 200)
+#ap new_room
+#write method to list rooms
+#ap self.all
 #concerned with the physical space
-
+# def self.all
+#   CSV.open('./data/customers.csv').map do |customer|
+#     id =  customer[0].to_i
+#     email = customer[1]
+#     address = {street: customer[2], city: customer[3], state: customer[4], zip: customer[5]}
+#
+#     Customer.new(id,email, address)
+#   end
+# end
+# end
 # def room_id_assign
 # rooms = [0...19]
 # room_number = rooms.each_with_index do |index|

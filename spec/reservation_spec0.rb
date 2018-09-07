@@ -1,9 +1,7 @@
-#room_tracker
-
-
+#reservation spec
 require_relative 'spec_helper'
 
-describe Roomtracker do
+describe Reservation do
 
   describe "Reservation instantiation" do
     describe "#initialize" do
@@ -16,7 +14,10 @@ describe Roomtracker do
         expect(reservation).must_respond_to :start_date
         expect(reservation.start_date).must_equal start_date
 
+        expect(reservation).must_respond_to :end_date
+        expect(reservation.end_date).must_equal end_date
+
       end
     end
   end
-end 
+end
