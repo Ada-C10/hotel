@@ -5,11 +5,11 @@ module Hotel
   class Reservation
     attr_reader :start_date, :end_date
 
-    def initialize(start_year, start_month, start_day, end_year, end_month, end_day)
+    def initialize(start_date, end_date)
 
-      @start_date = generate_date(start_year, start_month, start_day)
+      @start_date = start_date
 
-      @end_date = generate_date(end_year, end_month, end_day)
+      @end_date = end_date
 
       @total_cost = reservation_cost(@start_date, @end_date)
 

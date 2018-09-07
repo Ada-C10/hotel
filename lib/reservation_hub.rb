@@ -19,7 +19,11 @@ module Hotel
 
     def add_reservation(start_year, start_month, start_day, end_year, end_month, end_day)
 
-      reservation = Reservation.new(start_year, start_month, start_day, end_year, end_month, end_day)
+      start_date = generate_date(start_year, start_month, start_day)
+
+      end_date = generate_date(end_year, end_month, end_day)
+
+      reservation = Reservation.new(start_date, end_date)
 
       @reservations << reservation
       # return @reservations
@@ -29,12 +33,12 @@ module Hotel
     def generate_date(year, month, day)
       return Date.new(year, month, day)
     end
-    
+
 
     def find_reservations(year, month, day)
-      # binding.pry
+      
+      start_date = generate_date(year, month, day)
 
-      start_date = Reservation.generate_date(year, month, day)
       reservations_by_date = []
       index = 0
       all_reservations.each do
@@ -42,11 +46,13 @@ module Hotel
         if all_reservations[index].start_date == start_date
 
           reservations_by_date << all_reservations[index]
-          index +=1
+          # binding.pry
         end
-        return reservations_by_date
+        index +=1
 
       end
+      return reservations_by_date
+
     end
 
 

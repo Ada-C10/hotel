@@ -6,9 +6,17 @@ describe "Reservation Hub class" do
   before do
     @reservation_hub = Hotel::ReservationHub.new
 
-    @reservation1 = Hotel::Reservation.new(2018,01,03,2018,01,07)
-    @reservation2 = Hotel::Reservation.new(2018,04,02,2018,04,06)
-    @reservation3 = Hotel::Reservation.new(2018,02,04,2018,02,12)
+start_date1 = Date.new(2018, 01, 03)
+start_date2 = Date.new(2018, 04, 03)
+start_date3 = Date.new(2018, 02, 04)
+
+end_date1 = Date.new(2018, 01, 07)
+end_date2 = Date.new(2018, 04, 06)
+end_date3 = Date.new(2018, 02, 12)
+
+    @reservation1 = Hotel::Reservation.new(start_date1, end_date1)
+    @reservation2 = Hotel::Reservation.new(start_date2, end_date2)
+    @reservation3 = Hotel::Reservation.new(start_date3, end_date3)
 
   end
 
@@ -43,26 +51,41 @@ describe "Reservation Hub class" do
       @reservation4 = @reservation_hub.add_reservation(2017,01,02,2017,01,06)
 
       expect(@reservation_hub.reservations.length).must_equal 2
+      # binding.pry
+
 
     end
 
+    describe "Generate date" do
+      it "is a kind of date" do
+        date = Date.new(2018,1,3)
+        expect(date).must_be_kind_of Date
+      end
+    end
 
     describe "find reservation" do
 
       before do
         @reservation_hub = Hotel::ReservationHub.new
 
-        @reservation1 = Hotel::Reservation.new(2018,01,03,2018,01,07)
-        @reservation2 = Hotel::Reservation.new(2018,04,02,2018,04,06)
-        @reservation3 = Hotel::Reservation.new(2018,01,03,2018,02,12)
+        @reservation_hub.add_reservation(2018, 01, 03, 2018, 01, 07)
+        @reservation_hub.add_reservation(2018, 04, 03, 2018, 04, 06)
+        @reservation_hub.add_reservation(2018, 01, 03, 2018, 02, 12)
+
+        # @reservation1 = @reservation_hub.add_reservation(2018,01,03,2018,01,07)
+        # @reservation2 = @reservation_hub.add_reservation(2018,04,02,2018,04,06)
+        # @reservation3 = @reservation_hub.add_reservation(2018,01,03,2018,02,12)
+
       end
 
       it "returns a list of reservations based on a start date" do
 
-        expect(@reservation_hub.find_reservations(2018-01-03)).must_be_kind_of Array
+        reservations = @reservation_hub.find_reservations(2018, 04, 03)
+        # binding.pry
 
-        expect(@reservation_hub.find_reservations(2018-01-03).lenght).must_equall 2
+        expect(reservations).must_be_kind_of Array
 
+        expect(reservations.length).must_equal 1
         #each must be kind of (instance of?) reservation
 
 
