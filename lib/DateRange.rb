@@ -20,6 +20,7 @@ class DateRange
     return (@start_date .. @end_date).cover?(date)
   end
 
+  # Was not successful transferring this to Reservations class to calculate cost 
   def number_of_days
     return (@end_date - @start_date).to_i
   end

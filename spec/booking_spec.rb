@@ -48,17 +48,16 @@ describe "booking manager" do
       # Given date range (list_rooms_available_for_date_range)
       # Only reserve room if room is available
       # Otherwise return a custom error
+
     end
 
     it "Raises an NoRoomAvailable error if no rooms are available for given date range" do
-      # Will need to create a custom error class
+      # This occurs in list_rooms_available_for_date_range method
 
     end
 
     it "Is able to get the total cost for a given reservation" do
       @manager.add_reservation(1, Date.new(2018, 9, 1), Date.new(2018, 9, 2))
-      ####### Below code is not working properly, debug ########
-      # binding.pry
       expect(@manager.total_cost_for_reservation(1, Date.new(2018, 9, 1), Date.new(2018, 9, 2))).must_equal @manager.rooms.first.reservations.first.total
     end
 

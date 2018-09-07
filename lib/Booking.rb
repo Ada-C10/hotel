@@ -37,16 +37,20 @@ class Booking
     return @rooms.find { |room| room.room_number == room_number }
   end
 
-
+  # Reservation creator, maybe refactor so check_in/check_out have defaults/order does not matter
   def create_reservation(room_number, check_in, check_out)
     return Reservation.new(room_number, check_in, check_out)
   end
 
   # Maybe have room_number default to first available room for date range?
+  # Wave 2 - Room must be available to be reserved
   def add_reservation(room_number, check_in, check_out)
+    # list_rooms_available_for_date_range
+    # If no rooms available this will return an error
+    # If available, do below with room_number set to first available room 
     # create reservation
     reservation = create_reservation(room_number, check_in, check_out)
-    # find room (method)
+    # find room based on room number in reservation
     room = find_room(room_number)
     # push reservation into room
     room.reservations << reservation
@@ -60,8 +64,6 @@ class Booking
       room.is_available?(date)
     end
   end
-
-  ##### In Progress #####
 
   # Helper method to check if date ranges overlap
   # Depends on order of arguments, maybe refactor as a hash
@@ -83,12 +85,10 @@ class Booking
     # Create daterange helper method to check if ranges overlap
     # It's okay if start_date and the last day of reservation are the same. (Do check_out - 1 for range end)
     # If any of the room's reservations are within the given range, room is not available
-    # available_rooms = []
     # Select room if all reservations for the room return false for overlap with the given start date end date
     rooms_available = @rooms.select do |room|
      room.reservations.all? { |reservation| date_range_overlap?(start_date, end_date, reservation.check_in, reservation.check_out) == FALSE }
     end
-    # binding.pry
     if rooms_available.empty?
       raise NoRoomsAvailableError, "No rooms are available for this date range"
     else
@@ -104,7 +104,6 @@ class Booking
       # find_reservation is only returning true/false, need actual reservation
       room.find_reservation(room_number, start_date, end_date, cost_per_night)
     end
-    # binding.pry
     if room_with_reservation.empty?
       # If the reservation can't be found, raise an error
       raise NoReservationExistsError, "Sorry, your reservation is not in our system."
@@ -115,7 +114,5 @@ class Booking
   end
 
 end
-
-  # TODO Can view a list of rooms that are not reserved for a given date range
 
   # TODO Can reserve an available room for a given date range
