@@ -5,15 +5,19 @@ class Reservation
     # raise StandardError, "Invalid check-in date format." unless check_in =~ (/\d{6}/)
     @check_in = Date.parse(check_in)
     @check_out = Date.parse(check_out)
-    @number_of_nights = @check_out.mday - @check_in.mday
+    @number_of_nights = number_of_nights > 0 ? number_of_nights : StandardError, "Invalid date range."
     @cost = PRICE * number_of_nights
+  end
+  def number_of_nights
+    nights = check_out - check_in
+    return nights.numerator
   end
   def get_all_dates
     all_dates = []
     date = check_in
     number_of_nights.times do
       all_dates << date
-      date = date.next
+      date += 1
     end
     return all_dates
   end
