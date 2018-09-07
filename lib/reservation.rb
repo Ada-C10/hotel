@@ -1,5 +1,3 @@
-# BASE_COST = 200
-
 module Hotel
 
   class Reservation
@@ -11,7 +9,7 @@ module Hotel
       @room_num = room_num
       @cost = get_cost(rate)
 
-      if !@room_num.to_s.match /\d+/
+      if !@room_num.to_s.match /\d+/ || @room_num > 20 || @room_num < 1
         raise ArgumentError, "Invalid Room Number"
       end
     end

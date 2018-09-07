@@ -35,7 +35,16 @@ describe 'Reservation class' do
       }.must_raise ArgumentError
     end
 
+    it 'raises an argument error if room_num is an invalid room number' do
+      expect{
+        Hotel::Reservation.new(check_in, check_out, 0)
+      }.must_raise ArgumentError
 
+      expect{
+        Hotel::Reservation.new(check_in, check_out, 21)
+      }.must_raise ArgumentError
+
+    end
 
   end
 
@@ -45,7 +54,6 @@ describe 'Reservation class' do
       rate = 200
       expect(reservation.get_cost(rate)).must_equal rate * 2
     end
-
 
   end
 
