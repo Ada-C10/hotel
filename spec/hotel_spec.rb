@@ -43,7 +43,7 @@ describe "Hotel Class: Wave One: Tracking Reservations" do
     end
 
     it "adds a reservation to the first available room" do
-      expect(@hotel.rooms[0].reservations.length).must_equal 1
+      expect(@hotel.rooms[0].reservations[0]).must_equal @hotel.reservations[0]
     end
 
     it "the reservation and room are connected" do
@@ -174,6 +174,8 @@ describe "Hotel Class: Wave Three: Blocks of Rooms" do
       @hotel.reserve_block_room(@block_id, 1)
 
       expect(@hotel.list_available_block_rooms(@block_id).length).must_equal 4
+      expect(@hotel.block_reservations[0].rooms_reserved.length).must_equal 1
+
     end
 
     it "a block can contain a maximum of 5 rooms" do

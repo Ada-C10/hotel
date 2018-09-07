@@ -104,7 +104,7 @@ class Hotel
 
     if not_available_rooms(start_d, end_d).nil?
       return rooms
-    elsif not_available_rooms(start_d, end_d).length == 20
+    elsif not_available_rooms(start_d, end_d).length == rooms.length
       return "All rooms are reserved from #{start_d} to #{end_d}."
     else
       rooms.each do |room|
