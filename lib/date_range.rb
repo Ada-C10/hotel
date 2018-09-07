@@ -6,11 +6,15 @@ module Hotel
   class DateRange
     def self.create_date_array(start_date, end_date)
       if start_date.class != Date
-        all_dates = *(Date.parse(start_date)...Date.parse(end_date))
-      else
-        all_dates = *(start_date...end_date)
+        start_date = Date.parse(start_date)
+        end_date = Date.parse(end_date)
       end
-      return all_dates
+
+      if (end_date - start_date) < 0
+        raise StandardError.new("Invalid Date Range")
+      end
+
+      return *(start_date...end_date)
     end
   end
 end
