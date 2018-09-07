@@ -5,13 +5,13 @@ require_relative 'reservation'
 
 module Hotel
   class BookingSystem
-    attr_accessor :rooms, :reservations
+    attr_reader :rooms, :reservations
+
     def initialize()
-      @rooms = load_rooms() #<-- array of all rooms
+      @rooms = load_rooms() #<-- array of all room objects
       @reservations = []
     end
 
-# TODO: maybe separate load class?
     def load_rooms()
       nums = (1..20).to_a
       all_rooms = nums.map { |num| Hotel::Room.new(num: num)}
@@ -19,29 +19,21 @@ module Hotel
       return all_rooms
     end
 
-    def list_all_rooms()
-      # return list as a string
-      all_rooms_str = "Here is a list of all rooms: \n"
+    # TODO: maybe use date range instead of start/end?
+    def create_reservation(start_date, end_date)
+      id = create_res_id()
+      rooms = list_avail_rooms_for_range(start_date, end_date)
 
-      @rooms.each do |room|
-        all_rooms_str << "- Room #{room.num} \n"
+      # QUESTION: AM I DOING THIS RIGHT?
+      unless rooms != nil
+        raise StandardError, "No rooms are available for the given date range: #{start_date} - #{end_date}."
       end
 
-      return all_rooms_str
-    end
-
-# QUESTION: is this necessary??
-# QUESTION: should I ditch input for date ranges??
-    def create_reservation(input)
-      room = find_room(input[:room_num])
-      # start_date = input[:start_date]
-      # end_date = input[:end_date]
-
       reservation_hash = {
-        id: input[:id].to_i,
-        room: room,
-        start_date: input[:start_date],
-        end_date: input[:end_date],
+        id: id,
+        room: rooms[0],
+        check_in: start_date,
+        check_out: end_date,
       }
 
       new_reservation = Reservation.new(reservation_hash)
@@ -68,8 +60,8 @@ module Hotel
 
 # QUESTION: should i be accessing this
 # QUESTION: add a pretty to_s for listing reserved dates?
-    def list_reservations_for_date(date)
-      date = Date.parse(date)
+    def list_reservations_for_date(check_date)
+      date = Date.parse(check_date)
       #TODO error handling for date as Date object??
       #TODO what if no dates match? should return nil?
       # QUESTION: maybe add one to display by id?
@@ -77,7 +69,7 @@ module Hotel
       matching_res = @reservations.select { |reservation| reservation.dates_reserved.include? date }
 
       # TODO: combine enumerable with ternary???? --> do in one line???
-      return matching_res == [] ? nil : matching_res
+      return matching_res.empty? ? nil : matching_res
     end
 
 
@@ -87,40 +79,57 @@ module Hotel
       return @rooms.find {|room| room.num == room_num.to_i}
     end
 
-    def available_rooms_by_date(start_date, end_date)
-      # QUESTION: should this be the input??
-      # TODO: ugh, not DRY....
-      check_date_range = (start_date...end_date).to_a
+    def create_date_range(start_date, end_date)
+      return (start_date...end_date).to_a
+    end
 
-      @reservations.each do |reservation|
-        # check for overlap in dates
-        if !(reservation.date_range & check_date_range)
-          return reservation.room.num
-        end
+    def overlap?(date_range_1, date_range_2)
+      return false if (date_range_1 & date_range_2).empty? else return true
+    end
 
-      end
+    def list_avail_rooms_for_date(check_date)
+      avail_rooms = @reservations.select { |reservation| !reservation.date_range.include?(check_date) } #==false
+        # check for no overlap in dates
+        # if (reservation.date_range & check_date_range).empty?
 
-      # TODO URGENT: add rooms to reservation class??
-
+      return avail_rooms.empty? ? nil : avail_rooms
 
     end
 
+    def list_avail_rooms_for_range(start_date, end_date)
+      check_date_range = create_date_range(start_date, end_date)
+
+      avail_rooms = @reservations.select { |reservation| reservation.room if !overlap?(reservation.date_range, check_date_range)} #==false
+
+      return avail_rooms.empty? ? nil : avail_rooms
+        # check for no overlap in dates
+        # if (reservation.date_range & check_date_range).empty?
+
+    end
+
+    def create_res_id()
+      if @reservations.empty?
+        return 1
+      else
+        return @reservations.max_by { |reservation| reservation.id}.id + 1
+      end
+    end
   end
 end
 
 
-booking = Hotel::BookingSystem.new()
+# booking = Hotel::BookingSystem.new()
+# #
+# res_3 = booking.create_reservation({
+#   id: "4",
+#   room_num: "15",
+#   start_date: "2010-8-4",
+#   end_date: "2010-8-20",
+#   })
+# res_2 = booking.create_reservation({id: "1",
+#   room_num: "20",
+#   start_date: "2010-8-1",
+#   end_date: "2010-8-10",
+#   })
 #
-res_3 = booking.create_reservation({
-  id: "4",
-  room_num: "15",
-  start_date: "2010-8-4",
-  end_date: "2010-8-20",
-  })
-res_2 = booking.create_reservation({id: "1",
-  room_num: "20",
-  start_date: "2010-8-1",
-  end_date: "2010-8-10",
-  })
-
-p booking.available_rooms_by_date("2010-8-5")
+# p booking.available_rooms_by_date("2010-8-5")

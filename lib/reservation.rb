@@ -6,6 +6,7 @@ module Hotel
 
     def initialize(input)
 
+      # QUESTION: maybe DateRange class can handle all things date-related, including error handling?
       unless /\d{4}-\d{1,2}-\d{1,2}/.match(input[:check_in]) && /\d{4}-\d{1,2}-\d{1,2}/.match(input[:check_out])
         raise StandardError, "Improper date format: date must be entered as YYYY-MM-DD."
       end
@@ -26,7 +27,6 @@ module Hotel
       return (@check_in...@check_out).to_a
     end
 
-# QUESTION: daily_rate as a CONSTANT??
     def total_stay_cost()
       length_in_days = dates_reserved().length
       return @daily_rate * length_in_days

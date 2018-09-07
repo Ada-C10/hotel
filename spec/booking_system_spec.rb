@@ -8,7 +8,8 @@ require_relative '../lib/booking_system'
 
 Minitest::Reporters.use! Minitest::Reporters::SpecReporter.new
 
-
+# TODO: fix the order of these methods!
+# QUESTION: wave 2 -- Your code should raise an exception when asked to reserve a room that is not available -- huhhh? i thought they book with a date range!
 describe "BookingSystem class" do
   let(:booking_system) {Hotel::BookingSystem.new()}
 
@@ -66,8 +67,17 @@ describe "BookingSystem class" do
     end
   end
 
+# TODO
+  describe "#create_date_range" do
+  end
+
+  # TODO
+  describe "#overlap?" do
+  end
+
 # TODO: add create reservation method + 2nd input as room_num??
   describe "#create_reservation" do
+    # TODO: A reservation is allowed start on the same day that another reservation for the same room ends
     # TODO test that it's added to Room
     # TODO test that it's added to reservations
     # let(:room_num) {4}
@@ -166,7 +176,7 @@ describe "BookingSystem class" do
     end
   end
 
-  describe "#available_rooms_by_date" do
+  describe "#list_avail_rooms_for_date" do
     let(:start_date) {"2010-8-15"}
     let(:end_date) {"2010-8-16"}
 
@@ -176,6 +186,14 @@ describe "BookingSystem class" do
       expect(booking_system.available_rooms_by_date(start_date, end_date)[0]).must_be_kind_of Integer
 
     end
+  end
+
+  #TODO
+  describe "#list_avail_rooms_for_range" do
+  end
+
+  # TODO
+  describe "#create_res_id" do
   end
 
 
