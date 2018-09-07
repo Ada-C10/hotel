@@ -85,9 +85,10 @@ describe 'HotelBooker class' do
     # TODO: write tests to account for blocked rooms
 
     # TODO
-    # it 'raises an error if trying to reserve a room in a different block' do
+    # TODO: it 'raises an error if trying to reserve a room in a different block' do
     #
     # end
+
   end
 
   describe 'is_room_available helper method' do
