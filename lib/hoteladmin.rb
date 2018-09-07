@@ -29,14 +29,20 @@ class HotelAdmin
   end
 
   #This method does too much!
-  def reserve_room(guest_identifier, room_number, check_in, check_out, rate = 200.00, status = nil)
-    new_reservation = Reservation.new({
-      guest_id: guest_identifier, room: room_number, date_range: (check_in...check_out), rate: rate, status: status
-    })
-    room_object = retrieve_room(room_number)
-    room_object.add_booking(new_reservation)
+  def reserve_room(reservation_details)
+    new_reservation = retrieve_room(reservation_details[:room]).add_booking(Reservation.new(reservation_details))
     reservations << new_reservation
     new_reservation
+  end
+
+  def build_reservation_hash(guest_identifier, room_number, check_in, check_out, rate = 200.00, status = :complete)
+    reserve_room({
+      guest_id: guest_identifier,
+      room: room_number,
+      date_range: (check_in...check_out),
+      rate: rate,
+      status: status
+    })
   end
 
   def reservation_charge(reservation)
@@ -60,7 +66,7 @@ class HotelAdmin
   def reserve_block(party, rooms, check_in, check_out, rate)
     block_reservations = []
     rooms.each do |room_number|
-      block_reservations << reserve_room(party, room_number, check_in, check_out, rate, status = :block_reserved)
+      block_reservations << build_reservation_hash(party, room_number, check_in, check_out, rate, status = :block_reserved)
     end
     block_reservations
   end

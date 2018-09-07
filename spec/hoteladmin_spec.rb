@@ -60,7 +60,7 @@ describe "HotelAdmin" do
 
   describe "HotelAdmin#reserve_room" do
     before do
-      @reservation = hotel.reserve_room("FishandChipsgrl@gmail.com", 4, Date.new(2019,01,20), Date.new(2019,01,22))
+      @reservation = hotel.build_reservation_hash("FishandChipsgrl@gmail.com", 4, Date.new(2019,01,20), Date.new(2019,01,22))
     end
 
     it "returns the new reservation object" do
@@ -79,7 +79,7 @@ describe "HotelAdmin" do
     it "will raise an exception if a conflicting reservation is added to a room" do
 
       expect{
-        hotel.reserve_room("Mamacita09@gmail.com", 4, Date.new(2019,01,21), Date.new(2019,01,22))
+        hotel.build_reservation_hash("Mamacita09@gmail.com", 4, Date.new(2019,01,21), Date.new(2019,01,22))
       }.must_raise ArgumentError
 
     end
@@ -108,9 +108,9 @@ describe "HotelAdmin" do
 
   describe "HotelAdmin#available_rooms" do
     before do
-      hotel.reserve_room("SoccerMom2010@gmail.com", 1, Date.new(2018,10,20), Date.new(2018,10,22))
-      hotel.reserve_room("Guccifer2.0@ada.com", 1, Date.new(2018,12,02), Date.new(2018,12,07))
-      hotel.reserve_room("Jfahmy07@gmail.com", 2, Date.new(2018,12,03), Date.new(2018,12,06))
+      hotel.build_reservation_hash("SoccerMom2010@gmail.com", 1, Date.new(2018,10,20), Date.new(2018,10,22))
+      hotel.build_reservation_hash("Guccifer2.0@ada.com", 1, Date.new(2018,12,02), Date.new(2018,12,07))
+      hotel.build_reservation_hash("Jfahmy07@gmail.com", 2, Date.new(2018,12,03), Date.new(2018,12,06))
     end
     it "provides a list of available room NUMBERS for a given date range" do
       available = hotel.available_rooms(Date.new(2018,12,04), Date.new(2018,12,05))
@@ -128,9 +128,9 @@ describe "HotelAdmin" do
 
   describe "HotelAdmin#locate_block" do
     before do
-      hotel.reserve_room("SoccerMom2010@gmail.com", 1, Date.new(2018,10,20), Date.new(2018,10,22))
-      hotel.reserve_room("Guccifer2.0@ada.com", 1, Date.new(2018,12,02), Date.new(2018,12,07))
-      hotel.reserve_room("Jfahmy07@gmail.com", 2, Date.new(2018,12,03), Date.new(2018,12,06))
+      hotel.build_reservation_hash("SoccerMom2010@gmail.com", 1, Date.new(2018,10,20), Date.new(2018,10,22))
+      hotel.build_reservation_hash("Guccifer2.0@ada.com", 1, Date.new(2018,12,02), Date.new(2018,12,07))
+      hotel.build_reservation_hash("Jfahmy07@gmail.com", 2, Date.new(2018,12,03), Date.new(2018,12,06))
     end
 
     it "finds 5 available rooms for a given date range" do

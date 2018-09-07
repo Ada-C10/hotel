@@ -1,7 +1,6 @@
 require 'pry'
 class Room
-  attr_reader :id
-  attr_accessor :bookings
+  attr_reader :id, :bookings
 
   def initialize(id)
     @id = id
@@ -11,6 +10,7 @@ class Room
   def add_booking(reservation)
     raise ArgumentError, "Conflicting reservation, cannot complete transaction." if !available?(reservation.date_range)
     @bookings << reservation
+    reservation
   end
 
 
