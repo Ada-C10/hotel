@@ -100,3 +100,18 @@ describe "#rooms information" do
     expect(vacant_rooms_result.length).must_equal 19
   end
 end
+
+describe "#range tests" do
+  before do
+    @admin = Admin.new
+  end
+
+  it "does not count the last day" do
+    start_date = "2018-08-07 00:00:00 -0700"
+    end_date = "2018-08-09 00:00:00 -0700"
+    test_date = Time.parse("2018-08-09 00:00:00 -0700") # last day
+
+    result = @admin.create_hotel_range(start_date, end_date)
+    expect(result.include?(test_date)).must_equal false
+  end
+end

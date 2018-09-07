@@ -42,6 +42,7 @@ class Admin
   end
 
   #As an administrator, I can reserve a room for a given date range
+  # uses view_vacant_rooms create range with one day less
   def reserve_room(start_date, end_date)
     start_date = Time.parse(start_date)
     end_date = Time.parse(end_date)
@@ -58,6 +59,7 @@ class Admin
   end
 
   #As an administrator, I can access the list of reservations for a specific date
+  # do I have to return a reservation that has specific date at the end?
   def find_reservations(date)
     date = Time.parse(date)
     reservations = @reservations.select do |instance|
@@ -71,6 +73,7 @@ class Admin
   end
 
   #As an administrator, I can get the total cost for a given reservation
+  #input to be a reservation instance?
   def find_cost(reservation_id)
     reservation = @reservations.select { |instance| instance.id == reservation_id }[0]
     cost = reservation.cost
@@ -78,7 +81,9 @@ class Admin
   end
 
   #As an administrator, I can view a list of rooms that are not reserved for a given date range
-  ## broke because it I used this in reserve_room
+  # it does this by seeing which rooms have the same range, but if not, it marks it as vacant
+  # raise argument error if array is empty
+  # must check if date for every single date is in the range
   def view_vacant_rooms(target_range)
     vacant_rooms = []
     @rooms.each do |room|
@@ -109,16 +114,28 @@ class Admin
 
   end
 
+  #last day not counted
+  def create_hotel_range(start_date, end_date)
+    start_date = Time.parse(start_date)
+    end_date = Time.parse(end_date)
+    end_date = end_date - 1
+    range = (start_date .. end_date)
+    return range
+  end
+
   private
+  #never used currently
   def sort_reservations
     @reservations.sort_by { |object| object.start_time }
   end
 
+  # it returns true if last day is the target date. Okay for listing all reservations with a specific date
   def date_in_range(start_date, end_date, date)
     range = (start_date..end_date)
     range.include?(date)
   end
 
+  # find range in an array of ranges, NOT USEFUL you need to check every day in the range not just that the ranges are not equal
   def range_search(ranges, target)
     ranges.each do |range|
       if range == target
