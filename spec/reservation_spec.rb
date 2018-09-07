@@ -27,7 +27,6 @@ describe "Reservation Test" do
   describe "Reservation.date method" do
     it "Returns true if reservation includes given date" do
       new_Res = Reservation.new("2018-09-05","2018-09-07",1)
-      puts new_Res.date?("2018-09-05")
       expect(new_Res.date?("2018-09-05")).must_equal true
       expect(new_Res.date?("2018-09-06")).must_equal true
       expect(new_Res.date?("2018-09-07")).must_equal true

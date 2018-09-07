@@ -71,5 +71,34 @@ describe "ReservationMgr Test" do
     end
   end
 
+  describe "reservation_cost method" do
+    before do
+      @new_ResMgr = ReservationMgr.new(3)
+      @new_ResMgr.make_reservation("2018-09-05","2018-09-07")
+      @new_ResMgr.make_reservation("2018-09-05","2018-09-10")
+      @new_ResMgr.make_reservation("2018-09-30","2018-10-07")
+    end
+    it "returns cost for a given reservation" do
+      expect(@new_ResMgr.reservation_cost(@new_ResMgr.reservations[0])).must_equal 400
+      expect(@new_ResMgr.reservation_cost(@new_ResMgr.reservations[1])).must_equal 1000
+      expect(@new_ResMgr.reservation_cost(@new_ResMgr.reservations[2])).must_equal 1400
+    end
+  end
+
+  describe "available_rooms method" do
+    before do
+      @new_ResMgr = ReservationMgr.new(3)
+      @new_ResMgr.make_reservation("2018-09-05","2018-09-07")
+      @new_ResMgr.make_reservation("2018-09-05","2018-09-10")
+      @new_ResMgr.make_reservation("2018-09-30","2018-10-07")
+    end
+    it "returns array of available rooms" do
+      expect(@new_ResMgr.available_rooms("2018-09-05","2018-09-07")).must_be_kind_of Array
+      expect(@new_ResMgr.available_rooms("2018-09-05","2018-09-07").length).must_equal 1
+      expect(@new_ResMgr.available_rooms("2018-11-05","2018-11-07").length).must_equal 3
+    end
+  end
+
+
 
 end

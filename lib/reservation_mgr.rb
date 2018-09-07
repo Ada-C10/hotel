@@ -10,6 +10,26 @@ class ReservationMgr
 
   end
 
+  def available_rooms(check_in,check_out)
+    if check_in.class != Date
+      check_in = Date.parse(check_in)
+    end
+    if check_out.class != Date
+      check_out = Date.parse(check_out)
+    end
+    if check_out < check_in
+      raise ArgumentError.new('The check-out date is before the check-in')
+    end
+
+    available_rooms = []
+    @rooms.each do |room|
+      if room.is_available?(check_in,check_out)
+        available_rooms << room
+      end
+    end
+    return available_rooms
+  end
+
   def make_reservation(check_in,check_out,rooms: 1, block: nil)
 
     if check_in.class != Date
@@ -54,6 +74,10 @@ class ReservationMgr
 
     return reservations_on_date
 
+  end
+
+  def reservation_cost(reservation)
+    reservation.cost
   end
 
 end
