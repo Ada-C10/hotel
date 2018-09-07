@@ -8,7 +8,7 @@ describe 'Module Hotel' do
 
   it 'returns an instance of a room' do
     room = Hotel::Room.new(1)
-    # expect(room).must_be_kind_of Room
+    expect(room).must_be_kind_of Hotel::Room
   end
 
 
@@ -26,6 +26,12 @@ describe 'Module Hotel' do
     expect(room_numbers).must_equal [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
   end
 
+
+  it 'returns an random available room' do
+    room_rand = Hotel.assign_rand_available_room
+    # binding.pry
+    expect(room_rand).include? [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
+  end
 
 end
 

@@ -11,9 +11,9 @@ module Hotel
 
     end
 
-    def vaild_room_num? (num)
-      if !@room_num.between?(1,20) raise ArgumentError
-    end
+    # def vaild_room_num? (num)
+    #   if !@room_num.between?(1,20) raise ArgumentError
+    # end
 
 
 
@@ -30,6 +30,24 @@ end
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#___________________________________________________________________________
 
 #   def initialize(room)
 #     @room = room
