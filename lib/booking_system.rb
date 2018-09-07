@@ -66,15 +66,16 @@ module Hotel
     #
     #
     #
-    # def find_reservation(id)
-    #   return @reservations.find { |reservation| reservation.id == id }
-    # end
-    #
-    # def total_cost(id)
-    #   find_reservation(id)
-    #   nights = @reservation.end_date - @reservation.start_date
-    #   total_cost = nights * @reservation.price_per_night
-    #   return total_cost
-    # end
+    def find_reservation(id)
+      reservation = @reservations.find { |reservation| reservation.id == id }
+      return reservation
+    end
+
+    def total_cost(id)
+      reservation = find_reservation(id)
+      nights = reservation.end_date - reservation.start_date
+      total_cost = nights * reservation.price_per_night
+      return total_cost
+    end
   end
 end

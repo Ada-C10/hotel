@@ -98,6 +98,25 @@ describe "BookingSystem class" do
 
   end
 
+  describe "find reservation method with id" do
+    it "returns the corresponding reservation given id" do
+      reservation = Hotel::Reservation.new(id: 1, room: 1, start_date: Date.new(2018, 1, 1), end_date: Date.new(2018, 1, 5), price_per_night: 200)
+      @system.reservations << reservation
+
+      expect(@system.find_reservation(1))[0].id.must_equal 1
+    end
+  end
+
+  describe "total cost of reservation" do
+    it "finds the total cost of reservation given id" do
+
+      reservation = Hotel::Reservation.new(id: 1, room: 1, start_date: Date.new(2018, 1, 1), end_date: Date.new(2018, 1, 5), price_per_night: 200)
+      @system.reservations << reservation
+
+      expect(@system.total_cost(1)).must_equal 800
+    end
+  end
+
 end
 
 # Hi! In Edges we talked about interesting test cases for date overlaps this afternoon. Here is a full list of all the cases I’ll be looking for when I give feedback:
