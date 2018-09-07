@@ -10,7 +10,7 @@ describe "Room in Wave 1" do
       expect(room_1).must_respond_to :room_num
       expect(room_1.room_num).must_equal id
       expect(room_1.rate).must_equal 200
-      expect(room_1.reservations).must_equal []
+      expect(room_1.reserve_dates).must_equal []
 
     end
 
@@ -24,28 +24,28 @@ describe "Room in Wave 1" do
     end
   end
 
-  # describe "#add_reservation" do
-  #   before do
-  #     @room_1 = Room.new(3)
-  #     @reservation_1 = Reservation.new(123, "Mike Smith", Date.new(2018,10,4), Date.new(2018,10,7))
-  #   end
-  #
-  #   it "throws an argument error if reservation is not provided" do
-  #
-  #     expect{ @room_1.add_reservation('') }.must_raise ArgumentError
-  #   end
-  #
-  #   it "will throw ArgumentError if attemps to add reservation objects to the reservation array more than once" do
-  #
-  #     @room_1.add_reservation(@reservation_1)
-  #     expect{ @room_1.add_reservation(@reservation_1) }.must_raise ArgumentError
-  #   end
-  #
-  #
-  #   it "increases the reservation count by one" do
-  #     previous = @room_1.reservations.length
-  #     @room_1.add_reservation(@reservation_1)
-  #     expect(@room_1.reservations.length).must_equal previous + 1
-  #   end
-  # end
+  describe "#update_reserve_dates" do
+    before do
+      @room_1 = Room.new(3)
+      @date1 = Date.new(2018,10,4)
+      @date2 = Date.new(2018,10,5)
+      @new_reserve_dates = [ @date1, @date2 ]
+      @previous = @room_1.reserve_dates.length
+      @room_1.add_reserve_dates(@new_reserve_dates)
+    end
+
+    it "increases the reserve_dates array length correctly" do
+      expect(@room_1.reserve_dates.length).must_equal @previous + 2
+    end
+
+    it "the updated reseve_dates array should include the newly added dates" do
+      expect(@room_1.reserve_dates).must_include @date1
+      expect(@room_1.reserve_dates).must_include @date2
+    end
+
+    it "throw ArgumentError if attemp to add a specific date to the list twice or more" do
+      expect{ @room_1.add_reserve_dates([@date1]) }.must_raise ArgumentError
+    end
+
+  end
 end

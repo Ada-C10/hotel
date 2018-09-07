@@ -16,6 +16,7 @@ class Reservation
     end
   end
 
+  # list all the dates been covered in the reservation
   def dates_booked
     result = []
     date_enter = @start_date
@@ -26,11 +27,9 @@ class Reservation
     return result
   end
 
-  # def cost
-  #   calucate the dates of booking
-  #   based on the room cost, calculate the total cost
-  #
-  # end
-  #
+  # calculate the cost of the reservation
+  def reserve_cost
+    return (end_date - start_date) * @room.rate
+  end
 
 end

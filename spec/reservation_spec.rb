@@ -1,4 +1,5 @@
 require_relative 'spec_helper'
+require 'pry'
 
 describe "Reservation in Wave 1" do
   before do
@@ -26,7 +27,7 @@ describe "Reservation in Wave 1" do
     it "Raises an ArgumentError for invalid date input, end_date is not later than start_date" do
       end_date = Date.new(2018,10,2)
       expect {
-          Reservation.new(@id, @customer_name, @room_1, @start_date, end_date)
+          Reservation.new(@id, @customer_name, @room, @start_date, end_date)
         }.must_raise ArgumentError
     end
 
@@ -34,7 +35,7 @@ describe "Reservation in Wave 1" do
       start_date_2= Date.new(2018,8,2)
       end_date_2 = Date.new(2018,10,2)
       expect {
-          Reservation.new(@id, @customer_name,@room_1, start_date_2, end_date_2)
+          Reservation.new(@id, @customer_name,@room, start_date_2, end_date_2)
         }.must_raise ArgumentError
     end
   end
@@ -42,7 +43,7 @@ describe "Reservation in Wave 1" do
   describe "#dates_booked" do
     before do
       @end_date = Date.new(2018,10,6)
-      @rsv_2 = Reservation.new(@id, @customer_name,@room_1, @start_date, @end_date)
+      @rsv_2 = Reservation.new(@id, @customer_name,@room, @start_date, @end_date)
     end
     it "returns an array" do
       expect(@rsv_2.dates_booked).must_be_kind_of Array
@@ -57,6 +58,27 @@ describe "Reservation in Wave 1" do
     end
   end
 
+  describe "#reserve_cost" do
+    before do
+      @end_date = Date.new(2018,10,6)
+      @rsv_3 = Reservation.new(@id, @customer_name,@room, @start_date, @end_date)
+    end
+    it "returns a number" do
+      expect(@rsv_3.reserve_cost).must_be_kind_of Numeric
+    end
+    it "do the calculation correctly" do
+      expect(@rsv_3.reserve_cost).must_equal 800
+    end
 
+    it "calculation correctly for a one day stay" do
+      id = 5
+      customer_name = "Jezz Bogdon"
+      start_date = Date.new(2018,10,5)
+      end_date = Date.new(2018,10,6)
+      room = Room.new(4)
+      rsv_4 = Reservation.new(id,customer_name,room,start_date,end_date)
+      expect(rsv_4.reserve_cost).must_equal 200
+    end
+  end
 
 end
