@@ -12,10 +12,10 @@ module Hotel
       @total_cost = 0
     end
 
-
-
-      def assign_room_to_reservation
-      end
+    def find_reservation(date)
+      #loop through reser ations and match by date
+      return reservations #array
+    end
 
       def calculate_reservation_cost(rooms)
         total_cost = rooms.length * nights * COST_OF_ROOM

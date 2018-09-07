@@ -14,10 +14,35 @@ module Hotel
       @reservations =[]
     end
 
+    def available_rooms(check_in, check_out)
+      available_rooms = @reservations.reject {rooms != date_range}
+        #loop through Reservations @match dates on the reservations#reject dates that match
+        return available_rooms #array
+
+    def find_room(id)
+      @roooms.find(id)
+      return #instance of room
+    end
+
+    def booked_rooms(date)
+      booked_rooms = @reservations.select {rooms == date_range}
+      return booked_rooms #array
+
   def reserve_room(check_in, check_out)
-    number = @reservations.length + +1
-    @rooms.is_available(check_in, check_out)
+    number = @reservations.length + 1
     new_reservation = Reservation.new(number, check_in, check_out)
+    assigned_room = available_rooms(check_in, check_out).first
+    new_reservation.rooms << assigned_room
+    find_room(assigned_room.id).reservations << new_reservation
+  end
+
+  def rooms.all
+    return @rooms
+  end
+
+  def reservations.all
+    return @reservations
+  end
     #create instance of reservation
     #find available room, assign room to reservation id
     #ask room - do you have availability
