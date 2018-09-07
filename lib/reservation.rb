@@ -2,7 +2,7 @@ require 'date'
 
 module Hotel
   class Reservation
-    attr_accessor :id, :room, :start_date, :end_date, :daily_rate
+    attr_reader :id, :room, :start_date, :end_date, :daily_rate
 
     def initialize(input)
       @id = input[:id].to_i

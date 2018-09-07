@@ -3,7 +3,7 @@ require_relative 'reservation'
 
 module Hotel
   class Room
-    attr_accessor :num, :reservations
+    attr_reader :num, :reservations
 
     def initialize(input)
       @num = input[:num]
