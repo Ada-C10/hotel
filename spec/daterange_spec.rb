@@ -18,10 +18,10 @@ describe 'DateRange' do
     end
 
     it "Takes a check_in and check_out date" do
-      expect(@date_range).must_respond_to :check_in
-      expect(@date_range.check_out).must_equal END_DATE
-      expect(@date_range).must_respond_to :check_in
-      expect(@date_range.check_out).must_equal END_DATE
+      expect(@date_range).must_respond_to :start_date
+      expect(@date_range.start_date).must_equal START_DATE
+      expect(@date_range).must_respond_to :end_date
+      expect(@date_range.end_date).must_equal END_DATE
     end
 
   end
@@ -47,40 +47,6 @@ describe 'DateRange' do
   it "Returns the number of days" do
     expect(@date_range.number_of_days).must_equal 1
     expect(@date_range.number_of_days).kind_of? Integer
-  end
-
-  describe "Date range overlap" do
-    it "Returns true if two date ranges have the same dates" do
-
-    end
-
-    it "Returns true if two date ranges overlap in the front" do
-
-    end
-
-    it "Returns true if two date ranges overlap in the back" do
-
-    end
-
-    it "Returns true if one of the date ranges is completly contained" do
-
-    end
-
-    it "Returns false if one of the date ranges is completely before" do
-
-    end
-
-    it "Returns false if one of the date ranges is completely after" do
-
-    end
-
-    it "Returns false if one of the date ranges ends on the checkin date" do
-
-    end
-
-    it "Returns false if one of the date ranges starts on the checkout date" do
-
-    end 
   end
 
 end

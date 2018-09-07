@@ -69,25 +69,82 @@ describe "booking manager" do
       expect(@manager.list_reservations_for_date(Date.new(2018, 9, 1)).length).must_equal 2
     end
 
-    it "Returns false if dates do not overlap" do
-      start_date_one = Date.new(2018, 9, 1)
-      end_date_one = Date.new(2018, 9, 2)
-      start_date_two = Date.new(2018, 9, 3)
-      end_date_two = Date.new(2018, 9, 4)
-      expect(@manager.date_range_overlap(start_date_one, end_date_one, start_date_two, end_date_two)).must_equal FALSE
+    describe "Date range overlap" do
+
+    it "Returns true if two date ranges have the same dates" do
+      start_date = Date.new(2018,9,1)
+      end_date = Date.new(2018,9, 2)
+      reservation_start_date = Date.new(2018,9,1)
+      reservation_end_date = Date.new(2018,9,2)
+      # date_range_one = DateRange.new(start_date, end_date)
+      # date_range_two = DateRange.new(reservation_start_date, reservation_end_date)
+      expect(@manager.date_range_overlap?(start_date, end_date, reservation_start_date, reservation_end_date)).must_equal TRUE
     end
 
-    it "Returns true if dates do overlap" do
-      start_date_one = Date.new(2018, 9, 1)
-      end_date_one = Date.new(2018, 9, 3)
-      start_date_two = Date.new(2018, 9, 2)
-      end_date_two = Date.new(2018, 9, 3)
-      expect(@manager.date_range_overlap(start_date_one, end_date_one, start_date_two, end_date_two)).must_equal TRUE
+    it "Returns true if two date ranges overlap in the front" do
+      start_date = Date.new(2018,9,1)
+      end_date = Date.new(2018,9, 5)
+      reservation_start_date = Date.new(2018,8,30)
+      reservation_end_date = Date.new(2018,9,2)
+      # date_range_one = DateRange.new(start_date, end_date)
+      # date_range_two = DateRange.new(reservation_start_date, reservation_end_date)
+      expect(@manager.date_range_overlap?(start_date, end_date, reservation_start_date, reservation_end_date)).must_equal TRUE
     end
+
+    it "Returns true if two date ranges overlap in the back" do
+      start_date = Date.new(2018,9,1)
+      end_date = Date.new(2018,9, 5)
+      reservation_start_date = Date.new(2018,9,4)
+      reservation_end_date = Date.new(2018,9,7)
+      # date_range_one = DateRange.new(start_date, end_date)
+      # date_range_two = DateRange.new(reservation_start_date, reservation_end_date)
+      expect(@manager.date_range_overlap?(start_date, end_date, reservation_start_date, reservation_end_date)).must_equal TRUE
+    end
+
+    it "Returns true if one of the date ranges is completly contained" do
+      start_date = Date.new(2018,9,1)
+      end_date = Date.new(2018,9, 5)
+      reservation_start_date = Date.new(2018,9,2)
+      reservation_end_date = Date.new(2018,9,3)
+      # date_range_one = DateRange.new(start_date, end_date)
+      # date_range_two = DateRange.new(reservation_start_date, reservation_end_date)
+      expect(@manager.date_range_overlap?(start_date, end_date, reservation_start_date, reservation_end_date)).must_equal TRUE
+    end
+
+    it "Returns false if one of the date ranges is completely before" do
+      start_date = Date.new(2018,9,1)
+      end_date = Date.new(2018,9, 5)
+      reservation_start_date = Date.new(2018,8,28)
+      reservation_end_date = Date.new(2018,8,30)
+      # date_range_one = DateRange.new(start_date, end_date)
+      # date_range_two = DateRange.new(reservation_start_date, reservation_end_date)
+      expect(@manager.date_range_overlap?(start_date, end_date, reservation_start_date, reservation_end_date)).must_equal FALSE
+    end
+
+    it "Returns false if one of the date ranges ends on the checkin date" do
+      start_date = Date.new(2018,9,1)
+      end_date = Date.new(2018,9, 5)
+      reservation_start_date = Date.new(2018,9,5)
+      reservation_end_date = Date.new(2018,9,7)
+      # date_range_one = DateRange.new(start_date, end_date)
+      # date_range_two = DateRange.new(reservation_start_date, reservation_end_date)
+      expect(@manager.date_range_overlap?(start_date, end_date, reservation_start_date, reservation_end_date)).must_equal FALSE
+    end
+
+    it "Returns false if one of the date ranges starts on the checkout date" do
+      start_date = Date.new(2018,9,7)
+      end_date = Date.new(2018,9, 10)
+      reservation_start_date = Date.new(2018,9,5)
+      reservation_end_date = Date.new(2018,9,7)
+      # date_range_one = DateRange.new(start_date, end_date)
+      # date_range_two = DateRange.new(reservation_start_date, reservation_end_date)
+      expect(@manager.date_range_overlap?(start_date, end_date, reservation_start_date, reservation_end_date)).must_equal FALSE
+    end
+  end
 
     # Access list of rooms not reserved for date range
     it "Is able to access list of rooms not reserved for a date range" do
-      skip 
+      skip
       # Adding reservations for test
       @manager.add_reservation(1, Date.new(2018, 9, 1), Date.new(2018, 9, 2))
       @manager.add_reservation(2, Date.new(2018, 9, 2), Date.new(2018, 9, 3))

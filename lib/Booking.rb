@@ -47,6 +47,18 @@ class Booking
     end
   end
 
+  # Helper method to check if date ranges overlap
+  def date_range_overlap?(start_date_one, end_date_one, start_date_two, end_date_two)
+    # TRUE if dates match
+    # if start_date_one == start_date_two && end_date_one == end_date_two
+    #   return true
+      # TRUE is date ranges overlap in the front
+    if start_date_one < end_date_two && start_date_two < end_date_one
+        return true
+    else
+      return false
+    end
+  end
 
   def list_rooms_available_for_date_range(start_date, end_date)
     # Create daterange helper method to check if ranges overlap
