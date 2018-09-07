@@ -18,11 +18,12 @@ class Room
     # Access reservations
     # Returns true if any reservations match the given reservation
     # To be used as a helper method in Booking for finding a given reservation cost
-    @reservations.select do |reservation|
-
-
+    @reservations.any? do |reservation|
+      reservation.room_number == room_number &&
+      reservation.check_in == check_in &&
+      reservation.check_out == check_out &&
+      reservation.cost_per_night == cost_per_night
     end
-
   end
 
   def is_available?(date)

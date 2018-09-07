@@ -23,8 +23,14 @@ describe "Room" do
 
     it "Can find a reservation" do
       expect(@room_with_reservation.find_reservation(1, Date.new(2018, 9, 1), Date.new(2018, 9, 3))).must_equal TRUE
-      expect(@room).respond_to? :find_reservation
-      expect(@room.find_reservation(1, Date.new(2018, 9, 1), Date.new(2018, 9, 3))).kind_of? Boolean
+      expect(@room_with_reservation).respond_to? :find_reservation
+    end
+
+    it "Returns false if it can't find a reservaiton" do
+      not_reserved_start_date = Date.new(2020,1,1)
+      not_reserved_end_date = Date.new(2020,1,2)
+      expect(@room.find_reservation(1, not_reserved_start_date, not_reserved_end_date)).must_equal FALSE
+
     end
 
     it "ArgumentError if id is not between 1 and 20" do
