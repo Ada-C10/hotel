@@ -10,10 +10,9 @@ module Hotel
     def initialize(id)
       @id = id
       @status_by_date = create_calendar
-      @block = false
     end
 
-    def self.change_status_of_room(rooms, id, check_in, check_out)
+    def self.change_status_of_room(rooms, id, check_in: Date.today, check_out: Date.today + 2)
       room = Room.find_room(rooms, id)
       all_dates = DateRange.create_date_array(check_in, check_out)
       all_dates.each do |date|
@@ -21,7 +20,7 @@ module Hotel
       end
     end
 
-    def self.is_available?(rooms, id, check_in, check_out)
+    def self.is_available?(rooms, id, check_in: Date.today, check_out: Date.today + 2)
       room = find_room(rooms, id)
       all_dates = DateRange.create_date_array(check_in, check_out)
 
@@ -34,6 +33,22 @@ module Hotel
       return true
     end
 
+    def self.all_available_rooms(rooms, start_date, end_date)
+      list = []
+      date_array = DateRange.create_date_array(start_date, end_date)
+
+      rooms.each do |room|
+        status = room.status_by_date.values_at(*date_array)
+        if status.uniq.length == 1 && status.include?(:AVAILABLE)
+          list << room.id
+        end
+      end
+
+      list = nil if list.empty?
+
+      return list
+    end
+    
     private
     def create_calendar
       room_calendar = {}

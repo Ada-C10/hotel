@@ -4,10 +4,10 @@ require_relative 'hotel_helper'
 # (with check-in date, check-out date, room number, and total cost)
 module Hotel
   class Reservation
-    attr_reader :check_in, :check_out, :room_number, :room_rate
+    attr_reader :check_in, :check_out, :room_number, :room_rate, :group_name
     attr_accessor :room_cost
 
-    def initialize(room_number, check_in, check_out, room_rate: 200)
+    def initialize(room_number, check_in, check_out, room_rate: 200, group_name: "")
       @check_in = Date.parse(check_in)
       @check_out = Date.parse(check_out)
 
@@ -17,6 +17,7 @@ module Hotel
 
       @room_number = room_number
       @room_rate = room_rate
+      @group_name = group_name
     end
 
     # As an administrator, I can get the total cost for a given reservation

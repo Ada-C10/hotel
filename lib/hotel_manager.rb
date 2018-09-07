@@ -7,20 +7,22 @@ module Hotel
     attr_accessor :reservations
 
     # As an administrator, I can access the list of all of the rooms in the hotel
-    def initialize(room_file = 'support/rooms.csv',
-                    reservations_file = 'support/reservations.csv')
+    def initialize(room_file = 'support/rooms.csv', reservations_file = 'support/reservations.csv')
       @rooms = load_rooms(room_file)
       @reservations = load_reservations(reservations_file)
+      @blocks = []
     end
 
     # As an administrator, I can reserve an available room for a given date range
     def reserve(room_number, check_in, check_out)
-      availability = Room.is_available?(rooms, room_number, check_in, check_out)
+      availability = Room.is_available?(rooms, room_number, check_in: check_in, check_out: check_out)
 
       if availability
         new_reservation = Reservation.new(room_number, check_in, check_out)
 
-        Room.change_status_of_room(rooms, room_number, check_in, check_out)
+        Room.change_status_of_room(rooms, room_number, check_in: check_in, check_out: check_out)
+
+        #add information to calendar - update calendar, @calendar = Calendar.new (initialize with array)
 
         reservations << new_reservation
       else
@@ -29,7 +31,7 @@ module Hotel
     end
 
     # As an administrator, I can create a block of rooms
-    
+
 
     # As an administrator, I can access the list of reservations for a specific date
     def find_reservations(date)
@@ -47,7 +49,7 @@ module Hotel
 
     # As an administrator, I can view a list of rooms that are not reserved for a given date range
     def find_available_rooms(rooms, start_date, end_date)
-      return Calendar.available_rooms(rooms, start_date, end_date)
+      return Room.all_available_rooms(rooms, start_date, end_date)
     end
 
     # As an administrator, I can create a block of rooms
@@ -70,7 +72,7 @@ module Hotel
 
       reservation_data.each do |reservation|
         new_reservation = Reservation.new(reservation[:room_number].to_i, reservation[:check_in], reservation[:check_out])
-        Room.change_status_of_room(rooms, reservation[:room_number].to_i, reservation[:check_in], reservation[:check_out])
+        Room.change_status_of_room(rooms, reservation[:room_number].to_i, check_in: reservation[:check_in], check_out: reservation[:check_out])
         all_reservations << new_reservation
       end
 

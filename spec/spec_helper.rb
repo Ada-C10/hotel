@@ -17,5 +17,5 @@ module Hotel; end
 require_relative '../lib/room.rb'
 require_relative '../lib/reservation.rb'
 require_relative '../lib/hotel_manager.rb'
-require_relative '../lib/calendar.rb'
 require_relative '../lib/date_range.rb'
+require_relative '../lib/block.rb'

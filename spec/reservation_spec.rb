@@ -16,13 +16,13 @@ describe "Reservation" do
   let(:reservation) {
     Hotel::Reservation.new(room_number,check_in, check_out)
   }
-  
+
   describe "#initialize" do
     it "Creates an instance of reservation" do
       expect(reservation).must_be_kind_of Hotel::Reservation
     end
 
-    it "Keeps track of Instance Variables" do
+    it "Keeps track of all parameters" do
 
       [:check_in, :check_out, :room_number].each do |variable|
         expect(reservation).must_respond_to variable
@@ -46,6 +46,13 @@ describe "Reservation" do
       cost = new_reservation.total_cost
 
       expect(cost).must_equal 1000
+    end
+
+    it "Calculates the total cost for a reservation with a discounted rate" do
+      new_reservation = Hotel::Reservation.new(id, check_in, check_out, room_rate: 150)
+      cost = new_reservation.total_cost
+
+      expect(cost).must_equal 750
     end
   end
 end

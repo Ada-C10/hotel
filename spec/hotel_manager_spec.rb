@@ -74,13 +74,21 @@ describe "HotelManager" do
       room_number = 1337
       room = Hotel::Room.new(room_number)
       my_hotel.rooms << room
-      Hotel::Room.change_status_of_room(my_hotel.rooms, room_number, check_in, check_out)
+      Hotel::Room.change_status_of_room(my_hotel.rooms, room_number, check_in: check_in, check_out: check_out)
 
       expect {
         my_hotel.reserve(room_number, check_in, check_out)
       }.must_raise StandardError
     end
   end
+
+  # describe "#create_a_block" do
+  #   it "Accurately loads block information into blocks array" do
+  #     room_list = my_hotel.find_available_rooms(my_hotel.rooms, "2018-12-05", "2019-03-15")
+  #     room_list.each do |id|
+  #       if my_hotel.in_block
+  #   end
+  # end
 
   describe "#find_reservations" do
     before do
@@ -103,7 +111,7 @@ describe "HotelManager" do
 
   describe "#find_available_rooms" do
     it "Returns an accurate count of available rooms as an array" do
-      list = my_hotel.find_available_rooms(my_hotel.rooms, check_in, check_out)
+      list = my_hotel.find_available_rooms(my_hotel.rooms, "2018-10-07", "2018-10-16")
 
       expect(list).must_be_kind_of Array
       expect(list.length).must_equal 20
