@@ -1,7 +1,7 @@
 require_relative 'spec_helper'
 
 
-
+#     #date structure enter: day, month, year for Date.Parse format
 
 describe 'Reservation Class' do
   before do
@@ -11,13 +11,23 @@ describe 'Reservation Class' do
   end
 
   it "raises an argument error for invalid dates" do
-    # reservation = @hotel.assigns_a_reservation(@start_date, @end_date)
+    #proc catches the error when .assigns_a_reservation is invoked
     proc {@hotel.assigns_a_reservation(@start_date, @end_date)}.must_raise ArgumentError
-
-    
-    # expect().must_raise ArgumentError
   end
+
+  it "returns reservation list" do
+    @start_date = Date.parse("1/9/2018")
+    @end_date = Date.parse("5/9/2018")
+
+    reservation = @hotel.assigns_a_reservation(@start_date, @end_date)
+    expect(reservation.reservation_all).must_be_kind_of Array
+  end
+
+
+
 end
+
+
 
 
 # describe 'Reservation Class' do

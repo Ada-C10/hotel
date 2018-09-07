@@ -15,7 +15,8 @@ module Hotel
       @end_date = end_date
       @room_num = room_num
 
-      argument_error_dates(start_date, end_date )
+      argument_error_dates(start_date, end_date)
+      reservation_all
     end
 
 
@@ -25,7 +26,7 @@ module Hotel
     end
 
     #returns the array of all the reservations that have been instanced with this class
-    def self.reservation_all
+    def reservation_all
       return @@reservations
     end
 

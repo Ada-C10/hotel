@@ -4,11 +4,8 @@ require_relative 'reservation'
 
 module Hotel
 
-  def  valid_dates? (start_date, end_date)
-    return start_date < end_date
-  end
 
-  
+
   class Hotel
     attr_reader :rooms, :reservations
 
@@ -26,8 +23,6 @@ module Hotel
       @reservations = []
     end
 
-
-
     #returns an array of numbers from a collection of room instances (room_num)
     def get_all_numbers
       room_nums = []
@@ -37,10 +32,6 @@ module Hotel
       return room_nums
     end
 
-
-
-    #returns a boolean--check to see if I will make an instance of a reservation
-
     #assings random room from the available room's array
     def get_available_room(start_date, end_date)
       # TODO: wave 2, add some logic to figure out which rooms are available
@@ -48,15 +39,14 @@ module Hotel
       return room_numbers.first
     end
 
-    # return boolean if vaild date is right (true if right) false if not
-
+    #assigns a reservation given a vaild date, and also calls the get_available_room method which will then return a room number
 
     def assigns_a_reservation(start_date, end_date)
-
       room_num = get_available_room(start_date, end_date)
       reservation = Reservation.new(start_date, end_date, room_num)
       return reservation
     end
+    
   end
 end
 

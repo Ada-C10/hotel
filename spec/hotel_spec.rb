@@ -18,7 +18,7 @@ describe 'Module Hotel' do
     expect(room_numbers).must_equal [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
   end
 
-  it 'returns an random available room' do
+  it 'returns a available room' do
     room_num = @hotel.get_available_room(@start_date, @end_date)
     expect(room_num).must_equal 1
   end
