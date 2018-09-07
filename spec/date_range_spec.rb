@@ -13,6 +13,14 @@ describe "DateRange class" do
     end
 
     it "raises an error if end date precedes start date" do
+      start_date = 'Date.today'
+      end_date = 'start_date - 5'
+      expect {
+        reservation = Hotel::DateRange.new(start_date, end_date)
+      }.must_raise StandardError
+    end
+
+    it "raises an error if start_date and end_date are both not Date types" do
       start_date = Date.today
       end_date = start_date - 5
       expect {

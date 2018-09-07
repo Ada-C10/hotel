@@ -7,6 +7,8 @@ module Hotel
       @end_date = end_date
 
       raise StandardError.new("Start date must be before end date") if @end_date < @start_date
+
+      raise StandardError.new("That is not a Date type") unless (@start_date.is_a?(Date) && @end_date.is_a?(Date))  
     end
 
     def overlaps?(other)
