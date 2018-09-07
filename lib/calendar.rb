@@ -1,26 +1,22 @@
 require_relative 'hotel_helper'
 
+# class Calendar finds available rooms for given date ranges
 module Hotel
   class Calendar
-    
+    def self.available_rooms(rooms, start_date, end_date)
+      list = []
+      date_array = DateRange.create_date_array(start_date, end_date)
+
+      rooms.each do |room|
+        status = room.status_by_date.values_at(*date_array)
+        if status.uniq.length == 1 && status.include?(:AVAILABLE)
+          list << room.id
+        end
+      end
+
+      list = nil if list.empty?
+
+      return list
+    end
   end
 end
-# As an administrator, I can view a list of rooms that are not reserved for a given date range
-
-#
-# Calendar.method_name(rooms, date_range) -> returns list of available rooms for range
-# def available_rooms(check_in, check_out)
-#   date_array = *(Date.parse(check_in)...Date.parse(check_out))
-#
-#   @rooms.each do |room|
-#     date_array.each do |date|
-#       if room.calendar[date] == :UNAVAILABLE
-#         return nil
-#       end
-#     end
-#   end
-#
-#   return :AVAILABLE
-# end
-
-# use class methods

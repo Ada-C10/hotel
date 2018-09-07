@@ -1,56 +1,32 @@
 require_relative 'spec_helper'
 
-# describe "Calendar" do
-#   let(:id) {
-#
-#   }
-#
-# end
+describe "Calendar" do
+  let (:check_in) {
+    "2018-12-01"
+  }
+  let (:check_out) {
+    "2019-01-15"
+  }
+  let (:my_hotel) {
+    Hotel::HotelManager.new
+  }
+  let (:list) {
+    Hotel::Calendar.available_rooms(my_hotel.rooms, check_in, check_out)
+  }
 
-# Each room should have its own calendar
-# I can click on a room and see when it is available,unavailable
+  describe "available_rooms" do
+    it "Returns the correct number of rooms as an array" do
+      expect(list.length).must_equal 16
+      expect(list).must_be_kind_of Array
+    end
 
-# The hotel should have its own calendar
-# I can click on a date and see all available rooms
+    it "Returns nil if no rooms can be found" do
+      my_hotel.rooms.length.times do |i|
+        Hotel::Room.change_status_of_room(my_hotel.rooms, i+1, check_in, check_out)
+      end
 
-# describe "#available_rooms" do
-#     let (:check_in) {
-#       "2018-10-07"
-#     }
-#     let (:check_out) {
-#       "2018-10-16"
-#     }
-#     let (:my_hotel) {
-#       Hotel::HotelManager.new
-#     }
-#
-#   it "returns an array of Rooms" do
-#     expect(my_hotel.available_rooms(check_in, check_out)).must_be_kind_of Array
-#   end
-#
-#   it "Returns an array full of Rooms" do
-#     my_hotel.rooms.each do |room|
-#       expect(room).must_be_kind_of Hotel::Room
-#     end
-#   end
-#
-#   it "Returns the correct number of rooms" do
-#     all_rooms = my_hotel.rooms
-#     all_rooms.first.calendar[Date.parse("2018-10-10")] = :UNAVAILABLE
-#     expect(my_hotel.available_rooms(check_in, check_out)).must_equal 19
-#   end
-
-
-  # it "returns nil if there are no rooms available" do
-  #   rooms.each do |room|
-  #     room.calendar << Date.parse("2018-02-12")
-  #   end
-  #
-  #   expect(open_rooms).must_be_nil
-  # end
-
-  # all_rooms = my_hotel.rooms
-  # all_rooms.each do |room|
-  #   room
-  #
-  # available_rooms = my_hotel.available_rooms(check_in, check_out)
+      new_list = Hotel::Calendar.available_rooms(my_hotel.rooms, check_in, check_out)
+      expect(list).must_be_nil
+    end
+  end
+end

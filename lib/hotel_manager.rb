@@ -43,7 +43,9 @@ module Hotel
     end
 
     # As an administrator, I can view a list of rooms that are not reserved for a given date range
-    # def find_available_rooms(start_date, end_date)
+    def find_available_rooms(rooms, start_date, end_date)
+      return Calendar.available_rooms(rooms, start_date, end_date)
+    end
 
     def load_rooms(filename)
       all_rooms = []

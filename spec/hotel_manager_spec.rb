@@ -94,9 +94,19 @@ describe "HotelManager" do
     end
 
     it "Returns an accurate count of Reservations" do
+      # Hard-coded based on test data from CSV file
       reservations = my_hotel.find_reservations(@date)
 
       expect(reservations.length).must_equal 2
+    end
+  end
+
+  describe "#find_available_rooms" do
+    it "Returns an accurate count of available rooms as an array" do
+      list = my_hotel.find_available_rooms(my_hotel.rooms, check_in, check_out)
+
+      expect(list).must_be_kind_of Array
+      expect(list.length).must_equal 20
     end
   end
 

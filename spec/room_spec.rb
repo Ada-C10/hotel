@@ -71,5 +71,4 @@ describe "Room" do
       expect(availability).must_equal false
     end
   end
-
 end

@@ -15,7 +15,6 @@ module Hotel
     def self.change_status_of_room(rooms, id, check_in, check_out)
       room = Room.find_room(rooms, id)
       all_dates = DateRange.create_date_array(check_in, check_out)
-
       all_dates.each do |date|
         room.status_by_date[date] = :UNAVAILABLE
       end
