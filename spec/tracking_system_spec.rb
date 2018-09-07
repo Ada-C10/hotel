@@ -136,7 +136,18 @@ describe 'TrackingSystem class' do
         @tracker = TrackingSystem.new
         @available_rooms = @tracker.view_available_rooms_on(start_time: Date.new(2018,8,1),end_time:Date.new(2018,9,5))
         expect(@available_rooms).must_be_kind_of Array
-        # binding.pry
+      end
+
+      it "returns an array containing instances of Room" do
+        @tracker = TrackingSystem.new
+        @available_rooms = @tracker.view_available_rooms_on(start_time: Date.new(2018,8,1),end_time:Date.new(2018,9,5))
+        expect(@available_rooms[0]).must_be_kind_of Room
+      end
+
+      it "raises ArgumentError if no rooms are available on these dates" do
+        @tracker = TrackingSystem.new
+        #need to create make_reservation and then call it 20 times on the same date then the 21st time it'll raise an error 
+        expect{@tracker.view_available_rooms_on(start_time: Date.new(2018,1,1),end_time:Date.new(2018,1,2))}.must_raise ArgumentError
       end
 
       it "raises ArgumentError if start_time is > end_time" do
