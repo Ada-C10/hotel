@@ -79,6 +79,4 @@ class Admin
     def check_id(id)
       raise ArgumentError, "ID cannot be blank or less than zero. (got #{id})" if id.nil? || id <= 0
     end
-
-
 end
