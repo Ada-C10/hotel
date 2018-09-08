@@ -228,7 +228,6 @@ describe "Booking" do
       @family_reunion = hotel.request_block_reservation(4, "2018-12-12", "2018-12-14")
     end
     it "creates new reservation within block" do
-
       # action
       hotel.request_reservation_within_block(1, "2018-12-12", "2018-12-14")
 
