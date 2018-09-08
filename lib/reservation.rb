@@ -1,6 +1,5 @@
 require 'date'
 
-#a reservation class
 module Hotel
 
   class Reservation
@@ -9,6 +8,9 @@ module Hotel
 
     #initializes a reservation with date #MM/DD/YYYY
     def initialize(input)
+
+      #if no checkout given, make it the day after?
+      #what is the default for checkin/checkout or shoudl I raise an error?
 
       @checkin_date = Date.parse(input[:checkin_date])
       @checkout_date = Date.parse(input[:checkout_date])
@@ -20,7 +22,7 @@ module Hotel
     end
 
     def validate_date
-      raise StandardError.new() if (@checkout_date <= @checkin_date)
+      raise StandardError.new("Are you sure that order is right? Checkout can't be before checkin.") if (@checkout_date <= @checkin_date)
     end
 
   end

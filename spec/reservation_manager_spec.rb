@@ -1,4 +1,5 @@
 require_relative 'spec_helper'
+require 'pry'
 
 describe 'ReservationManager' do
   let(:manager){ Hotel::ReservationManager.new }
@@ -95,6 +96,47 @@ describe 'ReservationManager' do
       expect{
         manager = Hotel::ReservationManager.new
         manager.calculate_total_cost("12/09/2018", "16/09/2018", -200)
+      }.must_raise ArgumentError
+    end
+  end
+
+  let(:valid_add_to_list) {
+    input = { checkin_date: "12/09/2018", checkout_date: "15/09/2018", room_number: 2, total_cost: 600, confirmation_id: "ABC12345" }
+    reservation = Hotel::Reservation.new(input)
+    manager = Hotel::ReservationManager.new
+    manager.add_reservation_to_list(reservation)
+    manager.reservations[0]
+  }
+
+  let(:no_reservations) {
+    manager = Hotel::ReservationManager.new
+    manager.reservations
+  }
+
+  let(:some_reservations) {
+    input = { checkin_date: "12/09/2018", checkout_date: "15/09/2018", room_number: 2, total_cost: 600, confirmation_id: "ABC12345" }
+    reservation = Hotel::Reservation.new(input)
+    manager = Hotel::ReservationManager.new
+    manager.add_reservation_to_list(reservation)
+    manager.reservations
+  }
+
+  describe 'add_reservation_to_list' do
+
+    it 'will add a reservation to the list of reservations' do
+      expect(valid_add_to_list).must_be_instance_of Hotel::Reservation
+    end
+
+    it 'will increase the count of reservations by 1' do
+
+      expect(no_reservations.length).must_equal 0
+      expect(some_reservations.length).must_equal 1
+    end
+
+    it 'will throw an argument error if param is not a valid reservation' do
+      expect{
+        manager = Hotel::ReservationManager.new
+        manager.add_reservation_to_list("reservation, 12/24/2018, 12/24/2018")
       }.must_raise ArgumentError
     end
   end

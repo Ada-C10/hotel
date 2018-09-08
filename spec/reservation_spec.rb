@@ -2,7 +2,7 @@ require_relative 'spec_helper'
 
 describe 'Reservation' do
   before do
-    input = {room_block: true, checkin_date: "12/09/2018", checkout_date: "15/09/2018", room_number: 2, total_cost: 600, confirmation_id: "ABC12345"}
+    input = { checkin_date: "12/09/2018", checkout_date: "15/09/2018", room_number: 2, total_cost: 600, confirmation_id: "ABC12345"}
     #3 nights
     @reservation = Hotel::Reservation.new(input)
   end
@@ -13,7 +13,7 @@ describe 'Reservation' do
     end
 
     it 'is set up for specific attributes and data types' do
-      [:room_block, :checkin_date, :checkout_date, :room_number, :confirmation_id, :total_cost].each do |prop|
+      [:checkin_date, :checkout_date, :room_number, :confirmation_id, :total_cost].each do |prop|
         expect(@reservation).must_respond_to prop
       end
 
