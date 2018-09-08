@@ -36,23 +36,27 @@ describe "initialize" do
 
   end
 
-  describe "find_duration_of_stay" do
-    before do
-      @dates = Hotel::DateRange.new("2018-02-03", "2018-02-06")
-      # @dates2 = Hotel::DateRange.new("2018-04-03", "2018-04-06")
-      # @dates3 = Hotel::DateRange.new("2018-06-03", "2018-06-06")
-    end
+  describe "date range" do
 
     it "finds the duration of stay" do
-      expect(@dates.duration_of_stay).must_equal 3
+      dates = Hotel::DateRange.new("2018-02-03", "2018-02-06")
+      expect(dates.duration_of_stay).must_equal 3
+    end
+
+    it "finds if date ranges overlap" do
+      dates = Hotel::DateRange.new("2018-02-03", "2018-02-06")
+      dates2 = Hotel::DateRange.new("2018-04-03", "2018-04-06")
+      overlaps = dates2.overlaps?(dates)
+      expect(overlaps).must_equal false
+
     end
 
     describe "find if dates are included" do
       before do
         @dates = Hotel::DateRange.new("2018-02-03", "2018-02-06")
       end
-      it "finds if there are overlapping dates" do
-        date_to_find = Date.parse("2018-02-04")
+      it "finds if date is included in date range" do
+        date_to_find = Date.parse("2018-02-06")
         reservations_by_date = @dates.included_in_date_range(date_to_find)
         expect(reservations_by_date).must_equal true
       end

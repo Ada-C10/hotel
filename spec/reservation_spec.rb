@@ -9,7 +9,7 @@ require_relative '../lib/reservation.rb'
 
 describe "initialize" do
   before do
-    @new_res = Hotel::Reservation.new(1, 600.00, "2018-02-03", "2018-02-06")
+    @new_res = Hotel::Reservation.new(1, 200.00, "2018-02-03", "2018-02-06")
   end
 
   it "is an instance of Reservation" do
@@ -18,18 +18,18 @@ describe "initialize" do
 
   it "Takes cost, and reservation_id" do
 
-    expect(@new_res).must_respond_to :cost
+    expect(@new_res).must_respond_to :cost_per_night
     expect(@new_res).must_respond_to :reservation_id
 
   end
 
   it "is set up for specific attributes and data types" do
-    [:cost, :reservation_id].each do |initial|
+    [:cost_per_night, :reservation_id].each do |initial|
       expect(@new_res).must_respond_to initial
     end
 
     expect(@new_res.reservation_id).must_be_kind_of String
-    expect(@new_res.cost).must_be_kind_of Float
+    expect(@new_res.cost_per_night).must_be_kind_of Float
   end
 end
 

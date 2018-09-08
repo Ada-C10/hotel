@@ -41,21 +41,25 @@ module Hotel
 
     # method to make_reservation
     # return if successful return res_id, or "sucess", or return true
-    def make_reservation(check_in, check_out)
+    def make_reservation(cost_per_night, check_in, check_out)
       room_number = @rooms.sample[:room_number]
-      reservation = Hotel::Reservation.new(room_number, 200, check_in, check_out)
+      reservation = Hotel::Reservation.new(room_number, cost_per_night, check_in, check_out)
       @reservations << reservation
       return reservation
     end
 
     # list reservations for a specific date
-
     def reservations_by_date(date)
       date = Date.parse(date)
       res_by_date = @reservations.select do |res|
         res.date_range.included_in_date_range(date)
       end
       return res_by_date
+    end
+
+    # As an administrator, I can view a list of rooms that are available for a given date range
+    def available_rooms()
+
     end
   end
 end
