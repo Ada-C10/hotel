@@ -42,13 +42,17 @@ describe "#reservation information" do
   before do
     @admin = Admin.new
   end
-  it "return the reservations that have a specific date as a start date" do
+  it "return the reservations that have a specific date, not including the last day" do
     #arrange
-    date = "2018-08-07 00:00:00 -0700"
+    # reservations are:
+    # 2,2018-08-07,2018-08-09
+    # 1,2018-08-08,2018-08-09
+
+    date = "2018-08-08 00:00:00 -0700"
     reservations = @admin.find_reservations(date)
 
     expect(reservations).must_be_kind_of Array
-    expect(reservations.length).must_equal 1
+    expect(reservations.length).must_equal 2
   end
 
   it "return the cost of a reservation" do

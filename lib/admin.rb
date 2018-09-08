@@ -58,9 +58,16 @@ class Admin
   # must check if date for every single date is in the range
   ## expects dates to be instances of time
   def view_vacant_rooms(start_date, end_date)
+    end_date = end_date - 1 # last day does not count
     vacant_rooms = []
+    target_dates = create_array_of_dates(start_date, end_date)
     @rooms.each do |room|
       ranges = room.ranges
+      # does range include every date of target_dates? if true do not include in vacant_rooms
+      ranges.each do |ranges|
+
+      end
+
       # found = range_search(ranges, target_range)
       # if found
       #   booked_rooms << room
@@ -77,11 +84,15 @@ class Admin
 
   #As an administrator, I can access the list of reservations for a specific date
   # I do not have to return a reservation that has specific date at the end
+  # reservations have real checkout date
+  # rooms have dates - 1
+  # REFACTOR idea to keep take out -1 day when you load reservation, but reservations calculates the cost based of nights - I wil have to fix that too
   def find_reservations(date)
     date = Time.parse(date)
     reservations = @reservations.select do |instance|
       start_date = instance.start_time
       end_date = instance.end_time
+      end_date = end_date - 1 # make test to only get the right one
       if date_in_range(start_date, end_date, date)
         instance
       end
@@ -120,7 +131,7 @@ class Admin
     return range
   end
 
-  # expectes input to be isntances
+  # expects input to be time instances
   def create_array_of_dates(start_date, end_date)
     dates = []
     difference = end_date - start_date
@@ -137,13 +148,13 @@ class Admin
     @reservations.sort_by { |object| object.start_time }
   end
 
-  # does not take into account last day of reservation
   def date_in_range(start_date, end_date, date)
-    range = create_hotel_range(start_date, end_date)
+    range = (start_date .. end_date)
     range.include?(date)
   end
 
-  # find range in an array of ranges, NOT USEFUL you need to check every day in the range not just that the ranges are not equal
+  # find range in an array of ranges,
+  #NOT USEFUL you need to check every day in the range not just that the ranges are not equal
   def range_search(ranges, target)
     ranges.each do |range|
       if range == target
