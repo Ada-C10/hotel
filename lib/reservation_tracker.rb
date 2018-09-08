@@ -152,20 +152,20 @@ module Hotel
       end
     end
 
-    def check_enough_rooms?(available_rooms, requested_amt)
-      if available_rooms.length < requested_amt
+    def check_enough_rooms?(available_rooms, amt)
+      if available_rooms.length < amt
         raise NotEnoughError.new("There are not enough rooms to block")
       end
     end
 
-    def check_valid_num?(number_of_rooms)
-      if !number_of_rooms.is_a?(Integer) || number_of_rooms <= 0
+    def check_valid_num?(amt)
+      if !amt.is_a?(Integer) || amt <= 0
         raise InvalidAmountRoomsError.new("That is not a valid amount to request to block")
       end
     end
 
-    def check_num_requested?(number_of_rooms)
-      if number_of_rooms > MAX_BLOCK_NUM
+    def check_num_requested?(amt)
+      if amt > MAX_BLOCK_NUM
         raise TooManyRoomsError.new("Cannot block more than 5 rooms")
       end
     end
