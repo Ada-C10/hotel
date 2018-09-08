@@ -78,6 +78,15 @@ describe "Admin" do
         end
       }.must_raise Hotel::RoomAvailabilityError
     end
+
+    it "can reserve a room from within a block of rooms at a discounted rate" do
+      new_block = @admin.make_block("Jackie's Event", Date.parse("2019-02-01"), Date.parse("2019-02-05"), 150.00, 3)
+      expect(new_block.blocked_rooms.length).must_equal 3
+      new_res = @admin.make_reservation(Date.parse("2019-01-01"), Date.parse("2019-01-02"), 2, new_block)
+      expect(new_block.blocked_rooms.length).must_equal 1 # must update block's available rooms
+      expect(new_res.block).must_equal new_block
+      expect(new_res.block.discount_rate).must_equal new_block.discount_rate
+    end
   end
 
   describe "Admin#list_reservations" do

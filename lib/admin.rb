@@ -82,14 +82,15 @@ module Hotel
       end
 
       def valid_block?(checkin_date, checkout_date, block)
-        found_block = blocks.find { |existing_block| block == existing_block }
+        found_block = blocks.find do |block_name, existing_block|
+          block == existing_block &&
+          block.checkin_date == existing_block.checkin_date &&
+          block.checkout_date == existing_block.checkout_date
+        end
         if found_block == nil
           raise ArgumentError, "Block for #{block} not found."
-        elsif (found_block.checkin_date == checkin_date && found_block.checkout_date == checkout_date) == false
-          raise ArgumentError, "Invalid dates for #{block}."
-        else
-          return blocked_rooms.length > 0
         end
+        return found_block
       end
 
       # returns an array of the requested number of available Rooms

@@ -68,5 +68,8 @@ module Hotel
       return reservations
     end
 
+    def num_rooms_available
+      return blocked_rooms.length
+    end
   end
 end
