@@ -1,34 +1,25 @@
 class Room
-  attr_reader :room_num, :cost, :dates_booked
-  attr_accessor :blocked_status
+  attr_reader :room_num
+  attr_accessor :reservations
 
-  def initialize(room_num: nil, cost: 200, dates_booked: [], blocked_status: "unblocked")
+  def initialize(room_num: nil, reservations: [])
     @room_num = room_num
-    @cost = cost
-    @dates_booked = dates_booked
-    @blocked_status = blocked_status
-
+    @reservations = reservations
   end
 
   def is_available?(dates)
-    date_availability = []
-    dates.each do |date|
-      if self.dates_booked.include?(date)
-        date_availability << "no"
-      else
-        date_availability << "yes"
+    @reservations.each do |reservation|
+      dates.each do |date|
+        if reservation.dates_booked.include?(date)
+          return false
+        end
       end
     end
-    if date_availability.all?("yes")
-      return true
-    else
-      return false
-    end
+    return true
   end
 
-  def add_booked_dates(dates)
-    dates.each do |date|
-      self.dates_booked << date
-    end
+  def add_reservation_to_room(reservation)
+    self.reservations << reservation
   end
+
 end

@@ -25,14 +25,14 @@ class BookingSystem
   end
 
   # reserve a room for a given date range
-  def reserve_room(start_date, end_date)
-    dates = date_range(start_date, end_date)
+  def reserve_room(check_in, check_out)
+    dates = date_range(check_in, check_out)
     new_reservation = nil
     @rooms.each do |room|
       if room.is_available?(dates)
-        room.add_booked_dates(dates)
-        new_reservation = Reservation.new(start_date, end_date)
+        new_reservation = Reservation.new(check_in, check_out)
         new_reservation.id = assign_res_id
+        room.add_reservation_to_room(new_reservation)
         @reservations << new_reservation
         break
       end
@@ -69,6 +69,7 @@ class BookingSystem
         list_res << reservation
       end
     end
+    return list_res
   end
 
   # get the total cost for a given reservation
@@ -82,7 +83,7 @@ class BookingSystem
 
   def unreserved_rooms_by_date(start_date, end_date)
     dates = date_range(start_date, end_date)
-    dates << end_date
+    dates << Date.parse(end_date)
     unreserved_rooms = []
     @rooms.each do |room|
       if room.is_available?(dates)
@@ -91,35 +92,35 @@ class BookingSystem
     end
     return unreserved_rooms
   end
-
-  # create block of rooms
-  def create_block_of_rooms(start_date, end_date, discounted_rate)
-    unreserved_rooms = unreserved_rooms_by_date(start_date, end_date)
-    unreserved_rooms.select { |room| room.blocked_status == "unblocked"}
-
-    5.times do |i|
-      block_room(unreserved_rooms[i].room_num)
-    end
-
-    new_block = BlockOfRooms.new(start_date, end_date, room_cost: discounted_rate)
-
-    5.times do |i|
-      new_block.add_room(unreserved_rooms[i])
-    end
-
-  end
-
-  def block_room(room_number)
-    selected_room = @rooms.find { |room| room.room_num}
-    selected_room.blocked_status = "blocked"
-    selected_room.cost = discounted_rate
-  end
-
-  # check if block of rooms has availability
-  def block_of_rooms_availability(block_id)
-  end
-
-  # reserve a room from within a block of rooms
-  def reserve_within_block(block_id)
-  end
+  #
+  # # create block of rooms
+  # def create_block_of_rooms(start_date, end_date, discounted_rate)
+  #   unreserved_rooms = unreserved_rooms_by_date(start_date, end_date)
+  #   unreserved_rooms.select { |room| room.blocked_status == "unblocked"}
+  #
+  #   5.times do |i|
+  #     block_room(unreserved_rooms[i].room_num)
+  #   end
+  #
+  #   new_block = BlockOfRooms.new(start_date, end_date, room_cost: discounted_rate)
+  #
+  #   5.times do |i|
+  #     new_block.add_room(unreserved_rooms[i])
+  #   end
+  #
+  # end
+  #
+  # def block_room(room_number)
+  #   selected_room = @rooms.find { |room| room.room_num}
+  #   selected_room.blocked_status = "blocked"
+  #   selected_room.cost = discounted_rate
+  # end
+  #
+  # # check if block of rooms has availability
+  # def block_of_rooms_availability(block_id)
+  # end
+  #
+  # # reserve a room from within a block of rooms
+  # def reserve_within_block(block_id)
+  # end
 end
