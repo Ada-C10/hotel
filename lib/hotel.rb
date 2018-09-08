@@ -23,9 +23,11 @@ class Hotel
   end
 
   def list_rooms
+    room_list = []
     rooms.each do |room|
-      room
+      room_list << "Room number: #{room.room_number}"
     end
+    return room_list
   end
 
   def reserve_room(start_date, end_date, number_of_rooms)
@@ -52,21 +54,6 @@ class Hotel
     raise ArgumentError, "Not enough or no available rooms!"
   end
 
-  def list_reservations(date)
-    list = []
-    @reservations.each do |reservation|
-      list << reservation if reservation.start_date == Date.parse(date)
-    end
-    return list
-  end
-
-  def reservation_cost(res_id)
-    @reservations.each do |reservation|
-      return reservation.cost if reservation.reservation_id == res_id
-    end
-    raise ArgumentError, "No such reservation."
-  end
-
   def rooms_not_available(start_date, end_date)
     not_available_rooms = []
 
@@ -88,11 +75,28 @@ class Hotel
     (Date.parse(start_a) <= end_b) && (Date.parse(end_a) > start_b)
   end
 
+  def list_reservations(date)
+    list = []
+    @reservations.each do |reservation|
+      if reservation.start_date == Date.parse(date)
+        list << "ID: #{reservation.id}\nDates: #{reservation.start_date} - #{reservation.end_date}\nNumber of rooms: #{reservation.number_of_rooms}\nCost: #{reservation.cost}"
+      end
+    end
+    return list
+  end
+
+  def reservation_cost(res_id)
+    @reservations.each do |reservation|
+      return reservation.cost if reservation.id == res_id
+    end
+    raise ArgumentError, "No such reservation."
+  end
+
   def list_available_rooms(start_d, end_d)
     rooms_without_reservations = []
-
+    available_room_list = []
     if rooms_not_available(start_d, end_d).nil?
-      return rooms
+      return list_rooms
     elsif rooms_not_available(start_d, end_d).length == rooms.length
       return "All rooms are reserved from #{start_d} to #{end_d}."
     else
@@ -101,8 +105,12 @@ class Hotel
           rooms_without_reservations << room
         end
       end
-      return rooms_without_reservations
     end
+
+    rooms_without_reservations.each do |room|
+      available_room_list << "Room number: #{room.room_number}"
+    end
+    return available_room_list
   end
 
   def create_room_block(start_d, end_d, number_of_rooms, discounted_rate)
@@ -123,13 +131,17 @@ class Hotel
 
   def list_available_block_rooms(block_booking_id)
     block_booking = find_block_booking(block_booking_id)
-    return block_booking.rooms_blocked
+    available_block_rooms = []
+    block_booking.rooms_blocked.each do |room|
+      available_block_rooms << "Room number: #{room.room_number}"
+    end
+    return available_block_rooms
   end
 
 
   def find_block_booking(block_booking_id)
     @room_blocks.each do |block_booking|
-      return block_booking if block_booking.block_id == block_booking_id
+      return block_booking if block_booking.id == block_booking_id
     end
     raise ArgumentError, "No such block booking."
   end

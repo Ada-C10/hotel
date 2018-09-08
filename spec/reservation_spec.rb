@@ -16,7 +16,7 @@ describe "Reservation Class: Wave One: Tracking Reservations" do
 
     it "generates an id for the reservation" do
       name_regexp = /^[a-z]{2}\d{3}$/
-      expect(@reservation.reservation_id).must_match name_regexp
+      expect(@reservation.id).must_match name_regexp
     end
 
     it "raises an error for invalid dates" do

@@ -3,7 +3,7 @@ require 'pry'
 
 class Reservation
 
-attr_reader :start_date, :end_date, :cost, :reservation_id, :rooms, :checkout_date
+attr_reader :start_date, :end_date, :cost, :id, :rooms, :checkout_date, :number_of_rooms
 
   @@reservation_ids = []
 
@@ -15,7 +15,7 @@ attr_reader :start_date, :end_date, :cost, :reservation_id, :rooms, :checkout_da
     @rooms = []
     @room_rate = room_rate
     @cost = get_cost
-    @reservation_id = create_reservation_id
+    @id = create_reservation_id
 
     raise StandardError, 'Invalid date range!' if @start_date > @end_date
 

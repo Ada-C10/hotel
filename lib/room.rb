@@ -1,6 +1,6 @@
 class Room
 
-  attr_reader :room_number, :cost, :reservations, :room_block_bookings
+  attr_reader :room_number, :reservations, :room_block_bookings
 
   def initialize(room_number)
     @room_number = room_number
@@ -15,7 +15,5 @@ class Room
   def add_block(block_booking)
     @room_block_bookings << block_booking
   end
-
-
 
 end

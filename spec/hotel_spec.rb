@@ -106,7 +106,7 @@ describe "Hotel Class: Wave One: Tracking Reservations" do
     end
 
     it "the array has reservation instances" do
-      expect(@hotel.list_reservations('2018-02-03')[0]).must_be_kind_of Reservation
+      expect(@hotel.list_reservations('2018-02-03').length).must_equal 2
     end
 
   end
@@ -116,7 +116,7 @@ describe "Hotel Class: Wave One: Tracking Reservations" do
       @hotel = Hotel.new(20)
       @hotel.reserve_room('2018-02-03', '2018-02-05', 1)
 
-      @reservation_code = @hotel.reservations[0].reservation_id
+      @reservation_code = @hotel.reservations[0].id
     end
 
     it "returns the total cost for a given reservation" do
@@ -158,7 +158,7 @@ describe "Hotel Class: Wave Three: Blocks of Rooms" do
     before do
       @hotel = Hotel.new(20)
       @hotel.create_room_block('2018-01-03', '2018-01-05', 5, 150)
-      @block_id = @hotel.room_blocks[0].block_id
+      @id = @hotel.room_blocks[0].id
 
     end
 
@@ -167,13 +167,13 @@ describe "Hotel Class: Wave Three: Blocks of Rooms" do
     end
 
     it "can check whether a given block has any rooms available" do
-      expect(@hotel.list_available_block_rooms(@block_id).length).must_equal 5
+      expect(@hotel.list_available_block_rooms(@id).length).must_equal 5
     end
 
     it "can reserve a room from within a block of rooms" do
-      @hotel.reserve_block_room(@block_id, 1)
+      @hotel.reserve_block_room(@id, 1)
 
-      expect(@hotel.list_available_block_rooms(@block_id).length).must_equal 4
+      expect(@hotel.list_available_block_rooms(@id).length).must_equal 4
       expect(@hotel.room_blocks[0].rooms_reserved.length).must_equal 1
 
     end
@@ -184,7 +184,7 @@ describe "Hotel Class: Wave Three: Blocks of Rooms" do
     end
 
     it "when a room is reserved from a block, the reservation dates will match the date range of the block" do
-      @hotel.reserve_block_room(@block_id, 1)
+      @hotel.reserve_block_room(@id, 1)
 
       expect(@hotel.reservations[0].start_date).must_equal @hotel.room_blocks[0].start_date
       expect(@hotel.reservations[0].end_date).must_equal @hotel.room_blocks[0].end_date
@@ -210,7 +210,7 @@ describe "Hotel Class: Wave Three: Blocks of Rooms" do
     end
 
     it "will give the block rooms a discounted rate" do
-      @hotel.reserve_block_room(@block_id, 1)
+      @hotel.reserve_block_room(@id, 1)
       @hotel.reserve_room('2018-01-03', '2018-01-05', 1)
 
       expect(@hotel.reservations[0].cost).must_equal 300
