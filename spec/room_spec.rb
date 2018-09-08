@@ -23,12 +23,12 @@ describe 'Room' do
   end
 
   let(:one_reservation_added) {
-    input = {checkin_date: "13/12/2018", checkout_date: "15/12/2018", room_number: 1}
+    input = {checkin_date: "13/12/2018", checkout_date: "15/12/2018", room_number: 1, room_cost: 200, confirmation_id: "ABC12345"}
     @room.add_reservation(Hotel::Reservation.new(input))
     @room.reservations }
 
     let(:another_reservation_added) {
-      input = {checkin_date: "16/12/2018", checkout_date: "18/12/2018", room_number: 2}
+      input = {checkin_date: "16/12/2018", checkout_date: "18/12/2018", room_number: 2, room_cost: 200, confirmation_id: "ABC12345"}
       @room.add_reservation(Hotel::Reservation.new(input))
       @room.reservations }
 
@@ -43,30 +43,30 @@ describe 'Room' do
         end
 
         let(:false_available) {
-          input = {checkin_date: "12/12/2018", checkout_date: "15/12/2018", room_number: 1}
+          input = {checkin_date: "12/12/2018", checkout_date: "15/12/2018", room_number: 1, room_cost: 200, confirmation_id: "ABC12345"}
           @room.add_reservation(Hotel::Reservation.new(input))
           range = (Date.parse("13/12/2018")..Date.parse("15/12/2018")).to_a
           @room.is_available?(range)
         }
 
         let(:true_available) {
-          input = {checkin_date: "13/12/2018", checkout_date: "15/12/2018", room_number: 1}
+          input = {checkin_date: "13/12/2018", checkout_date: "15/12/2018", room_number: 1, room_cost: 200, confirmation_id: "ABC12345"}
           @room.add_reservation(Hotel::Reservation.new(input))
           range = (Date.parse("19/12/2018")..Date.parse("20/12/2018")).to_a
           @room.is_available?(range)
         }
 
         let(:false_available_second) {
-          input1 = {checkin_date: "09/12/2018", checkout_date: "11/12/2018", room_number: 1}
+          input1 = {checkin_date: "09/12/2018", checkout_date: "11/12/2018", room_number: 1, room_cost: 200, confirmation_id: "ABC12345"}
           @room.add_reservation(Hotel::Reservation.new(input1))
-          input2 = {checkin_date: "12/12/2018", checkout_date: "15/12/2018", room_number: 1}
+          input2 = {checkin_date: "12/12/2018", checkout_date: "15/12/2018", room_number: 1, room_cost: 200, confirmation_id: "ABC12345"}
           @room.add_reservation(Hotel::Reservation.new(input2))
           range = (Date.parse("13/12/2018")..Date.parse("15/12/2018")).to_a
           @room.is_available?(range)
         }
 
         let(:end_start_overlap) {
-          input = {checkin_date: "08/10/2018", checkout_date: "10/10/2018", room_number: 1}
+          input = {checkin_date: "08/10/2018", checkout_date: "10/10/2018", room_number: 1, room_cost: 200, confirmation_id: "ABC12345"}
           @room.add_reservation(Hotel::Reservation.new(input))
           range = (Date.parse("10/10/2018")..Date.parse("14/10/2018")).to_a
           @room.is_available?(range)
