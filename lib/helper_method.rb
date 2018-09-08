@@ -48,14 +48,14 @@ module Hotel
       Hotel::Helper_Method.sort_reservations(connected_room_number.reservations)
     end
 
-    def self.find_room_number(list_of_rooms,room_number_to_find)
-      return list_of_rooms.find { |room| room.room_number == room_number_to_find }
-    end
-
     def self.check_valid_date_range(check_in, check_out)
       if check_out < check_in
         return raise StandardError, 'Check_out date before check_in date.'
       end
+    end
+
+    def self.find_room_number(list_of_rooms,room_number_to_find)
+      return list_of_rooms.find { |room| room.room_number == room_number_to_find }
     end
 
   end

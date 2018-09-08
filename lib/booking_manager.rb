@@ -20,15 +20,14 @@ module Hotel
 
     def reserve_room(input)
       search_room_availability(input[:check_in_date], input[:check_out_date])
-      connected_room_number = Hotel::Helper_Method.find_room_number(@rooms, input[:room_number])
 
       reserve = { name: input[:name],
-        room_number: connected_room_number,
+        room_number: input[:room_number],
         check_in_date: input[:check_in_date],
         check_out_date: input[:check_out_date]
       }
       reservation = Hotel::Reservation.new(reserve)
-      Hotel::Helper_Method.connect_reservation_to_room_and_sort(connected_room_number, reservation)
+      Hotel::Helper_Method.connect_reservation_to_room_and_sort(@rooms, input[:room_number], reservation)
       @hotel_reservations << reservation
       Hotel::Helper_Method.sort_reservations(@hotel_reservations)
     end
@@ -54,9 +53,7 @@ module Hotel
         }
         reservation = Hotel::Block_Room.new(block_room_hash)
 
-        connected_room_number = Hotel::Helper_Method.find_room_number(@rooms, vacant_rooms[number_of_rooms_to_block])
-
-        Hotel::Helper_Method.connect_reservation_to_room_and_sort(connected_room_number, reservation)
+        Hotel::Helper_Method.connect_reservation_to_room_and_sort(@rooms, vacant_rooms[number_of_rooms_to_block], reservation)
 
         blocked_rooms << reservation
 
