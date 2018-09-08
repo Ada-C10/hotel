@@ -21,15 +21,14 @@ class BookingManager
     # use some boolean logic and intersection to call out errors for conflits
     @rooms.each do | room |
       @reservations.each do |reservation|
-        if (reservation.room == room) && (reservation.reservation_dates & requested_dates)
+        if (reservation.reservation_dates & requested_dates)
           raise StandardError.new("Room schedule conflict")
+        elsif reservation.room != room
+          return room
         end
       end
-      return room
     end
   end
-
-
 
   def make_reservation(start_date, end_date)
     room = find_available_room(start_date, end_date)
@@ -37,7 +36,4 @@ class BookingManager
     @reservations << reservation
     return reservation
   end
-
-
-
 end
