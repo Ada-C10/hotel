@@ -11,11 +11,8 @@ describe 'Reservation Class' do
   end
 
   it "calculates the total cost per reservation" do
-
     reservation = @hotel.assigns_a_reservation(@start_date, @end_date)
-
     expect(reservation.reservation_cost).must_equal 800
-
   end
 
 end

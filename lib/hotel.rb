@@ -43,6 +43,7 @@ module Hotel
       return reservation
     end
 
+#returns matched reservations for a specific date
     def reservations_for_date(date)
       matches = []
       @reservations.each do |reservation|
@@ -52,6 +53,10 @@ module Hotel
         return matches
       end
     end
+
+
+
+
 
 
 
