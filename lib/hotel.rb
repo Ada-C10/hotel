@@ -5,23 +5,25 @@ require "awesome_print"
 # TODO:
 # replace constant with CSV
 # @room_numbers = load_room_numbers (in initialize)
-ROOM_NUMBERS = %W(1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20)
+# ROOM_NUMBERS = %W(1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20)
+ROOM_NUMBERS_FILENAME = "data/room_numbers.csv"
 
 module HotBook
 # The Hotel class is responsible for knowing about rooms and all rooms
 
   class Hotel
+    require "csv"
     attr_reader :room_rate, :room_numbers, :rooms
 
-    def initialize(room_rate: 200.0, room_numbers: ROOM_NUMBERS)
+    def initialize(room_rate: 200.0, room_numbers: ROOM_NUMBERS_FILENAME)
       @room_rate = room_rate
-      @room_numbers = upcase(room_numbers)
+      @room_numbers = load_room_numbers(room_numbers)
       @rooms = load_rooms # array of hashes
       # a "room" Hash ==== {room_number: "String", room_rate: 200.0}
     end
 
-    def upcase(room_numbers)
-      return room_numbers.map! { |room_number| room_number.upcase }
+    def load_room_numbers(filename)
+      CSV.open(filename).flat_map{ |line| line.map { |row| row.upcase }}
     end
 
     def load_rooms

@@ -5,8 +5,9 @@ describe "HotBook::Hotel class" do
   let(:room_rate) { hotel.room_rate }
   let(:room_numbers) { hotel.room_numbers }
   let(:rooms) { hotel.rooms }
-  let(:valid_room_numbers) { ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11",
-                        "12", "13", "14", "15", "16", "17", "18", "19", "20"] }
+  let(:valid_room_numbers) { ["1", "2", "3", "4", "5", "6", "7", "8", "9",
+                              "10", "11", "12", "13", "14", "15", "16", "17",
+                              "18", "19", "20"] }
 
   describe "initialize method" do
     it "loads room rate correctly" do
@@ -19,8 +20,8 @@ describe "HotBook::Hotel class" do
     end
 
     it "upcases room numbers before storing them" do
-      arg = ["room thirteen"]
-      hotel = HotBook::Hotel.new(room_numbers: arg)
+      test_room_numbers_filename = "support/test_room_numbers.csv"
+      hotel = HotBook::Hotel.new(room_numbers: test_room_numbers_filename)
       expect(hotel.room_numbers).must_equal ["ROOM THIRTEEN"]
     end
   end
