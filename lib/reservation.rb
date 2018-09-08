@@ -1,4 +1,3 @@
-RATE = 200
 BLOCK_DISCOUNT = 0.80
 
 module Hotel
@@ -15,7 +14,8 @@ module Hotel
 
     def calculate_cost
       num_of_nights = @date_range.find_num_nights
-      reg_cost = RATE * num_of_nights
+      rate = @room.rate
+      reg_cost = rate * num_of_nights
       blocked_cost = reg_cost * BLOCK_DISCOUNT
       @block_id.nil? ? reg_cost : blocked_cost
     end

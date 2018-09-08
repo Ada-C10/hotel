@@ -22,8 +22,10 @@ describe "ReservationTracker class" do
     it "loads the rooms" do
       expect(@reservation_tracker.rooms).must_be_kind_of Array
       expect(@reservation_tracker.rooms.length).must_equal NUM_OF_ROOMS
-      expect(@reservation_tracker.rooms.first).must_equal 1
-      expect(@reservation_tracker.rooms.last).must_equal 20
+      expect(@reservation_tracker.rooms.first).must_be_kind_of Hotel::Room
+      expect(@reservation_tracker.rooms.last).must_be_kind_of Hotel::Room
+      expect(@reservation_tracker.rooms.first.room_num).must_equal 1
+      expect(@reservation_tracker.rooms.last.room_num).must_equal 20
     end
   end
 
@@ -71,7 +73,7 @@ describe "ReservationTracker class" do
       reserved_rooms = @reservation_tracker.find_reserved_rooms(@requested_dates)
       expect(reserved_rooms).must_be_kind_of Array
       expect(reserved_rooms.length).must_equal 1
-      expect(reserved_rooms.first).must_equal 1
+      expect(reserved_rooms.first.room_num).must_equal 1
     end
 
   end
@@ -90,7 +92,7 @@ describe "ReservationTracker class" do
       unavailable_rooms = @reservation_tracker.find_unavailable_rooms(@requested_dates)
       expect(unavailable_rooms).must_be_kind_of Array
       expect(unavailable_rooms.length).must_equal 1
-      expect(unavailable_rooms.first).must_be_kind_of Integer
+      expect(unavailable_rooms.first).must_be_kind_of Hotel::Room
     end
 
     it "returns [] if there are no unavailable rooms for requested dates" do
@@ -105,7 +107,7 @@ describe "ReservationTracker class" do
       available_rooms = @reservation_tracker.find_available_rooms(@requested_dates)
       expect(available_rooms).must_be_kind_of Array
       expect(available_rooms.length).must_equal 19
-      expect(available_rooms.first).must_be_kind_of Integer
+      expect(available_rooms.first).must_be_kind_of Hotel::Room
 
     end
 
@@ -124,8 +126,8 @@ describe "ReservationTracker class" do
   describe "#get_first_available_room method for requested dates" do
     it "returns the first available room for requested dates" do
       first_available_room = @reservation_tracker.get_first_available_room(@requested_dates)
-      expect(first_available_room).must_be_kind_of Integer
-      expect(first_available_room).must_equal 2
+      expect(first_available_room).must_be_kind_of Hotel::Room
+      expect(first_available_room.room_num).must_equal 2
     end
   end
 

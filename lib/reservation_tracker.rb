@@ -1,5 +1,6 @@
 require_relative 'date_range'
 require_relative 'reservation'
+require_relative 'room'
 
 NUM_OF_ROOMS = 20
 MAX_BLOCK_NUM = 5
@@ -23,7 +24,9 @@ module Hotel
 
     def load_rooms
       all_rooms = []
-      NUM_OF_ROOMS.times { |i| all_rooms << i + 1 }
+      NUM_OF_ROOMS.times do |i|
+        all_rooms << Hotel::Room.new(room_num: i + 1)
+      end
       return all_rooms
     end
 
