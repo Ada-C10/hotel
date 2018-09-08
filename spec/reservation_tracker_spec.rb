@@ -61,6 +61,21 @@ describe 'ReservationTracker class' do
     expect{new_tracker.reserve_room(conflicting_room_num, check_in, check_out)}.must_raise StandardError
   end
 
+  it 'will make a reservation that starts on the same day that another reservation for the same room ends' do
+    new_tracker = ReservationTracker.new()
+    room_num_1 = 1
+    check_in_1 = "2018,9,1"
+    check_out_1 = "2018,9,2"
+    new_reservation_1 = new_tracker.reserve_room(room_num_1, check_in_1, check_out_1)
+
+    room_num_2 = 1
+    check_in_2 = "2018,9,2"
+    check_out_2 = "2018,9,3"
+    new_reservation_2 = new_tracker.reserve_room(room_num_2, check_in_2, check_out_2)
+
+    expect(new_tracker.all_reservations.length).must_equal 2
+  end
+
   it 'shows all reservations' do
     new_tracker = ReservationTracker.new()
     room_num_1 = 3
