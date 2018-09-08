@@ -115,15 +115,17 @@ class TrackingSystem
 
   #access the list of reservations for a specific date <---not date range
   def view_reservations_on(date)
-    raise ArgumentError.new"" unless date.instance_of? == Date
+    raise ArgumentError.new"#{date} must be instance of Date" unless date.instance_of?(Date)
     all_reservations = []
     @reservations.each do |reservation|
-      if (reservation[:start_time]...reservation[:end_time]).include? date
+      if (reservation.start_time...reservation.end_time).include?(date) #maybe this boolean can be deleted
         all_reservations << reservation
       end
-      if all_reservations.empty?
-        raise ArgumentError.new"No reservations on #{date}"
-      end
+    end
+    if all_reservations.empty?
+      raise ArgumentError.new"There are no reservations on #{date}"
+    else
+      return all_reservations
     end
   end
 
@@ -132,7 +134,7 @@ class TrackingSystem
     r1.include?(r2.first) || r2.include?(r1.first)
   end
 
-end
+end #class end
 
 
 #

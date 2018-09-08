@@ -179,12 +179,19 @@ describe 'TrackingSystem class' do
     end
 
     it "returns an array" do
+      @reservation = @tracker.add_reservation(start_time: Date.new(2018,10,5), end_time: Date.new(2018,10,10), number_of_rooms:1)
+      @reservation1 = @tracker.add_reservation(start_time: Date.new(2018,10,5), end_time: Date.new(2018,10,10), number_of_rooms:1)
       expect(@tracker.view_reservations_on(Date.new(2018,10,5))).must_be_kind_of Array
     end
 
     it "raises an ArgumentError if no reservations are available on given date" do
-      expect{@tracker.view_reservations_on(Date.new(2333,10,5))}.must_raise ArgumentError
+      expect{@tracker.view_reservations_on(Date.new(3333,10,5))}.must_raise ArgumentError
     end
+
+    it "raises an ArgumentError if given date is not an instance of Date class" do
+      expect{@tracker.view_reservations_on(2018,2,1)}.must_raise ArgumentError
+    end
+
 
 
   end

@@ -10,6 +10,7 @@ class Reservation
   end
 
   def total_cost
+    total_cost = 0
     return total_cost = (end_time - start_time) * price
   end
 
