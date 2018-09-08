@@ -18,12 +18,19 @@ describe "DateRange Class" do
       expect(@date_range1).must_be_kind_of Hotel::DateRange
     end
 
-    it "it passes Dates as arguments" do
+    it "passes Dates as arguments" do
       expect(@date_range1.check_in).must_be_kind_of Date
       expect(@date_range2.check_out).must_be_kind_of Date
     end
 
-    it "it creates an array of Dates between check_in and check_out & excluding check_out" do
+    it "raises a StandardError if invalid date range is provided" do
+      expect{ Hotel::DateRange.new(@date1, @date1) }.must_raise StandardError
+
+      expect{ Hotel::DateRange.new(@date3, @date1) }.must_raise StandardError
+      binding.pry
+    end
+
+    it "creates an array of Dates between check_in and check_out & excluding check_out" do
       expect(@date_range3.dates_booked).must_be_kind_of Array
       expect(@date_range3.dates_booked.length).must_equal 1
       expect(@date_range3.dates_booked[0]).must_equal @date2
