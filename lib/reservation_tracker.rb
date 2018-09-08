@@ -109,27 +109,27 @@ module Hotel
       return new_reservation
     end
 
-    def confirm_valid_amt?(requested_amt)
-      check_valid_num?(requested_amt)
-      check_num_requested?(requested_amt)
+    def confirm_valid_qty?(requested_qty)
+      check_valid_num?(requested_qty)
+      check_num_requested?(requested_qty)
     end
 
-    def get_blocked_rooms(requested_amt, requested_dates)
-      confirm_valid_amt?(requested_amt)
+    def get_blocked_rooms(requested_qty, requested_dates)
+      confirm_valid_qty?(requested_qty)
       available_rooms = find_available_rooms(requested_dates)
-      check_enough_rooms?(available_rooms, requested_amt)
-      block = available_rooms.take(requested_amt)
+      check_enough_rooms?(available_rooms, requested_qty)
+      block = available_rooms.take(requested_qty)
       return block
     end
 
     def block_rooms(input)
       requested_dates = get_requested_dates(input)
       block_id = @blocked_rooms.length + 1
-      blocked_amt_rooms = get_blocked_rooms(input[:party], requested_dates)
+      blocked_qty_rooms = get_blocked_rooms(input[:party], requested_dates)
 
       block_data = {
         id: block_id,
-        party: blocked_amt_rooms,
+        party: blocked_qty_rooms,
         date_range: requested_dates
       }
 
@@ -152,20 +152,20 @@ module Hotel
       end
     end
 
-    def check_enough_rooms?(available_rooms, amt)
-      if available_rooms.length < amt
+    def check_enough_rooms?(available_rooms, qty)
+      if available_rooms.length < qty
         raise NotEnoughError.new("There are not enough rooms to block")
       end
     end
 
-    def check_valid_num?(amt)
-      if !amt.is_a?(Integer) || amt <= 0
+    def check_valid_num?(num)
+      if !num.is_a?(Integer) || num <= 0
         raise InvalidAmountRoomsError.new("That is not a valid amount to request to block")
       end
     end
 
-    def check_num_requested?(amt)
-      if amt > MAX_BLOCK_NUM
+    def check_num_requested?(num)
+      if num > MAX_BLOCK_NUM
         raise TooManyRoomsError.new("Cannot block more than 5 rooms")
       end
     end

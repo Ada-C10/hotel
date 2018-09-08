@@ -198,17 +198,17 @@ describe "ReservationTracker class" do
     end
   end
 
-  describe "#confirm_valid_amt? method" do
+  describe "#confirm_valid_qty? method" do
     it "checks if the amt entered is not an Integer or <= 0" do
-      expect{ @reservation_tracker.confirm_valid_amt?(0) }.must_raise Hotel::ReservationTracker::InvalidAmountRoomsError
-      expect{ @reservation_tracker.confirm_valid_amt?(4.5) }.must_raise Hotel::ReservationTracker::InvalidAmountRoomsError
-      expect{ @reservation_tracker.confirm_valid_amt?('5') }.must_raise Hotel::ReservationTracker::InvalidAmountRoomsError
+      expect{ @reservation_tracker.confirm_valid_qty?(0) }.must_raise Hotel::ReservationTracker::InvalidAmountRoomsError
+      expect{ @reservation_tracker.confirm_valid_qty?(4.5) }.must_raise Hotel::ReservationTracker::InvalidAmountRoomsError
+      expect{ @reservation_tracker.confirm_valid_qty?('5') }.must_raise Hotel::ReservationTracker::InvalidAmountRoomsError
     end
 
     it "checks if the amt requested is less or equal to 5" do
-      expect(@reservation_tracker.confirm_valid_amt?(1)).must_equal nil
-      expect(@reservation_tracker.confirm_valid_amt?(5)).must_equal nil
-      expect{@reservation_tracker.confirm_valid_amt?(6)}.must_raise Hotel::ReservationTracker::TooManyRoomsError
+      expect(@reservation_tracker.confirm_valid_qty?(1)).must_equal nil
+      expect(@reservation_tracker.confirm_valid_qty?(5)).must_equal nil
+      expect{@reservation_tracker.confirm_valid_qty?(6)}.must_raise Hotel::ReservationTracker::TooManyRoomsError
     end
   end
 
