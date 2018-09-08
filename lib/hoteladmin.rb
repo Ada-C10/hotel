@@ -34,6 +34,7 @@ class HotelAdmin
   end
 
   def build_reservation(guest_identifier, room_number, check_in, check_out, rate = 200.00, status = :complete)
+    raise ArgumentError, ("Invalid date value provided.") if check_in.class != Date || check_out.class != Date
     reserve_room({
       guest_id: guest_identifier,
       room: room_number,

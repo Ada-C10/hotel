@@ -42,6 +42,10 @@ describe "Reservation" do
 
   end
 
+  describe "Reservation#valid_date_range" do
+
+  end
+
   describe "Reservation#stay_cost" do
     it "will calculate cost of guest's stay" do
       expect(reservation2.stay_cost).must_equal 1000.00

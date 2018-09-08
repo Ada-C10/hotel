@@ -19,5 +19,5 @@ class Reservation
     raise ArgumentError, ("This room has already been reserved.") if @status == :complete
     @status = :complete
   end
-
+  
 end

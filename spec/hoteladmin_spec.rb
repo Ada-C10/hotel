@@ -57,6 +57,14 @@ describe "HotelAdmin" do
     end
   end
 
+  describe "HotelAdmin#build_reservation" do
+    it "Raises an ArgumentError if items from the Date class are not provided" do
+      expect {
+        hotel.build_reservation("FishandChipsgrl@gmail.com", 4, "2019-01-20", "2019-01-22")
+      }.must_raise ArgumentError
+    end
+  end
+
   describe "HotelAdmin#reserve_room" do
     before do
       @reservation = hotel.build_reservation("FishandChipsgrl@gmail.com", 4, Date.new(2019,01,20), Date.new(2019,01,22))
@@ -76,11 +84,9 @@ describe "HotelAdmin" do
     end
 
     it "will raise an exception if there is an attempt to add a conflicting reservation" do
-
       expect{
         hotel.build_reservation("Mamacita09@gmail.com", 4, Date.new(2019,01,21), Date.new(2019,01,22))
       }.must_raise ArgumentError
-
     end
   end
 
