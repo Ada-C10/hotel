@@ -16,10 +16,11 @@ class TrackingSystem
   def total_cost_of_reservation(room_num)
     raise ArgumentError.new"There are no reservations" if @reservations.empty? == true
     @reservations.each do |reservation|
-      # binding.pry
       if reservation.room_num == nil
+        binding.pry
         raise ArgumentError.new"Room number #{room_num} has no current reservations"
       else reservation.room_num == room_num
+        #insert part where calculation happens
         return reservation.price
       end
     end
@@ -45,7 +46,7 @@ class TrackingSystem
     available_rooms = view_available_rooms_on(start_time: start_time, end_time: end_time) #<--returns an array of available rooms!
     raise ArgumentError.new"Not enough rooms available on those dates" if available_rooms.length < number_of_rooms
     number_of_rooms.times do |i|
-      @reservations << Reservation.new({room: available_rooms[i].room_num, start_time: start_time, end_time: end_time, price: 200.0})
+      @reservations << Reservation.new({room_num: available_rooms[i].room_num, start_time: start_time, end_time: end_time, price: 200.0})
       available_rooms[i].reserved_dates << {start_time: start_time, end_time: end_time}
     end
     @reservations
