@@ -45,14 +45,20 @@ describe 'Reservation Class' do
     nomatch_res = @hotel.assigns_a_reservation(@start_date1, @end_date1)
 
     reservations_fordate = @hotel.reservations_for_date(@start_date)
+
     expect(reservations_fordate).must_be_kind_of Array
     expect(reservations_fordate.length).must_equal 1
     expect(reservations_fordate.first).must_equal match_res
 
   end
+  
+  it "calculates the total cost per reservation" do
 
+    reservation = @hotel.assigns_a_reservation(@start_date, @end_date)
 
+    expect(reservation.reservation_cost).must_equal 800
 
+  end
 
 end
 

@@ -5,6 +5,8 @@ module Hotel
 
   class Reservation
 
+    PRICE = 200.00
+
 
     attr_reader :room_num
     attr_accessor :start_date, :end_date
@@ -29,6 +31,13 @@ module Hotel
         raise ArgumentError, "start date has to before end date start date: #{@start_date}"
       end
     end
+
+    def reservation_cost
+      total = 0
+      total = ((@end_date - @start_date) - 1) * PRICE
+      return total
+    end
+
 
 
 

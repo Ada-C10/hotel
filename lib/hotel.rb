@@ -7,8 +7,6 @@ module Hotel
 
     attr_reader :rooms, :reservations
 
-    PRICE = 200.00
-
     def initialize
       @rooms = []
       (1..20).each do |num|
@@ -21,7 +19,7 @@ module Hotel
 
 
 
-#copy of list of room, iterate though list of reservation---care
+    #wave 2 copy of list of room, iterate though list of reservation---care
 
     #returns an array of numbers from a collection of room instances (room_num)
     def get_all_numbers
@@ -56,6 +54,7 @@ module Hotel
         return matches
       end
     end
+
 
 
 
