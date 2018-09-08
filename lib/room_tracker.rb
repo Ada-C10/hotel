@@ -24,13 +24,48 @@ require_relative 'room'
 
 class Room_Tracker
 
-  attr_reader :valid_reservation, :room, :reservations
-
-  def initialize(valid_reservation , room, reservations)
+  def initialize
     @valid_reservation = {}
     @valid_reservation[:room] = @@request_array
+    @rooms = get_rooms(20)
+    @bookings = []
     #@valid_reservation[:booking] = @@request_array
   end
+
+  def get_rooms(room_count)
+    rooms = []
+    room_count.times do |index|
+      id = index + 1
+      cost = 200
+      rooms << Room.new(id,cost)
+    end
+    return rooms
+  end
+
+  def list_all_rooms
+    return @rooms
+  end
+
+  def make_reservation(start_date, end_date)
+    room = @rooms[rand(@rooms.length)] #getavilable room method
+    @bookings << Reservation.new(start_date, end_date, room)
+  end
+
+  def find_reservations_by_date(date)
+    bookings = []
+    @bookings.each do |booking|
+      range = booking.start_date..booking.end_date
+      if range.cover?(date)
+        bookings << booking
+      end
+    end
+    return bookings
+  end
+
+  def reservation_total_cost(reservation)
+    return reservation.total_cost
+  end
+
 
 binding.pry
 def assign_request_array_to_hash
