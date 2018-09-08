@@ -13,7 +13,6 @@ module Hotel
         room = Room.new(num)
         @rooms << room
       end
-
       @reservations = []
     end
 
@@ -43,7 +42,7 @@ module Hotel
       return reservation
     end
 
-#returns matched reservations for a specific date
+    #returns matched reservations for a specific date
     def reservations_for_date(date)
       matches = []
       @reservations.each do |reservation|
@@ -54,12 +53,19 @@ module Hotel
       end
     end
 
-
-
-
-
-
-
+    def reserved_rooms_for_dates (start_date, end_date)
+      matched_date_range = []
+      @reservations.each do |reservation|
+        if reservation.start_date.between?(start_date, end_date)
+          matched_date_range << reservation
+        elsif reservation.end_date.between?(start_date, end_date)
+          matched_date_range << reservation
+        elsif start_date < reservation.start_date && end_date > reservation.end_date
+          matched_date_range << reservation
+        end
+      end
+      return  matched_date_range
+    end
 
   end
 end

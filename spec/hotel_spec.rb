@@ -72,4 +72,23 @@ describe 'Module Hotel' do
 
   end
 
+
+
+  it "returns list of reservations for a speficic DATE RANGE" do
+
+    reservation1 = @hotel.assigns_a_reservation(@start_date, @end_date)
+
+    @start_date1 = Date.parse("4/9/2018")
+    @end_date1 = Date.parse("6/9/2018")
+
+    reservation2 = @hotel.assigns_a_reservation(@start_date1, @end_date1)
+
+    reservations_fordates = @hotel.reserved_rooms_for_dates(@start_date, @end_date1)
+
+    expect(reservations_fordates).must_be_kind_of Array
+
+  end
+
+
+
 end
