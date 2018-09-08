@@ -1,4 +1,5 @@
 require_relative 'spec_helper'
+require 'date'
 require 'pry'
 
 describe "Hotel Manager class" do
