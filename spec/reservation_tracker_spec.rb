@@ -117,4 +117,20 @@ describe "ReservationTracker class" do
       expect(current_num_res).must_equal previous_num_res + 1
     end
   end
+
+  describe "#check_valid_amt method" do
+    it "checks if the amt entered is not an Integer or <= 0" do
+      expect(@reservation_tracker.check_valid_amt(1)).must_equal nil
+      expect(@reservation_tracker.check_valid_amt(5)).must_equal nil
+      expect{@reservation_tracker.check_valid_amt(0)}.must_raise Hotel::ReservationTracker::InvalidAmountRoomsError
+      expect{@reservation_tracker.check_valid_amt(4.5)}.must_raise Hotel::ReservationTracker::InvalidAmountRoomsError
+      expect{@reservation_tracker.check_valid_amt('5')}.must_raise Hotel::ReservationTracker::InvalidAmountRoomsError
+    end
+
+    it "checks if the amt requested is less or equal to 5" do
+      expect(@reservation_tracker.check_valid_amt(1)).must_equal nil
+      expect(@reservation_tracker.check_valid_amt(5)).must_equal nil
+      expect{@reservation_tracker.check_valid_amt(6)}.must_raise Hotel::ReservationTracker::TooManyRoomsError
+    end
+  end
 end

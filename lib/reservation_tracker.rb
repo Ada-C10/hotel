@@ -1,9 +1,8 @@
-require 'date'
-
 require_relative 'date_range'
 require_relative 'reservation'
 
 NUM_OF_ROOMS = 20
+MAX_BLOCK_NUM = 5
 
 module Hotel
   class ReservationTracker
@@ -121,13 +120,13 @@ module Hotel
     end
 
     def check_valid_num?(number_of_rooms)
-      if number_of_rooms < 0 || !number_of_rooms.is_a?(Integer)
+      if !number_of_rooms.is_a?(Integer) || number_of_rooms <= 0
         raise InvalidAmountRoomsError.new("That is not a valid amount to request to block")
       end
     end
 
     def check_num_requested?(number_of_rooms)
-      if number_of_rooms > 5
+      if number_of_rooms > MAX_BLOCK_NUM
         raise TooManyRoomsError.new("Cannot block more than 5 rooms")
       end
     end
