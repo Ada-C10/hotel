@@ -13,14 +13,23 @@ class BookingManager
     20.times do |i|
       @rooms << i + 1
       i += 1
-
     end
   end
 
   def find_available_room(start_date, end_date)
-    room = @rooms.first
-    return room
+    requested_dates = (start_date...end_date).to_a
+    # use some boolean logic and intersection to call out errors for conflits
+    @rooms.each do | room |
+      @reservations.each do |reservation|
+        if (reservation.room == room) && (reservation.reservation_dates & requested_dates)
+          raise StandardError.new("Room schedule conflict")
+        end
+      end
+      return room
+    end
   end
+
+
 
   def make_reservation(start_date, end_date)
     room = find_available_room(start_date, end_date)
