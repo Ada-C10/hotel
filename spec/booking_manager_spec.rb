@@ -15,9 +15,10 @@ describe 'BookingManager' do
     Date.new(2001,3,5)
   }
 
-  let (:booked_reservation) {
-    sample_booking.make_reservation(sample_checkin, sample_checkout)
-  }
+  # let (:booked_reservation) {
+  #   sample_booking.make_reservation(sample_checkin, sample_checkout)
+  # }
+  #
 
   describe '#initialize' do
 
@@ -30,21 +31,27 @@ describe 'BookingManager' do
   end
 
 
-  describe '#find_available_room' do
+  # describe '#find_available_room' do
 
-    it 'must return a valid room number' do
-      expect(sample_booking.find_available_room(sample_checkin, sample_checkout)).must_be_kind_of Integer
+  #   it 'must return a valid room number' do
+  #     expect(sample_booking.find_available_room(sample_checkin, sample_checkout)).must_be_kind_of Integer
+  #   end
+  #
+  #   it 'must equal a number greater than 0' do
+  #     expect(sample_booking.find_available_room(sample_checkin, sample_checkout)).must_be :>, 0
+  #   end
+  #
+  #   it 'must equal a number less than 21' do
+  #     expect(sample_booking.find_available_room(sample_checkin, sample_checkout)).must_be :<, 21
+  #   end
+  # end
+
+    describe '#make_reservation' do
+
+      it 'must return a reservation object' do
+        expect(sample_booking.make_reservation(Date.new(2018, 3, 5), Date.new(2018, 3, 8))).must_be_kind_of Reservation
+      end
     end
-
-    it 'must equal a number greater than 0' do
-      expect(sample_booking.find_available_room(sample_checkin, sample_checkout)).must_be :>, 0
-    end
-
-    it 'must equal a number less than 21' do
-      expect(sample_booking.find_available_room(sample_checkin, sample_checkout)).must_be :<, 21
-    end
-
-  end
 
   # Wave 2 checks
 
@@ -60,23 +67,19 @@ describe 'BookingManager' do
   # - Ends on the checkin date
   # - Starts on the checkout date (edited)
   #
-
-  describe 'booking_conflicts' do
+  describe '#find_available_rooms' do
     # Two date ranges *do* overlap if range A compared to range B:
     # - Same dates
     it 'must raise standard error if two reservations made for the same date' do
-      reservation_conflict = sample_booking.make_reservation(sample_checkin, sample_checkout)
+      conflict_res = Reservation.new(1, Date.new(2018, 3, 5), Date.new(2018, 3, 7))
+      conflict_booking = BookingManager.new
+      conflict_booking.reservations << conflict_res
 
-      expect{reservation_conflict.find_available_room(sample_checkin, sample_chekout)}.must_raise StandardError
+      expect{conflict_booking.make_reservation(Date.new(2018, 3, 5), Date.new(2018, 3, 7))}.must_raise StandardError
     end
+
   end
 
 
-  describe '#make_reservation' do
-
-    it 'must return a reservation object' do
-      expect(sample_booking.make_reservation(Date.new(2018, 3, 5), Date.new(2018, 3, 8))).must_be_kind_of Reservation
-    end
-  end
 
 end
