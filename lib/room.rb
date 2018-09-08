@@ -1,5 +1,4 @@
-# Keeps track of 1 room
-# module Hotel
+# Keeps track of 1 room_
 class Room
   attr_reader :room_number
 

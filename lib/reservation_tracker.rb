@@ -12,8 +12,9 @@ class ReservationTracker
   def initialize
     @rooms = create_rooms
     @reservations = []
-    # @existing_reservations = []
     # @unreserved_rooms = []
+    # @existing_reservations = []
+
 
   end
 
@@ -32,6 +33,7 @@ class ReservationTracker
     room = @rooms.first
     reservation = Reservation.new(check_in_date, check_out_date, room)
     @reservations << reservation
+    # @reserved_rooms << room
     return reservation
   end
 
@@ -44,6 +46,11 @@ class ReservationTracker
   def cost_for_given_reservation(reservation)
     total_cost = reservation.nights_stayed * ROOM_RATE
     return total_cost
+  end
+
+  # accesses a list of rooms that are not reserved for a given date range
+  def rooms_not_reserved(check_in_date, check_out_date)
+
   end
 
 end
