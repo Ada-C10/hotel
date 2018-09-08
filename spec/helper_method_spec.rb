@@ -36,7 +36,7 @@ describe 'self.check_valid_date_range' do
       check_in_date: Date.new(2020,9,9),
       check_out_date: Date.new(2020,9,13),
     }
-    @input2 = { name: "Dr. Frankensteen",
+    @input2 = { name: "Dr. Frank N. Furter",
       room_number:  9,
       check_in_date: Date.new(2020,9,13),
       check_out_date: Date.new(2020,9,9),
@@ -49,7 +49,7 @@ describe 'self.check_valid_date_range' do
   end
 end
 
-describe 'self.binary_search_list_of_reservations' do
+describe 'self.binary_search_list_of_reservations_for_vacancy method' do
 
   before do
       #TEST RANGE
@@ -73,47 +73,47 @@ describe 'self.binary_search_list_of_reservations' do
 
   it 'given a range of dates, it returns true, if the reservation shares the same dates as a reserved room' do
     @array_of_possible_dates = Hotel::Helper_Method.generate_nights(@date1, @date2)
-    expect(Hotel::Helper_Method.binary_search_list_of_reservations(@array_of_reservations, @array_of_possible_dates)).must_equal true
+    expect(Hotel::Helper_Method.binary_search_list_of_reservations_for_vacancy(@array_of_reservations, @array_of_possible_dates)).must_equal true
   end
 
   it 'it returns true if check in date is in the middle dates of a reserved room'do
     @array_of_possible_dates = Hotel::Helper_Method.generate_nights(@date3, @date4)
-    expect(Hotel::Helper_Method.binary_search_list_of_reservations(@array_of_reservations, @array_of_possible_dates)).must_equal true
+    expect(Hotel::Helper_Method.binary_search_list_of_reservations_for_vacancy(@array_of_reservations, @array_of_possible_dates)).must_equal true
   end
 
   it 'it returns true if the reservation check in date is in the middle dates of a reserved room'do
     @array_of_possible_dates = Hotel::Helper_Method.generate_nights(@date3, @date6)
-    expect(Hotel::Helper_Method.binary_search_list_of_reservations(@array_of_reservations, @array_of_possible_dates)).must_equal true
+    expect(Hotel::Helper_Method.binary_search_list_of_reservations_for_vacancy(@array_of_reservations, @array_of_possible_dates)).must_equal true
   end
 
   it 'it returns true if the check out date is in the middle dates of a reserved room' do
     @array_of_possible_dates = Hotel::Helper_Method.generate_nights(@date5, @date6)
-    expect(Hotel::Helper_Method.binary_search_list_of_reservations(@array_of_reservations, @array_of_possible_dates)).must_equal true
+    expect(Hotel::Helper_Method.binary_search_list_of_reservations_for_vacancy(@array_of_reservations, @array_of_possible_dates)).must_equal true
   end
 
   it 'it returns true if the reservation check in date and check out date is in the middle dates of a reserved room'do
       @array_of_possible_dates = Hotel::Helper_Method.generate_nights(@date3, @date4)
-      expect(Hotel::Helper_Method.binary_search_list_of_reservations(@array_of_reservations, @array_of_possible_dates)).must_equal true
+      expect(Hotel::Helper_Method.binary_search_list_of_reservations_for_vacancy(@array_of_reservations, @array_of_possible_dates)).must_equal true
   end
 
   it 'it returns true if the reservation check in date is in the middle dates of a reserved room'do
     @array_of_possible_dates = Hotel::Helper_Method.generate_nights(@date3, @date6)
-    expect(Hotel::Helper_Method.binary_search_list_of_reservations(@array_of_reservations, @array_of_possible_dates)).must_equal true
+    expect(Hotel::Helper_Method.binary_search_list_of_reservations_for_vacancy(@array_of_reservations, @array_of_possible_dates)).must_equal true
   end
 
   it 'it returns true if the dates of a reserved room fall within a proposed check in date or check out date'do
     @array_of_possible_dates = Hotel::Helper_Method.generate_nights(@date5, @date6)
-    expect(Hotel::Helper_Method.binary_search_list_of_reservations(@array_of_reservations, @array_of_possible_dates)).must_equal true
+    expect(Hotel::Helper_Method.binary_search_list_of_reservations_for_vacancy(@array_of_reservations, @array_of_possible_dates)).must_equal true
   end
 
   it 'it returns false if the reservation check in date is on the check out day of another reservation'do
     @array_of_possible_dates = Hotel::Helper_Method.generate_nights(@date2, @date6)
-    expect(Hotel::Helper_Method.binary_search_list_of_reservations(@array_of_reservations, @array_of_possible_dates)).must_equal false
+    expect(Hotel::Helper_Method.binary_search_list_of_reservations_for_vacancy(@array_of_reservations, @array_of_possible_dates)).must_equal false
   end
 
   it 'it returns false if the reservation check out date is on the check in day of another reservation'do
     @array_of_possible_dates = Hotel::Helper_Method.generate_nights(@date5, @date1)
-    expect(Hotel::Helper_Method.binary_search_list_of_reservations(@array_of_reservations, @array_of_possible_dates)).must_equal false
+    expect(Hotel::Helper_Method.binary_search_list_of_reservations_for_vacancy(@array_of_reservations, @array_of_possible_dates)).must_equal false
   end
 
   describe 'self.sort_reservations' do
@@ -153,13 +153,6 @@ describe 'self.binary_search_list_of_reservations' do
       expect(Hotel::Helper_Method.find_room_number(@hotel.rooms, 1)).must_be_kind_of Hotel::Room
       expect(Hotel::Helper_Method.find_room_number(@hotel.rooms, 20)).must_be_kind_of Hotel::Room
     end
-
-    # it 'must be a valid room number 1-20' do
-    #   VALID_ROOM_NUMBERS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
-    #   @hotel.rooms.each do |room|
-    #     expect(VALID_ROOM_NUMBERS.include?(room.room_number)).must_equal true
-    #   end
-    # end
   end
 
   describe 'connect_reservation_to_room_and_sort' do
@@ -189,6 +182,51 @@ describe 'self.binary_search_list_of_reservations' do
       Hotel::Helper_Method.connect_reservation_to_room_and_sort(@rooms, 1, @reservation2)
       expect(@rooms.first.reservations.first.name).must_equal "Dr. Frank N. Stein"
       expect(@rooms.first.reservations.first.room_number).must_equal 1
+      end
+    end
+
+    describe 'binary_search_reservations_return_index_if_found method' do
+      before do
+        @date1 = Date.new(2020,1,9)
+        @date2 = Date.new(2020,1,13)
+        @date3 = Date.new(2020,2,10)
+        @date4 = Date.new(2020,2,12)
+        @date5 = Date.new(2020,3,4)
+        @date6 = Date.new(2020,3,16)
+
+        #TEST DATES
+        @date7 = Date.new(2020,1,11)
+        @date8 = Date.new(2020,1,12)
+        @date9 =  Date.new(2020,3,16)
+        @date10 =  Date.new(2020,4,4)
+        @date11 =  Date.new(2020,3,4)
+
+        @input = { name: "Mx Thing",
+          room_number: 1,
+          check_in_date: @date1,
+          check_out_date: @date2,
+        }
+        @input2 = { name: "Mx Thing",
+          room_number: 1,
+          check_in_date: @date3,
+          check_out_date: @date4,
+        }
+        @input3 = { name: "Mx Thing",
+          room_number: 1,
+          check_in_date: @date5,
+          check_out_date: @date6,
+        }
+        @reservation = Hotel::Reservation.new(@input)
+        @reservation2 = Hotel::Reservation.new(@input2)
+        @reservation3 = Hotel::Reservation.new(@input3)
+        @array_of_reservations = [@reservation,@reservation2,@reservation3]
+      end
+      it 'returns the index of the Reservation in a list of reservations' do
+        expect(Hotel::Helper_Method.binary_search_reservations_return_index_if_found(@array_of_reservations, @date7)).must_equal 0
+        expect(Hotel::Helper_Method.binary_search_reservations_return_index_if_found(@array_of_reservations, @date8)).must_equal 0
+        expect(Hotel::Helper_Method.binary_search_reservations_return_index_if_found(@array_of_reservations, @date9)).must_equal nil
+        expect(Hotel::Helper_Method.binary_search_reservations_return_index_if_found(@array_of_reservations, @date10)).must_equal nil
+        expect(Hotel::Helper_Method.binary_search_reservations_return_index_if_found(@array_of_reservations, @date11)).must_equal 2
       end
     end
 

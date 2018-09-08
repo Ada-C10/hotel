@@ -29,7 +29,7 @@ module Hotel
     end
 
     def self.binary_search_reservations_return_index_if_found(array_of_reservations, date)
-      # RETURNS TRUE IF BOOKED, FALSE IF VACANT
+      # GIVEN A DATE, IT RETURNS INDEX OF A RESERVATION ON THAT DATE, NIL IF NO RESERVATIONS
       min = 0
       max = array_of_reservations.length
 
