@@ -179,12 +179,28 @@ describe 'TrackingSystem class' do
     end
 
     it "returns an array" do
-      expect(@tracker.view_reservations_on(start_time: Date.new(2018,10,5), end_time: Date.new(2018,10,6))).must_be_kind_of Array
+      expect(@tracker.view_reservations_on(Date.new(2018,10,5))).must_be_kind_of Array
     end
+
+    it "raises an ArgumentError if no reservations are available on given date" do
+      expect{@tracker.view_reservations_on(Date.new(2333,10,5))}.must_raise ArgumentError
+    end
+
 
   end
 
-
+  #
+  # def view_reservations_on(date)
+  #   all_reservations = []
+  #   @reservations.each do |reservation|
+  #     if (reservation[:start_time]...reservation[:end_time]).include? date
+  #       all_reservations << reservation
+  #     end
+  #     if all_reservations.empty?
+  #       raise ArgumentError.new"No reservations on this date"
+  #     end
+  #   end
+  # end
 
 
 
