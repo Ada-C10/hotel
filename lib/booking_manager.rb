@@ -61,6 +61,9 @@ module Hotel
       end
 
       @block_reservations << blocked_rooms
+      Hotel::Helper_Method.sort_reservations(@block_reservations)
+      @hotel_reservations << blocked_rooms
+      Hotel::Helper_Method.sort_reservations(@hotel_reservations)
     end
 
     def search_room_availability(check_in_date, check_out_date)
@@ -92,7 +95,6 @@ module Hotel
         end
       end
       return reservations
-      # return reservations_on_date = @hotel_reservations.find_all { |reservation| reservation.nights_of_stay == date }
     end
 
     def total_cost_of_stay(reservation)
