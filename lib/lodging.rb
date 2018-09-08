@@ -11,5 +11,4 @@ module Lodging
       i += 1
     end
   end
-
 end
