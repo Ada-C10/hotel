@@ -17,8 +17,6 @@ module Hotel
       @reservations = []
     end
 
-
-
     #wave 2 copy of list of room, iterate though list of reservation---care
 
     #returns an array of numbers from a collection of room instances (room_num)
