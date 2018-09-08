@@ -11,31 +11,40 @@ module Hotel
     attr_reader :rooms, :reservations, :booked_dates
     attr_accessor
 
+    NUM_ROOMS = 20
+
     def initialize()
       @reservations = []
       @booked_dates = []
       @rooms = []
-
-      number_of_rooms = 20
-      number_of_rooms.times do |i|
+      NUM_ROOMS.times do |i|
         @rooms << Hotel::Room.new(i+1)
       end
     end
 
     def make_reservation(id, check_in, check_out)
+      check_in = Date.parse(check_in)
+      check_out = Date.parse(check_out)
+      date_range = Hotel::DateRange.new(check_in, check_out)
 
-      # TODO make check_in and check_out into dates here instad of reservation
-      reservation = Hotel::Reservation.new(id, check_in, check_out)
+      # 
+      # # TODO make sure check_in and check_out into dates here instad of reservation
+      # @booked_dates.each do |range|
+      #   if range.overlaps?(date_range)
+      #
+      #   end
+      # end
+      #
+
+      reservation = Hotel::Reservation.new(id, date_range)
       reservation.assign_room(@rooms)
-      # room = reservation.room
-      # room.reservations << reservation
+
       @reservations << reservation
+      @booked_dates << date_range.dates_booked
     end
 
-    def all_rooms()
-    end
+    def find_reservations(date)
 
-    def all_reservations()
     end
 
     def all_booked_dates()

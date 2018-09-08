@@ -1,25 +1,16 @@
 require 'pry'
 require 'awesome_print'
-
 require 'date'
-require 'time_difference'
 
 module Hotel
   class Reservation
-    attr_reader :id, :check_in, :check_out, :room
+    attr_reader :id, :date_range, :room
     attr_accessor :cost
 
-    def initialize(id, check_in, check_out)
+    def initialize(id, date_range)
       @id = id
-      @check_in = Date.parse(check_in)
-      @check_out = Date.parse(check_out)
+      @date_range = date_range
       @cost = calculate_total_cost
-
-      #calculate cost
-
-      # how many days?
-
-      # add to booked dates ??
     end
 
 
@@ -34,15 +25,14 @@ module Hotel
     end
 
     def calculate_total_cost
-      total_days = TimeDifference.between(@check_in, @check_out).in_days.to_int
+      total_days = @date_range.dates_booked.length
       total_cost = 200 * total_days
     end
 
 
-    def add_reservation(reserv)
-
-      # add the reservation to the array @reservations
-    end
+    # def add_reservation(reserv)
+    #   # add the reservation to the array @reservations
+    # end
 
 
   end

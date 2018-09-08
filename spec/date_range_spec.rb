@@ -27,7 +27,7 @@ describe "DateRange Class" do
       expect{ Hotel::DateRange.new(@date1, @date1) }.must_raise StandardError
       expect{ Hotel::DateRange.new(@date3, @date1) }.must_raise StandardError
     end
-    it "raises an ArgumentError if do not put in a Date" do
+    it "raises an ArgumentError if user do not put in a Date" do
       expect{ Hotel::DateRange.new(@date1, '12/08/23') }.must_raise ArgumentError
       expect{ Hotel::DateRange.new('12/06/30', @date1) }.must_raise ArgumentError
       expect{ Hotel::DateRange.new('12/06/30', '12/08/23') }.must_raise ArgumentError
@@ -37,7 +37,6 @@ describe "DateRange Class" do
       expect(@date_range3.dates_booked).must_be_kind_of Array
       expect(@date_range3.dates_booked.length).must_equal 1
       expect(@date_range3.dates_booked[0]).must_equal @date2
-
       expect(@date_range2.dates_booked.length).must_equal 5
       expect(@date_range2.dates_booked[0]).must_equal @date1
     end
