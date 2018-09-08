@@ -57,7 +57,7 @@ module Hotel
       return res_by_date
     end
 
-    # As an administrator, I can view a list of rooms that are available for a given date range
+    # As an administrator, I can view a list of rooms that are not available for a given date range
     def available_rooms()
 
     end

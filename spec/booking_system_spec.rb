@@ -38,7 +38,7 @@ describe "BookingSystem class" do
 
     it "returns a list of available rooms for a given date range"do
 
-    expect(@booking.rooms.length).must_equal
+    expect(@booking.rooms.length).must_equal 20
     end
 
   end
@@ -61,12 +61,13 @@ describe "BookingSystem class" do
       res1 = @booking.make_reservation(200, "2018-02-03", "2018-02-06")
       res2 = @booking.make_reservation(200, "2018-04-03", "2018-04-06")
       puts res1.total_cost
-
       check_day = @booking.reservations_by_date("2018-02-05")
-
       expect(check_day.length).must_equal 1
       # binding.pry
       expect(check_day.first).must_equal res1
+    end
+
+    it "lists rooms that are not available for a date range" do
     end
   end
 end
