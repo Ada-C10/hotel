@@ -45,7 +45,7 @@ describe "ReservationMgr Test" do
       @new_ResMgr.make_reservation("2018-09-07",Date.new(2018,9,9))
       expect(@new_ResMgr.reservations.length).must_equal 2
     end
-    it "will add two seperations to one room if they are not on the same date" do
+    it "will add two instances of res to one room if they are not on the same date" do
       @new_ResMgr.make_reservation("2018-09-05","2018-09-07")
       date_hash = {check_in: Date.parse("2018-09-05"), check_out: Date.parse("2018-09-07"), block_id: nil, block_available: false}
       expect(@new_ResMgr.rooms[0].unavailable_dates[0]).must_equal date_hash
@@ -55,6 +55,10 @@ describe "ReservationMgr Test" do
       expect(@new_ResMgr.rooms[0].unavailable_dates[1]).must_equal date_hash2
       expect(@new_ResMgr.rooms[0].unavailable_dates.length).must_equal 2
     end
+    it "will reserve a block room that is available if some puts in a block party" do
+
+    end
+
   end
 
   describe "reservations_by_date method" do
@@ -97,19 +101,33 @@ describe "ReservationMgr Test" do
       expect(@new_ResMgr.available_rooms("2018-09-05","2018-09-07").length).must_equal 1
       expect(@new_ResMgr.available_rooms("2018-11-05","2018-11-07").length).must_equal 3
     end
+    it "will raise and argument error if check_in date is greater than check_out date" do
+      expect{@new_ResMgr.available_rooms("2018-09-07","2018-09-05")}.must_raise ArgumentError
+    end
   end
 
   describe "reserve_block method" do
     before do
-      @new_ResMgr = ReservationMgr.new(8)
-      @new_ResMgr.reserve_block(Date.parse("2018-09-05"),Date.parse("2018-09-07"),5,"Metzner")
+      @new_ResMgr = ReservationMgr.new(6)
     end
     it "method reserves 5 rooms with false id" do
-      expect(@new_ResMgr.reservations.length).must_equal 5
+      block = @new_ResMgr.reserve_block(Date.parse("2018-09-05"),Date.parse("2018-09-07"),5,"Metzner")
+      expect(block.length).must_equal 5
       expect(@new_ResMgr.reservations[0].block_available).must_equal true
       @new_ResMgr.make_reservation("2018-09-05","2018-09-07")
       expect(@new_ResMgr.reservations.last.block_available).must_equal false
     end
+    it "will raise an argument error if they try to block more than 5 rooms" do
+      expect{@new_ResMgr.reserve_block(Date.parse("2018-09-05"),Date.parse("2018-09-07"),6,"Metzner")}.must_raise ArgumentError
+    end
+    it "will raise an arguemnt error if there are not enough available rooms for a given date range" do
+      @new_ResMgr.make_reservation(Date.parse("2018-09-05"),Date.parse("2018-09-07"))
+      @new_ResMgr.make_reservation(Date.parse("2018-09-05"),Date.parse("2018-09-07"))
+      @new_ResMgr.make_reservation(Date.parse("2018-09-05"),Date.parse("2018-09-07"))
+      expect{@new_ResMgr.reserve_block(Date.parse("2018-09-05"),Date.parse("2018-09-07"),4,"Metzner")}.must_raise ArgumentError
+    end
+
+
   end
   #reserve_block
 

@@ -1,4 +1,5 @@
 require 'pry'
+require 'date'
 require_relative 'room'
 require_relative 'reservation'
 
@@ -46,14 +47,16 @@ class ReservationMgr
     end
 
     i = 0
+    new_reservations = []
     rooms.times do |room|
-      @reservations << Reservation.new(check_in,check_out,available_rooms[i].id, block_id: block_id)
+      new_reservation = Reservation.new(check_in,check_out,available_rooms[i].id, block_id: block_id)
+      @reservations << new_reservation
+      new_reservations << new_reservation
       update_room(check_in,check_out,available_rooms[i].id)
       i + 1
     end
 
-    new_res = @reservations.length-1
-    return @reservations[(new_res-rooms)..new_res]
+    return new_reservations
   end
 
   def update_room(check_in,check_out,room_num,block_id: block_id)
@@ -79,7 +82,7 @@ class ReservationMgr
 
   def reserve_block(check_in,check_out, rooms, block_id)
     if rooms > 5
-      ArgumentError.new('You cannot block more than 5 rooms')
+      raise ArgumentError.new('You cannot block more than 5 rooms')
     end
 
     available_rooms = available_rooms(check_in,check_out)
@@ -89,14 +92,26 @@ class ReservationMgr
     end
 
     i = 0
+    new_reservations = []
     rooms.times do |room|
-      @reservations << Reservation.new(check_in,check_out,available_rooms[i].id, block_id: block_id)
+      new_reservation = Reservation.new(check_in,check_out,available_rooms[i].id, block_id: block_id)
+      @reservations << new_reservation
+      new_reservations << new_reservation
       update_room(check_in,check_out,available_rooms[i].id, block_id: block_id)
       i + 1
     end
 
-    new_res = @reservations.length-1
-    return @reservations[(new_res-rooms)..new_res]
+    return new_reservations
   end
 
 end
+
+
+
+# new_ResMgr = ReservationMgr.new(6)
+# new_ResMgr.make_reservation(Date.parse("2018-09-05"),Date.parse("2018-09-07"))
+# block1 = new_ResMgr.reserve_block(Date.parse("2018-09-05"),Date.parse("2018-09-07"),2,"Dysinger")
+# puts block1
+# binding.pry
+# new_ResMgr.make_reservation(Date.parse("2018-09-05"),Date.parse("2018-09-07"))
+# new_ResMgr.reserve_block(Date.parse("2018-09-05"),Date.parse("2018-09-07"),4,"Metzner")

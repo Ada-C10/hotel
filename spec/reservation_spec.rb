@@ -6,6 +6,8 @@ describe "Reservation Test" do
       new_Res = Reservation.new("2018-09-05","2018-09-07",1)
       expect(new_Res.check_in).must_be_kind_of Date
       expect(new_Res.check_out).must_be_kind_of Date
+      expect(new_Res.block_available).must_equal false
+      expect(new_Res.block_id).must_be_nil
     end
     it "raises an Argument Error when an invalid date is entered in either check_in or check_out" do
       expect{Reservation.new("2018-09-05","2018-09-31",1)}.must_raise ArgumentError
@@ -17,6 +19,11 @@ describe "Reservation Test" do
     it "raises an Argument Error when an invalid room number is inserted" do
       expect{Reservation.new("2018-09-05","2018-09-07",23)}.must_raise ArgumentError
     end
+    it "the block_available instance variable will be true if block_id is associated" do
+      new_Res = Reservation.new("2018-09-05","2018-09-07",2,block_id: "Metzner")
+      expect(new_Res.block_available).must_equal true
+    end
+
   end
   describe "Reservation.cost method" do
     it "Calculates cost for 2 nights" do
