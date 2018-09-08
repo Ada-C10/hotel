@@ -1,5 +1,3 @@
-# require_relative 'room'
-# require_relative 'reservation'
 require 'date'
 
 class Admin

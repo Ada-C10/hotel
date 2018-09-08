@@ -1,5 +1,4 @@
 require 'date'
-# require 'admin'
 
 class Reservation
   attr_reader :id, :room, :start_date, :end_date, :room_cost
@@ -22,7 +21,7 @@ class Reservation
 
     @room_cost = room_cost
   end
-  # In case I want to check date input 
+  # In case I want to check date input
   # def check_date(date)
   #   regex = /^\d{4}-\d{1,2}-\d{1,2}$/
   #   max_result = start_date.match(regex)

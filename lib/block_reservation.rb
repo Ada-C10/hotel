@@ -1,5 +1,3 @@
-# require 'date'
-# require 'admin'
 require 'reservation'
 
 class BlockReservation < Reservation

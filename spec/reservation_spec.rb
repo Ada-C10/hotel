@@ -4,7 +4,7 @@ require 'pry'
 describe "Reservation" do
   describe "initialize" do
     let (:reservation) {
-      reservation = Reservation.new(7, 4, "2018-4-17", "2018-4-20")
+      Reservation.new(7, 4, "2018-4-17", "2018-4-20")
     }
 
     it "Create an instance of reservation" do
