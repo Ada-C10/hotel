@@ -11,10 +11,9 @@ module Hotel
       @check_in = check_in
       @check_out = check_out
 
-      # if @check_in >= @check_out
-      #   raise StandardError, "Your check in and check out date cannot be the same date!"
-      # elsif @check_in <
-      # end
+      if @check_in >= @check_out
+        raise StandardError, "Your check in and check out date is not valid!"
+      end
 
       @dates_booked = (check_in...check_out).to_a
     end

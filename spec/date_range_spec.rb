@@ -25,9 +25,7 @@ describe "DateRange Class" do
 
     it "raises a StandardError if invalid date range is provided" do
       expect{ Hotel::DateRange.new(@date1, @date1) }.must_raise StandardError
-
       expect{ Hotel::DateRange.new(@date3, @date1) }.must_raise StandardError
-      binding.pry
     end
 
     it "creates an array of Dates between check_in and check_out & excluding check_out" do
