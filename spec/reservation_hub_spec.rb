@@ -13,15 +13,6 @@ describe "Reservation Hub class" do
     end_date1 = Date.new(2018, 01, 07)
     end_date2 = Date.new(2018, 04, 06)
     end_date3 = Date.new(2018, 02, 12)
-
-
-
-    #
-    # @reservation1 = Hotel::Reservation.new(start_date1, end_date1, 3)
-    # @reservation2 = Hotel::Reservation.new(start_date2, end_date2, 4)
-    # @reservation3 = Hotel::Reservation.new(start_date3, end_date3, 5)
-    # binding.pry
-
   end
 
 
@@ -39,6 +30,14 @@ describe "Reservation Hub class" do
       expect(@reservation_hub.reservations).must_be_kind_of Array
 
       expect(@reservation_hub.reservations.length).must_equal 0
+    end
+
+    it "must initialize with a hash and cooresponding empty arrays for each room" do
+      expect(@reservation_hub.room_bookings).must_be_kind_of Hash
+
+      expect(@reservation_hub.room_bookings.length).must_equal 20
+
+      expect(@reservation_hub.room_bookings[0]).must_equal nil
     end
   end
 
@@ -60,9 +59,7 @@ describe "Reservation Hub class" do
     end
 
     it "adds a new reservation to array of all reservations" do
-
       expect(@reservation_hub.reservations.length).must_equal 4
-
     end
   end
 
@@ -72,8 +69,6 @@ describe "Reservation Hub class" do
       date = Date.new(2018,1,3)
       expect(date).must_be_kind_of Date
     end
-
-
   end
 
 
@@ -131,45 +126,59 @@ describe "Reservation Hub class" do
       expect(date_array.length).must_equal 12
 
     end
+  end
+
+
+  describe "check available rooms method" do
+
+    it "returns an array of all available rooms for a given date range" do
+
+      @start_date = Date.new(2018,01,06)
+      @end_date = Date.new(2018,01,18)
+
+      available_rooms = @reservation_hub.check_available_rooms(@start_date, @end_date)
+
+      expect(available_rooms.length).must_equal 20
+      expect(available_rooms).must_be_kind_of Array
+    end
+  end
+
+
+
+
+  describe "assign room" do
+
+    before do
+
+      @start_date = Date.new(2018,01,06)
+      @end_date = Date.new(2018,01,18)
+
+      available_rooms = @reservation_hub.check_available_rooms(@start_date, @end_date)
+    end
+
+    it "will assign the first value in the array to the reservation" do
+      room_id = @reservation_hub.assign_room(@start_date, @end_date)
+
+      expect(room_id).must_equal 1
+    end
+
+    it "won't duplicate room ids if two reservations share the same dates" do
+
+      room_id = @reservation_hub.assign_room(@start_date, @end_date)
+      room_id2 = @reservation_hub.assign_room(@start_date, @end_date)
+
+      expect(room_id2.must_equal 2)
+    end
+
+
+    it "raises an error if the hotel is fully booked" do
+      20.times do
+        @reservation_hub.add_reservation(2018,01,06,2018,01,18)
+      end
+
+      expect{@reservation_hub.add_reservation(2018,01,06,2018,01,18)}.must_raise StandardError
+    end
 
   end
+
 end
-
-
-
-
-
-
-
-  # it "will add the new reservation to the array" do
-  #   # binding.pry
-  #   # @reservations << @reservation1
-  #   expect(@reservations).must_include @reservation1
-  # end
-
-  # it 'will return all reservations' do
-  #   expect(@reservations.length).must_equal 2
-  # end
-
-  # it 'will return an array of all reservations' do
-  #   reservations = Hotel::Reservation.all
-  #   expect(reservations).must_be_kind_of Array
-  # end
-
-  # it "each item in array is a Reservation instance" do
-  #   @reservations
-  # end
-
-
-  # it "Returns an array of all customers" do
-  #   customers = Customer.all
-  #
-  #   expect(customers.length).must_equal 35
-  #   customers.each do |c|
-  #     expect(c).must_be_kind_of Customer
-  #   end
-  # end
-
-
-
-# end

@@ -12,13 +12,13 @@ describe "Reservation class" do
       expect(@reservation).must_be_kind_of Hotel::Reservation
     end
 
+
     it "must throw an argument error if the end date is before the start date" do
       start_date = Date.new(2015, 03, 05)
       end_date = Date.new(2015, 03, 01)
       expect {Hotel::Reservation.new(start_date, end_date)}.must_raise ArgumentError
     end
   end
-
 
 
   describe "reservation cost" do
@@ -35,13 +35,3 @@ describe "Reservation class" do
   end
 
 end
-
-
-
-#As an administrator, I can access the list of all of the rooms in the hotel
-#As an administrator, I can reserve a room for a given date range
-#As an administrator, I can access the list of reservations for a specific date
-#def - find reservations (find all?) (date)
-#return array of reservations
-
-#As an administrator, I can get the total cost for a given reservation
