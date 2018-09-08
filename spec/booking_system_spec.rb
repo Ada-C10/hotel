@@ -14,11 +14,6 @@ describe "BookingSystem class" do
       # binding.pry
       expect(@rooms).must_be_kind_of Array
     end
-
-    # it "loads each room as an instance of Reservation" do
-    #   @rooms = @system.load_rooms
-    #   expect(@rooms[0]).must_be_instance_of Hotel::Reservation
-    # end
   end
 
   describe "make reservation" do
@@ -116,6 +111,25 @@ describe "BookingSystem class" do
     end
   end
 
+  describe "generate_id" do
+    it "generates an integer id" do
+      expect(@system.generate_id).must_be_kind_of Integer
+    end
+
+    it "assigns id to reservation" do
+      reservation1 = Hotel::Reservation.new(id: @system.generate_id, room: 1, start_date: Date.new(2018, 1, 1), end_date: Date.new(2018, 1, 5), price_per_night: 200)
+      @system.reservations << reservation1
+
+      expect(reservation1.id).must_be_kind_of Integer
+    end
+
+    it "raises an Argument Error if id is not unique" do
+      # binding.pry
+      reservation1 = Hotel::Reservation.new(id: @system.generate_id, room: 1, start_date: Date.new(2018, 1, 1), end_date: Date.new(2018, 1, 5), price_per_night: 200)
+      @system.reservations << reservation1
+      expect { @system.check_id(reservation1.id) }.must_raise ArgumentError
+    end
+  end
 end
 
 # Hi! In Edges we talked about interesting test cases for date overlaps this afternoon. Here is a full list of all the cases I’ll be looking for when I give feedback:

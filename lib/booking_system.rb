@@ -5,6 +5,7 @@ module Hotel
     def initialize
       @rooms = load_rooms
       @reservations = []
+      @all_ids = []
     end
 
     def load_rooms
@@ -15,15 +16,11 @@ module Hotel
         rooms << i
         i += 1
       end
-
-      # @reservations = rooms.map do |room|
-      #   room = Hotel::Reservation.new(id: nil, room: room, start_date: nil, end_date: nil, price_per_night: 200)
-      # end
       return rooms
     end
 
     def make_reservation(start_date, end_date)
-      reservation = Hotel::Reservation.new(id: 1, room: assign_available_room(start_date, end_date), start_date: start_date, end_date: end_date, price_per_night: 200)
+      reservation = Hotel::Reservation.new(id: generate_id, room: assign_available_room(start_date, end_date), start_date: start_date, end_date: end_date, price_per_night: 200)
       @reservations << reservation
       # binding.pry
     end
@@ -57,6 +54,19 @@ module Hotel
     def find_reservation(id)
       reservation = @reservations.find { |reservation| reservation.id == id }
       return reservation
+    end
+
+    def generate_id
+      id = rand(1..100000)
+      check_id(id)
+      @all_ids << id
+      return id
+    end
+
+    def check_id(id)
+      if @all_ids.include?(id)
+        raise ArgumentError, "id already exists"
+      end
     end
 
     def total_cost(id)
