@@ -1,5 +1,4 @@
 require_relative 'spec_helper'
-require 'pry'
 
 describe "ReservationTracker class" do
   describe "Initializer" do

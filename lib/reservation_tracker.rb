@@ -1,8 +1,6 @@
 require_relative 'date_range'
 require_relative 'reservation'
 
-require 'pry'
-
 NUM_OF_ROOMS = 20
 MAX_BLOCK_NUM = 5
 
