@@ -12,9 +12,10 @@ describe 'ReservationManager' do
       expect(manager.reservations).must_be_kind_of Array
       expect(manager.rooms).must_be_kind_of Array
       expect(manager.room_cost).must_be_kind_of Numeric
+      # expect(manager.room_block_cost).must_be_kind_of Numeric
     end
 
-    it 'will populate 20 instances of room upon initaialization' do
+    it 'will populate 20 instances of room upon initialization' do
 
       expect(manager.rooms[0]).must_be_instance_of Hotel::Room
       expect(manager.rooms[19]).must_be_instance_of Hotel::Room
@@ -139,6 +140,9 @@ describe 'ReservationManager' do
         manager.add_reservation_to_list("reservation, 12/24/2018, 12/24/2018")
       }.must_raise ArgumentError
     end
+  end
+
+  describe 'parse_input' do
   end
 
 
