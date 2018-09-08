@@ -8,7 +8,7 @@ describe "Block class" do
 
     @block_data = {
       id: 8,
-      num_rooms: 5,
+      party: 5,
       date_range: @date_range
     }
 

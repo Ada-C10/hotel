@@ -1,6 +1,8 @@
 require_relative 'date_range'
 require_relative 'reservation'
 
+require 'pry'
+
 NUM_OF_ROOMS = 20
 MAX_BLOCK_NUM = 5
 
@@ -46,6 +48,11 @@ module Hotel
       unavailable_rooms = matching_reservations.map do |reservation|
         reservation.room
       end
+
+      @blocked_rooms.each do |room|
+        unavailable_rooms << room.party
+      end
+
       return unavailable_rooms
     end
 
@@ -70,10 +77,12 @@ module Hotel
       requested_dates = get_requested_dates(input)
 
       reservation_id = @reservations.length + 1
+      block_id = input[:block_id]
       room = get_first_available_room(requested_dates)
 
       reservation_data = {
         id: reservation_id,
+        block_id: block_id,
         room: room,
         date_range: requested_dates
       }
@@ -99,11 +108,11 @@ module Hotel
     def block_rooms(input)
       requested_dates = get_requested_dates(input)
       block_id = @blocked_rooms.length + 1
-      blocked_amt_rooms = get_blocked_rooms(input[:num_rooms], requested_dates)
+      blocked_amt_rooms = get_blocked_rooms(input[:party], requested_dates)
 
       block_data = {
         id: block_id,
-        num_rooms: blocked_amt_rooms,
+        party: blocked_amt_rooms,
         date_range: requested_dates
       }
 

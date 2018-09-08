@@ -1,10 +1,10 @@
 module Hotel
   class Block
-    attr_reader :id, :num_rooms, :date_range
+    attr_reader :id, :party, :date_range
 
     def initialize(input)
       @id = input[:id]
-      @num_rooms = input[:num_rooms]
+      @party = input[:party]
       @date_range = input[:date_range]
     end
   end

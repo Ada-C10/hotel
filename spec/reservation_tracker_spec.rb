@@ -161,7 +161,7 @@ describe "ReservationTracker class" do
       @input = {
         start_date: @start_date,
         end_date: @end_date,
-        num_rooms: 5
+        party: 5
       }
 
       @reservation_tracker.block_rooms(@input)
@@ -188,7 +188,7 @@ describe "ReservationTracker class" do
       @block_input = {
         start_date: @start_date,
         end_date: @end_date,
-        num_rooms: 5
+        party: 5
       }
       @res_input = {
         block_id: 1,
