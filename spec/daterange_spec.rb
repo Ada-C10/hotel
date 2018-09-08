@@ -1,8 +1,8 @@
 require_relative "spec_helper"
 
 describe "HotBook::DateRange class" do
-  let(:daterange) {HotBook::DateRange.new(start_date: "apr_1",
-                                          end_date: "apr_2")}
+  let(:daterange) {
+    HotBook::DateRange.new(start_date: "apr_1", end_date: "apr_2") }
 
   describe "initialize method" do
     it "accepts Strings as args" do
@@ -53,6 +53,14 @@ describe "HotBook::DateRange class" do
       expect(daterange.duration).must_equal 1
     end
   end
+  #
+  # describe "is_valid? method" do
+  #   it "returns true for valid range" do
+  #     expect(daterange.is_valid?).must_equal true
+  #   end
+  #   it "raises ArgError for invalid range" do
+  #   end
+  # end
 
   describe "is_after? method" do
     # existing range:
