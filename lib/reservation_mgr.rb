@@ -104,6 +104,15 @@ class ReservationMgr
     return new_reservations
   end
 
+  def find_available_block_rooms(block_id)
+    block_rooms = @reservations.select { |reservation|  reservation.block_id == block_id && reservation.block_available == true  }
+    if block_rooms.length == 0
+      raise ArgumentError.new("No available rooms in the block")
+    else
+      return block_rooms
+    end
+  end
+
 end
 
 

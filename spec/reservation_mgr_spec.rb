@@ -126,9 +126,22 @@ describe "ReservationMgr Test" do
       @new_ResMgr.make_reservation(Date.parse("2018-09-05"),Date.parse("2018-09-07"))
       expect{@new_ResMgr.reserve_block(Date.parse("2018-09-05"),Date.parse("2018-09-07"),4,"Metzner")}.must_raise ArgumentError
     end
-
-
   end
-  #reserve_block
+
+  describe "find_available_block_rooms method" do
+    before do
+      @new_ResMgr = ReservationMgr.new(6)
+    end
+    it "returns rooms in block that have not been reserved" do
+      block = @new_ResMgr.reserve_block(Date.parse("2018-09-05"),Date.parse("2018-09-07"),5,"Metzner")
+      expect(@new_ResMgr.find_available_block_rooms("Metzner").length).must_equal 5
+      expect(@new_ResMgr.find_available_block_rooms("Metzner")[0]).must_be_kind_of Reservation
+    end
+    it "raises an argument error if no rooms are available in that block" do
+      expect{@new_ResMgr.find_available_block_rooms("Metzner")}.must_raise ArgumentError
+    end
+  end
+
+  #find_available_block_rooms(block_id)
 
 end

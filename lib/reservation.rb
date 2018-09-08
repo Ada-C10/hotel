@@ -41,6 +41,7 @@ class Reservation
     end
 
     return (@check_in..@check_out).to_a.include?(date)
-
   end
+
+
 end
