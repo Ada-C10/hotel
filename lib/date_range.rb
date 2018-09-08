@@ -18,5 +18,6 @@ module Hotel
       @dates_booked & range.dates_booked == [] ? false : true
     end
 
+
   end
 end
