@@ -14,11 +14,11 @@ describe "BookingSystem class" do
     it "Takes check_in, check_out, cost, and reservation_id" do
       expect(@booking).must_respond_to :rooms
       expect(@booking).must_respond_to :reservations
-      expect(@booking).must_respond_to :availibility
+      # expect(@booking).must_respond_to :availibility
     end
 
     it "is set up for specific attributes and data types" do
-      [:rooms, :reservations, :availibility].each do |initial|
+      [:rooms, :reservations].each do |initial|
         expect(@booking).must_respond_to initial
       end
       expect(@booking.rooms).must_be_kind_of Array
@@ -66,8 +66,20 @@ describe "BookingSystem class" do
       # binding.pry
       expect(check_day.first).must_equal res1
     end
+    it "lists reservations for a specific date range" do
+      res1 = @booking.make_reservation(200, "2018-02-03", "2018-02-06")
+      res2 = @booking.make_reservation(200, "2018-02-06", "2018-04-10")
+      # puts res1.total_cost
+      check_day = @booking.reservations_by_date_range(Hotel::DateRange.new("2018-02-05","2018-02-10"))
+      expect(check_day.length).must_equal 2
+      # binding.pry
+      expect(check_day.first).must_equal res1
+    end
 
-    it "lists rooms that are not available for a date range" do
+    it "lists rooms that are available for a date range" do
+      res1 = @booking.make_reservation(200, "2018-04-03", "2018-04-06")
+
+      expect(@booking.list_available_rooms(Hotel::DateRange.new("2018-04-03", "2018-04-06")).length).must_equal 19
     end
   end
 end

@@ -1,11 +1,12 @@
 require 'date'
 require_relative "reservation"
 require_relative "date_range"
+require 'pry'
 
 
 module Hotel
   class BookingSystem
-    attr_reader :rooms, :reservations, :availibility
+    attr_reader :rooms, :reservations
 
     def initialize
       @rooms =
@@ -16,21 +17,15 @@ module Hotel
       @reservations = [
 
       ]
+
       # @availibility = availibility
 
       #get reservations by date
-
 
       # keep track of reservations - make sure # of reservations have increased by 1
 
       #method to find an availible room:
       # input:start, end. output:availible room
-
-      # use a helper method to check_overlapping dates:
-      # input: reservation attempt: (start date and end date) compare to an existing reservation
-
-      #edge case: begining of res or end of res can overlap(but check_out and check_in can be same date)
-
       #edge case - what if there are no available rooms?
 
       # methods
@@ -40,7 +35,7 @@ module Hotel
     end
 
     # method to make_reservation
-    # return if successful return res_id, or "sucess", or return true
+    # return if successful return res_id
     def make_reservation(cost_per_night, check_in, check_out)
       room_number = @rooms.sample[:room_number]
       reservation = Hotel::Reservation.new(room_number, cost_per_night, check_in, check_out)
@@ -57,9 +52,28 @@ module Hotel
       return res_by_date
     end
 
-    # As an administrator, I can view a list of rooms that are not available for a given date range
-    def available_rooms()
-
+    # list reservations for a specific date range
+    def reservations_by_date_range(date_range)
+      res_by_date_range = @reservations.select do |res|
+        res.date_range.overlaps?(date_range)
+      end
+      return res_by_date_range
     end
+
+    # As an administrator, I can view a list of rooms that are not reserved for a given date range
+    # reservation date range overlaps with
+    def list_available_rooms(date_range)
+      conflicting_reservations = reservations_by_date_range(date_range)
+
+      available_rooms = @rooms.reject do |room|
+        conflicting_reservations.find do |res|
+          res.room_number == room[:room_number]
+        end
+      end
+      #puts "#{available_rooms}"
+      return available_rooms
+    end
+
+
   end
 end
