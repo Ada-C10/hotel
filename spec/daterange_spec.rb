@@ -82,14 +82,14 @@ describe "HotBook::DateRange class" do
         expect(notok3.is_after?(oldrange)).must_equal false
       end
 
-    describe "to_range method" do
-      it "will return a Range class object" do
-        daterange = HotBook::DateRange.new(start_date: "apr_1",
-                                           end_date: "apr_2")
-        range = daterange.to_range
-        expect(range).must_be_instance_of Range
-      end
-    end
+    # describe "to_range method" do
+    #   it "will return a Range class object" do
+    #     daterange = HotBook::DateRange.new(start_date: "apr_1",
+    #                                        end_date: "apr_2")
+    #     range = daterange.to_range
+    #     expect(range).must_be_instance_of Range
+    #   end
+    # end
   end
 
 end
