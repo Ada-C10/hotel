@@ -1,5 +1,4 @@
-require 'time'
-require 'date'
+require_relative 'lib_file_helper'
 
 class Reservation
   attr_accessor :reservation_num, :room_num, :start_date, :end_date, :room_type, :dates_booked_for_reservation

@@ -1,5 +1,4 @@
-require 'time'
-require 'date'
+require_relative 'lib_file_helper'
 
 class Room
   attr_accessor :room_number, :dates_booked
