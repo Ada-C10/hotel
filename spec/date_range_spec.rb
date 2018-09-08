@@ -48,7 +48,36 @@ describe "initialize" do
       dates2 = Hotel::DateRange.new("2018-04-03", "2018-04-06")
       overlaps = dates2.overlaps?(dates)
       expect(overlaps).must_equal false
-
+    end
+    it "finds if ranges overlap if same dates" do
+      dates = Hotel::DateRange.new("2018-02-03", "2018-02-06")
+      dates2 = Hotel::DateRange.new("2018-02-03", "2018-02-06")
+      overlaps = dates2.overlaps?(dates)
+      expect(overlaps).must_equal true
+    end
+    it "finds if ranges overlap in the front" do
+      dates = Hotel::DateRange.new("2018-02-03", "2018-02-06")
+      dates2 = Hotel::DateRange.new("2018-02-03", "2018-02-04")
+      overlaps = dates2.overlaps?(dates)
+      expect(overlaps).must_equal true
+    end
+    it "finds if ranges overlap in the back" do
+      dates = Hotel::DateRange.new("2018-02-03", "2018-02-06")
+      dates2 = Hotel::DateRange.new("2018-02-05", "2018-02-07")
+      overlaps = dates2.overlaps?(dates)
+      expect(overlaps).must_equal true
+    end
+    it "finds if ranges are completely contain" do
+      dates = Hotel::DateRange.new("2018-02-03", "2018-02-06")
+      dates2 = Hotel::DateRange.new("2018-02-04", "2018-02-05")
+      overlaps = dates2.overlaps?(dates)
+      expect(overlaps).must_equal true
+    end
+    it "finds if ranges are completely containing" do
+      dates = Hotel::DateRange.new("2018-02-05", "2018-02-06")
+      dates2 = Hotel::DateRange.new("2018-02-04", "2018-02-07")
+      overlaps = dates2.overlaps?(dates)
+      expect(overlaps).must_equal true
     end
 
     describe "find if dates are included" do
