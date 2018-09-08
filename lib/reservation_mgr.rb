@@ -38,9 +38,6 @@ class ReservationMgr
     if check_out.class != Date
       check_out = Date.parse(check_out)
     end
-    if check_out < check_in
-      raise ArgumentError.new('The check-out date is before the check-in')
-    end
 
     available_rooms = available_rooms(check_in,check_out)
 
@@ -52,11 +49,16 @@ class ReservationMgr
     rooms.times do |room|
       @reservations << Reservation.new(check_in,check_out,available_rooms[i].id)
       update_room = @rooms.find {|room| room.id == available_rooms[i].id}
-      update_room.add_unavailable_dates(check_in,check_out)
+      update_room.add_unavailablity(check_in,check_out)
       i + 1
     end
     new_res = @reservations.length-1
     return @reservations[(new_res-rooms)..new_res]
+  end
+
+  def update_room(room_num)
+    update_room = @rooms.find {|room| room.id == room_num}
+    update_room.add_unavailablity(check_in,check_out)
   end
 
   def reservations_by_date(date)
@@ -73,6 +75,10 @@ class ReservationMgr
 
   def reservation_cost(reservation)
     reservation.cost
+  end
+
+  def reserve_block(check_in,check_out,rooms: 1, block: nil)
+
   end
 
 end

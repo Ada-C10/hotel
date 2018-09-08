@@ -58,13 +58,13 @@ describe "Room Test" do
     end
   end
 
-  describe "Room.add_unavailable_dates method" do
+  describe "Room.add_unavailablity method" do
     before do
       @check_in = Date.parse("2018-09-05")
       @check_out = Date.parse("2018-09-07")
       @new_room1 = Room.new(1)
-      @new_room1.add_unavailable_dates(@check_in,@check_out)
-      @new_room1.add_unavailable_dates(Date.parse("2018-09-01"),Date.parse("2018-09-05"))
+      @new_room1.add_unavailablity(@check_in,@check_out)
+      @new_room1.add_unavailablity(Date.parse("2018-09-01"),Date.parse("2018-09-05"))
     end
     it "New unavailable dates are inserted as a hash" do
       expect(@new_room1.unavailable_dates[0]).must_be_kind_of Hash
