@@ -38,10 +38,12 @@ class Room
     # end
   end
 
-  def add_unavailablity(check_in,check_out)
+  def add_unavailablity(check_in,check_out,block_id: nil,block_available: false )
     dates = {}
     dates[:check_in] = check_in
     dates[:check_out] = check_out
+    dates[:block_id] = block_id
+    dates[:block_available] = block_available
     unavailable_dates << dates
     unavailable_dates.sort_by! { |ranges| ranges[:check_in] }
   end

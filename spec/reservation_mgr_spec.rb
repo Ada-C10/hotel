@@ -47,11 +47,11 @@ describe "ReservationMgr Test" do
     end
     it "will add two seperations to one room if they are not on the same date" do
       @new_ResMgr.make_reservation("2018-09-05","2018-09-07")
-      date_hash = {check_in: Date.parse("2018-09-05"), check_out: Date.parse("2018-09-07")}
+      date_hash = {check_in: Date.parse("2018-09-05"), check_out: Date.parse("2018-09-07"), block_id: nil, block_available: false}
       expect(@new_ResMgr.rooms[0].unavailable_dates[0]).must_equal date_hash
 
       @new_ResMgr.make_reservation("2018-09-07","2018-09-09")
-      date_hash2 = {check_in: Date.parse("2018-09-07"), check_out: Date.parse("2018-09-09")}
+      date_hash2 = {check_in: Date.parse("2018-09-07"), check_out: Date.parse("2018-09-09"), block_id: nil, block_available: false}
       expect(@new_ResMgr.rooms[0].unavailable_dates[1]).must_equal date_hash2
       expect(@new_ResMgr.rooms[0].unavailable_dates.length).must_equal 2
     end
