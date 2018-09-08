@@ -131,11 +131,14 @@ describe "BookingManager class" do
     it "returns all reservations on the desired date" do
       hotel = Hotel::BookingManager.new(5)
       room1 = Hotel::Room.new(1)
-      room3 = Hotel::Room.new(2)
+      room2 = Hotel::Room.new(2)
+      room3 = Hotel::Room.new(3)
       booking1 = Hotel::Reservation.new(room1, guest_name: "Tony Blaze", start_date: "June 10, 2018", end_date: "June 12, 2018")
-      booking2 = Hotel::Reservation.new(room3, guest_name: "Jessie Jade", start_date: "June 10, 2018", end_date: "June 14, 2018")
+      booking2 = Hotel::Reservation.new(room2, guest_name: "Jessie Jade", start_date: "June 10, 2018", end_date: "June 14, 2018")
+      booking3 = Hotel::Reservation.new(room3, guest_name: "Jessie Jade", start_date: "June 14, 2018", end_date: "June 16, 2018")
       hotel.add_reservation_to_calendar(booking1)
       hotel.add_reservation_to_calendar(booking2)
+      hotel.add_reservation_to_calendar(booking3)
 
       expect(hotel.find_reservations_on_date("June 11, 2018", hotel.room_calendar).length).must_equal 2
     end # of returns all reservations on date it
