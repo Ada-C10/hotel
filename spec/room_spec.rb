@@ -25,6 +25,5 @@ describe 'Room class' do
       expect(@room.room_number).must_be_kind_of Integer
       expect(@room.price).must_be_kind_of Integer
     end
-
   end
 end

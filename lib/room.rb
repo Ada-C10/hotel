@@ -1,8 +1,10 @@
 require 'time'
 
 module Hotel
+
   class Room
-    attr_reader :room_number, :price
+    attr_accessor :room_number
+    attr_reader :price
 
     ROOM_NUMBERS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
 
@@ -16,5 +18,7 @@ module Hotel
         raise ArgumentError
       end
     end
+
   end
+
 end

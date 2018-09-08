@@ -10,7 +10,7 @@ describe 'Reservation class' do
       @res_1 = Hotel::Reservation.new({reservation_id: 1, room: @honeymoon_suite, check_in: "01/10/1988", check_out: "01/17/1988", cost: 1000})
     end
 
-    it "it is an instance of Reservation" do
+    it "is an instance of Reservation" do
       expect(@res_1).must_be_kind_of Hotel::Reservation
     end
 
