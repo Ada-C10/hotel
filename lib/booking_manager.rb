@@ -7,7 +7,7 @@ require_relative 'helper_method'
 
 module Hotel
   class Booking_Manager
-    attr_reader :rooms, :hotel_reservations
+    attr_reader :rooms, :hotel_reservations, :block_reservations
 
     ROOM_NUMBERS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
     ROOM_COST = 200
@@ -15,11 +15,10 @@ module Hotel
     def initialize
       @rooms = load_rooms
       @hotel_reservations = []
-      @reserved_blocks = []
+      @block_reservations = []
     end
 
     def reserve_room(input)
-
       search_room_availability(input[:check_in_date], input[:check_out_date])
       connected_room_number = Hotel::Helper_Method.find_room_number(@rooms, input[:room_number])
 
@@ -53,11 +52,18 @@ module Hotel
           block_name: input[:block_name],
           block_discount: input[:block_discount]
         }
-        Hotel::Block_Room.new(block_room_hash)
+        reservation = Hotel::Block_Room.new(block_room_hash)
+
+        connected_room_number = Hotel::Helper_Method.find_room_number(@rooms, vacant_rooms[number_of_rooms_to_block])
+
+        Hotel::Helper_Method.connect_reservation_to_room_and_sort(connected_room_number, reservation)
+
+        blocked_rooms << reservation
+
         number_of_rooms_to_block -= 1
       end
 
-      return blocked_rooms
+      @block_reservations << blocked_rooms
     end
 
     def search_room_availability(check_in_date, check_out_date)

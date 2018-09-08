@@ -38,6 +38,10 @@ describe "Block_Room Class" do
       expect(@hotel_block.block_name).must_equal "Munster - Addams Wedding"
     end
 
+    it 'has a default status of available' do
+      expect(@hotel_block.block_reservation_status).must_equal :AVAILABLE
+    end
+
   end
 
 end

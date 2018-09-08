@@ -198,9 +198,10 @@ describe "Hotel Manager class" do
       }
     end
 
-    it 'creates an array of block room reservations ' do
+    it 'creates an array of block room reservations and adds it an array of all block room reservations ' do
       @block = @hotel.create_block(@input)
-      @block.each do |reservation|
+      expect(@hotel.block_reservations.length).must_equal 1
+      @hotel.block_reservations[0].each do |reservation|
         expect(reservation).must_be_kind_of Hotel::Block_Room
         expect(reservation.block_name).must_equal "Munster - Addams Wedding"
         expect(reservation.nights_of_stay.length).must_equal 3
