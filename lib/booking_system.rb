@@ -14,11 +14,10 @@ module Hotel
 
     def list_all_rooms()
       return (1..20).to_a
-      # all_rooms = nums.map { |num| Hotel::Room.new(num: num)}
     end
 
-    def construct_cal_checker(start_date:, end_date:)
-      return Calendar.new(start_date: start_date, end_date: end_date)
+    def construct_cal_checker(check_in:, check_out:)
+      return Calendar.new(check_in: check_in, check_out: check_out)
     end
 
     def generate_res_id()
@@ -90,10 +89,6 @@ module Hotel
 #       return @rooms.find {|room| room.num == room_num.to_i}
 #     end
 #
-#     def overlap?(date_range_1, date_range_2)
-#       return false if (date_range_1 & date_range_2).empty? else return true
-#     end
-#
 #     def list_avail_rooms_for_date(check_date)
 #       avail_rooms = @reservations.select { |reservation| !reservation.date_range.include?(check_date) } #==false
 #         # check for no overlap in dates
@@ -119,7 +114,8 @@ module Hotel
 end
 
 
-# booking = Hotel::BookingSystem.new()
+booking = Hotel::BookingSystem.new()
+puts booking.reservations.empty?
 # #
 # res_3 = booking.create_reservation({
 #   id: "4",

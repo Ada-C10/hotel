@@ -14,6 +14,8 @@ describe "BookingSystem class" do
       expect(booking_system.rooms).must_be_kind_of Array
       expect(booking_system.reservations).must_be_kind_of Array
     end
+
+    #TODO: can add new reservations successfully? or elsewhere do this??
   end
 
   describe "#list_all_rooms" do
@@ -43,32 +45,34 @@ describe "BookingSystem class" do
   describe "#construct_cal_checker" do
     # see additional constructor tests in Calendar
     it "creates a new instance of Calendar" do
-      booking_system.construct_cal_checker(start_date: "1990-10-01", end_date: "1990-10-15").must_be_kind_of Hotel::Calendar
+      booking_system.construct_cal_checker(check_in: "1990-10-01", check_out: "1990-10-15").must_be_kind_of Hotel::Calendar
       #TODO: check for endd_date as nil?
     end
   end
 
   describe "#generate_res_id" do
-    let(:first_res) {Reservation.new("1996-08-01", "1996-08-03")}
-    let(:second_res) {Reservation.new("1996-09-09", "1996-08-13")}
-    let(:third_res) {Reservation.new("1996-10-01-", "1996-10-10")}
 
-    it "creates the first reservation ID if it's the first reservation in reservations list" do
-      booking_system.reservations << first_res
-  
-      expect(reservations.generate_res_id[0].id).must_equal 1
+    let(:second_res) {Hotel::Reservation.new(id: 2, room_num: 19, check_in: "1996-09-09", check_out: "1996-08-13")}
+    let(:third_res) {Hotel::Reservation.new(id: 3, room_num: 20, check_in: "1996-10-01-", check_out: "1996-10-10")}
+
+    it "can create ID for first reservation ID instance" do
+      new_id = booking_system.generate_res_id()
+      new_res = Hotel::Reservation.new(id: new_id, room_num: 16, check_in: "1996-08-01", check_out: "1996-08-03")
+
+      booking_system.reservations << new_res
+
+      expect(booking_system.reservations[0].id).must_equal 1
     end
 
     it "can generate accurate IDs when new reservations are added to reservations list" do
+      first_res = Hotel::Reservation.new(id: 10, room_num: 19, check_in: "1996-09-09", check_out: "1996-09-13")
       booking_system.reservations << first_res
+
+      new_id = booking_system.generate_res_id()
+      second_res = Hotel::Reservation.new(id: new_id, room_num: 20, check_in: "1996-10-01", check_out: "1996-10-10")
       booking_system.reservations << second_res
 
-      expect(reservations.generate_res_id[0].id).must_equal 1
-      expect(reservations.generate_res_id[1].id).must_equal 2
-
-      booking_system.reservations << third_res
-
-      expect(reservations.generate_res_id[-1].id).must_equal 3
+      expect(booking_system.reservations[1].id).must_equal 11
     end
   end
 #

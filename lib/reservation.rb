@@ -5,7 +5,7 @@ module Hotel
   class Reservation < Calendar
     attr_reader :id, :room, :daily_rate
 
-    def initialize(check_in:, check_out:, id:, room_num:, daily_rate:200)
+    def initialize(check_in:, check_out:, id:, room_num:, daily_rate: 200)
       super(check_in: check_in, check_out: check_out)
 
       @id = id.to_i
@@ -30,11 +30,11 @@ module Hotel
 end
 
 
-res = Hotel::Reservation.new(
-  id: "2",
-  room_num: "3",
-  check_in: "2004-5-6",
-  check_out: "2004-7-4")
-
-p res.create_date_range
-p res.create_date_range.class
+# res = Hotel::Reservation.new(
+#   id: "2",
+#   room_num: "3",
+#   check_in: "2004-5-6",
+#   check_out: "2004-7-4")
+#
+# p res.create_date_range
+# p res.create_date_range.class
