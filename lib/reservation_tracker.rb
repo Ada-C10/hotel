@@ -1,11 +1,15 @@
 require_relative 'date_range'
 require_relative 'reservation'
 
+require 'pry'
+
 NUM_OF_ROOMS = 20
 MAX_BLOCK_NUM = 5
 
 module Hotel
   class ReservationTracker
+    class InvalidDateError < StandardError; end
+    class DatesOrderError < StandardError; end
     class NoRoomsError < StandardError; end
     class InvalidAmountRoomsError < StandardError; end
     class TooManyRoomsError < StandardError; end
@@ -41,20 +45,20 @@ module Hotel
       end
     end
 
-    def find_blocked_rooms(requested_dates)
-      blocked_rooms = @blocked_rooms.map do |room|
-        if room.date_range.get_range == requested_dates.get_range
-          room.party
-        end
-      end
-    end
-
     def find_reserved_rooms(requested_dates)
       matching_reservations = reservations_overlaps?(requested_dates)
       reserved_rooms = matching_reservations.map do |reservation|
         reservation.room
       end
       return reserved_rooms
+    end
+
+    def find_blocked_rooms(requested_dates)
+      blocked_rooms = @blocked_rooms.map do |room|
+        if room.date_range.get_range == requested_dates.get_range
+          room.party
+        end
+      end
     end
 
     def find_unavailable_rooms(requested_dates)
@@ -77,7 +81,13 @@ module Hotel
       return first_available_room
     end
 
+    def confirm_valid_dates?(input)
+      check_dates_validity?(input[:start_date], input[:end_date])
+      check_dates_order?(input[:start_date], input[:end_date])
+    end
+
     def get_requested_dates(input)
+      confirm_valid_dates?(input)
       return DateRange.new(input[:start_date], input[:end_date])
     end
 
@@ -100,13 +110,13 @@ module Hotel
       return new_reservation
     end
 
-    def check_valid_amt(requested_amt)
+    def confirm_valid_amt?(requested_amt)
       check_valid_num?(requested_amt)
       check_num_requested?(requested_amt)
     end
 
     def get_blocked_rooms(requested_amt, requested_dates)
-      check_valid_amt(requested_amt)
+      confirm_valid_amt?(requested_amt)
       available_rooms = find_available_rooms(requested_dates)
       check_enough_rooms?(available_rooms, requested_amt)
       block = available_rooms.take(requested_amt)
@@ -130,6 +140,18 @@ module Hotel
     end
 
     private
+
+    def check_dates_validity?(start_date, end_date)
+      unless (start_date.is_a?(Date) && end_date.is_a?(Date))
+        raise InvalidDateError.new("That is not a Date type")
+      end
+    end
+
+    def check_dates_order?(start_date, end_date)
+      unless start_date < end_date
+        raise DatesOrderError.new("Start date must be before end date")
+      end
+    end
 
     def check_enough_rooms?(available_rooms, requested_amt)
       if available_rooms.length < requested_amt

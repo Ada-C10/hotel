@@ -1,4 +1,5 @@
 require_relative 'spec_helper'
+require 'pry'
 
 describe "ReservationTracker class" do
   before do
@@ -58,8 +59,21 @@ describe "ReservationTracker class" do
       expect(matching_reservations).must_be_kind_of Array
       expect(matching_reservations.length).must_equal 1
       expect(matching_reservations.first).must_be_kind_of Hotel::Reservation
+    end
+  end
+
+  describe "#find_reserved_rooms method" do
+    it "finds all the reserved rooms by requested_dates" do
 
     end
+
+  end
+
+  describe "#find_blocked_rooms method" do
+    it "finds all the blocked rooms by requested_dates" do
+
+    end
+
   end
 
   describe "#find_unavailable_rooms method" do
@@ -106,6 +120,59 @@ describe "ReservationTracker class" do
     end
   end
 
+  describe "#confirm_valid_dates method" do
+    it "raises an error if start_date and end_date are both not Date types" do
+      start_date = 'Date.today'
+      end_date = 'start_date - 5'
+
+      input = {
+        start_date: start_date,
+        end_date: end_date
+      }
+
+      expect { @reservation_tracker.confirm_valid_dates?(input) }.must_raise Hotel::ReservationTracker::InvalidDateError
+    end
+
+    it "raises an error if start_date is a Date and but end_date is not" do
+      start_date = Date.today
+      end_date = "Date.today + 5"
+
+      input = {
+        start_date: start_date,
+        end_date: end_date
+      }
+
+      expect { @reservation_tracker.confirm_valid_dates?(input) }.must_raise Hotel::ReservationTracker::InvalidDateError
+    end
+
+    it "raises an error if start_date not a Date and but end_date is" do
+      start_date = "Date.today"
+      end_date = Date.today + 5
+
+      input = {
+        start_date: start_date,
+        end_date: end_date
+      }
+
+      expect { @reservation_tracker.confirm_valid_dates?(input) }.must_raise Hotel::ReservationTracker::InvalidDateError
+    end
+
+    it "raises an error if end date precedes start date" do
+      start_date = Date.today
+      end_date = start_date - 5
+
+      input = {
+        start_date: start_date,
+        end_date: end_date
+      }
+
+      expect { @reservation_tracker.confirm_valid_dates?(input) }.must_raise Hotel::ReservationTracker::DatesOrderError
+    end
+  end
+
+  describe "#get_requested_dates method" do
+  end
+
   describe "#reserve_room method" do
     it "reserves a room if one is available for requested dates" do
       previous_num_res = @reservation_tracker.reservations.length
@@ -118,17 +185,17 @@ describe "ReservationTracker class" do
     end
   end
 
-  describe "#check_valid_amt method" do
+  describe "#confirm_valid_amt? method" do
     it "checks if the amt entered is not an Integer or <= 0" do
-      expect{@reservation_tracker.check_valid_amt(0)}.must_raise Hotel::ReservationTracker::InvalidAmountRoomsError
-      expect{@reservation_tracker.check_valid_amt(4.5)}.must_raise Hotel::ReservationTracker::InvalidAmountRoomsError
-      expect{@reservation_tracker.check_valid_amt('5')}.must_raise Hotel::ReservationTracker::InvalidAmountRoomsError
+      expect{ @reservation_tracker.confirm_valid_amt?(0) }.must_raise Hotel::ReservationTracker::InvalidAmountRoomsError
+      expect{ @reservation_tracker.confirm_valid_amt?(4.5) }.must_raise Hotel::ReservationTracker::InvalidAmountRoomsError
+      expect{ @reservation_tracker.confirm_valid_amt?('5') }.must_raise Hotel::ReservationTracker::InvalidAmountRoomsError
     end
 
     it "checks if the amt requested is less or equal to 5" do
-      expect(@reservation_tracker.check_valid_amt(1)).must_equal nil
-      expect(@reservation_tracker.check_valid_amt(5)).must_equal nil
-      expect{@reservation_tracker.check_valid_amt(6)}.must_raise Hotel::ReservationTracker::TooManyRoomsError
+      expect(@reservation_tracker.confirm_valid_amt?(1)).must_equal nil
+      expect(@reservation_tracker.confirm_valid_amt?(5)).must_equal nil
+      expect{@reservation_tracker.confirm_valid_amt?(6)}.must_raise Hotel::ReservationTracker::TooManyRoomsError
     end
   end
 
@@ -163,7 +230,6 @@ describe "ReservationTracker class" do
         end_date: @end_date,
         party: 5
       }
-
       @reservation_tracker.block_rooms(@input)
       @requested_dates = Hotel::DateRange.new(@start_date, @end_date)
     end
@@ -195,7 +261,6 @@ describe "ReservationTracker class" do
         start_date: @start_date,
         end_date: @end_date
       }
-
       @reservation_tracker.reserve_room(@res_input)
       @requested_dates = Hotel::DateRange.new(@start_date, @end_date)
     end
