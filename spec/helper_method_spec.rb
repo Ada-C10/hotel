@@ -157,11 +157,14 @@ describe 'self.binary_search_list_of_reservations_for_vacancy method' do
 
   describe 'connect_reservation_to_room_and_sort' do
 
-    it "given a list of rooms and a room number it adds a reservation to the room's list of reservations" do
-
+    before do
       @hotel = Hotel::Booking_Manager.new
       @rooms = @hotel.rooms
-
+      @input = { name: "Nosferatu",
+        room_number: 1,
+        check_in_date: Date.new(2020,9,9),
+        check_out_date: Date.new(2020,9,13),
+      }
       @input2 = { name: "Mx Thing",
         room_number: 1,
         check_in_date: Date.new(2020,9,9),
@@ -172,6 +175,8 @@ describe 'self.binary_search_list_of_reservations_for_vacancy method' do
         check_in_date: Date.new(2018,9,9),
         check_out_date: Date.new(2018,9,13),
       }
+    end
+    it "given a list of rooms and a room number it adds a reservation to the room's list of reservations" do
       @reservation = Hotel::Reservation.new(@input2)
       @reservation2 = Hotel::Reservation.new(@input3)
 
@@ -182,6 +187,13 @@ describe 'self.binary_search_list_of_reservations_for_vacancy method' do
       Hotel::Helper_Method.connect_reservation_to_room_and_sort(@rooms, 1, @reservation2)
       expect(@rooms.first.reservations.first.name).must_equal "Dr. Frank N. Stein"
       expect(@rooms.first.reservations.first.room_number).must_equal 1
+      end
+
+      it 'raises an error if a reservation is placed on the same day in a room as an existing reservation' do
+        @reservation = Hotel::Reservation.new(@input)
+        @reservation2 = Hotel::Reservation.new(@input2)
+        Hotel::Helper_Method.connect_reservation_to_room_and_sort(@rooms, 1, @reservation)
+        expect{ Hotel::Helper_Method.connect_reservation_to_room_and_sort(@rooms, 1, @reservation2) }.must_raise ArgumentError
       end
     end
 
@@ -224,8 +236,8 @@ describe 'self.binary_search_list_of_reservations_for_vacancy method' do
       it 'returns the index of the Reservation in a list of reservations' do
         expect(Hotel::Helper_Method.binary_search_reservations_return_index_if_found(@array_of_reservations, @date7)).must_equal 0
         expect(Hotel::Helper_Method.binary_search_reservations_return_index_if_found(@array_of_reservations, @date8)).must_equal 0
-        expect(Hotel::Helper_Method.binary_search_reservations_return_index_if_found(@array_of_reservations, @date9)).must_equal nil
-        expect(Hotel::Helper_Method.binary_search_reservations_return_index_if_found(@array_of_reservations, @date10)).must_equal nil
+        expect(Hotel::Helper_Method.binary_search_reservations_return_index_if_found(@array_of_reservations, @date9)).must_be_kind_of NilClass
+        expect(Hotel::Helper_Method.binary_search_reservations_return_index_if_found(@array_of_reservations, @date10)).must_be_kind_of NilClass
         expect(Hotel::Helper_Method.binary_search_reservations_return_index_if_found(@array_of_reservations, @date11)).must_equal 2
       end
     end

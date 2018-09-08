@@ -38,32 +38,26 @@ module Hotel
       vacant_rooms = []
       vacant_rooms = search_room_availability(check_in_date, check_out_date)
       number_of_rooms_to_block = input[:number_of_rooms_to_block]
-      # if vacant_rooms.length < number_of_rooms_to_block
-      #   return raise ArgumentError, "Not enough available rooms to block."
-      # end
-
+      if vacant_rooms.length < number_of_rooms_to_block
+        return raise ArgumentError, 'Not enough available rooms to block.'
+      end
       blocked_rooms = []
-      until number_of_rooms_to_block == 0 do
+      number_of_rooms_to_block.times do |i|
         block_room_hash = {
-          room_number:  vacant_rooms[number_of_rooms_to_block],
+          room_number:  vacant_rooms[i],
           check_in_date: check_in_date,
           check_out_date: check_out_date,
           block_name: input[:block_name],
           block_discount: input[:block_discount]
         }
         reservation = Hotel::Block_Room.new(block_room_hash)
-
-        Hotel::Helper_Method.connect_reservation_to_room_and_sort(@rooms, vacant_rooms[number_of_rooms_to_block], reservation)
+        Hotel::Helper_Method.connect_reservation_to_room_and_sort(@rooms, block_room_hash[:room_number], reservation)
+        @hotel_reservations << reservation
+        Hotel::Helper_Method.sort_reservations(@hotel_reservations)
 
         blocked_rooms << reservation
-
-        number_of_rooms_to_block -= 1
       end
-
       @block_reservations << blocked_rooms
-      Hotel::Helper_Method.sort_reservations(@block_reservations)
-      @hotel_reservations << blocked_rooms
-      Hotel::Helper_Method.sort_reservations(@hotel_reservations)
     end
 
     def search_room_availability(check_in_date, check_out_date)

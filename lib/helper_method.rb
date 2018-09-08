@@ -71,6 +71,9 @@ module Hotel
 
     def self.connect_reservation_to_room_and_sort(list_of_rooms, room_number, reservation)
       connected_room_number = Hotel::Helper_Method.find_room_number(list_of_rooms, room_number)
+      if Hotel::Helper_Method.check_a_room_for_availability(connected_room_number, reservation.check_in_date, reservation.check_out_date) == :BOOKED
+        return raise ArgumentError, 'No Rooms Available in date range'
+      end
       connected_room_number.reservations << reservation
       Hotel::Helper_Method.sort_reservations(connected_room_number.reservations)
     end
@@ -85,5 +88,13 @@ module Hotel
       return list_of_rooms.find { |room| room.room_number == room_number_to_find }
     end
 
+    def self.check_a_room_for_availability(connected_room_number, check_in_date, check_out_date)
+        possible_nights_of_stay = Hotel::Helper_Method.generate_nights(check_in_date, check_out_date)
+        if Hotel::Helper_Method.binary_search_list_of_reservations_for_vacancy(connected_room_number.reservations, possible_nights_of_stay) == true
+            return :BOOKED
+          else
+            return :VACANCY
+        end
+    end
   end
 end
