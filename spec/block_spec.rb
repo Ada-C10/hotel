@@ -1,7 +1,6 @@
 require_relative 'spec_helper'
 
 describe "Block class" do
-
   before do
     @start_date = Date.today
     @end_date = Date.today + 5

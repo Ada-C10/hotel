@@ -22,10 +22,25 @@ describe "Reservation class" do
   end
 
   describe "#calculate_cost method" do
-    it "calculates the total with the rate per nights stayed" do
+    it "calculates the total with the rate per nights stayed if there is no block_id" do
       total_nights_stayed = @date_range.find_num_nights
       expect(@reservation.calculate_cost).must_be_kind_of Numeric
       expect(@reservation.calculate_cost).must_equal RATE * total_nights_stayed
+    end
+
+    it "calculates the total with the rate per nights stayed if there is a block_id" do
+      reservation_data = {
+        id: 8,
+        block_id: 4,
+        room: 1,
+        date_range: @date_range
+      }
+
+      reservation = Hotel::Reservation.new(reservation_data)
+
+      total_nights_stayed = @date_range.find_num_nights
+      expect(reservation.calculate_cost).must_be_kind_of Numeric
+      expect(reservation.calculate_cost).must_equal RATE * BLOCK_DISCOUNT * total_nights_stayed
     end
   end
 end
