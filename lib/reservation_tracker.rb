@@ -90,7 +90,7 @@ module Hotel
 
     def get_blocked_rooms(requested_amt, requested_dates)
       check_valid_amt(requested_amt)
-      available_rooms = get_available_rooms(requested_dates)
+      available_rooms = find_available_rooms(requested_dates)
       check_enough_rooms?(available_rooms, requested_amt)
       block = available_rooms.take(requested_amt)
       return block
@@ -113,6 +113,7 @@ module Hotel
     end
 
     private
+    
     def check_enough_rooms?(available_rooms, requested_amt)
       if available_rooms.length < requested_amt
         raise NotEnoughError.new("There are not enough rooms to block")

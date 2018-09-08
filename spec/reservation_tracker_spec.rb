@@ -120,8 +120,6 @@ describe "ReservationTracker class" do
 
   describe "#check_valid_amt method" do
     it "checks if the amt entered is not an Integer or <= 0" do
-      expect(@reservation_tracker.check_valid_amt(1)).must_equal nil
-      expect(@reservation_tracker.check_valid_amt(5)).must_equal nil
       expect{@reservation_tracker.check_valid_amt(0)}.must_raise Hotel::ReservationTracker::InvalidAmountRoomsError
       expect{@reservation_tracker.check_valid_amt(4.5)}.must_raise Hotel::ReservationTracker::InvalidAmountRoomsError
       expect{@reservation_tracker.check_valid_amt('5')}.must_raise Hotel::ReservationTracker::InvalidAmountRoomsError
@@ -131,6 +129,27 @@ describe "ReservationTracker class" do
       expect(@reservation_tracker.check_valid_amt(1)).must_equal nil
       expect(@reservation_tracker.check_valid_amt(5)).must_equal nil
       expect{@reservation_tracker.check_valid_amt(6)}.must_raise Hotel::ReservationTracker::TooManyRoomsError
+    end
+  end
+
+  describe "#get_blocked_rooms method" do
+    it "gets blocked rooms if there are available rooms" do
+      requested_amt = 5
+      block = @reservation_tracker.get_blocked_rooms( requested_amt, @requested_dates)
+
+      expect(block).must_be_kind_of Array
+      expect(block.length).must_equal requested_amt
+    end
+
+    it "raises a NotEnoughError if there are not enough available rooms to block" do
+      reservation_tracker = Hotel::ReservationTracker.new
+
+      16.times do
+        reservation_tracker.reserve_room(@input)
+      end
+
+      requested_amt = 5
+      expect{ reservation_tracker.get_blocked_rooms(requested_amt, @requested_dates) }.must_raise Hotel::ReservationTracker::NotEnoughError
     end
   end
 end
