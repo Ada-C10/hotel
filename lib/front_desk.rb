@@ -4,10 +4,11 @@ require_relative "reservations.rb"
 
 class Front_Desk
 
-  attr_reader :reservations, :rooms
+  attr_reader :reservations, :rooms, :block_hold
 
   def initialize
     @reservations = []
+    @block_hold = []
     @rooms = load_rooms
   end
 
@@ -27,6 +28,7 @@ class Front_Desk
   def reserve_room(room_number,start_date, end_date)
 
     available_rooms = available_rooms(start_date,end_date)
+
     if !available_rooms.find { |room| room.room_number == room_number }
       raise StandardError
     end
@@ -61,12 +63,41 @@ class Front_Desk
       #    !(reservation.start_date < end_date) && !(reservation.end_date < end_date)
 
       if !((start_date < reservation.start_date && end_date <= reservation.start_date) ||
-          # binding.pry
+        # binding.pry
         (end_date > reservation.end_date && start_date >= reservation.end_date))
         list_of_rooms.reject! { |room| room.room_number == reservation.room_number }
       end
     end
+
+    @block_hold.each do |block_room|
+      if !((start_date < block_room.start_date && end_date <= block_room.start_date) ||
+        (end_date > block_room.end_date && start_date >= block_room.end_date))
+        list_of_rooms.reject! { |room| room.room_number == block_room.room_number }
+      end
+    end
+
     return list_of_rooms
   end
+
+  def block_hold(start_date, end_date, number_of_rooms)
+    available_rooms = available_rooms(start_date,end_date)
+
+    number_of_rooms.times do |index|
+      if available_rooms[index]
+
+        input = {}
+        input[:room_number] = available_rooms[index].room_number
+        input[:start_date] = start_date
+        input[:end_date] = end_date
+
+        block_hold = Reservation.new(input)
+        @block_hold << block_hold
+      end
+    end
+    return @block_hold
+  end
+
+
+
 
 end

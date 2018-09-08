@@ -67,6 +67,15 @@ describe "Front Desk Class" do
     #   expect{room}.must_raise StandardError
     # end
 
+    it "holds number of block rooms" do
+      expect(@admin.block_hold(('2018-02-01'),('2018-02-03'),2).length).must_equal 2
+    end
+
+    it "raises error" do
+    @admin.block_hold(('2018-02-01'),('2018-02-11'),2)
+    expect {@admin.reserve_room(1,('2018-02-01'),('2018-02-10'))}.must_raise StandardError
+    end
+
   end
 end
 #reserve_room creates an instance of reservation

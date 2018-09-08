@@ -10,6 +10,7 @@ class Reservation
     @start_date = Date.parse(input[:start_date])
     @end_date = Date.parse(input[:end_date])
     @@cost = total_cost
+    @block = []
   end
 
   def total_cost
@@ -17,6 +18,5 @@ class Reservation
     cost = (nights * 200)
     return cost
   end
-
 
 end
