@@ -50,7 +50,7 @@ describe "Block" do
     end
 
     it "initially has an empty collection of blocked rooms" do
-      expect(block.blocked_rooms.length).must_equal 0
+      expect(block.num_rooms_available).must_equal 0
       expect(block.blocked_rooms).must_be_kind_of Enumerable
     end
 
@@ -77,9 +77,9 @@ describe "Block" do
     end
 
     it "adds a room to block @blocked_rooms" do
-      expect(block.blocked_rooms.length).must_equal 0
+      expect(block.num_rooms_available).must_equal 0
       block.add_room(room1)
-      expect(block.blocked_rooms.length).must_equal 1
+      expect(block.num_rooms_available).must_equal 1
       expect(block.blocked_rooms.first).must_be_instance_of Hotel::Room
     end
 
@@ -112,9 +112,9 @@ describe "Block" do
 
     it "removes a room from block @blocked_rooms" do
       block.add_room(room1)
-      expect(block.blocked_rooms.length).must_equal 1
+      expect(block.num_rooms_available).must_equal 1
       block.add_reservation(res1)
-      expect(block.blocked_rooms.length).must_equal 0
+      expect(block.num_rooms_available).must_equal 0
     end
 
     it "raises an error if Reservation object is not provided" do
@@ -124,6 +124,15 @@ describe "Block" do
     it "raises an error if Reservation object is already in block" do
       block.add_reservation(res1)
       expect{block.add_reservation(res1)}.must_raise ArgumentError
+    end
+  end
+
+  describe "Block#num_rooms_available" do
+    it "returns the number of rooms available in a block" do
+      block.add_room(room1)
+      block.num_rooms_available.must_equal 1
+      block.add_reservation(res1)
+      block.num_rooms_available.must_equal 0
     end
   end
 end
