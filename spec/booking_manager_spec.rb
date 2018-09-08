@@ -180,8 +180,33 @@ describe "Hotel Manager class" do
       }
       @hotel.reserve_room(@input4)
       end
-      expect{@hotel.search_room_availability(@date1, @date2)}.must_raise ArgumentError
+      expect{@hotel.search_room_availability(@date1, @date2)}.must_raise Exception
     end
+  end
+
+  describe 'create_block method' do
+    before do
+      @hotel = Hotel::Booking_Manager.new
+      @date = Date.new(2028,8,8)
+      @date2 = Date.new(2028,8,11)
+      @input = {
+        check_in_date: @date,
+        check_out_date: @date2,
+        block_name: "Munster - Addams Wedding",
+        block_discount: 0.08,
+        number_of_rooms_to_block: 3
+      }
+    end
+
+    it 'creates an array of block room reservations ' do
+      @block = @hotel.create_block(@input)
+      @block.each do |reservation|
+        expect(reservation).must_be_kind_of Hotel::Block_Room
+        expect(reservation.block_name).must_equal "Munster - Addams Wedding"
+        expect(reservation.nights_of_stay.length).must_equal 3
+      end
+    end
+
   end
 
 end

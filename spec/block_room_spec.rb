@@ -9,8 +9,8 @@ describe "Block_Room Class" do
       @date = Date.new(2028,8,8)
       @date2 = Date.new(2028,8,11)
       input = {
-        name: "Vlad the Impaler",
-        room_number:  9,
+        name: "Wednesday Addams",
+        room_number:  8,
         check_in_date: @date,
         check_out_date: @date2,
         block_name: "Munster - Addams Wedding",

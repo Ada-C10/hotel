@@ -15,6 +15,7 @@ module Hotel
     def initialize
       @rooms = load_rooms
       @hotel_reservations = []
+      @reserved_blocks = []
     end
 
     def reserve_room(input)
@@ -27,10 +28,36 @@ module Hotel
         check_in_date: input[:check_in_date],
         check_out_date: input[:check_out_date]
       }
-      reservation = Reservation.new(reserve)
+      reservation = Hotel::Reservation.new(reserve)
       Hotel::Helper_Method.connect_reservation_to_room_and_sort(connected_room_number, reservation)
       @hotel_reservations << reservation
       Hotel::Helper_Method.sort_reservations(@hotel_reservations)
+    end
+
+    def create_block(input)
+      check_in_date = input[:check_in_date]
+      check_out_date = input[:check_out_date]
+      vacant_rooms = []
+      vacant_rooms = search_room_availability(check_in_date, check_out_date)
+      number_of_rooms_to_block = input[:number_of_rooms_to_block]
+      # if vacant_rooms.length < number_of_rooms_to_block
+      #   return raise ArgumentError, "Not enough available rooms to block."
+      # end
+
+      blocked_rooms = []
+      until number_of_rooms_to_block == 0 do
+        block_room_hash = {
+          room_number:  vacant_rooms[number_of_rooms_to_block],
+          check_in_date: check_in_date,
+          check_out_date: check_out_date,
+          block_name: input[:block_name],
+          block_discount: input[:block_discount]
+        }
+        Hotel::Block_Room.new(block_room_hash)
+        number_of_rooms_to_block -= 1
+      end
+
+      return blocked_rooms
     end
 
     def search_room_availability(check_in_date, check_out_date)
@@ -42,7 +69,7 @@ module Hotel
         end
       end
       if vacant_rooms.empty?
-        return raise ArgumentError, 'No Rooms Availble in date range'
+        return raise ArgumentError, 'No Rooms Available in date range'
       end
       return vacant_rooms
     end
