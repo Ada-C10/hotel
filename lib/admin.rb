@@ -17,11 +17,11 @@ class Admin
   end
 
   def request_reservation(start_date, end_date)
+    check_date(start_date, end_date)
+
     id = reservations.length + 1
     room = available_rooms(start_date, end_date).sample
-      if room.nil?
-        raise ArgumentError, "no rooms available"
-      end
+      raise ArgumentError, "no rooms available" if room.nil?
 
     new_reservation = Reservation.new(id, room, start_date, end_date)
 
@@ -30,16 +30,14 @@ class Admin
   end
 
   def request_block_reservation(number_of_rooms, start_date, end_date)
-    if number_of_rooms > 5
-      raise StandardError, "cannot reserve more than 5 rooms"
-    end
+    raise StandardError, "cannot reserve more than 5 rooms" if number_of_rooms > 5
+
+    check_date(start_date, end_date)
     # individual reservations in block will be reached by going to block reservation first
     # individual reservations with have different id's (1-5) depending on size of block
     id = reservations.length + 1
     room = available_rooms(start_date, end_date).sample(number_of_rooms)
-      if room.length < number_of_rooms
-        raise StandardError, "not enough rooms available"
-      end
+      raise StandardError, "not enough rooms available" if room.length < number_of_rooms
 
     new_block = BlockReservation.new(id, room, start_date, end_date)
 
@@ -51,8 +49,11 @@ class Admin
   # returns - new reservation instance
   def request_reservation_within_block(id, start_date, end_date)
     #split this up into smaller methods possibly?
-    block_reservation = find_reservation_by_id(id)
+    check_date(start_date, end_date)
+    check_id(id)
 
+    block_reservation = find_reservation_by_id(id)
+    # should I postfix these conditionals if it ends up exceeding the lines? -->
     if Date.parse(start_date) != block_reservation.start_date
       raise StandardError, "start date must match block start"
     end
@@ -61,13 +62,11 @@ class Admin
     end
 
     id = block_reservation.reservations.length + 1
-
     room = block_reservation.rooms_available.sample
-      if room.nil?
-        raise ArgumentError, "no rooms available"
-      end
+      raise ArgumentError, "no rooms available" if room.nil?
 
-    new_reservation = Reservation.new(id, room, start_date, end_date, room_cost: 150)
+    new_reservation = Reservation.new(id, room, start_date, end_date,
+      room_cost: 150)
 
     add_reservation(new_reservation, reservation_location: block_reservation.reservations)
     # deletes room number from available_rooms
@@ -77,6 +76,8 @@ class Admin
   end
 
   def find_reservation_by_id(id)
+    check_id(id)
+
     specific_reservation = @reservations.find { |reservation|
       reservation.id == id }
     return specific_reservation
@@ -115,7 +116,8 @@ class Admin
     return cost
   end
 
-  def available_rooms(trip_start, trip_end, all_rooms: [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20] )
+  def available_rooms(trip_start, trip_end,
+    all_rooms: [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20] )
     specific_reservations = reservations_by_date_range(trip_start, trip_end)
 
     unavailable_rooms = []
@@ -128,4 +130,20 @@ class Admin
     available_rooms = all_rooms - unavailable_rooms
     return available_rooms
   end
+
+  private
+
+  def check_date(start_date, end_date)
+    regex = /^\d{4}-\d{1,2}-\d{1,2}$/
+    start_result = start_date.match(regex)
+    end_result = end_date.match(regex)
+      raise StandardError, "Invalid date entry" if start_result.nil? ||
+                                                  end_result.nil?
+  end
+
+  def check_id(id)
+    raise StandardError, "ID cannot be blank or less than zero." if id.nil? ||
+                                                                    id <= 0
+  end
+
 end

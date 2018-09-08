@@ -17,12 +17,4 @@ class Reservation
 
     @room_cost = room_cost
   end
-  # In case I want to check date input
-  # def check_date(date)
-  #   regex = /^\d{4}-\d{1,2}-\d{1,2}$/
-  #   max_result = start_date.match(regex)
-  #   if max_result.nil?
-  #     raise StandardError "Invalid Date"
-  #   end
-  # end
 end

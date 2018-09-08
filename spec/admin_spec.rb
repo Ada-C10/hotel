@@ -62,6 +62,11 @@ describe "Booking" do
 
       expect{hotel.request_reservation("2018-12-09", "2018-12-15")}.must_raise ArgumentError
     end
+
+    it "raises ArgumentError if start_time or end_time are wrong format" do
+      expect{hotel.request_reservation("12-9-18", "2018-12-15")}.must_raise StandardError
+      expect{hotel.request_reservation("2018-12-12", "spinach")}.must_raise StandardError
+    end
   end
 
   describe "reservations_by_date" do
@@ -210,6 +215,11 @@ describe "Booking" do
 
       expect{hotel.request_block_reservation(5, "2018-12-09", "2018-12-15")}.must_raise StandardError
     end
+
+    it "raises ArgumentError if start_time or end_time are wrong format" do
+      expect{hotel.request_block_reservation(3, "4-18-20", "2018-12-15")}.must_raise StandardError
+      expect{hotel.request_block_reservation(2, "2018-12-12", "spinach")}.must_raise StandardError
+    end
   end
 
   describe "find reservation by id" do
@@ -220,6 +230,13 @@ describe "Booking" do
       correct_reservation = hotel.find_reservation_by_id(2)
 
       correct_reservation.start_date.must_equal Date.parse("2018-12-12")
+    end
+
+    it "raises StandardError for invalid id" do
+      hotel.request_reservation("2018-12-09", "2018-12-15")
+
+      expect{hotel.find_reservation_by_id(0)}.must_raise StandardError
+      expect{hotel.find_reservation_by_id("Nine")}.must_raise StandardError
     end
   end
 
@@ -239,6 +256,16 @@ describe "Booking" do
       jones = hotel.request_reservation_within_block(1, "2018-12-12", "2018-12-14")
 
       @family_reunion.room.must_include jones.room
+    end
+
+    it "raises ArgumentError if start_time or end_time are wrong format" do
+      expect{hotel.request_reservation_within_block(1, "2018-12", "2018-12-14")}.must_raise StandardError
+      expect{hotel.request_reservation_within_block(1, "2018-12-12", "spinach")}.must_raise StandardError
+    end
+
+    it "raises an argument if id is invalid" do
+      expect{hotel.request_reservation_within_block(0, "2018-12-12", "2018-12-14")}.must_raise StandardError
+      expect{hotel.request_reservation_within_block("Nine", "2018-12-12", "2018-12-14")}.must_raise StandardError
     end
 
     it "will reduce the number of available rooms with each reservation in block" do
