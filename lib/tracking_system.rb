@@ -13,18 +13,25 @@ class TrackingSystem
     @reservations = []
   end
 
-  def total_cost_of_reservation(room_num)
-    raise ArgumentError.new"There are no reservations" if @reservations.empty? == true
-    @reservations.each do |reservation|
-      if reservation.room_num == nil
-        binding.pry
-        raise ArgumentError.new"Room number #{room_num} has no current reservations"
-      else reservation.room_num == room_num
-        #insert part where calculation happens
-        return reservation.price
-      end
-    end
+  # def total_cost_of_reservation(room_num)
+  #   raise ArgumentError.new"There are no reservations" if @reservations.empty? == true
+  #   @reservations.each do |reservation|
+  #     if reservation.room_num == nil
+  #       raise ArgumentError.new"Room number #{room_num} has no current reservations"
+  #     else reservation.room_num == room_num
+  #
+  #       #insert part where calculation happens
+  #       return reservation.price
+  #     end
+  #   end
+  # end
+###########################################################
+#this method doesn't have tests yet because i'm not sure if im going to combine it with the method above
+  def total_cost_of_reservation(reservation)
+    return reservation.total_cost
   end
+###########################################################
+
 
   def add_rooms
     all_rooms = []

@@ -8,10 +8,14 @@ class Reservation
     @end_time = attributes[:end_time]
     @price = attributes[:price]
   end
+
+  def total_cost
+    return total_cost = (end_time - start_time) * price
+  end
+
 end
 
-# 1. get the total cost for a given reservation
-#     def total_cost
+
 
 
 #when a reservation is made a room number needs to be assigned

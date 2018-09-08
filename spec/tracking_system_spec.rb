@@ -142,27 +142,27 @@ describe 'TrackingSystem class' do
 
   end
 
-  describe "#total_cost_of_reservation" do
-    before do
-      @tracker = TrackingSystem.new
-    end
-
-    it "returns an instance of Float" do
-      @reservation = @tracker.add_reservation(start_time: Date.new(2018,8,1), end_time: Date.new(2018,8,2), number_of_rooms:20)
-     #the reservation above booked 20 rooms so that means all rooms have reservations, at at $200
-      expect(@tracker.total_cost_of_reservation(1)).must_be_kind_of Float
-    end
-
-    it "raises an ArgumentError if no reservations exist" do
-      expect{@tracker.total_cost_of_reservation(1)}.must_raise ArgumentError
-    end
-
-    it "raises an ArgumentError the room number has no reservation" do
-      #in this it block no reservations have been made so the room
-      expect{@tracker.total_cost_of_reservation(20)}.must_raise ArgumentError
-    end
-
-  end
+  # describe "#total_cost_of_reservation" do
+  #   before do
+  #     @tracker = TrackingSystem.new
+  #   end
+  #
+  #   it "returns an instance of Float" do
+  #     @reservation = @tracker.add_reservation(start_time: Date.new(2018,8,1), end_time: Date.new(2018,8,2), number_of_rooms:20)
+  #    #the reservation above booked 20 rooms so that means all rooms have reservations, at at $200
+  #     expect(@tracker.total_cost_of_reservation(1)).must_be_kind_of Float
+  #   end
+  #
+  #   it "raises an ArgumentError if no reservations exist" do
+  #     expect{@tracker.total_cost_of_reservation(1)}.must_raise ArgumentError
+  #   end
+  #
+  #   it "raises an ArgumentError the room number has no reservation" do
+  #     #in this it block no reservations have been made so the room
+  #     expect{@tracker.total_cost_of_reservation(20)}.must_raise ArgumentError
+  #   end
+  #
+  # end
 
 
 
