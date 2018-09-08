@@ -15,6 +15,12 @@ describe 'BookingManager' do
     Date.new(2001,3,5)
   }
 
+  let (:fully_booked) {
+    new_booking = BookingManager.new
+    20.times do
+      new_booking.make_reservation(Date.new(2018, 1, 1), Date.new(2018, 1, 7))
+    end
+  }
   # let (:booked_reservation) {
   #   sample_booking.make_reservation(sample_checkin, sample_checkout)
   # }
@@ -30,33 +36,16 @@ describe 'BookingManager' do
 
   end
 
+  describe '#make_reservation' do
 
-  # describe '#find_available_room' do
-
-  #   it 'must return a valid room number' do
-  #     expect(sample_booking.find_available_room(sample_checkin, sample_checkout)).must_be_kind_of Integer
-  #   end
-  #
-  #   it 'must equal a number greater than 0' do
-  #     expect(sample_booking.find_available_room(sample_checkin, sample_checkout)).must_be :>, 0
-  #   end
-  #
-  #   it 'must equal a number less than 21' do
-  #     expect(sample_booking.find_available_room(sample_checkin, sample_checkout)).must_be :<, 21
-  #   end
-  # end
-
-    describe '#make_reservation' do
-
-      it 'must return a reservation object' do
-        expect(sample_booking.make_reservation(Date.new(2018, 3, 5), Date.new(2018, 3, 8))).must_be_kind_of Reservation
-      end
+    it 'must return a reservation object' do
+      expect(sample_booking.make_reservation(Date.new(2018, 1, 5), Date.new(2018, 3, 8))).must_be_kind_of Reservation
     end
+
+  end
 
   # Wave 2 checks
 
-
-  # - Overlaps in the front
   # - Overlaps in the back
   # - Completely contained
   # - Completely containing
@@ -69,15 +58,20 @@ describe 'BookingManager' do
   #
   describe '#find_available_rooms' do
     # Two date ranges *do* overlap if range A compared to range B:
+    # fully_booked: hotel filled from 2018, 1, 1 til 2018 1, 7
     # - Same dates
     it 'must raise standard error if two reservations made for the same date' do
-      conflict_res = Reservation.new(1, Date.new(2018, 3, 5), Date.new(2018, 3, 7))
-      conflict_booking = BookingManager.new
-      conflict_booking.reservations << conflict_res
-
-      expect{conflict_booking.make_reservation(Date.new(2018, 3, 5), Date.new(2018, 3, 7))}.must_raise StandardError
+      expect{fully_booked.make_reservation(Date.new(2018, 1, 1), Date.new(2018, 1, 7))}.must_raise StandardError
+    end
+    # - Overlaps in the front: overlap from 2018, 1 ,1 til 2018, 1, 5
+    it 'raises an error if room bookings overlap in the front' do
+      expect{fully_booked.make_reservation(Date.new(2017, 12, 25), Date.new(2018, 1, 5))}
     end
 
+    # - Overlaps in the back: overlap from 2018, 1, 3 to 2018, 1, 5
+    it 'raises an error if room bookings overlap in the back' do
+      expect{fully_booked.make_reservation(Date.new(2017, 1, 3), Date.new(2018, 1, 9))}
+    end
   end
 
 
