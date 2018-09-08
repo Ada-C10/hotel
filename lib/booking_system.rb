@@ -13,32 +13,33 @@ module Hotel
     def make_reservation(check_in_date:, check_out_date:)
       # TODO find a room that's available
 
-
-
       room_number = get_available_room(check_in_date: check_in_date, check_out_date: check_out_date)
 
       reservation = Reservation.new(check_in_date: check_in_date, check_out_date: check_out_date, room_number: room_number)
 
+
+
       if @reservations.empty?
         @reservations << reservation
-      # binding.pry
         return reservation
       elsif @reservations.length >= 1
         requested_dates = reservation.date_range
+        count = requested_dates.length - 1
 
         @reservations.each do |booking|
-            reserved_dates = booking.date_range
-
-            reserved_dates.zip(requested_dates).each do |date1, date2|
-              unless date1 != date2
+          booked_dates = booking.date_range
+          while count >= 0
+            if booked_dates.include?(requested_dates[count])
                 raise ArgumentError, "unavailable date"
-              end
             end
+
+            count -= 1
           end
 
-          @reservations << reservation
-        # binding.pry
-          return @reservations
+        end
+
+        @reservations << reservation
+        return @reservations
       end
     end
 
