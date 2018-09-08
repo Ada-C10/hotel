@@ -26,6 +26,14 @@ class Front_Desk
 
   def reserve_room(room_number,start_date, end_date)
 
+    available_rooms = available_rooms(start_date,end_date)
+    # if room_number == 6
+    #   binding.pry
+    # end
+    if !available_rooms.find { |room| room.room_number == room_number }
+      raise StandardError
+    end
+
     input = {}
     input[:room_number] = room_number
     input[:start_date] = start_date
@@ -41,9 +49,26 @@ class Front_Desk
   def search_reserved_by_date(search_date)
     search_date = Date.parse(search_date)
     @reservations.select do |reservation|
-      reservation.start_date <= search_date && search_date <= reservation.end_date
+      reservation.start_date <= search_date && search_date < reservation.end_date
     end
   end
 
+  def available_rooms(start_date,end_date)
+    start_date = Date.parse(start_date)
+    end_date = Date.parse(end_date)
+    list_of_rooms = @rooms.dup
+
+    @reservations.each do |reservation|
+      # if !(reservation.start_date < start_date) && !(reservation.end_date <= start_date) ||
+      #    !(reservation.start_date < end_date) && !(reservation.end_date < end_date)
+
+      if !((start_date < reservation.start_date && end_date <= reservation.start_date) ||
+          # binding.pry
+        (end_date > reservation.end_date && start_date >= reservation.end_date))
+        list_of_rooms.reject! { |room| room.room_number == reservation.room_number }
+      end
+    end
+    return list_of_rooms
+  end
 
 end

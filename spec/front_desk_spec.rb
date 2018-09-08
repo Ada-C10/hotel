@@ -17,8 +17,8 @@ describe "Front Desk Class" do
       rooms.each do |room|
         expect(room).must_be_kind_of Room
       end
-
     end
+
 
     before do
       @admin = Front_Desk.new
@@ -41,22 +41,29 @@ describe "Front Desk Class" do
       expect(@admin.reservations).must_include(@new_reservation)
     end
 
-    it "returns reservations all reservation within that date" do
+    it "returns all reservation within that date" do
       expect(@admin.search_reserved_by_date('2018-02-05').length).must_equal 1
     end
 
     it "returns reservations all reservation within that date" do
-      expect(@admin.search_reserved_by_date('2018-02-15').length).must_equal 0
+      expect(@admin.search_reserved_by_date('2018-02-06').length).must_equal 0
     end
 
+    it "room is not-available" do
+      @admin.reserve_room(6,('2018-02-05'),('2018-02-10'))
+      expect {@admin.reserve_room(6,('2018-02-05'),('2018-02-10'))}.must_raise StandardError
+    end
 
+    it "allows a reservation to start on the same day another reservation ends" do
+      expect(@admin.reserve_room(5,('2018-02-06'),('2018-02-10'))).must_be_kind_of Reservation
+    end
 
-
-
-
-#reserve_room creates an instance of reservation
-#reservation is an array
-#at index 0 cost
+    it "allows a reservation to end on the same day another reservation starts" do
+      expect(@admin.reserve_room(5,('2018-02-01'),('2018-02-03'))).must_be_kind_of Reservation
+    end
 
   end
 end
+#reserve_room creates an instance of reservation
+#reservation is an array
+#at index 0 cost
