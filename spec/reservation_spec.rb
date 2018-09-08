@@ -41,7 +41,7 @@ describe 'Reservation' do
 
 
       it 'Raises a standard error if check out date is before check in date' do
-        expect{Reservation.new(room, check_in, throwback_date )}.must_raise StandardError
+        expect{Reservation.new(room, check_in, throwback_date)}.must_raise StandardError
       end
 
   end
