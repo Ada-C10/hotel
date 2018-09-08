@@ -23,11 +23,11 @@ describe "Admin class" do
     before do
       @start_date_1 = Date.new(2018,12,4)
       @end_date_1 = Date.new(2018,12,6)
-      @res_1 = @admin_1.make_reservation(2,1,"Mike Murry",@start_date_1, @end_date_1)
+      @res_1 = @admin_1.make_reservation(2,"Mike Murry",1,@start_date_1, @end_date_1)
       @count_1 = @admin_1.reservations.count
       @start_date_2 = Date.new(2018,12,5)
       @end_date_2 = Date.new(2018,12,7)
-      @res_2 = @admin_1.make_reservation(3,2,"Julie Smith",@start_date_2, @end_date_2)
+      @res_2 = @admin_1.make_reservation(3,"Julie Smith",2,@start_date_2, @end_date_2)
       @count_2 = @admin_1.reservations.count
 
     end
@@ -52,14 +52,14 @@ describe "Admin class" do
     it "raise ArgumentError if start_date is not ealier than end_date" do
       start_date_3 = Date.new(2018,12,5)
       end_date_3 = Date.new(2018,12,3)
-      expect{@admin_1.make_reservation(4,3,"Jessie lee",start_date_3,end_date_3)}.must_raise ArgumentError
+      expect{@admin_1.make_reservation(4,"Jessie lee",3,start_date_3,end_date_3)}.must_raise ArgumentError
 
     end
 
     it "raise ArgumentError if start_date is ealier than today" do
       start_date_3 = Date.new(2018,8,5)
       end_date_3 = Date.new(2018,12,3)
-      expect{@admin_1.make_reservation(4,3,"Jessie lee",start_date_3,end_date_3)}.must_raise ArgumentError
+      expect{@admin_1.make_reservation(4,"Jessie lee",3,start_date_3,end_date_3)}.must_raise ArgumentError
 
 
     end
@@ -79,26 +79,32 @@ describe "Admin class" do
 
   end
 
-  # # describe "list_reservations on a specific date" do
-  #     before do
-  #
-  #
-  #
-  #     end
-  #
-  #     it "returns nil if no result being found" do
-  #
-  #     end
-  #
-  #     it "if result being found, must return an array of resrvations " do
-  #
-  #     end
-  #
-  #     if "must return the right list of reservations " do
-  #
-  #     end
-  #
-  #   end
+  describe "list_reservations on a specific date" do
+    before do
+      @start_date_1 = Date.new(2018,12,4)
+      @end_date_1 = Date.new(2018,12,6)
+      @res_1 = @admin_1.make_reservation(2,"Mike Murry",1,@start_date_1, @end_date_1)
+      @count_1 = @admin_1.reservations.count
+      @start_date_2 = Date.new(2018,12,5)
+      @end_date_2 = Date.new(2018,12,7)
+      @res_2 = @admin_1.make_reservation(3,"Julie Smith",2,@start_date_2, @end_date_2)
+      @count_2 = @admin_1.reservations.count
+
+    end
+
+    it "returns nil if no result being found" do
+       expect(@admin_1.list_reservations(Date.new(2018,12,10))).must_equal []
+    end
+
+    it "if result being found, must return an array of resrvations " do
+       expect(@admin_1.list_reservations(Date.new(2018,12,5))).must_include @res_1
+       expect(@admin_1.list_reservations(Date.new(2018,12,5))).must_include @res_2
+    end
+
+    it "must return the right list of reservations " do
+       expect(@admin_1.list_reservations(Date.new(2018,12,5)).length).must_equal 2
+    end
+  end
 
   describe "find_room method" do
 
@@ -112,4 +118,48 @@ describe "Admin class" do
     end
   end
 
+  describe "find_reservation method" do
+    before do
+      @start_date_1 = Date.new(2018,12,4)
+      @end_date_1 = Date.new(2018,12,6)
+      @res_1 = @admin_1.make_reservation(2,"Mike Murry",1,@start_date_1, @end_date_1)
+      @count_1 = @admin_1.reservations.count
+      @start_date_2 = Date.new(2018,12,5)
+      @end_date_2 = Date.new(2018,12,7)
+      @res_2 = @admin_1.make_reservation(3,"Julie Smith",2,@start_date_2, @end_date_2)
+      @count_2 = @admin_1.reservations.count
+
+    end
+
+    it "throws an argument error for a bad ID" do
+      expect{ @admin_1.find_reservation(0) }.must_raise ArgumentError
+
+    end
+
+    it "finds a reservation instance" do
+      reserve_found = @admin_1.find_reservation(2)
+      # binding.pry
+      expect(reserve_found).must_be_kind_of Reservation
+      expect(reserve_found).must_equal @res_1
+    end
+  end
+
+  describe "calculate_cost" do
+    before do
+      @start_date_1 = Date.new(2018,12,4)
+      @end_date_1 = Date.new(2018,12,6)
+      @res_1 = @admin_1.make_reservation(2,"Mike Murry",1,@start_date_1, @end_date_1)
+      @count_1 = @admin_1.reservations.count
+      @start_date_2 = Date.new(2018,12,5)
+      @end_date_2 = Date.new(2018,12,7)
+      @res_2 = @admin_1.make_reservation(3,"Julie Smith",2,@start_date_2, @end_date_2)
+      @count_2 = @admin_1.reservations.count
+
+    end
+
+    it "returns the right number" do
+      cost = @admin_1.calculate_cost(2)
+      expect(cost).must_equal 400
+    end
+  end
 end

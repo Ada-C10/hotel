@@ -17,7 +17,7 @@ class Admin
 
 
 
-  def make_reservation(reservation_id, room_id, customer_name, start_date, end_date)
+  def make_reservation(reservation_id, customer_name,room_id, start_date, end_date)
 
     # loop through the existing reservation array, by room, compare the booked dates array under each room with the dates_required
 
@@ -34,7 +34,7 @@ class Admin
 
     room = find_room(room_id)
 
-    result = Reservation.new(reservation_id, room, customer_name, start_date, end_date)
+    result = Reservation.new(reservation_id, customer_name, room, start_date, end_date)
 
     @reservations << result
     return result
@@ -42,20 +42,27 @@ class Admin
   end
 
 
-  # # input a string of date, to return the list of the reservations on that date
-  # def list_reservations(date_selected)
-  #    # check the input date is a valid date , can be converted to Date class
-  #    # loop through the resrvations array, check each elements.dates_booked includes daate_selected , if yes, add to the result Array
-  #    # return the result array.
-  # end
-#
+  # input a string of date, to return the list of the reservations on that date
+  def list_reservations(date_selected)
+    return @reservations.select {|reserve| reserve.dates_booked.include? date_selected}
+
+  end
+
 
   def find_room(id)
     check_id(id)
     return @rooms.find { |room| room.room_num == id }
   end
 
-  def calculate_cost
+  def find_reservation(id)
+    check_id(id)
+    return @reservations.find {|reserve| reserve.id == id }
+
+  end
+
+  def calculate_cost(reservation_id)
+
+    return find_reservation(reservation_id).reserve_cost
 
   end
 
