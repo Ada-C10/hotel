@@ -39,24 +39,41 @@ class ReservationMgr
     if check_out.class != Date
       check_out = Date.parse(check_out)
     end
+    if block_id == nil
+      available_rooms = available_rooms(check_in,check_out)
 
-    available_rooms = available_rooms(check_in,check_out)
+      if available_rooms.length == 0 || available_rooms.length < rooms
+        raise ArgumentError.new('There are not enough room/rooms available')
+      end
 
-    if available_rooms.length == 0 || available_rooms.length < rooms
-      raise ArgumentError.new('There are not enough room/rooms available')
+      i = 0
+      new_reservations = []
+      rooms.times do |room|
+        new_reservation = Reservation.new(check_in,check_out,available_rooms[i].id, block_id: block_id)
+        @reservations << new_reservation
+        new_reservations << new_reservation
+        update_room(check_in,check_out,available_rooms[i].id)
+        i + 1
+      end
+
+      return new_reservations
+
+    else
+
+      block_rooms = find_available_block_rooms(block_id)
+
+      if check_in != block_rooms[0].check_in || check_out != block_rooms[0].check_out
+        raise ArgumentError.new('The dates do not match for this given block reservation')
+
+      end
+
+      rooms.times do |index|
+        block_rooms[index].block_available = false
+      end
+
+      return block_rooms[0...rooms]
     end
 
-    i = 0
-    new_reservations = []
-    rooms.times do |room|
-      new_reservation = Reservation.new(check_in,check_out,available_rooms[i].id, block_id: block_id)
-      @reservations << new_reservation
-      new_reservations << new_reservation
-      update_room(check_in,check_out,available_rooms[i].id)
-      i + 1
-    end
-
-    return new_reservations
   end
 
   def update_room(check_in,check_out,room_num,block_id: block_id)
@@ -112,6 +129,7 @@ class ReservationMgr
       return block_rooms
     end
   end
+
 
 end
 

@@ -55,8 +55,14 @@ describe "ReservationMgr Test" do
       expect(@new_ResMgr.rooms[0].unavailable_dates[1]).must_equal date_hash2
       expect(@new_ResMgr.rooms[0].unavailable_dates.length).must_equal 2
     end
-    it "will reserve a block room that is available if some puts in a block party" do
-
+    it "will reserve a block room that is available if someone puts in a block party" do
+      @new_ResMgr.reserve_block(Date.parse("2018-09-05"),Date.parse("2018-09-07"),2,"Metzner")
+      res = @new_ResMgr.make_reservation(Date.parse("2018-09-05"),Date.parse("2018-09-07"),block_id: "Metzner")
+      expect(res[0].block_available).must_equal false
+    end
+    it "will raise an argument error if the block room checkin checkout dates don't match what they want to reserve" do
+      @new_ResMgr.reserve_block(Date.parse("2018-09-05"),Date.parse("2018-09-07"),2,"Metzner")
+      expect{@new_ResMgr.make_reservation(Date.parse("2018-09-06"),Date.parse("2018-09-07"),block_id: "Metzner")}.must_raise ArgumentError
     end
 
   end
