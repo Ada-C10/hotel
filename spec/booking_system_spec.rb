@@ -130,6 +130,13 @@ describe "BookingSystem class" do
       expect { @system.check_id(reservation1.id) }.must_raise ArgumentError
     end
   end
+
+  describe "block tests" do
+    it "raises ArgumentError if more than 5 rooms booked" do
+      expect { @system.make_block((Date.new(2018, 1, 1)), (Date.new(2018, 1, 2)), 6) }.must_raise ArgumentError
+    end
+  end
+
 end
 
 # Hi! In Edges we talked about interesting test cases for date overlaps this afternoon. Here is a full list of all the cases I’ll be looking for when I give feedback:

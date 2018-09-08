@@ -6,6 +6,7 @@ module Hotel
       @rooms = load_rooms
       @reservations = []
       @all_ids = []
+      @blocks = []
     end
 
     def load_rooms
@@ -25,12 +26,20 @@ module Hotel
       # binding.pry
     end
 
-    def assign_available_room(start_date_2, end_date_2)
+    def make_block(start_date, end_date, number_of_rooms)
+      if number_of_rooms > 5
+        raise ArgumentError, "Cannot reserve more than 5 rooms"
+      end
+      block = Hotel::Block.new(block_id: generate_id, number_of_rooms: number_of_rooms, assigned_rooms: idksofar, tart_date: start_date, end_date: end_date, discounted_price: 150)
+      @blocks << block
+    end
+
+    def assign_available_room(start_date, end_date)
       booked_rooms = []
       available_rooms = []
       @reservations.each do |reservation|
         if
-          reservation.start_date < end_date_2 && start_date_2 < reservation.end_date
+          reservation.start_date < end_date && start_date < reservation.end_date
           booked_rooms << reservation.room
         end
       end
@@ -39,11 +48,11 @@ module Hotel
       return available_rooms[0]
     end
 
-    def search_reservations(start_date_2, end_date_2)
+    def search_reservations(start_date, end_date)
       reservations_within_date = []
       @reservations.each do |reservation|
         if
-          reservation.start_date < end_date_2 && start_date_2 < reservation.end_date
+          reservation.start_date < end_date && start_date < reservation.end_date
           reservations_within_date << reservation
         end
       end
