@@ -6,11 +6,9 @@ module Hotel
 
     def initialize(input)
       @check_in_date = input[:check_in_date]
+
       @check_out_date = input[:check_out_date]
         raise StandardError, "Checkout date cannot be before checkin date" unless check_in_date < check_out_date
-      # @room_number = [*1..20].first
-      # input[:room_number]
-
       @room_number = input[:room_number]
     end
 
