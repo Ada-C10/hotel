@@ -4,16 +4,6 @@ require_relative '../lib/room'
 require_relative '../lib/reservation'
 require 'pry'
 
-
-# Wave 1 Tracking Reservations
-# 1. access the list of all of the rooms in the hotel
-# 2. reserve a room for a given date range
-# 3. access the list of reservations for a specific date
-# 4. get the total cost for a given reservation
-#
-#NOTES ON POSSIBLE TESTS TO ADD:
-#making sure each instance variable in initialization is the correct class
-
 describe 'TrackingSystem class' do
   ###### WAVE 1 ##################################################################
   describe "#initialize" do
@@ -54,8 +44,6 @@ describe 'TrackingSystem class' do
     end
   end
 
-  # #method for making a reservation
-  # # Admin can reserve a room for a given date range
   describe "#add_reservation" do
     before do
       @tracker = TrackingSystem.new
@@ -63,29 +51,41 @@ describe 'TrackingSystem class' do
     end
 
     it "returns an array of reservations" do
-      @reservation = @tracker.add_reservation(start_time: Date.new(2018,8,1), end_time: Date.new(2018,8,25), number_of_rooms:1)
-      # binding.pry
-      expect(@reservation).must_be_kind_of Array
+      @reservations = @tracker.add_reservation(start_time: Date.new(2018,8,1), end_time: Date.new(2018,8,25), number_of_rooms:1)
+      @reservations = @tracker.add_reservation(start_time: Date.new(2018,8,1), end_time: Date.new(2018,8,25), number_of_rooms:6)
+      list = @tracker.reservations
+      expect(@reservations).must_be_kind_of Array
     end
 
     it "raises ArgumentError if there are not enough available-rooms on the requested date" do
       expect{@tracker.add_reservation(start_time: Date.new(2018,1,1),end_time:Date.new(2018,1,2),number_of_rooms:350)}.must_raise ArgumentError
     end
-  end
 
-  # it "increases the number of reservations in the reservations list" do
-  #   num_of_reservations = @tracker.reservations.length
-  #   @reservation = @tracker.add_reservation(Date.new(2018,8,1),Date.new(2018,8,25),1)
-  #   @reservation2 = @tracker.add_reservation(Date.new(2018,8,1),Date.new(2018,8,25),1)
-  #   updated_num_of_reservations = @tracker.reservations.length
-  #   binding.pry
-  #   expect(updated_num_of_reservations - num_of_reservations).must_equal 1
-  # end
+    it "increases the number of reservations in the reservations list" do
+      @reservations = @tracker.add_reservation(start_time: Date.new(2018,8,1), end_time: Date.new(2018,8,25), number_of_rooms:1)
+      original_num_of_reservations = @tracker.reservations
+      @reservations = @tracker.add_reservation(start_time: Date.new(2018,8,1), end_time: Date.new(2018,8,25), number_of_rooms:1)
+      updated_num_of_reservations = @tracker.reservations
+      expect(updated_num_of_reservations.length).must_equal 2
+    end
+  end #end of describe
 
-  # it "changes block_status of the reserved room to :RESERVED for a given date range" do
-  # end
-  # it "saves the checkout_time as a day before " do
-  # end
+
+
+
+
+
+  # @reservation = @tracker.add_reservation(start_time: Date.new(2018,8,1), end_time: Date.new(2018,8,25), number_of_rooms:1)
+  # #check the length of reservations
+  # updated_num_of_reservations = @tracker.reservations.length
+  # # #make another reservation
+  # # @reservation2 = @tracker.add_reservation(start_time: Date.new(2018,8,1), end_time: Date.new(2018,8,2), number_of_rooms:1)
+  # # #check the length and the compare them
+  # # updated_num_of_reservations = @tracker.reservations.length
+  # # # binding.pry
+
+
+
   # it "adds a hash of start/end time to each room.reserved_dates array" do
   # end
 
@@ -143,36 +143,8 @@ describe 'TrackingSystem class' do
 
   end
 
-  # describe "#total_cost_of_reservation" do
-  #   before do
-  #     @tracker = TrackingSystem.new
-  #   end
-  #
-  #   it "returns an instance of Float" do
-  #     @reservation = @tracker.add_reservation(start_time: Date.new(2018,8,1), end_time: Date.new(2018,8,2), number_of_rooms:20)
-  #    #the reservation above booked 20 rooms so that means all rooms have reservations, at at $200
-  #     expect(@tracker.total_cost_of_reservation(1)).must_be_kind_of Float
-  #   end
-  #
-  #   it "raises an ArgumentError if no reservations exist" do
-  #     expect{@tracker.total_cost_of_reservation(1)}.must_raise ArgumentError
-  #   end
-  #
-  #   it "raises an ArgumentError the room number has no reservation" do
-  #     #in this it block no reservations have been made so the room
-  #     expect{@tracker.total_cost_of_reservation(20)}.must_raise ArgumentError
-  #   end
-  #
-  # end
 
-  # def view_reservations_on(start_time: Date.now, end_time: Date.now + 1)
-  #   # list_of_res_on this date ^ above = []<--create emtpy array
-  #   #@reservations.each do |reservation|
-  #   #if (reservation.checkin_time..reservation.checkout_time).include?(date)
-  #   #then list_of_res_on (date) << reservation
-  #   #return the array  list_of_res_on (date)
-  #   # end
-  #
+
   describe "#view_reservations_on" do
     before do
       @tracker = TrackingSystem.new
@@ -191,25 +163,29 @@ describe 'TrackingSystem class' do
     it "raises an ArgumentError if given date is not an instance of Date class" do
       expect{@tracker.view_reservations_on(2018,2,1)}.must_raise ArgumentError
     end
-
-
-
   end
 
-  #
-  # def view_reservations_on(date)
-  #   all_reservations = []
-  #   @reservations.each do |reservation|
-  #     if (reservation[:start_time]...reservation[:end_time]).include? date
-  #       all_reservations << reservation
-  #     end
-  #     if all_reservations.empty?
-  #       raise ArgumentError.new"No reservations on this date"
-  #     end
-  #   end
-  # end
 
+  describe "#total_cost_of_reservation" do
+    before do
+      @tracker = TrackingSystem.new
+      attributes = {room_num: 1 ,start_time: Date.new(2018,8,1),end_time: Date.new(2018,9,1),price: 200.00}
+      @reservation = Reservation.new(attributes)
+    end
 
+    it "raises ArgumentError unless argument is an instance of Reservation" do
+      expect{@tracker.total_cost_of_reservation("hello there!")}.must_raise ArgumentError
+    end
+
+    it "returns an instance of a Float" do
+      expect(@tracker.total_cost_of_reservation(@reservation)).must_be_kind_of Float
+    end
+
+    it "returns a postive number" do
+      expect(@tracker.total_cost_of_reservation(@reservation)).must_equal 6200.00
+    end
+
+  end
 
 
   describe "#view_all_rooms" do

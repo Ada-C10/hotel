@@ -3,7 +3,7 @@ require_relative 'reservation'
 require 'pry'
 
 NUMBER_OF_ROOMS = 20
-STANDARD_ROOM_PRICE = 200.0
+STANDARD_ROOM_PRICE = 200.00
 
 class TrackingSystem
   attr_reader :all_rooms, :reservations
@@ -28,6 +28,7 @@ class TrackingSystem
   ###########################################################
   #this method doesn't have tests yet because i'm not sure if im going to combine it with the method above
   def total_cost_of_reservation(reservation)
+    raise ArgumentError.new"#{reservation} is an invalid argument type" unless reservation.instance_of? Reservation
     return reservation.total_cost
   end
   ###########################################################
