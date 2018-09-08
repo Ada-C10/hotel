@@ -1,8 +1,6 @@
 require_relative 'date_range'
 require_relative 'reservation'
 
-require 'pry'
-
 NUM_OF_ROOMS = 20
 MAX_BLOCK_NUM = 5
 
@@ -43,16 +41,26 @@ module Hotel
       end
     end
 
-    def find_unavailable_rooms(requested_dates)
+    def find_blocked_rooms(requested_dates)
+      blocked_rooms = @blocked_rooms.map do |room|
+        if room.date_range.get_range == requested_dates.get_range
+          room.party
+        end
+      end
+    end
+
+    def find_reserved_rooms(requested_dates)
       matching_reservations = reservations_overlaps?(requested_dates)
-      unavailable_rooms = matching_reservations.map do |reservation|
+      reserved_rooms = matching_reservations.map do |reservation|
         reservation.room
       end
+      return reserved_rooms
+    end
 
-      @blocked_rooms.each do |room|
-        unavailable_rooms << room.party
-      end
-
+    def find_unavailable_rooms(requested_dates)
+      reserved_rooms = find_reserved_rooms(requested_dates)
+      blocked_rooms = find_blocked_rooms(requested_dates)
+      unavailable_rooms = reserved_rooms + blocked_rooms
       return unavailable_rooms
     end
 
