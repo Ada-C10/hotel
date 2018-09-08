@@ -62,6 +62,11 @@ describe "Front Desk Class" do
       expect(@admin.reserve_room(5,('2018-02-01'),('2018-02-03'))).must_be_kind_of Reservation
     end
 
+    # it "raises an error if start date after the end date" do
+    #   room = @admin.reserve_room(6,('2018-02-05'),('2018-02-03'))
+    #   expect{room}.must_raise StandardError
+    # end
+
   end
 end
 #reserve_room creates an instance of reservation

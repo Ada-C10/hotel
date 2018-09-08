@@ -27,9 +27,6 @@ class Front_Desk
   def reserve_room(room_number,start_date, end_date)
 
     available_rooms = available_rooms(start_date,end_date)
-    # if room_number == 6
-    #   binding.pry
-    # end
     if !available_rooms.find { |room| room.room_number == room_number }
       raise StandardError
     end
@@ -56,6 +53,7 @@ class Front_Desk
   def available_rooms(start_date,end_date)
     start_date = Date.parse(start_date)
     end_date = Date.parse(end_date)
+
     list_of_rooms = @rooms.dup
 
     @reservations.each do |reservation|

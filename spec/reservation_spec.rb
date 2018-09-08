@@ -19,6 +19,7 @@ describe "Reservation Class" do
 
     it "has a room number assisnged to the reservation" do
       expect(@reservation.room_number).must_equal 1
+
     end
 
     it "totals the cost based on each night stay" do
