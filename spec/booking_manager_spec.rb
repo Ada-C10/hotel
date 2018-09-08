@@ -46,7 +46,6 @@ describe 'BookingManager' do
 
   # Wave 2 checks
 
-  # - Overlaps in the back
   # - Completely contained
   # - Completely containing
   #
@@ -72,6 +71,12 @@ describe 'BookingManager' do
     it 'raises an error if room bookings overlap in the back' do
       expect{fully_booked.make_reservation(Date.new(2017, 1, 3), Date.new(2018, 1, 9))}
     end
+
+      # - Completely contained
+      it 'raises an error if room bookings completely contained in fully booked hotel' do
+        expect{fully_booked.make_reservation(Date.new(2017, 1, 2), Date.new(2018, 1, 5))}
+      end
+
   end
 
 
