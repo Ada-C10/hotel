@@ -42,14 +42,14 @@ module Hotel
       list_of_reservations.sort! { |a,b| a.check_in_date <=> b.check_in_date }
     end
 
-    def self.find_room_number(list_of_rooms,find_room_number)
-      return list_of_rooms.find { |room| room.room_number == find_room_number }
-    end
-
-    def self.connect_reservation_to_room_and_sort(connected_room_number, reservation)
-      #CONNECTED ROOM NUMBER CAN BE OBTAINED WITH FIND ROOM NUMBER METHOD
+    def self.connect_reservation_to_room_and_sort(list_of_rooms, room_number, reservation)
+      connected_room_number = Hotel::Helper_Method.find_room_number(list_of_rooms, room_number)
       connected_room_number.reservations << reservation
       Hotel::Helper_Method.sort_reservations(connected_room_number.reservations)
+    end
+
+    def self.find_room_number(list_of_rooms,room_number_to_find)
+      return list_of_rooms.find { |room| room.room_number == room_number_to_find }
     end
 
     def self.check_valid_date_range(check_in, check_out)

@@ -154,20 +154,21 @@ describe 'self.binary_search_list_of_reservations' do
       expect(Hotel::Helper_Method.find_room_number(@hotel.rooms, 20)).must_be_kind_of Hotel::Room
     end
 
-    it 'must be a valid room number 1-20' do
-      VALID_ROOM_NUMBERS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
-      @hotel.rooms.each do |room|
-        expect(VALID_ROOM_NUMBERS.include?(room.room_number)).must_equal true
-      end
-    end
+    # it 'must be a valid room number 1-20' do
+    #   VALID_ROOM_NUMBERS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
+    #   @hotel.rooms.each do |room|
+    #     expect(VALID_ROOM_NUMBERS.include?(room.room_number)).must_equal true
+    #   end
+    # end
   end
 
   describe 'connect_reservation_to_room_and_sort' do
 
-    it "given a room it adds a reservation to the room's list of reservations" do
-      @input = 1
-      @room = Hotel::Room.new(@input)
-      @rooms = [@room]
+    it "given a list of rooms and a room number it adds a reservation to the room's list of reservations" do
+
+      @hotel = Hotel::Booking_Manager.new
+      @rooms = @hotel.rooms
+
       @input2 = { name: "Mx Thing",
         room_number: 1,
         check_in_date: Date.new(2020,9,9),
@@ -181,15 +182,13 @@ describe 'self.binary_search_list_of_reservations' do
       @reservation = Hotel::Reservation.new(@input2)
       @reservation2 = Hotel::Reservation.new(@input3)
 
-      @room_number = Hotel::Helper_Method.find_room_number(@rooms, 1)
+      Hotel::Helper_Method.connect_reservation_to_room_and_sort(@rooms, 1, @reservation)
+      expect(@rooms.first.reservations.first.name).must_equal "Mx Thing"
+      expect(@rooms.first.reservations.first.room_number).must_equal 1
 
-      Hotel::Helper_Method.connect_reservation_to_room_and_sort(@room_number, @reservation)
-      expect(@room.reservations.first.name).must_equal "Mx Thing"
-      expect(@room.reservations.first.room_number).must_equal 1
-
-      Hotel::Helper_Method.connect_reservation_to_room_and_sort(@room_number, @reservation2)
-      expect(@room.reservations.first.name).must_equal "Dr. Frank N. Stein"
-      expect(@room.reservations.first.room_number).must_equal 1
+      Hotel::Helper_Method.connect_reservation_to_room_and_sort(@rooms, 1, @reservation2)
+      expect(@rooms.first.reservations.first.name).must_equal "Dr. Frank N. Stein"
+      expect(@rooms.first.reservations.first.room_number).must_equal 1
       end
     end
 
