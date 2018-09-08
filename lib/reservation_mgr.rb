@@ -11,13 +11,7 @@ class ReservationMgr
 
   end
 
-  def available_rooms(check_in,check_out)
-    if check_in.class != Date
-      check_in = Date.parse(check_in)
-    end
-    if check_out.class != Date
-      check_out = Date.parse(check_out)
-    end
+  def available_rooms(check_in,check_out,rooms: 1)
     if check_out < check_in
       raise ArgumentError.new('The check-out date is before the check-in')
     end
@@ -28,34 +22,17 @@ class ReservationMgr
         available_rooms << room
       end
     end
+
+    if available_rooms.length == 0 || available_rooms.length < rooms
+      raise ArgumentError.new('There are not enough room/rooms available')
+    end
+
     return available_rooms
   end
 
   def make_reservation(check_in,check_out,rooms: 1, block_id: nil)
-
-    if check_in.class != Date
-      check_in = Date.parse(check_in)
-    end
-    if check_out.class != Date
-      check_out = Date.parse(check_out)
-    end
     if block_id == nil
-      available_rooms = available_rooms(check_in,check_out)
-
-      if available_rooms.length == 0 || available_rooms.length < rooms
-        raise ArgumentError.new('There are not enough room/rooms available')
-      end
-
-      i = 0
-      new_reservations = []
-      rooms.times do |room|
-        new_reservation = Reservation.new(check_in,check_out,available_rooms[i].id, block_id: block_id)
-        @reservations << new_reservation
-        new_reservations << new_reservation
-        update_room(check_in,check_out,available_rooms[i].id)
-        i + 1
-      end
-
+      new_reservations = create_reservation(check_in,check_out,rooms, block_id)
       return new_reservations
 
     else
@@ -75,9 +52,9 @@ class ReservationMgr
 
   end
 
-  def update_room(check_in,check_out,room_num,block_id: block_id)
+  def update_room(check_in,check_out,room_num)
     update_room = @rooms.find {|room| room.id == room_num}
-    update_room.add_unavailablity(check_in,check_out,block_id: block_id)
+    update_room.add_unavailablity(check_in,check_out)
   end
 
   def reservations_by_date(date)
@@ -100,24 +77,8 @@ class ReservationMgr
     if rooms > 5
       raise ArgumentError.new('You cannot block more than 5 rooms')
     end
-
-    available_rooms = available_rooms(check_in,check_out)
-
-    if available_rooms.length == 0 || available_rooms.length < rooms
-      raise ArgumentError.new('There are not enough room/rooms available')
-    end
-
-    i = 0
-    new_reservations = []
-    rooms.times do |room|
-      new_reservation = Reservation.new(check_in,check_out,available_rooms[i].id, block_id: block_id)
-      @reservations << new_reservation
-      new_reservations << new_reservation
-      update_room(check_in,check_out,available_rooms[i].id, block_id: block_id)
-      i + 1
-    end
-
-    return new_reservations
+    new_block_reservations = create_reservation(check_in,check_out,rooms, block_id)
+    return new_block_reservations
   end
 
   def find_available_block_rooms(block_id)
@@ -129,6 +90,21 @@ class ReservationMgr
     end
   end
 
+  private
+
+  def create_reservation (check_in,check_out,rooms, block_id)
+    available_rooms = available_rooms(check_in,check_out,rooms: rooms)
+    i = 0
+    new_reservations = []
+    rooms.times do |room|
+      new_reservation = Reservation.new(check_in,check_out,available_rooms[i].id, block_id: block_id)
+      @reservations << new_reservation
+      new_reservations << new_reservation
+      update_room(check_in,check_out,available_rooms[i].id)
+      i + 1
+    end
+    return new_reservations
+  end
 
 end
 

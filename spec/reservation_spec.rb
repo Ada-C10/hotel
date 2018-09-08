@@ -6,6 +6,10 @@ describe "Reservation Test" do
       new_Res = Reservation.new("2018-09-05","2018-09-07",1)
       expect(new_Res.check_in).must_be_kind_of Date
       expect(new_Res.check_out).must_be_kind_of Date
+
+    end
+    it 'initializes block_available and block_id to false and nil if not specified' do
+      new_Res = Reservation.new("2018-09-05","2018-09-07",1)
       expect(new_Res.block_available).must_equal false
       expect(new_Res.block_id).must_be_nil
     end
