@@ -8,12 +8,16 @@ NUM_OF_ROOMS = 20
 module Hotel
   class ReservationTracker
     class NoRoomsError < StandardError; end
+    class InvalidAmountRoomsError < StandardError; end
+    class TooManyRoomsError < StandardError; end
+    class NotEnoughError < StandardError; end
 
     attr_reader :reservations, :rooms
 
     def initialize
       @rooms = load_rooms
       @reservations = []
+      @block_rooms = []
     end
 
     def load_rooms
@@ -66,11 +70,11 @@ module Hotel
     def reserve_room(input)
       requested_dates = get_requested_dates(input)
 
-      id = @reservations.length + 1
+      reservation_id = @reservations.length + 1
       room = get_first_available_room(requested_dates)
 
       reservation_data = {
-        id: id,
+        id: reservation_id,
         room: room,
         date_range: requested_dates
       }
@@ -80,7 +84,53 @@ module Hotel
       return new_reservation
     end
 
+    def check_valid_amt(requested_amt)
+      check_valid_num?(requested_amt)
+      check_num_requested?(requested_amt)
+    end
+
+    def get_blocked_rooms(requested_amt, requested_dates)
+      check_valid_amt(requested_amt)
+      available_rooms = get_available_rooms(requested_dates)
+      check_enough_rooms?(available_rooms, requested_amt)
+      block = available_rooms.take(requested_amt)
+      return block
+    end
+
+    def block_rooms(input)
+      requested_dates = get_requested_dates(input)
+      block_id = @blocked_rooms.length + 1
+      num_rooms = get_blocked_rooms(number_of_rooms, requested_dates)
+
+      block_data = {
+        id: block_id,
+        num_rooms: num_rooms,
+        date_range: requested_dates
+      }
+
+      new_block = Block.new(block_data)
+      @blocked_rooms << new_block
+      return new_block
+    end
+
     private
+    def check_enough_rooms?(available_rooms, requested_amt)
+      if available_rooms.length < requested_amt
+        raise NotEnoughError.new("There are not enough rooms to block")
+      end
+    end
+
+    def check_valid_num?(number_of_rooms)
+      if number_of_rooms < 0 || !number_of_rooms.is_a?(Integer)
+        raise InvalidAmountRoomsError.new("That is not a valid amount to request to block")
+      end
+    end
+
+    def check_num_requested?(number_of_rooms)
+      if number_of_rooms > 5
+        raise TooManyRoomsError.new("Cannot block more than 5 rooms")
+      end
+    end
 
     def check_availablity?(available_rooms)
       raise NoRoomsError.new("NO ROOMS AVAILABLE!!!") if available_rooms.empty?

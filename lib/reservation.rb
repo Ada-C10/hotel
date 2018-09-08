@@ -1,20 +1,23 @@
-require_relative 'date_range'
-
 RATE = 200
+BLOCK_DISCOUNT = 0.80
 
 module Hotel
   class Reservation
-    attr_reader :id, :room, :cost, :date_range
+    attr_reader :id, :block_id, :room, :cost, :date_range
 
     def initialize(input)
       @id = input[:id]
+      @block_id = input[:block_id].nil? ? nil : input[:block_id]
       @room = input[:room]
       @date_range = input[:date_range]
       @cost = calculate_cost
     end
 
     def calculate_cost
-      cost = RATE * @date_range.find_num_nights
+      num_of_nights = @date_range.find_num_nights
+      reg_cost = RATE * num_of_nights
+      blocked_cost = reg_cost * BLOCK_DISCOUNT
+      @block_id.nil? ? reg_cost : blocked_cost
     end
   end
 end
