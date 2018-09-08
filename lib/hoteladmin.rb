@@ -33,7 +33,7 @@ class HotelAdmin
     new_reservation
   end
 
-  def build_reservation_hash(guest_identifier, room_number, check_in, check_out, rate = 200.00, status = :complete)
+  def build_reservation(guest_identifier, room_number, check_in, check_out, rate = 200.00, status = :complete)
     reserve_room({
       guest_id: guest_identifier,
       room: room_number,
@@ -48,7 +48,7 @@ class HotelAdmin
   end
 
   def available_rooms(check_in, check_out)
-    rooms.select {|room| room.available?((check_in..check_out))}
+    rooms.find_all {|room| room.available?((check_in..check_out))}
   end
 
   def locate_block(check_in, check_out)
@@ -60,9 +60,10 @@ class HotelAdmin
   end
 
   def reserve_block(party, rooms, check_in, check_out, rate)
+    raise ArgumentError, ("There is a limit of 5 rooms to a block") if rooms.length > 5
     block_reservations = []
     rooms.each do |room_number|
-      block_reservations << build_reservation_hash(party, room_number, check_in, check_out, rate, status = :block_reserved)
+      block_reservations << build_reservation(party, room_number, check_in, check_out, rate, status = :block_reserved)
     end
     block_reservations
   end

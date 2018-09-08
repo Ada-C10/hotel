@@ -59,7 +59,7 @@ describe "HotelAdmin" do
 
   describe "HotelAdmin#reserve_room" do
     before do
-      @reservation = hotel.build_reservation_hash("FishandChipsgrl@gmail.com", 4, Date.new(2019,01,20), Date.new(2019,01,22))
+      @reservation = hotel.build_reservation("FishandChipsgrl@gmail.com", 4, Date.new(2019,01,20), Date.new(2019,01,22))
     end
 
     it "returns the new reservation object" do
@@ -75,10 +75,10 @@ describe "HotelAdmin" do
       expect(hotel.reservations.length).must_equal 1
     end
 
-    it "will raise an exception if a conflicting reservation is added to a room" do
+    it "will raise an exception if there is an attempt to add a conflicting reservation" do
 
       expect{
-        hotel.build_reservation_hash("Mamacita09@gmail.com", 4, Date.new(2019,01,21), Date.new(2019,01,22))
+        hotel.build_reservation("Mamacita09@gmail.com", 4, Date.new(2019,01,21), Date.new(2019,01,22))
       }.must_raise ArgumentError
 
     end
@@ -108,11 +108,12 @@ describe "HotelAdmin" do
 
   describe "HotelAdmin#available_rooms" do
     before do
-      hotel.build_reservation_hash("SoccerMom2010@gmail.com", 1, Date.new(2018,10,20), Date.new(2018,10,22))
-      hotel.build_reservation_hash("Guccifer2.0@ada.com", 1, Date.new(2018,12,02), Date.new(2018,12,07))
-      hotel.build_reservation_hash("Jfahmy07@gmail.com", 2, Date.new(2018,12,03), Date.new(2018,12,06))
+      hotel.build_reservation("SoccerMom2010@gmail.com", 1, Date.new(2018,10,20), Date.new(2018,10,22))
+      hotel.build_reservation("Guccifer2.0@ada.com", 1, Date.new(2018,12,02), Date.new(2018,12,07))
+      hotel.build_reservation("Jfahmy07@gmail.com", 2, Date.new(2018,12,03), Date.new(2018,12,06))
     end
-    it "provides a list of available room NUMBERS for a given date range" do
+
+    it "provides a list of available rooms for a given date range" do
       available = hotel.available_rooms(Date.new(2018,12,04), Date.new(2018,12,05))
       room_ids = []
       available.each do |room|
@@ -124,13 +125,21 @@ describe "HotelAdmin" do
       expect(room_ids).wont_include 1
       expect(room_ids).wont_include 2
     end
+
+    it "returns empty array if no rooms are available for a given date range" do
+      20.times do |num|
+        hotel.build_reservation("testyMcTester@pluto.com", num+1, Date.new(2018,12,10), Date.new(2018,12,16))
+      end
+
+      expect(hotel.available_rooms(Date.new(2018,12,10), Date.new(2018,12,16))).must_be_empty
+    end
   end
 
   describe "HotelAdmin#locate_block" do
     before do
-      hotel.build_reservation_hash("SoccerMom2010@gmail.com", 1, Date.new(2018,10,20), Date.new(2018,10,22))
-      hotel.build_reservation_hash("Guccifer2.0@ada.com", 1, Date.new(2018,12,02), Date.new(2018,12,07))
-      hotel.build_reservation_hash("Jfahmy07@gmail.com", 2, Date.new(2018,12,03), Date.new(2018,12,06))
+      hotel.build_reservation("SoccerMom2010@gmail.com", 1, Date.new(2018,10,20), Date.new(2018,10,22))
+      hotel.build_reservation("Guccifer2.0@ada.com", 1, Date.new(2018,12,02), Date.new(2018,12,07))
+      hotel.build_reservation("Jfahmy07@gmail.com", 2, Date.new(2018,12,03), Date.new(2018,12,06))
     end
 
     it "finds 5 available rooms for a given date range" do
@@ -147,10 +156,14 @@ describe "HotelAdmin" do
       expect(room_ids).wont_include 2
     end
 
-    # need much more test data to conquer this part
-    # it "returns nil if no rooms available for given date range" do
-    #
-    # end
+    it "returns empty array if no rooms available in block" do
+      hotel.reserve_block("Ada Lovelace Celebration", [16,17,18], Date.new(2019,01,03), Date.new(2019,01,06), 145.00)
+      [16,17,18].each do |room|
+        hotel.reserve_room_in_block("Ada Lovelace Celebration", room)
+      end
+
+      expect(hotel.available_rooms_in_block("Ada Lovelace Celebration")).must_be_empty
+    end
 
   end
 
@@ -166,7 +179,12 @@ describe "HotelAdmin" do
       expect(new_reservations.length).must_equal 4
       expect(new_reservations.first).must_be_instance_of Reservation
       expect(new_reservations.last).must_equal (hotel.reservations.last)
+    end
 
+    it "raises an argument error if more than 5 rooms are provided" do
+      expect {
+        hotel.reserve_block("Smith Wedding Party", [1,2,3,4,5,6,7], Date.new(2018,12,02), Date.new(2018,12,07), 145.00)
+      }.must_raise ArgumentError
     end
 
     it "adds block reservations to appropriate rooms" do
@@ -184,7 +202,14 @@ describe "HotelAdmin" do
       expect(room9.bookings.first).must_be_instance_of Reservation
       expect(room10.bookings.count).must_equal 1
       expect(room10.bookings.first).must_be_instance_of Reservation
+    end
 
+    it "raise ArgumentError if a room being placed in the block has previous reservation for date range" do
+      hotel.build_reservation("SoccerMom2010@gmail.com", 5, Date.new(2019,01,02), Date.new(2019,01,04))
+
+      expect {
+        (hotel.reserve_block("Jameson's Birthday Bash", [4,5,6], Date.new(2019,01,03), Date.new(2019,01,06), 145.00))
+      }.must_raise ArgumentError
     end
   end
 
@@ -196,6 +221,18 @@ describe "HotelAdmin" do
 
       expect(room9.bookings.first.status).must_equal :complete
       expect(room9.bookings.first.guest_id).must_equal "Smith Wedding Party"
+    end
+
+    it "returns an argument error if the given room is not available" do
+      hotel.reserve_block("Monique's Wedding", [13,14,15], Date.new(2019,01,03), Date.new(2019,01,06), 145.00)
+      [13,14,15].each do |room|
+        hotel.reserve_room_in_block("Monique's Wedding", room)
+      end
+
+      expect {
+        hotel.reserve_room_in_block("Monique's Wedding", 14)
+      }.must_raise ArgumentError
+
     end
   end
 
@@ -214,6 +251,15 @@ describe "HotelAdmin" do
       expect(available).wont_include 8
       expect(available).wont_include 9
       expect(available).must_include 10
+    end
+
+    it "will return an empty array if no rooms are available in block" do
+      hotel.reserve_block("Jameson's Birthday Bash", [4,5,6], Date.new(2019,01,03), Date.new(2019,01,06), 145.00)
+      [4,5,6].each do |room|
+        hotel.reserve_room_in_block("Jameson's Birthday Bash", room)
+      end
+
+      expect(hotel.available_rooms_in_block("Jameson's Birthday Bash")).must_be_empty
     end
   end
 

@@ -16,6 +16,7 @@ class Reservation
   end
 
   def complete_reservation
+    raise ArgumentError, ("This room has already been reserved.") if @status == :complete
     @status = :complete
   end
 
