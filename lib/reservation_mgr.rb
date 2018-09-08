@@ -52,11 +52,6 @@ class ReservationMgr
 
   end
 
-  def update_room(check_in,check_out,room_num)
-    update_room = @rooms.find {|room| room.id == room_num}
-    update_room.add_unavailablity(check_in,check_out)
-  end
-
   def reservations_by_date(date)
     reservations_on_date = []
     @reservations.each do |reservation|
@@ -104,6 +99,11 @@ class ReservationMgr
       i + 1
     end
     return new_reservations
+  end
+
+  def update_room(check_in,check_out,room_num)
+    update_room = @rooms.find {|room| room.id == room_num}
+    update_room.add_unavailablity(check_in,check_out)
   end
 
 end
