@@ -65,8 +65,12 @@ module Hotel
 
       else
 
-        new_reservation = Hotel::Reservation.new(range, room, rate: block.discounted_rate)
-        block.block_reservations << new_reservation
+        if block.blocked_rooms.include?(room)
+          new_reservation = Hotel::Reservation.new(range, room, rate: block.discounted_rate)
+          block.block_reservations << new_reservation
+        else
+          raise UnavailableRoomError, "Room in different block"
+        end
 
       end
 
@@ -123,7 +127,7 @@ module Hotel
       check_id(id)
       return @all_room_blocks.find{ |block| block.block_id == id}
     end
-    
+
 
   end
 
