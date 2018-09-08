@@ -1,12 +1,10 @@
 require_relative 'spec_helper'
-require 'pry'
 
 describe "ReservationTracker class" do
-  before do
-    @reservation_tracker = Hotel::ReservationTracker.new
-  end
-
   describe "Initializer" do
+    before do
+      @reservation_tracker = Hotel::ReservationTracker.new
+    end
     it "is an instance of ReservationTracker" do
       expect(@reservation_tracker).must_be_kind_of Hotel::ReservationTracker
     end
@@ -171,6 +169,10 @@ describe "ReservationTracker class" do
   end
 
   describe "#get_requested_dates method" do
+    it "creates an instance of DateRange with the start_date and end_date inputs" do
+      date_range = @reservation_tracker.get_requested_dates(@input)
+      expect(date_range).must_be_kind_of Hotel::DateRange
+    end
   end
 
   describe "#reserve_room method" do
