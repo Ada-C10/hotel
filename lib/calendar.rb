@@ -1,12 +1,12 @@
 class Calendar
 
-  ROOMS = [*1..20]
+  # ROOMS = [*1..20]
 
   attr_reader :rooms, :room_assignments
 
   def initialize
-    # @rooms = ROOMS
-    @room_assignments = Hash[ ROOMS.collect { |room| [room, []] } ]
+    @rooms = [*1..20]
+    @room_assignments = Hash[ @rooms.collect { |room| [room, []] } ]
   end
 
   def available_room?(room, reservation)
@@ -19,7 +19,7 @@ class Calendar
   end
 
   def list_available_rooms(reservation)
-    available_rooms = ROOMS.select { |room| available_room?(room, reservation)}
+    available_rooms = rooms.select { |room| available_room?(room, reservation)}
   end
 
   def add_reservation(reservation)

@@ -23,8 +23,8 @@ describe Calendar do
       expect(calendar).must_be_kind_of Calendar
     end
     it "stores rooms constant" do
-      expect(Calendar::ROOMS).must_be_kind_of Array
-      expect(Calendar::ROOMS[0]).must_equal 1
+      expect(calendar.rooms).must_be_kind_of Array
+      expect(calendar.rooms[0]).must_equal 1
     end
   end
 
