@@ -38,7 +38,7 @@ class Room
     # end
   end
 
-  def add_unavailablity(check_in,check_out, block_id: nil, block_available: false )
+  def add_unavailablity(check_in,check_out, block_id: nil)
     dates = {}
     dates[:check_in] = check_in
     dates[:check_out] = check_out

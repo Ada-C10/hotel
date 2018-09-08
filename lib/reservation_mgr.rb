@@ -59,7 +59,6 @@ class ReservationMgr
       return new_reservations
 
     else
-
       block_rooms = find_available_block_rooms(block_id)
 
       if check_in != block_rooms[0].check_in || check_out != block_rooms[0].check_out
@@ -78,7 +77,7 @@ class ReservationMgr
 
   def update_room(check_in,check_out,room_num,block_id: block_id)
     update_room = @rooms.find {|room| room.id == room_num}
-    update_room.add_unavailablity(check_in,check_out)
+    update_room.add_unavailablity(check_in,check_out,block_id: block_id)
   end
 
   def reservations_by_date(date)

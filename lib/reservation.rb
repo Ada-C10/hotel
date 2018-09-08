@@ -31,8 +31,13 @@ class Reservation
   def cost
     cost_per_night = 200
     nights = (check_out - check_in).to_i
-    total_cost = cost_per_night * nights
-    return total_cost
+    if block_id == nil
+      total_cost = cost_per_night * nights
+      return total_cost
+    else
+      total_cost = (cost_per_night*0.8) * nights
+      return total_cost
+    end
   end
 
   def date?(date)

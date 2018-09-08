@@ -30,6 +30,10 @@ describe "Reservation Test" do
       new_Res = Reservation.new("2018-09-05","2018-09-07",1)
       expect(new_Res.cost).must_equal 400
     end
+    it "Calculates a discounted cost for block reservation" do
+      new_Res = Reservation.new("2018-09-05","2018-09-07",1,block_id: "Metzner")
+      expect(new_Res.cost).must_equal 320
+    end
   end
   describe "Reservation.date method" do
     it "Returns true if reservation includes given date" do
