@@ -23,6 +23,8 @@ module Hotel
     end
 
     def make_reservation(id, check_in, check_out)
+
+      # TODO make check_in and check_out into dates here instad of reservation
       reservation = Hotel::Reservation.new(id, check_in, check_out)
       reservation.assign_room(@rooms)
       # room = reservation.room
