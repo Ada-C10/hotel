@@ -30,6 +30,10 @@ module Hotel
     #assings room from the available room's array
     def get_available_room(start_date, end_date)
       # TODO: wave 2, add some logic to figure out which rooms are available
+      # @reservations.each do |reservation|
+      #   if reservation.start_date == start_date
+      # end
+
       room_numbers = get_all_numbers
       return room_numbers.first
     end
@@ -57,15 +61,27 @@ module Hotel
       matched_date_range = []
       @reservations.each do |reservation|
         if reservation.start_date.between?(start_date, end_date)
-          matched_date_range << reservation
+          matched_date_range << reservation.room_num
         elsif reservation.end_date.between?(start_date, end_date)
-          matched_date_range << reservation
+          matched_date_range << reservation.room_num
         elsif start_date < reservation.start_date && end_date > reservation.end_date
-          matched_date_range << reservation
+          matched_date_range << reservation.room_num
         end
       end
-      return  matched_date_range
+      return matched_date_range
     end
+
+
+    def nonreserved_rooms_fordates (start_date, end_date)
+      matched_rooms_range = reserved_rooms_for_dates(start_date, end_date)
+
+      all_room_numbers = get_all_numbers
+
+      avail_rooms = all_room_numbers - matched_rooms_range
+
+      return avail_rooms
+    end
+
 
   end
 end

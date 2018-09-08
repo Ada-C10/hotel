@@ -74,20 +74,30 @@ describe 'Module Hotel' do
 
 
 
-  it "returns list of reservations for a speficic DATE RANGE" do
+  it "returns list of reserved room_nums for a specific
+  DATE RANGE" do
 
-    reservation1 = @hotel.assigns_a_reservation(@start_date, @end_date)
+  reservation1 = @hotel.assigns_a_reservation(@start_date, @end_date)
 
-    @start_date1 = Date.parse("4/9/2018")
-    @end_date1 = Date.parse("6/9/2018")
+  reservations_fordates = @hotel.reserved_rooms_for_dates(@start_date, @end_date)
 
-    reservation2 = @hotel.assigns_a_reservation(@start_date1, @end_date1)
+  expect(reservations_fordates).must_be_kind_of Array
+  expect(reservations_fordates[0]).must_equal 1
+end
 
-    reservations_fordates = @hotel.reserved_rooms_for_dates(@start_date, @end_date1)
 
-    expect(reservations_fordates).must_be_kind_of Array
 
-  end
+it "gives list of rooms that are available after some of them have been reserved" do
+
+  reservation1 = @hotel.assigns_a_reservation(@start_date, @end_date)
+
+  avail_rooms = @hotel.nonreserved_rooms_fordates(@start_date, @end_date)
+
+  expect(avail_rooms).must_be_kind_of Array
+  expect(avail_rooms).must_equal [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
+
+end
+
 
 
 
