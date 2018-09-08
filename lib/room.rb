@@ -48,14 +48,18 @@ module Hotel
 
     # updates availability for date to :BOOKED or :BLOCKED
     # raises an ArgumentError if invalid status, returns new status if successful
-    def change_room_status(date, room_status)
+    def change_room_status(checkin_date, room_status, checkout_date = nil)
       unless VALID_STATUSES.include? room_status
         raise ArgumentError, "Invalid status: #{room_status}"
       end
+      if checkout_date == nil
+        checkout_date = checkin_date.next_day
+      end
+      checkin_date.upto(checkout_date.prev_day) do |date|
+        availability[date.to_s][:status] = room_status
+      end
       # room is unavailable from checkin to night before checkout
       # room is available day of checkout for reservations starting that evening
-      availability[date.to_s][:status] = room_status
-      return availability[date.to_s][:status]
     end
 
     # gets the nightly rate for a specific night as a float with 2 decimals
@@ -65,12 +69,17 @@ module Hotel
 
     # update the nightly rate for a specific night or date range
     # raises an ArgumentError if invalid rate, returns new rate if successful
-    def change_nightly_rate(date, new_rate)
+    def change_nightly_rate(checkin_date, new_rate, checkout_date = nil)
       if new_rate < 0 || !(new_rate.is_a? Numeric)
         raise ArgumentError, "Invalid rate: #{new_rate}"
       end
-      availability[date.to_s][:rate] = new_rate
-      return availability[date.to_s][:rate]
+      if checkout_date == nil
+        checkout_date = checkin_date.next_day
+      end
+      checkin_date.upto(checkout_date.prev_day) do |date|
+        availability[date.to_s][:rate] = new_rate
+      end
+      return availability[checkin_date.to_s][:rate]
     end
   end
 end

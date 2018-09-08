@@ -4,13 +4,14 @@
 
 module Hotel
   class Reservation
-    attr_reader :checkin_date, :checkout_date, :confirmation_number, :rooms
+    attr_reader :checkin_date, :checkout_date, :confirmation_number, :rooms, :block
 
-    def initialize(checkin_date, checkout_date, confirmation_number)
+    def initialize(checkin_date, checkout_date, confirmation_number, block = nil)
       @checkin_date = checkin_date
       @checkout_date = checkout_date
-      @rooms = []
       @confirmation_number = confirmation_number
+      @rooms = []
+      @block = block
     end
 
     # adds a room to the reservation and updates rooms status to :BOOKED

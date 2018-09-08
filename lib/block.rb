@@ -46,9 +46,8 @@ module Hotel
       if (blocked_rooms.length + reservations.length) == MAX_BLOCK
         raise ArgumentError, "Maximum number of rooms alredy in block."
       end
-      checkin_date.upto(checkout_date.prev_day) do |date|
-        room.change_room_status(date, :BLOCKED)
-      end
+      room.change_room_status(checkin_date, :BLOCKED, checkout_date)
+      room.change_nightly_rate(checkin_date, discount_rate, checkout_date)
       blocked_rooms << room
       return blocked_rooms
     end

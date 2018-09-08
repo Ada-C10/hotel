@@ -28,9 +28,9 @@ module Hotel
     def make_reservation(checkin_date, checkout_date, room_quantity = 1, block = nil)
       valid_dates?(checkin_date, checkout_date) # validate dates
       valid_block?(checkin_date, checkout_date, block) unless block == nil
-      rooms = book_rooms(checkin_date, checkout_date, room_quantity, block) # find and book available rooms
       confirmation_num = reservations.length + 1 # generate confirmation number
-      new_res = Reservation.new(checkin_date, checkout_date, confirmation_num, rooms, block) # create res
+      new_res = Reservation.new(checkin_date, checkout_date, confirmation_num, block) # create res
+      rooms = book_rooms(new_res, checkin_date, checkout_date, room_quantity, block) # find and book available rooms
       reservations[confirmation_num] = new_res # add to admin's list of reservations
       block.add_reservation(new_res) unless block == nil # add res to block and update block availability
       return new_res
@@ -42,8 +42,7 @@ module Hotel
         raise ArgumentError, "Can only block between 1-5 rooms"
       end
       new_block = Block.new(checkin_date, checkout_date, block_name, discount_rate) # create block
-      # check availability and return available rooms with updated nightly rates
-      block_rooms(new_block, checkin_date, checkout_date, discount_rate, room_quantity)
+      block_rooms(new_block, checkin_date, checkout_date, room_quantity)
       blocks[block_name] = new_block # add to admin's list of blocks
       return new_block
     end
@@ -96,7 +95,7 @@ module Hotel
       # returns an array of the requested number of available Rooms
       # changes rooms' status to :BOOKED for the selected dates
       # raises an error if not enough rooms availble for the dates/quantity requested
-      def book_rooms(checkin_date, checkout_date, room_quantity = 1, block = nil)
+      def book_rooms(reservation, checkin_date, checkout_date, room_quantity = 1, block = nil)
         if block == nil
           selected_rooms = rooms.select { |room|
             room.is_available?(checkin_date, checkout_date)
@@ -112,14 +111,16 @@ module Hotel
           raise RoomAvailabilityError, "Only #{room_quantity} rooms available from #{checkin_date} to #{checkout_date}."
         else # get the requested number of rooms and change their status to booked
           booked_rooms = selected_rooms.first(room_quantity)
-          booked_rooms.each { |room| room.change_room_status(checkin_date, :BOOKED, checkout_date)}
+          booked_rooms.each { |room| reservation.add_room(room)}
           return booked_rooms
         end
       end
 
-      # returns an array of the requested number of available Rooms from the block,
+      # finds available rooms, adds them to the block, and updates their status
+      # and nightly rate according to the block's info
       # raises an error if not enough rooms availble for the dates/quantity requested
-      def block_rooms(block, checkin_date, checkout_date, discount_rate, room_quantity = 1)
+      # returns an array of the newly blocked rooms
+      def block_rooms(block, checkin_date, checkout_date, room_quantity = 1)
         selected_rooms = rooms.select { |room|
           room.is_available?(checkin_date, checkout_date)
         }
@@ -129,10 +130,7 @@ module Hotel
           raise RoomAvailabilityError, "Only #{room_quantity} rooms available from #{checkin_date} to #{checkout_date}."
         else
           blocked_rooms = selected_rooms.first(room_quantity)
-          blocked_rooms.each do |room|
-            room.change_nightly_rate(checkin_date, discount_rate, checkout_date)
-            block.add_room(room)
-          end
+          blocked_rooms.each { |room| block.add_room(room) }
           return blocked_rooms
         end
       end

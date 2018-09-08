@@ -80,4 +80,6 @@ describe "Room class" do
       expect{room.change_nightly_rate(AVAILABLE_THRU, "two hundred")}.must_raise ArgumentError
     end
   end
+
+  # TODO ADD TESTS FOR IS AVAILABLE
 end
