@@ -1,14 +1,14 @@
 require_relative 'spec_helper'
 
 describe "DateRange" do
-  let (:check_in) {
+  let (:start_date) {
     "2018-10-07"
   }
-  let (:check_out) {
+  let (:end_date) {
     "2018-10-16"
   }
   let(:all_dates) {
-    all_dates = Hotel::DateRange.create_date_array(check_in, check_out)
+    Hotel::DateRange.create_date_array(start_date: start_date, end_date: end_date)
   }
 
   describe "Create_date_array" do
@@ -22,6 +22,12 @@ describe "DateRange" do
 
     it "Returns an accurate number of days" do
       expect(all_dates.length).must_equal 9
+    end
+
+    it "Raises a StandardError with invalid date range" do
+      expect{
+        Hotel::DateRange.create_date_array(start_date: end_date, end_date: start_date)
+      }.must_raise StandardError
     end
   end
 end

@@ -1,10 +1,10 @@
 require_relative 'spec_helper'
 
 describe "Reservation" do
-  let(:check_in) {
+  let(:start_date) {
     "2018-09-15"
   }
-  let(:check_out) {
+  let(:end_date) {
     "2018-09-20"
   }
   let(:id) {
@@ -14,7 +14,7 @@ describe "Reservation" do
     Hotel::Room.new(id)
   }
   let(:reservation) {
-    Hotel::Reservation.new(room_number,check_in, check_out)
+    Hotel::Reservation.new(room_number,start_date: start_date, end_date: end_date)
   }
 
   describe "#initialize" do
@@ -24,32 +24,34 @@ describe "Reservation" do
 
     it "Keeps track of all parameters" do
 
-      [:check_in, :check_out, :room_number].each do |variable|
+      [:start_date, :end_date, :room_number].each do |variable|
         expect(reservation).must_respond_to variable
       end
 
-      expect(reservation.check_in).must_equal Date.parse(check_in)
-      expect(reservation.check_out).must_equal Date.parse(check_out)
+      expect(reservation.start_date).must_equal Date.parse(start_date)
+      expect(reservation.end_date).must_equal Date.parse(end_date)
       expect(reservation.room_number).must_equal room_number
     end
 
     it "raises a StandardError with invalid date range" do
+      end_date = "2018-09-15"
+      start_date = "2018-09-20"
       expect{
-        Hotel::Reservation.new(room_number, check_out, check_in)
+        Hotel::Reservation.new(room_number, end_date: end_date, start_date: start_date)
       }.must_raise StandardError
     end
   end
 
   describe "#total_cost" do
     it "Calculates the total cost for a reservation" do
-      new_reservation = Hotel::Reservation.new(id, check_in, check_out)
+      new_reservation = Hotel::Reservation.new(id, start_date: start_date, end_date: end_date)
       cost = new_reservation.total_cost
 
       expect(cost).must_equal 1000
     end
 
     it "Calculates the total cost for a reservation with a discounted rate" do
-      new_reservation = Hotel::Reservation.new(id, check_in, check_out, room_rate: 150)
+      new_reservation = Hotel::Reservation.new(id, start_date: start_date, end_date: end_date, room_rate: 150)
       cost = new_reservation.total_cost
 
       expect(cost).must_equal 750

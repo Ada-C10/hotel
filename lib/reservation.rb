@@ -4,14 +4,19 @@ require_relative 'hotel_helper'
 # (with check-in date, check-out date, room number, and total cost)
 module Hotel
   class Reservation
-    attr_reader :check_in, :check_out, :room_number, :room_rate, :group_name
+    attr_reader :start_date, :end_date, :room_number, :room_rate, :group_name
     attr_accessor :room_cost
 
-    def initialize(room_number, check_in, check_out, room_rate: 200, group_name: "")
-      @check_in = Date.parse(check_in)
-      @check_out = Date.parse(check_out)
+    def initialize(room_number, start_date: Date.today, end_date: Date.today + 2, room_rate: 200, group_name: "")
+      if start_date.class != Date
+        @start_date = Date.parse(start_date)
+      end
 
-      if (@check_out - @check_in) < 0
+      if end_date.class != Date
+        @end_date = Date.parse(end_date)
+      end
+
+      if (@end_date - @start_date) < 0
         raise StandardError.new("Invalid Date Range")
       end
 
@@ -22,7 +27,7 @@ module Hotel
 
     # As an administrator, I can get the total cost for a given reservation
     def total_cost
-      num_of_days = check_out - check_in
+      num_of_days = end_date - start_date
       room_cost = room_rate * num_of_days
 
       return room_cost

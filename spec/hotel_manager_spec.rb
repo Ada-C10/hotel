@@ -4,10 +4,10 @@ describe "HotelManager" do
   let (:my_hotel) {
     Hotel::HotelManager.new
   }
-  let (:check_in) {
+  let (:start_date) {
     "2018-10-07"
   }
-  let (:check_out) {
+  let (:end_date) {
     "2018-10-16"
   }
   let (:id) {
@@ -42,53 +42,117 @@ describe "HotelManager" do
     end
   end
 
-  describe "#reserve" do
-    it "Updates all reservations by creating a Reservation" do
-      my_hotel.reserve(id, check_in, check_out)
+  # describe "#make_reservation" do
+  #   it "Creates a reservation for the public" do
+  #   end
+  #
+  #   it "Creates a reservation for a room in the block" do
+  #   end
+  #
+  #   it "Raises an error if there are no available rooms left to reserve" do
+  #   end
+  #
+  #   it "Allows a reservation to be created on the same day another party checks out" do
+  #   end
+  #
+  #   it "Creates a list of accurate available rooms so that a room in a block cannot be booked by the public" do
+  #   end
+  #
+  #   it "Does not allow a reservation to be created when dates overlap for the same room" do
+  #   end
+    # it "Updates all reservations by creating a Reservation" do
+    #   my_hotel.reserve(start_date: start_date, end_date: end_date)
+    #
+    #   expect(my_hotel.reservations.last.start_date).must_equal Date.parse(start_date)
+    #   expect(my_hotel.reservations.last.end_date).must_equal Date.parse(end_date)
+    # end
+    #
+    # it "Updates Room status to Unavailable for selected dates" do
+    #   my_room = my_hotel.rooms.find {|r| r.id == id}
+    #   my_hotel.reserve(id, start_date: start_date, end_date: end_date)
+    #
+    #   (Date.parse(start_date)...Date.parse(end_date)).each do |date|
+    #     expect(my_room.status_by_date[date]).must_equal :UNAVAILABLE
+    #   end
+    # end
+    #
+    # it "Creates and stores a reservation when there are no reservations yet" do
+    #   my_reservations = my_hotel.reservations.clear
+    #
+    #   my_hotel.reserve(id, start_date: start_date, end_date: end_date)
+    #
+    #   expect(my_reservations.length).must_equal 1
+    #   expect(my_reservations.first.room_number).must_equal id
+    #   expect(my_reservations.first.start_date).must_equal Date.parse(start_date)
+    #   expect(my_reservations.first.end_date).must_equal Date.parse(end_date)
+    # end
+    #
+    # it "Raises an error if no rooms are available for a specific date" do
+    #   # call it 20 times on a specific date range
+    #   room_number = 1337
+    #   room = Hotel::Room.new(room_number)
+    #   my_hotel.rooms << room
+    #   Hotel::Room.change_status_of_room(my_hotel.rooms, room_number, start_date: start_date, end_date: end_date)
+    #
+    #   expect {
+    #     my_hotel.reserve(room_number, start_date: start_date, end_date: end_date)
+    #   }.must_raise StandardError
+    # end
+    #
+    # it "Raises an error if trying ot make a reservation when room is in a block" do
+    # end
+    #
+    # it "raises an error if the block isn't found" do
+    # end
+    #
+  #   # it ""
+  # end
 
-      expect(my_hotel.reservations.last.check_in).must_equal Date.parse(check_in)
-      expect(my_hotel.reservations.last.check_out).must_equal Date.parse(check_out)
+  describe "#create_a_block" do
+    before do
+      @group_name = "Euchre Team"
+      @num_of_rooms = 3
+      @start_date = "2018-12-10"
+      @end_date = "2018-12-12"
+      @room_rate = 145
     end
 
-    it "Updates Room status to Unavailable for selected dates" do
-      my_room = my_hotel.rooms.find {|r| r.id == id}
-      my_hotel.reserve(id, check_in, check_out)
+    it "Creates an instance of block" do
+      my_hotel.create_a_block(@group_name, num_of_rooms: @num_of_rooms, start_date: @start_date, end_date: @end_date, room_rate: @room_rate)
 
-      (Date.parse(check_in)...Date.parse(check_out)).each do |date|
-        expect(my_room.status_by_date[date]).must_equal :UNAVAILABLE
-      end
+      expect(my_hotel.blocks.last).must_be_kind_of Hotel::Block
+      expect(my_hotel.blocks.last.group_name).must_equal @group_name
+      expect(my_hotel.blocks.last.room_list).must_be_kind_of Hash
+      expect(my_hotel.blocks.last.room_list.length).must_equal @num_of_rooms
+      expect(my_hotel.blocks.last.room_rate).must_equal @room_rate
     end
 
-    it "Creates and stores a reservation when there are no reservations yet" do
-      my_reservations = my_hotel.reservations.clear
-
-      my_hotel.reserve(id, check_in, check_out)
-
-      expect(my_reservations.length).must_equal 1
-      expect(my_reservations.first.room_number).must_equal id
-      expect(my_reservations.first.check_in).must_equal Date.parse(check_in)
-      expect(my_reservations.first.check_out).must_equal Date.parse(check_out)
-    end
-
-    it "Raises an error if room is not available" do
-      room_number = 1337
-      room = Hotel::Room.new(room_number)
-      my_hotel.rooms << room
-      Hotel::Room.change_status_of_room(my_hotel.rooms, room_number, check_in: check_in, check_out: check_out)
-
+    it "Raises an error if block num_of_rooms is greater than 5" do
       expect {
-        my_hotel.reserve(room_number, check_in, check_out)
-      }.must_raise StandardError
+        my_hotel.create_a_block(@group_name, num_of_rooms: 7, start_date: @start_date, end_date: @end_date, room_rate: @room_rate)
+      }.must_raise ArgumentError
+    end
+
+    it "Raises an error if no rooms are available for the block" do
+      my_hotel.rooms.length.times do |i|
+        Hotel::Room.change_status_of_room(my_hotel.rooms, i+1, start_date: @start_date, end_date: @end_date)
+      end
+
+      expect{
+        my_hotel.create_a_block(@group_name, num_of_rooms: 3, start_date: @start_date, end_date: @end_date)
+      }.must_raise ArgumentError
+    end
+
+    it "Raises an error if not enough rooms are available for the block" do
+      19.times do |i|
+        Hotel::Room.change_status_of_room(my_hotel.rooms, i+1, start_date: @start_date, end_date: @end_date)
+      end
+
+      expect{
+        my_hotel.create_a_block(@group_name, num_of_rooms: 3, start_date: @start_date, end_date: @end_date)
+      }.must_raise ArgumentError
     end
   end
-
-  # describe "#create_a_block" do
-  #   it "Accurately loads block information into blocks array" do
-  #     room_list = my_hotel.find_available_rooms(my_hotel.rooms, "2018-12-05", "2019-03-15")
-  #     room_list.each do |id|
-  #       if my_hotel.in_block
-  #   end
-  # end
 
   describe "#find_reservations" do
     before do
@@ -96,14 +160,14 @@ describe "HotelManager" do
     end
 
     it "Returns an array" do
-      reservations = my_hotel.find_reservations(@date)
+      reservations = my_hotel.find_reservations(date: @date)
 
       expect(reservations).must_be_kind_of Array
     end
 
     it "Returns an accurate count of Reservations" do
       # Hard-coded based on test data from CSV file
-      reservations = my_hotel.find_reservations(@date)
+      reservations = my_hotel.find_reservations(date: @date)
 
       expect(reservations.length).must_equal 2
     end
@@ -111,10 +175,19 @@ describe "HotelManager" do
 
   describe "#find_available_rooms" do
     it "Returns an accurate count of available rooms as an array" do
-      list = my_hotel.find_available_rooms(my_hotel.rooms, "2018-10-07", "2018-10-16")
+      list = my_hotel.find_available_rooms(my_hotel.rooms, start_date: "2018-10-07", end_date: "2018-10-16")
 
       expect(list).must_be_kind_of Array
       expect(list.length).must_equal 20
+    end
+  end
+
+  describe "#find_available_rooms_in_block" do
+    it "Returns an accurate count of available rooms as an array" do
+      list = my_hotel.find_available_rooms_in_block(my_hotel.blocks, "NCTM")
+
+      expect(list).must_be_kind_of Array
+      expect(list.length).must_equal 4
     end
   end
 
@@ -140,9 +213,40 @@ describe "HotelManager" do
       my_reservation = my_hotel.reservations.first
       my_room = my_hotel.rooms.find {|r| r.id == my_reservation.room_number}
 
-      (my_reservation.check_in...my_reservation.check_out).each do |date|
+      (my_reservation.start_date...my_reservation.end_date).each do |date|
         expect(my_room.status_by_date[date]).must_equal :UNAVAILABLE
       end
+    end
+  end
+
+  describe "#load_blocks" do
+    before do
+      @first_block = my_hotel.blocks.first
+      @last_block = my_hotel.blocks.last
+    end
+
+    it "accurately loads block information into blocks array" do
+      expect(@first_block.group_name).must_equal "Comic-Con"
+      expect(@last_block.group_name).must_equal "UC Berkeley"
+    end
+
+    it "Checks that rooms in block are unavailable to the public" do
+      my_room = my_hotel.rooms.find {|r| r.id == @first_block.room_list.keys[0]}
+      second_room = my_hotel.rooms.find {|r| r.id == @last_block.room_list.keys[0]}
+
+      first_start_date = Date.parse(@first_block.start_date)
+      second_start_date = Date.parse(@last_block.start_date)
+
+      expect(my_room.status_by_date[first_start_date]).must_equal :UNAVAILABLE
+      expect(second_room.status_by_date[second_start_date]).must_equal :UNAVAILABLE
+    end
+
+    it "Checks that rooms in block are available for private guests" do
+      room_availability = @first_block.room_list.values[0]
+      second_room_availability = @last_block.room_list.values[0]
+
+      expect(room_availability).must_equal :AVAILABLE
+      expect(second_room_availability).must_equal :AVAILABLE
     end
   end
 end
