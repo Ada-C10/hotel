@@ -25,12 +25,12 @@ class TrackingSystem
   #     end
   #   end
   # end
-###########################################################
-#this method doesn't have tests yet because i'm not sure if im going to combine it with the method above
+  ###########################################################
+  #this method doesn't have tests yet because i'm not sure if im going to combine it with the method above
   def total_cost_of_reservation(reservation)
     return reservation.total_cost
   end
-###########################################################
+  ###########################################################
 
 
   def add_rooms
@@ -58,8 +58,8 @@ class TrackingSystem
     end
     @reservations
   end
-#need to come back here and create i instances of reservation..but first need to change Reservation.rooms to hold an Integer instead of Array
-    # available_rooms.each do |room|
+  #need to come back here and create i instances of reservation..but first need to change Reservation.rooms to hold an Integer instead of Array
+  # available_rooms.each do |room|
   #   @all_rooms.each do |room|
   #     number_of_rooms.times do
   #       if room.reserved_dates.empty?
@@ -112,38 +112,48 @@ class TrackingSystem
       return available_rooms
     end
   end
-end
 
-#access the list of reservations for a specific date
-  # def view_reservations_on(date)
-  #   # list_of_res_on this date ^ above = []<--create emtpy array
-  #   #@reservations.each do |reservation|
-  #   #if (reservation.checkin_time..reservation.checkout_time).include?(date)
-  #   #then list_of_res_on (date) << reservation
-  #   #return the array  list_of_res_on (date)
-  #   # end
-  #
+  #access the list of reservations for a specific date <---not date range
+  def view_reservations_on(date)
+    all_reservations = []
+    @reservations.each do |reservation|
+      if (reservation[:start_time]...reservation[:end_time]).include? date
+        all_reservations << reservation
+      end
+      if all_reservations.empty?
+        raise ArgumentError.new"No reservations on this date"
+      end
+    end
+  end
 
 
-
-  #############################  #############################   #############################
-  # private #helper methods below
-  # def view_two_dates_as_range()  #<--put params {checkin_time: checkin, checkout_time: checkout}
-  # def check_if_rooms_available_on(date_range) <--or does the view_available_rooms_on() already do this pretty much?
   def ranges_overlap?(r1, r2)
     r1.include?(r2.first) || r2.include?(r1.first)
   end
-  #############################  #############################   #############################
 
-  #think about how each room can be reserved thru time
+end
 
-  # The hotel has 20 rooms, and they are numbered 1 through 20
-  # Every room is identical, and a room always costs $200/night
-  # The last day of a reservation is the checkout day, so the
-  # guest should not be charged for that night
-  # For this wave, any room can be reserved at any time, and
-  # you don't need to check whether reservations conflict with each other (this will come in wave 2!)
 
-  # def overlap?(x,y)
-  #   (x.first - y.end) * (y.first - x.end) > 0
-  # end
+#
+
+
+
+#############################  #############################   #############################
+# private #helper methods below
+# def view_two_dates_as_range()  #<--put params {checkin_time: checkin, checkout_time: checkout}
+# def check_if_rooms_available_on(date_range) <--or does the view_available_rooms_on() already do this pretty much?
+
+#############################  #############################   #############################
+
+#think about how each room can be reserved thru time
+
+# The hotel has 20 rooms, and they are numbered 1 through 20
+# Every room is identical, and a room always costs $200/night
+# The last day of a reservation is the checkout day, so the
+# guest should not be charged for that night
+# For this wave, any room can be reserved at any time, and
+# you don't need to check whether reservations conflict with each other (this will come in wave 2!)
+
+# def overlap?(x,y)
+#   (x.first - y.end) * (y.first - x.end) > 0
+# end

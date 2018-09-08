@@ -112,6 +112,7 @@ describe 'TrackingSystem class' do
 
   describe "#view_available_rooms_on specifc date range" do
     before do
+      @tracker = TrackingSystem.new
     end
 
     it "returns an array" do
@@ -163,6 +164,25 @@ describe 'TrackingSystem class' do
   #   end
   #
   # end
+
+  # def view_reservations_on(start_time: Date.now, end_time: Date.now + 1)
+  #   # list_of_res_on this date ^ above = []<--create emtpy array
+  #   #@reservations.each do |reservation|
+  #   #if (reservation.checkin_time..reservation.checkout_time).include?(date)
+  #   #then list_of_res_on (date) << reservation
+  #   #return the array  list_of_res_on (date)
+  #   # end
+  #
+  describe "#view_reservations_on" do
+    before do
+      @tracker = TrackingSystem.new
+    end
+
+    it "returns an array" do
+      expect(@tracker.view_reservations_on(start_time: Date.new(2018,10,5), end_time: Date.new(2018,10,6))).must_be_kind_of Array
+    end
+
+  end
 
 
 
