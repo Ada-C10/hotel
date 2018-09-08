@@ -1,4 +1,5 @@
 require_relative 'spec_helper'
+require 'pry'
 
 describe "ReservationTracker class" do
   describe "Initializer" do
@@ -47,6 +48,12 @@ describe "ReservationTracker class" do
       end_date: @end_date
     }
 
+    @block_input = {
+      start_date: @start_date,
+      end_date: @end_date,
+      party: 5
+    }
+
     @reservation_tracker.reserve_room(@input)
     @requested_dates = Hotel::DateRange.new(@start_date, @end_date)
   end
@@ -62,16 +69,21 @@ describe "ReservationTracker class" do
 
   describe "#find_reserved_rooms method" do
     it "finds all the reserved rooms by requested_dates" do
-
+      reserved_rooms = @reservation_tracker.find_reserved_rooms(@requested_dates)
+      expect(reserved_rooms).must_be_kind_of Array
+      expect(reserved_rooms.length).must_equal 1
+      expect(reserved_rooms.first).must_equal 1
     end
 
   end
 
   describe "#find_blocked_rooms method" do
     it "finds all the blocked rooms by requested_dates" do
-
+      block = @reservation_tracker.block_rooms(@block_input)
+      blocked_rooms = @reservation_tracker.find_blocked_rooms(@requested_dates)
+      expect(blocked_rooms).must_be_kind_of Array
+      expect(blocked_rooms.size).must_equal block.party.size
     end
-
   end
 
   describe "#find_unavailable_rooms method" do
@@ -177,13 +189,13 @@ describe "ReservationTracker class" do
 
   describe "#reserve_room method" do
     it "reserves a room if one is available for requested dates" do
-      previous_num_res = @reservation_tracker.reservations.length
+      inital_length = @reservation_tracker.reservations.length
 
       new_reservation = @reservation_tracker.reserve_room(@input)
-      current_num_res = @reservation_tracker.reservations.length
+      new_length = @reservation_tracker.reservations.length
 
       expect(new_reservation).must_be_kind_of Hotel::Reservation
-      expect(current_num_res).must_equal previous_num_res + 1
+      expect(new_length).must_equal inital_length + 1
     end
   end
 
@@ -237,13 +249,13 @@ describe "ReservationTracker class" do
     end
 
     it "blocks rooms if available" do
-      previous_num_block = @reservation_tracker.blocked_rooms.length
+      initial_length = @reservation_tracker.blocked_rooms.length
 
       new_block = @reservation_tracker.block_rooms(@input)
-      current_num_block = @reservation_tracker.blocked_rooms.length
+      new_length = @reservation_tracker.blocked_rooms.length
 
       expect(new_block).must_be_kind_of Hotel::Block
-      expect(current_num_block).must_equal previous_num_block + 1
+      expect(new_length).must_equal initial_length + 1
     end
   end
 

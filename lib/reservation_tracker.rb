@@ -54,11 +54,12 @@ module Hotel
     end
 
     def find_blocked_rooms(requested_dates)
-      blocked_rooms = @blocked_rooms.map do |room|
+      blocked_rooms_by_date = @blocked_rooms.map do |room|
         if room.date_range.get_range == requested_dates.get_range
           room.party
         end
       end
+      return blocked_rooms_by_date.flatten
     end
 
     def find_unavailable_rooms(requested_dates)
