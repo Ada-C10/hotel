@@ -67,7 +67,7 @@ module Hotel
       possible_nights_of_stay = Hotel::Helper_Method.generate_nights(check_in_date, check_out_date)
       vacant_rooms = []
       @rooms.each do |room|
-        if Hotel::Helper_Method.binary_search_list_of_reservations(room.reservations, possible_nights_of_stay) == false
+        if Hotel::Helper_Method.binary_search_list_of_reservations_for_vacancy(room.reservations, possible_nights_of_stay) == false
           vacant_rooms << room.room_number
         end
       end
@@ -82,7 +82,17 @@ module Hotel
     end
 
     def list_reservations(date)
-      return reservations_on_date = @hotel_reservations.find_all { |reservation| reservation.nights_of_stay == date }
+      reservations = []
+      @rooms.each do |room|
+        index = Hotel::Helper_Method.binary_search_reservations_return_index_if_found(room.reservations,date)
+        if index == nil
+          next
+        elsif
+          reservations << room.reservations[index]
+        end
+      end
+      return reservations
+      # return reservations_on_date = @hotel_reservations.find_all { |reservation| reservation.nights_of_stay == date }
     end
 
     def total_cost_of_stay(reservation)

@@ -1,7 +1,7 @@
 module Hotel
   class Helper_Method
 
-    def self.binary_search_list_of_reservations(array_of_reservations, array_of_possible_dates)
+    def self.binary_search_list_of_reservations_for_vacancy(array_of_reservations, array_of_possible_dates)
       # RETURNS TRUE IF BOOKED, FALSE IF VACANT
       min = 0
       max = array_of_reservations.length
@@ -26,6 +26,33 @@ module Hotel
       end
 
       return false
+    end
+
+    def self.binary_search_reservations_return_index_if_found(array_of_reservations, date)
+      # RETURNS TRUE IF BOOKED, FALSE IF VACANT
+      min = 0
+      max = array_of_reservations.length
+
+      if array_of_reservations.first == nil
+        return nil
+      end
+
+      while min < max
+        mid = (min + max )/ 2
+        if array_of_reservations[mid].nights_of_stay.include?(date)
+          return mid
+        elsif array_of_reservations[mid].check_in_date > date
+          max = mid - 1
+        elsif array_of_reservations[mid].check_in_date < date
+          min = mid + 1
+        end
+      end
+
+      if array_of_reservations[0].nights_of_stay.include?(date)
+        return 0
+      end
+
+      return nil
     end
 
     def self.generate_nights(check_in, check_out)

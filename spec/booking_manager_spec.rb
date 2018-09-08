@@ -88,7 +88,8 @@ describe "Hotel Manager class" do
 
     it 'returns an array of all reservations for that date' do
       expect(@hotel.list_reservations(@date)).must_be_kind_of Array
-      @hotel.list_reservations(@date).each do |reservation|
+      @list = @hotel.list_reservations(@date)
+      @list.each do |reservation|
           expect(@names.include?(reservation.name)).must_equal true
       end
     end
