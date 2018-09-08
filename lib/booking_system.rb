@@ -52,14 +52,13 @@ module Hotel
     end
 
 
-    def reserve_a_room(check_in, check_out, room, block: false)
-      range = Hotel::DateRange.new(check_in,check_out)
-
+    def make_reservation(range, room, block: false)
       unless block
 
         if !is_room_available(range, room)
           raise UnavailableRoomError, "Room not available"
         end
+
         new_reservation = Hotel::Reservation.new(range, room)
         @all_reservations << new_reservation
 
@@ -78,6 +77,19 @@ module Hotel
     end
 
 
+    def reserve_standard_room(check_in, check_out)
+      range = Hotel::Date.new(check_in, check_out)
+
+      open_rooms = list_available_rooms
+
+      if open_rooms.empty?
+        raise UnavailableRoomError, "No Rooms available for #{check_in} to #{check_out}"
+      else
+        make_reservation(range, open_rooms.first)
+      end
+    end
+
+
     def reserve_a_room_in_block(id)
       block = find_block(id)
 
@@ -90,7 +102,7 @@ module Hotel
       end
 
       room_num = block.list_available_block_rooms.first
-      reserve_a_room(block.date_range.check_in, block.date_range.check_out, room_num, block: block)
+      make_reservation(block.date_range, room_num, block: block)
     end
 
 

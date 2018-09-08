@@ -152,20 +152,19 @@ describe 'BookingSystem class' do
     end
   end
 
-  # TODO
-  describe 'reserve_a_room method' do
+  describe 'make_reservation helper method' do
 
     it 'returns an instance of reservation' do
-      expect(hotel_booker.reserve_a_room(today + 1, today + 4, 3)).must_be_instance_of Hotel::Reservation
+      expect(hotel_booker.make_reservation(Hotel::DateRange.new(today + 1, today + 4), 3)).must_be_instance_of Hotel::Reservation
     end
 
     it 'raises an error when given invalid dates' do
-      expect{hotel_booker.reserve_a_room(today + 1, today - 4, 1)}.must_raise ArgumentError
+      expect{hotel_booker.make_reservation(Hotel::DateRange.new(today + 1, today - 4), 1)}.must_raise ArgumentError
     end
 
-    it 'adds the reservation to the list of all_reservations' do
+    it 'adds standard reservation to the list of all_reservations' do
       num_of_reservations = hotel_booker.all_reservations.length
-      reservation = hotel_booker.reserve_a_room(today + 1, today + 4, 3)
+      reservation = hotel_booker.make_reservation(Hotel::DateRange.new(today + 1, today + 4), 3)
 
       expect(hotel_booker.all_reservations.length - 1).must_equal num_of_reservations
       expect(hotel_booker.all_reservations[2]).must_equal reservation
@@ -174,14 +173,14 @@ describe 'BookingSystem class' do
 
     it 'raises an error if room is unavailable' do
       expect{
-        hotel_booker.reserve_a_room(today + 1, today + 4, 1)
+        hotel_booker.make_reservation(today + 1, today + 4, 1)
       }.must_raise StandardError
 
     end
 
     it 'raises an exception if no rooms are available for that date range' do
       [*3..20].each do |room|
-        hotel_booker.reserve_a_room(today + 1, today + 4, room)
+        hotel_booker.make_reservation(Hotel::DateRange.new(today + 1, today + 4), room)
       end
 
       expect{room_block}.must_raise StandardError
@@ -189,7 +188,7 @@ describe 'BookingSystem class' do
     end
     it 'raises an exception if not enough rooms are available for that date range' do
       [*7..20].each do |room|
-        hotel_booker.reserve_a_room(today + 1, today + 4, room)
+        hotel_booker.make_reservation(Hotel::DateRange.new(today + 1, today + 4), room)
       end
 
       expect{room_block}.must_raise StandardError
@@ -198,21 +197,34 @@ describe 'BookingSystem class' do
 
     it 'reserves the first available room for the given date range' do
       skip
-      expect(hotel_booker.reserve_a_room(today + 1, today + 2).room_num).must_equal 2
-      expect(hotel_booker.reserve_a_room(today + 1, today + 9).room_num).must_equal 3
+      expect(hotel_booker.make_reservation(today + 1, today + 2).room_num).must_equal 2
+      expect(hotel_booker.make_reservation(today + 1, today + 9).room_num).must_equal 3
     end
 
     it 'raises an error if normal booking tries to reserve a room in a block' do
       room_block
-      expect{hotel_booker.reserve_a_room(today, res2_checkout, 3)}.must_raise StandardError
+      expect{hotel_booker.make_reservation(Hotel::DateRange.new(today, res2_checkout), 3)}.must_raise StandardError
     end
 
     it 'raises an error if trying to reserve a room in a different block' do
       room_block
       room_block_2
 
-      expect{hotel_booker.reserve_a_room(today, res2_checkout, 8, block: room_block)}.must_raise StandardError
+      expect{hotel_booker.make_reservation(Hotel::DateRange.new(today, res2_checkout), 8, block: room_block)}.must_raise StandardError
     end
+
+    it 'adds the reservation to the block\'s block_reservations' do
+      num_block_reservations = room_block.block_reservations.length
+      reservation = hotel_booker.make_reservation(Hotel::DateRange.new(today + 2, res2_checkout), 3, block: room_block)
+      new_num_block_reservations = room_block.block_reservations.length
+
+      expect(room_block.block_reservations.last).must_equal reservation
+      expect(new_num_block_reservations - 1).must_equal num_block_reservations
+    end
+
+  end
+
+  describe 'reserve_standard_room method' do
 
   end
 
