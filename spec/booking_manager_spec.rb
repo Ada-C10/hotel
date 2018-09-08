@@ -113,6 +113,7 @@ describe "BookingManager class" do
       another_booking = Hotel::Reservation.new(room, guest_name: "Kim Possible", start_date: "June 11, 2018", end_date: "June 14, 2018")
       expect(hotel.add_reservation_to_calendar(another_booking)).must_be_kind_of Hash
       expect(hotel.room_calendar[3]).must_include Date.parse("June 11, 2018")
+      expect(hotel.room_calendar[3].length).must_equal another_booking.number_nights
     end # end of add reservation to calendar method hash room key it
   end # of add reservation to calendar method
 
@@ -125,5 +126,19 @@ describe "BookingManager class" do
       expect(hotel.get_reservation_cost(booking.cost_per_night, booking.number_nights)).must_be_close_to 400
     end # returns product it
   end # of get_reservation_cost method"
+
+  describe "find_reservations_on_date method" do
+    it "returns all reservations on the desired date" do
+      hotel = Hotel::BookingManager.new(5)
+      room1 = Hotel::Room.new(1)
+      room3 = Hotel::Room.new(2)
+      booking1 = Hotel::Reservation.new(room1, guest_name: "Tony Blaze", start_date: "June 10, 2018", end_date: "June 12, 2018")
+      booking2 = Hotel::Reservation.new(room3, guest_name: "Jessie Jade", start_date: "June 10, 2018", end_date: "June 14, 2018")
+      hotel.add_reservation_to_calendar(booking1)
+      hotel.add_reservation_to_calendar(booking2)
+
+      expect(hotel.find_reservations_on_date("June 11, 2018", hotel.room_calendar).length).must_equal 2
+    end # of returns all reservations on date it
+  end # of find_reservations_on_date method
 
 end # end of describe BookingManager class
