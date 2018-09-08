@@ -6,7 +6,7 @@ describe 'Reservation class' do
 
   describe "#initialize" do
     before do
-      attributes = {room: 1 ,start_time: Date.new(2018,8,1),end_time: Date.new(2018,9,1),price: 200.0}
+      attributes = {room_num: 1 ,start_time: Date.new(2018,8,1),end_time: Date.new(2018,9,1),price: 200.0}
       @reservation = Reservation.new(attributes)
 
     end
@@ -16,11 +16,11 @@ describe 'Reservation class' do
     end
 
     it "is set up for specific attributes and data types" do
-      [:room, :start_time, :end_time, :price].each do |attribute|
+      [:room_num, :start_time, :end_time, :price].each do |attribute|
         expect(@reservation).must_respond_to attribute
       end
 
-      expect(@reservation.room).must_be_kind_of Integer
+      expect(@reservation.room_num).must_be_kind_of Integer
       expect(@reservation.start_time).must_be_kind_of Date
       expect(@reservation.end_time).must_be_kind_of Date
       expect(@reservation.price).must_be_kind_of Float
