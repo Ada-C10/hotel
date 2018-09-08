@@ -46,37 +46,32 @@ class Admin
     start_date = Time.parse(start_date)
     end_date = Time.parse(end_date)
     range = create_hotel_range(start_date, end_date)
-    @rooms.first.add_range(range) # temporary
+    @rooms.first.add_range(range) # temporary - must be updated once view_vacant_rooms is fixed
     # vacant_rooms = view_vacant_rooms(range) # needs to be updated
     # vacant_rooms.first.add_range(range)
     # room = vacant_rooms.first
-    #@booked_rooms << room
+    # must create instance of reservation for this room using one more day
   end
 
   #As an administrator, I can view a list of rooms that are not reserved for a given date range
   # raise argument error if array is empty
-  # must check if date for every single date is in the range
   ## expects dates to be instances of time
   def view_vacant_rooms(start_date, end_date)
-    end_date = end_date - 1 # last day does not count
-    vacant_rooms = []
-    target_dates = create_array_of_dates(start_date, end_date)
-    @rooms.each do |room|
-      ranges = room.ranges
-      # does range include every date of target_dates? if true do not include in vacant_rooms
-      ranges.each do |ranges|
-
-      end
-
-      # found = range_search(ranges, target_range)
-      # if found
-      #   booked_rooms << room
-      # else
-      #   vacant_rooms << room
-      # end
+    vacant_rooms = @rooms
+    target_range = create_hotel_range(start_date, end_date)
+    vacant_rooms.each do |room|
+        ranges = room.ranges
+        ranges.each do |range|
+            # nil means no intersection
+            if intersection(target_range, range) != nil # there was a overlap
+              vacant_rooms.delete(room)
+              break
+            end
+        end
     end
     return vacant_rooms
   end
+
   # As an administrator, I can access the list of all of the rooms in the hotel
   def view_all_rooms
     return @rooms
@@ -84,15 +79,15 @@ class Admin
 
   #As an administrator, I can access the list of reservations for a specific date
   # I do not have to return a reservation that has specific date at the end
-  # reservations have real checkout date
-  # rooms have dates - 1
-  # REFACTOR idea to keep take out -1 day when you load reservation, but reservations calculates the cost based of nights - I wil have to fix that too
+  # In my program, the reservations have real checkout date
+  # In my program, the room class have real dates, not including the last check out date
+  # REFACTOR idea: to keep take out -1 day when you load reservation, but reservations calculates the cost based of nights - I wil have to fix that too
   def find_reservations(date)
     date = Time.parse(date)
     reservations = @reservations.select do |instance|
       start_date = instance.start_time
       end_date = instance.end_time
-      end_date = end_date - 1 # make test to only get the right one
+      end_date = end_date - 1
       if date_in_range(start_date, end_date, date)
         instance
       end
@@ -146,6 +141,14 @@ class Admin
   #never used currently
   def sort_reservations
     @reservations.sort_by { |object| object.start_time }
+  end
+
+  def intersection(range, range2)
+    if (range.max < range2.begin or range2.max < range.begin)
+        return nil
+    else
+        return [range.begin, range2.begin].max..[range.max, range2.max].min
+    end
   end
 
   def date_in_range(start_date, end_date, date)
