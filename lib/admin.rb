@@ -50,7 +50,7 @@ class Admin
   # param: reservation number
   # returns - new reservation instance
   def request_reservation_within_block(id, start_date, end_date)
-    #split this up into smaller methods
+    #split this up into smaller methods possibly?
     block_reservation = find_reservation_by_id(id)
 
     if Date.parse(start_date) != block_reservation.start_date
@@ -70,7 +70,7 @@ class Admin
     new_reservation = Reservation.new(id, room, start_date, end_date, room_cost: 150)
 
     add_reservation(new_reservation, reservation_location: block_reservation.reservations)
-    # delete room number from available_rooms
+    # deletes room number from available_rooms
     block_reservation.rooms_available.delete(new_reservation.room)
 
     return new_reservation
@@ -98,7 +98,8 @@ class Admin
 
     @reservations.find_all do |reservation|
       unless reservation.end_date == trip_start
-        (reservation.start_date..reservation.end_date).cover?(trip_start) || (reservation.start_date..reservation.end_date).cover?(trip_end)
+        (reservation.start_date..reservation.end_date).cover?(trip_start) ||
+        (reservation.start_date..reservation.end_date).cover?(trip_end)
       end
     end
   end
@@ -116,9 +117,9 @@ class Admin
 
   def available_rooms(trip_start, trip_end, all_rooms: [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20] )
     specific_reservations = reservations_by_date_range(trip_start, trip_end)
-    # all_rooms = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]
+
     unavailable_rooms = []
-    # binding.pry
+
     specific_reservations.each do |reservation|
       unavailable_rooms << reservation.room
     end

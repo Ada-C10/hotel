@@ -4,10 +4,6 @@ class Reservation
   attr_reader :id, :room, :start_date, :end_date, :room_cost
 
   def initialize(id, room, start_date, end_date, room_cost: 200)
-    #add rooms_needed to def initialize
-    # cost?
-    # rooms_needed
-    # I want the id to be Admin.reservations.length + 1 for id ... right?
     @id = id
     @room = room
     @start_date = Date.parse(start_date)
