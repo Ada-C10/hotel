@@ -50,11 +50,12 @@ class TrackingSystem
   end
 
   #reserve an available room for a given date range
+  #this method ONLY adds reservations for rooms that aren't in a block 
   def add_reservation(start_time: Date.now, end_time: Date.now + 1, number_of_rooms: 1)
-    available_rooms = view_available_rooms_on(start_time: start_time, end_time: end_time) #<--returns an array of available rooms!
+    available_rooms = view_available_rooms_on(start_time: start_time, end_time: end_time) #<--returns an array of available rooms that also aren't in a block
     raise ArgumentError.new"Not enough rooms available on those dates" if available_rooms.length < number_of_rooms
     number_of_rooms.times do |i|
-      @reservations << Reservation.new({room_num: available_rooms[i].room_num, start_time: start_time, end_time: end_time, price: 200.0})
+      @reservations << Reservation.new({room_num: available_rooms[i].room_num, start_time: start_time, end_time: end_time, price: 200.00})
       available_rooms[i].reserved_dates << {start_time: start_time, end_time: end_time}
     end
     @reservations
@@ -99,7 +100,7 @@ class TrackingSystem
         available_rooms << room
       else
         room.reserved_dates.each do |dates_hash| #<---date_range could be a hash like {checkin_time: checkin, checkout_time: checkout}
-          if ranges_overlap?((dates_hash[:start_time]...dates_hash[:end_time]).to_a, (start_time..end_time).to_a) == false
+          if ranges_overlap?((dates_hash[:start_time]...dates_hash[:end_time]).to_a, (start_time..end_time).to_a) == false && room.block == :NA
             available_rooms << room
           else
             unavailable_count += 1

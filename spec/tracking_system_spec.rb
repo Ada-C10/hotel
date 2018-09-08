@@ -73,19 +73,6 @@ describe 'TrackingSystem class' do
 
 
 
-
-
-  # @reservation = @tracker.add_reservation(start_time: Date.new(2018,8,1), end_time: Date.new(2018,8,25), number_of_rooms:1)
-  # #check the length of reservations
-  # updated_num_of_reservations = @tracker.reservations.length
-  # # #make another reservation
-  # # @reservation2 = @tracker.add_reservation(start_time: Date.new(2018,8,1), end_time: Date.new(2018,8,2), number_of_rooms:1)
-  # # #check the length and the compare them
-  # # updated_num_of_reservations = @tracker.reservations.length
-  # # # binding.pry
-
-
-
   # it "adds a hash of start/end time to each room.reserved_dates array" do
   # end
 
@@ -140,6 +127,9 @@ describe 'TrackingSystem class' do
       @tracker = TrackingSystem.new
       expect{@tracker.view_available_rooms_on(start_time: Date.new(2018,10,5),end_time:Date.new(2018,9,5))}.must_raise ArgumentError
     end
+
+    # it "ensures that room is not in a block" do 
+    # end
 
   end
 
