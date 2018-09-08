@@ -1,10 +1,12 @@
 class Reservation
   #Date.parse('2001-02-03')
-  attr_reader :check_in, :check_out, :room_num
-  def initialize(check_in, check_out, room_num)
+  attr_reader :check_in, :check_out, :room_num, :block_id
+  def initialize(check_in, check_out, room_num, block_id: nil)
     @check_in = check_in
     @check_out = check_out
     @room_num = room_num
+    @block_id = block_id ||= nil
+    
 
     if @check_in.class != Date
       @check_in = Date.parse(check_in)

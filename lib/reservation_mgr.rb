@@ -30,7 +30,7 @@ class ReservationMgr
     return available_rooms
   end
 
-  def make_reservation(check_in,check_out,rooms: 1, block: nil)
+  def make_reservation(check_in,check_out,rooms: 1, block_id: nil)
 
     if check_in.class != Date
       check_in = Date.parse(check_in)
@@ -47,10 +47,11 @@ class ReservationMgr
 
     i = 0
     rooms.times do |room|
-      @reservations << Reservation.new(check_in,check_out,available_rooms[i].id)
+      @reservations << Reservation.new(check_in,check_out,available_rooms[i].id, block_id: block_id)
       update_room(check_in,check_out,available_rooms[i].id)
       i + 1
     end
+
     new_res = @reservations.length-1
     return @reservations[(new_res-rooms)..new_res]
   end
@@ -76,8 +77,26 @@ class ReservationMgr
     reservation.cost
   end
 
-  def reserve_block(check_in,check_out,rooms: 1, block: nil)
+  def reserve_block(check_in,check_out, rooms, block_id)
+    if rooms > 5
+      ArgumentError.new('You cannot block more than 5 rooms')
+    end
 
+    available_rooms = available_rooms(check_in,check_out)
+
+    if available_rooms.length == 0 || available_rooms.length < rooms
+      raise ArgumentError.new('There are not enough room/rooms available')
+    end
+
+    i = 0
+    rooms.times do |room|
+      @reservations << Reservation.new(check_in,check_out,available_rooms[i].id, block_id: block_id, block_available: true)
+      update_room(check_in,check_out,available_rooms[i].id, block_id)
+      i + 1
+    end
+
+    new_res = @reservations.length-1
+    return @reservations[(new_res-rooms)..new_res]
   end
 
 end
