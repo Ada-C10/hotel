@@ -32,7 +32,6 @@ module Hotel
       Hotel::Helper_Method.sort_reservations(@hotel_reservations)
     end
 
-
     def search_room_availability(check_in_date, check_out_date)
       possible_nights_of_stay = Hotel::Helper_Method.generate_nights(check_in_date, check_out_date)
       vacant_rooms = []

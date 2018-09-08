@@ -53,6 +53,7 @@ module Hotel
     end
 
     def self.connect_reservation_to_room_and_sort(connected_room_number, reservation)
+      #CONNECTED ROOM NUMBER CAN BE OBTAINED WITH FIND ROOM NUMBER METHOD
       connected_room_number.reservations << reservation
       Hotel::Helper_Method.sort_reservations(connected_room_number.reservations)
     end

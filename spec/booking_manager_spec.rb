@@ -105,20 +105,6 @@ describe "Hotel Manager class" do
     end
   end
 
-  # describe 'connect_reservation_to_room' do
-  #
-  #   it 'finds the room being reserved and adds the reservation to its list of reservations' do
-  #     @hotel = Hotel::Booking_Manager.new
-  #     @input = { name: "Mx Thing",
-  #       room_number: 1,
-  #       check_in_date: Date.new(2020,9,9),
-  #       check_out_date: Date.new(2020,9,13),
-  #     }
-  #     @hotel.reserve_room(@input)
-  #     expect(@hotel.rooms[0].reservations[0].name).must_equal "Mx Thing"
-  #     end
-  #   end
-
   describe 'search_room_availability' do
 
     before do
