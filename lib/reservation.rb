@@ -1,34 +1,19 @@
-# Nessary - do not remove
-# gems
-require "date"
-# libfiles
-
 # Optional - for developer use
 require "pry"
 require "awesome_print"
 
-# .conflict?
-
 module HotBook
-# Reservation.new(daterange:) #optional: room_number: :1, room_rate: 200.0
+# The Reservation class is responsible for calculating reservation cost
   class Reservation
-    attr_reader :daterange, :room_number, :room_rate,
+    require "date"
 
-    def initialize(daterange:, room_number: :1, room_rate: 200.0)
-      @daterange = daterange
+    attr_reader :range, :room_number, :room_rate
+
+    def initialize(daterange:, room_number:, room_rate:)
+      @range = daterange.to_range
       @room_number = room_number # what about room.number
       @room_rate = room_rate # and room.rate
-      # check_errors
     end
-
-    # def check_errors
-    #   raise ArgumentError, "something's missing in your args hash" if
-    #     start_date == nil || end_date == nil
-    #   raise ArgumentError, "couldn't parse a date to date object" unless
-    #     start_date.class == Date || end_date.class == Date
-    #   raise StandardError, "end date must be later than start date" unless
-    #     duration > 0
-    # end
 
     def cost
       return duration * room_rate

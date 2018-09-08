@@ -31,9 +31,9 @@ describe "HotBook::Hotel class" do
     end
 
     it "room numbers are all valid key/value pairs" do
-      valid_room_numbers = %i(1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20)
+      valid_room_numbers = %W(1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20)
       all_rooms.each_with_index do |room, index|
-        expect(room[:room_number]).must_be_instance_of Symbol
+        expect(room[:room_number]).must_be_instance_of String
         expect(room[:room_number]).must_equal valid_room_numbers[index]
       end
     end

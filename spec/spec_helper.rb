@@ -11,9 +11,8 @@ require "date"
 
 # Add lib files here (require_relative "../")
 require_relative "../lib/book.rb"
+require_relative "../lib/daterange.rb"
 require_relative "../lib/hotel.rb"
 require_relative "../lib/reservation.rb"
-require_relative "../lib/roomcharge.rb"
-require_relative "../lib/daterange.rb"
 
 Minitest::Reporters.use! Minitest::Reporters::SpecReporter.new
