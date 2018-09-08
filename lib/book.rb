@@ -9,8 +9,6 @@ module HotBook
 # making new reservations.
 
   class Book
-    require "date"
-    require_relative "daterange"
     require_relative "reservation"
 
     attr_reader :reservations, :hotel
@@ -22,7 +20,8 @@ module HotBook
 
     def new_reservation(daterange) # expects that arg is a HotBook::DateRange
       raise ArgumentError, "Invalid daterange (expected HotBook::DateRange, " \
-                           "not #{daterange.class})" unless daterange.is_a? Date
+                           "not #{daterange.class})" unless
+                            daterange.is_a? HotBook::DateRange
       new_reservation = HotBook::Reservation.new(daterange: daterange,
                                                  room_number: default_room,
                                                  room_rate: default_rate)
@@ -38,7 +37,7 @@ module HotBook
       return hotel.rooms.first[:room_rate]
     end
 
-    def list_reservations_by_date(date) # expects that arg is a Class::Date
+    def list_by_date(date) # expects that arg is a Class::Date
       raise ArgumentError, "Invalid date - use Date.parse (expected Date, " \
                            "not #{date.class})" unless date.is_a? Date
       return reservations.select {|reservation| reservation.range.include? date}

@@ -1,13 +1,13 @@
 require_relative "spec_helper"
 
 describe "HotBook::Hotel class" do
-  let(:args) {{room_count: 20, room_rate: 200.0}}
-  let(:hotel) {HotBook::Hotel.new(args)}
-  let(:room_count) {hotel.room_count}
-  let(:room_rate) {hotel.room_rate}
-  let(:all_rooms) {hotel.rooms}
-  let(:expected_room_rate) {200.0}
-  let(:expected_room_count) {20}
+  let(:args) { {room_count: 20, room_rate: 200.0} }
+  let(:hotel) { HotBook::Hotel.new(args) }
+  let(:room_count) { hotel.room_count }
+  let(:room_rate) { hotel.room_rate }
+  let(:all_rooms) { hotel.rooms }
+  let(:expected_room_rate) { 200.0 }
+  let(:expected_room_count) { 20 }
 
   describe "initialize arguments" do
     it "loads room count correctly" do
