@@ -18,22 +18,23 @@ module Hotel
       return @room
     end
 
-    def make_reservation(date_range, room=nil)
+    def make_reservation(date_range)
       #think...what if there's no available rooms, raise an exception
-      room_number = find_available_room(date_range)
-      reservation = Reservation.new(date_range, room_number)
+      room = find_available_room(date_range)
+      reservation = Reservation.new(date_range, room)
       @reservations << reservation
     end
 
     # If we need reservations for a particular room:
     # @reservations.select { |res| res.room_number == room_number }
 
-    def list_reservations_by_date(date_range)
+    def reservations_by_date(date_range)
       return @reservations.select { |res| res.date_range == date_range }
-
     end
 
     def find_available_room(date_range)
+
+      # TODO: refactor?
 
       return 1 if @reservations.empty?
 
@@ -41,11 +42,16 @@ module Hotel
       available_rooms = []
 
       @reservations.each do |res|
-
         if date_range.dates_overlap?(res.date_range)
-          unavailable_rooms << res.room
-        else
-          available_rooms << res.room
+          unavailable_rooms << res.room_number
+        end
+      end
+
+      @room.each do |r|
+        unavailable_rooms.each do |unavailable_room|
+          if r != unavailable_room
+            available_rooms << r
+          end
         end
       end
 
