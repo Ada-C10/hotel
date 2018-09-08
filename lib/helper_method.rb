@@ -1,9 +1,3 @@
-require 'date'
-require 'pry'
-require_relative 'room'
-require_relative 'reservation'
-require_relative 'booking_manager'
-
 module Hotel
   class Helper_Method
 

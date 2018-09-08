@@ -2,6 +2,7 @@ require 'date'
 require 'pry'
 require_relative 'room'
 require_relative 'reservation'
+require_relative 'block_room'
 require_relative 'helper_method'
 
 module Hotel

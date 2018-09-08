@@ -1,5 +1,3 @@
-require 'date'
-require_relative 'room'
 require_relative 'reservation'
 
 module Hotel

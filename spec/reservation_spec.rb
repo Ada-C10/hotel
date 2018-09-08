@@ -1,4 +1,5 @@
 require_relative 'spec_helper'
+
 describe 'reservation class' do
 
   describe 'reservation instantiation' do
