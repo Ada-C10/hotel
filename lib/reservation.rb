@@ -23,7 +23,7 @@ class Reservation
   end
 
   def self.new_booking(start_date, end_date)
-    @request_array = []
+    @@request_array = []
     Reservation.new(start_date, end_date)
   end
 

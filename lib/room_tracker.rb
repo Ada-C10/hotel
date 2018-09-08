@@ -10,8 +10,10 @@
 # Keep track of available dates - dates are in ranges
 # Put requested dates into a date array
 #calculate number of nights = reservation end date - 1 unless only 1 night stayed
-# Room Tracker is a hash with date as key and values are array of reservations associated with the date
-# Reservations per date = hash key value
+#Room tracker keeps track of rooms and thier associated reservations.
+#Rooms are the key and new_bookings are the associated value.
+#new_bookings are an array - to find available rooms check each room and search the booking date ranges.
+#if date range is free then new room becomes room x
 #calculate total cost here
 #calculate list of reservations
 #creates the objects depends on room and reservation. They don't depend on it.
@@ -20,60 +22,42 @@ require 'awesome_print'
 require_relative 'reservation'
 require_relative 'room'
 
-class Room_tracker
+class Room_Tracker
 
-  attr_reader :valid_reservation
+  attr_reader :valid_reservation, :room, :reservations
 
-  def initialize(valid_reservation)
-@valid_reservation = valid_reservation
-end
-
-def new_valid_reservation
-
-new_room = Room.new(1, 200)
-Reservation.new_booking('2012-02-01',  '2012-02-03')<<new_room = Room.new(1, 200)
+  def initialize(valid_reservation , room, reservations)
+    @valid_reservation = {}
+    @valid_reservation[:room] = @@request_array
+    #@valid_reservation[:booking] = @@request_array
   end
 
+binding.pry
+def assign_request_array_to_hash
+  @valid_reservation = {}
+@@request_array.each do |booking|
 
-
+values = @valid_reservation[:room]
+values.zip(request_array).to_h
+  return values
 end
-#   end
+end
+#ap @valid_reservation
+# users = User.all.each_with_object({}) do |user, hash|
+#   hash[user.id] = user
+# end
 #
-#   def rooms_list
-#     room_id = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]
-#     i = 0
-#     room_id.map do |num| num
-#       id = num
-#       cost = 200
-#       i +=1
-#       rooms = Room.new(@id,@cost)
-#     end
-#     return rooms
-#   end
-# end
-#   def new_reservation(start_date, end_date)
-#       start_date = Date.parse('2012-02-01')
-#       # end_date = Date.parse('2012-02-03')
-#       Reservation.new(start_date,end_date)
-#     end
-#    ap new_reservation(2012-02-01,2012-02-03 )
+# x = {}
+# (1..10000).each do |i|
+#   x["key#{i}"] = i
 # end
 
-
-
-
-
-
-
-
-
-  # #ap ooms
-  #
-  # def available
-  #
-  #   @valid_reservation = self.new_reservation
-  # return @valid_reservation
+#binding.pry
+  # def add_room_to_hash
+  #   Room.rooms.leangth times do |room|
+  #     room = @room[:room]
+  #   end
   # end
-  #  ap @valid_reservation
-  #
-  # end
+
+
+  end

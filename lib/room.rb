@@ -6,18 +6,27 @@ require 'awesome_print'
 
 class Room
 
+@@all_rooms = []
   attr_reader :id
 
   attr_accessor :cost
 
+def self.all_rooms
+  return @@all_rooms
+end
+
+
+
   def initialize(id, cost = 200 )
     @id = id
     @cost = cost
-
+    @@all_rooms << self
   end
 
 
   def self.rooms
+    @@all_rooms = []
+
     room_id = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]
     i = 0
     room_id.map do |num| num
@@ -25,12 +34,14 @@ class Room
       cost = 200
       i +=1
       rooms = Room.new(id,cost)
+      @@all_rooms << rooms
     end
   end
 
-  ap rooms
 
 end
+
+
 
 # class HotelMngr
 #   @room
