@@ -1,14 +1,22 @@
+require_relative 'reservation.rb'
 module Hotel
   class BookingSystem
+    def initialize
+      @reservations = Hotel::Reservation.load_reservations
+    end
     # method to find a reservation based on an inspect date 'insp_date'
     def self.find_reservations_by_date(inspect_date)
       # standardize input date
       search_date = Date.parse(inspect_date)
       # select all reservation instances that have booked dates that match
       # the inspect date
-      found_reservations = Hotel::Reservation.load_reservations.select do |reservation|
+      # found_reservations = Hotel::Reservation.load_reservations.select do |reservation|
+      #   reservation.booked_dates.include? search_date.to_s
+      # end
+      found_reservations = @reservations.select do |reservation|
         reservation.booked_dates.include? search_date.to_s
       end
+
       found_reservations = 0 if found_reservations.empty?
       return found_reservations
     end
@@ -28,22 +36,31 @@ module Hotel
     end
 
 
-    def self.find_available_rooms(inspect_date)
+    def self.find_available_rooms(check_in, check_out)
+      check_in = Date.parse(check_in)
+      check_out = Date.parse(check_out)
+      all_rooms_arr = (Room.all).map { |room| room.id}
+      unavailable_rooms = []
       # load reservations
-      rooms = find_reservations_by_date(inspect_date)
-      # all_rooms = Room.all
-      if rooms == 0
-        avail_rooms = (Room.all).map { |room| room.id}
-      else
-        # map booked rooms to new array - flatten it
-        booked = (rooms.map {|rsv| rsv.included_rooms }).flatten
-        # binding.pry
-        # search all room instances for rooms that don't match
-        rooms_arr = (Room.all).map { |room| room.id}
-        avail_rooms = rooms_arr - booked
-      end
+      current_reservations = Hotel::Reservation.load_reservations
       # binding.pry
-      return avail_rooms
+      current_reservations.each do |rsv|
+        if (rsv.rsv_start > check_in && rsv.rsv_end < check_out) || \
+           (rsv.rsv_start <= check_out && rsv.rsv_end > check_in)
+          unavailable_rooms << rsv.included_rooms
+        end
+      end
+      available_rooms = all_rooms_arr - unavailable_rooms.flatten
+
+      return available_rooms
+    end
+
+    def self.make_a_reservation(guest, check_in, check_out, number_of_rooms = 1)
+      open_rooms = find_available_rooms(check_in, check_out).first(number_of_rooms)
+      res_id = @reservations.length
+      new_res = Hotel::Reservation.new(res_id, guest, open_rooms, check_in, check_out)
+      @reservations << new_res
+      return new_res
     end
 
 

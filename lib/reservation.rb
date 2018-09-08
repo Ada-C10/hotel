@@ -23,7 +23,7 @@ module Hotel
       @status = :BASERATE # start w/ base rate, option to add BLOCKRATE for later dev
       # call methods to define booked dates and total cost instance variables
       @booked_dates = get_date_range_arr(@rsv_start, @rsv_end)
-      @total_cost = get_total_cost(@included_rooms, @booked_dates, @status)
+      @total_cost = get_total_cost(@included_rooms, @rsv_start, @rsv_end, @status)
 
       # TODO: implement booking type for standard vs block booking ??? hmm
       # @booking_type = status # :BASERATE, :BLOCKRATE
@@ -36,9 +36,9 @@ module Hotel
       (rsv_start...rsv_end).to_a.map { |day| day.to_s }
     end
 
-    def get_total_cost(included_rooms, booked_dates, status)
+    def get_total_cost(included_rooms, rsv_start, rsv_end, status)
       a = included_rooms.length
-      b = booked_dates.length
+      b = (rsv_end - rsv_start).to_i
       if status == :BASERATE # calc w/ base rate $200/night
         total = a * b * 200.00
       else # block rate w/ discount
@@ -54,9 +54,8 @@ module Hotel
       reservations = CSV.open('data/reservations.csv', 'r',
                               headers: true, header_converters: :symbol)
                               .map {|line| line.to_h}
-      # binding.pry
+
       reservations.each do |reservation|
-        # binding.pry
         all_reservations << Reservation.new(reservation[:id],
                                             reservation[:guest_name],
                                             (reservation[:included_rooms]).split(';')
@@ -66,50 +65,6 @@ module Hotel
 
       return all_reservations
     end
-    # # method to find a reservation based on an inspect date 'insp_date'
-    # def self.find_reservations_by_date(inspect_date)
-    #   # standardize input date
-    #   search_date = Date.parse(inspect_date)
-    #   # select all reservation instances that have booked dates that match
-    #   # the inspect date
-    #   found_reservations = Reservation.load_reservations.select do |reservation|
-    #     reservation.booked_dates.include? search_date.to_s
-    #   end
-    #   found_reservations = 0 if found_reservations.empty?
-    #   return found_reservations
-    # end
-    #
-    # # method to find reservation based on id
-    # def self.find_a_reservation(id)
-    #   reservation = Reservation.load_reservations.find { |rsv| rsv.id == id }
-    #   raise ArgumentError, 'ID does not exist' if reservation.nil?
-    #   return reservation
-    # end
-    #
-    # # method to return total cost based on reservation id
-    # def self.get_reservation_total(id)
-    #   rsv = find_a_reservation(id)
-    #   total = rsv.total_cost
-    #   return total
-    # end
-
-    # def self.find_available_rooms(inspect_date)
-    #   # load reservations
-    #   rooms = find_reservations_by_date(inspect_date)
-    #   # all_rooms = Room.all
-    #   if rooms == 0
-    #      avail_rooms = (Room.all).map { |room| room.id}
-    #   else
-    #     # map booked rooms to new array - flatten it
-    #     booked = (rooms.map {|rsv| rsv.included_rooms }).flatten
-    #     # binding.pry
-    #     # search all room instances for rooms that don't match
-    #     rooms_arr = (Room.all).map { |room| room.id}
-    #     avail_rooms = rooms_arr - booked
-    #   end
-    #   # binding.pry
-    #   return avail_rooms
-    # end
 
   end #class end
 end #module end

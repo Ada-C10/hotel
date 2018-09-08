@@ -37,13 +37,30 @@ describe 'BookingSystem' do
       expect(Hotel::BookingSystem.get_reservation_total(id)).must_equal 1 * 1 * 200.00
       expect(Hotel::BookingSystem.get_reservation_total(id)).must_be_kind_of Float
     end
-    it 'can find available rooms given a date' do
-      find_date = "October 23 2019"
-      expect(Hotel::BookingSystem.find_available_rooms(find_date)).must_be_kind_of Array
-      expect((Hotel::BookingSystem.find_available_rooms(find_date)).length).must_equal 18
-      find_date2 = "March 15 2020"
-      expect((Hotel::BookingSystem.find_available_rooms(find_date2)).length).must_equal 20
+    it 'can find available rooms given a check in and check out date' do
+      check_in = "October 23 2019"
+      check_out = "October 24 2019"
+      expect(Hotel::BookingSystem.find_available_rooms(check_in, check_out)).must_be_kind_of Array
+      expect((Hotel::BookingSystem.find_available_rooms(check_in, check_out)).length).must_equal 18
+      check_in = "March 18 2022"
+      check_out = "March 20 2022"
+      expect((Hotel::BookingSystem.find_available_rooms(check_in, check_out)).length).must_equal 20
     end
+  end
+
+  describe 'it can create a reservation' do
+    it 'can create a new reservation' do
+      guest = "Richardina Pardina"
+      check_in = "March 18 2019"
+      check_out = "March 20 2019"
+      expect(Hotel::BookingSystem.make_a_reservation(guest, check_in, check_out)).must_be_kind_of Hotel::Reservation
+
+    end
+
+    it 'can handle when a reservation end date overlaps a start date for new reservation' do
+
+    end
+
 
 
   end
