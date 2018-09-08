@@ -56,7 +56,7 @@ class ReservationMgr
     return @reservations[(new_res-rooms)..new_res]
   end
 
-  def update_room(check_in,check_out,room_num)
+  def update_room(check_in,check_out,room_num,block_id: block_id)
     update_room = @rooms.find {|room| room.id == room_num}
     update_room.add_unavailablity(check_in,check_out)
   end
@@ -90,7 +90,7 @@ class ReservationMgr
 
     i = 0
     rooms.times do |room|
-      @reservations << Reservation.new(check_in,check_out,available_rooms[i].id, block_id: block_id, block_available: true)
+      @reservations << Reservation.new(check_in,check_out,available_rooms[i].id, block_id: block_id)
       update_room(check_in,check_out,available_rooms[i].id, block_id: block_id)
       i + 1
     end

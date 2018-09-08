@@ -7,7 +7,11 @@ class Reservation
     @check_out = check_out
     @room_num = room_num
     @block_id = block_id ||= nil
-    @block_available = false
+    if @block_id != nil
+      @block_available = true
+    else
+      @block_available = false
+    end
 
     if @check_in.class != Date
       @check_in = Date.parse(check_in)

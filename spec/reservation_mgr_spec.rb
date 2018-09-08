@@ -102,11 +102,13 @@ describe "ReservationMgr Test" do
   describe "reserve_block method" do
     before do
       @new_ResMgr = ReservationMgr.new(8)
-      @new_ResMgr.reserve_block(Date.parse("2018-09-05"),Date.parse("2018-09-05"),4,"Metzner")
+      @new_ResMgr.reserve_block(Date.parse("2018-09-05"),Date.parse("2018-09-07"),5,"Metzner")
     end
     it "method reserves 5 rooms with false id" do
       expect(@new_ResMgr.reservations.length).must_equal 5
       expect(@new_ResMgr.reservations[0].block_available).must_equal true
+      @new_ResMgr.make_reservation("2018-09-05","2018-09-07")
+      expect(@new_ResMgr.reservations.last.block_available).must_equal false
     end
   end
   #reserve_block
