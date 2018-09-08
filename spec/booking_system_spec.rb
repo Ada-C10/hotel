@@ -54,8 +54,15 @@ describe "BookingSystem class" do
       puts @booking.reservations.first.total_cost
       puts @booking.reservations
       expect(@booking.reservations.length).must_equal 1
+    end
+    it "raises an error if no rooms are available" do
+      20.times do
+        @booking.make_reservation(200, "2018-02-03", "2018-02-06")
+      end
+      expect { @booking.make_reservation(200, "2018-02-03", "2018-02-06") }.must_raise StandardError
 
     end
+
 
     it "lists reservations for a specific date" do
       res1 = @booking.make_reservation(200, "2018-02-03", "2018-02-06")

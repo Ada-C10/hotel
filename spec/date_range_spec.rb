@@ -24,7 +24,7 @@ describe "initialize" do
 
   it "raises a StandardError if check-out is before check-in " do
 
-    expect {Hotel::reservation.new(check_in, check_out)}.must_raise StandardError
+    expect { Hotel::DateRange.new("2018-02-08", "2018-02-06") }.must_raise StandardError
   end
 
   it "is set up for specific attributes and data types" do

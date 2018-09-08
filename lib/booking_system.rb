@@ -37,7 +37,11 @@ module Hotel
     # method to make_reservation
     # return if successful return res_id
     def make_reservation(cost_per_night, check_in, check_out)
-      room_number = @rooms.sample[:room_number]
+      available_rooms = list_available_rooms(Hotel::DateRange.new(check_in, check_out))
+      if available_rooms.empty?
+        raise StandardError, "There's no room in the inn"
+      end
+      room_number = available_rooms.sample[:room_number]
       reservation = Hotel::Reservation.new(room_number, cost_per_night, check_in, check_out)
       @reservations << reservation
       return reservation
