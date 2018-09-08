@@ -5,6 +5,8 @@ require_relative 'reservation'
 
 module Hotel
   class ReservationHub
+    class NoRoomsAvailableError < StandardError; end
+
     attr_reader :start_date, :end_date, :rooms, :reservations, :room_bookings
 
     # ROOMS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
@@ -24,6 +26,10 @@ module Hotel
 
       room_id = assign_room(start_date, end_date)
 
+      if room_id.nil?
+        raise NoRoomsAvailableError, "No rooms!"
+      end
+
       reservation = Reservation.new(start_date, end_date, room_id)
 
       @reservations << reservation
@@ -36,6 +42,7 @@ module Hotel
 
 
     def create_date_array(start_date, end_date)
+      # binding.pry
       number_of_nights = (end_date - start_date).to_i
       date_array = []
       number_of_nights.times do
@@ -46,36 +53,45 @@ module Hotel
     end
 
 
+    # def check_available_rooms(start_date, end_date)
+    #   reservation_dates = create_date_array(start_date, end_date)
+    #
+    #   available_rooms = []
+    #
+    #   @room_bookings.each do |room, dates|
+    #     reservation_dates.each do |date|
+    #
+    #       if @room_bookings[room].include?(date) == false
+    #         available_rooms << room
+    #       end
+    #     end
+    #   end
+
+
     def check_available_rooms(start_date, end_date)
       reservation_dates = create_date_array(start_date, end_date)
 
       available_rooms = []
 
       @room_bookings.each do |room, dates|
-        reservation_dates.each do |date|
-          # binding.pry
+        overlap = reservation_dates & dates
 
-          if @room_bookings[room].include?(date)
-            break
-          end
+        if overlap.length == 0
+          available_rooms << room
         end
-        # binding.pry
 
-        # room_id = assign_room(room, reservation_dates)
-        # return room_id
-        available_rooms << room
       end
-      #
-      # return "I'm sorry but there are no rooms available for your dates."
       return available_rooms
     end
+
+
+    #   return available_rooms
+    # end
 
 
     def assign_room(start_date, end_date)
 
       available_rooms = check_available_rooms(start_date, end_date)
-
-      return "I'm sorry but there are no rooms available for your dates" if available_rooms.length == 0
 
       reservation_dates = create_date_array(start_date, end_date)
 
@@ -87,15 +103,6 @@ module Hotel
       # binding.pry
       return room_id
     end
-
-
-
-# hash1 = {1 => ["hi", "bye"]}
-#
-# array = ["hello", "goodbye"]
-#
-# array.each{|x| hash1[1] << x}
-# hash1 => {1=>["hi", "bye", "hello", "goodbye"]}
 
 
 
