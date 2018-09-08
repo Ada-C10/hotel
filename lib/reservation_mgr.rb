@@ -91,7 +91,7 @@ class ReservationMgr
     i = 0
     rooms.times do |room|
       @reservations << Reservation.new(check_in,check_out,available_rooms[i].id, block_id: block_id, block_available: true)
-      update_room(check_in,check_out,available_rooms[i].id, block_id)
+      update_room(check_in,check_out,available_rooms[i].id, block_id: block_id)
       i + 1
     end
 

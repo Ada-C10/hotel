@@ -99,6 +99,16 @@ describe "ReservationMgr Test" do
     end
   end
 
-
+  describe "reserve_block method" do
+    before do
+      @new_ResMgr = ReservationMgr.new(8)
+      @new_ResMgr.reserve_block(Date.parse("2018-09-05"),Date.parse("2018-09-05"),4,"Metzner")
+    end
+    it "method reserves 5 rooms with false id" do
+      expect(@new_ResMgr.reservations.length).must_equal 5
+      expect(@new_ResMgr.reservations[0].block_available).must_equal true
+    end
+  end
+  #reserve_block
 
 end
