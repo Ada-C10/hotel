@@ -4,7 +4,7 @@ require 'date'
 class Reservation
   attr_reader :id, :customer_name, :room, :start_date, :end_date
 
-  def initialize(id, customer_name, room, start_date, end_date)
+  def initialize(id, customer_name,room,start_date, end_date)
     if start_date >= end_date || start_date < Date.today
       raise ArgumentError
     else
@@ -13,6 +13,7 @@ class Reservation
       @room = room
       @start_date = start_date
       @end_date = end_date
+
     end
   end
 
@@ -29,7 +30,7 @@ class Reservation
 
   # calculate the cost of the reservation
   def reserve_cost
-    return (end_date - start_date) * @room.rate
+    return (@end_date - @start_date) * @room.rate
   end
 
 end

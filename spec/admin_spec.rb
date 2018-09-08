@@ -12,94 +12,104 @@ describe "Admin class" do
     end
 
     it "establishes the base data structures when instantiated" do
-      # binding.pry
       expect(@admin_1.reservations).must_be_kind_of Array
       expect(@admin_1.rooms).must_be_kind_of Array
+      expect(@admin_1.rooms.first).must_be_kind_of Room
     end
   end
 
-  # describe "make_reservation" do
+
+  describe "make_reservation" do
+    before do
+      @start_date_1 = Date.new(2018,12,4)
+      @end_date_1 = Date.new(2018,12,6)
+      @res_1 = @admin_1.make_reservation(2,1,"Mike Murry",@start_date_1, @end_date_1)
+      @count_1 = @admin_1.reservations.count
+      @start_date_2 = Date.new(2018,12,5)
+      @end_date_2 = Date.new(2018,12,7)
+      @res_2 = @admin_1.make_reservation(3,2,"Julie Smith",@start_date_2, @end_date_2)
+      @count_2 = @admin_1.reservations.count
+
+    end
+
+    it "will add a reservation object to reservation array" do
+        expect(@admin_1.reservations).must_include @res_1
+        expect(@count_2).must_equal @count_1 + 1
+    end
+
+    it "will return a reservation object " do
+      expect(@res_1).must_be_kind_of Reservation
+      expect(@res_2).must_be_kind_of Reservation
+    end
+
+    # it "will add the reserved dates to room.reserve_dates" do
+    #   expect(@res_1.room.reserve_dates).must_include @start_date_1
+    #   expect(@res_1.room.reserve_dates).must_not_include @end_date_1
+    #   expect(@res_2.room.reserve_dates).must_include @start_date_2
+    #   expect(@res_2.room.reserve_dates).must_not_include @end_date_2
+    # end
+
+    it "raise ArgumentError if start_date is not ealier than end_date" do
+      start_date_3 = Date.new(2018,12,5)
+      end_date_3 = Date.new(2018,12,3)
+      expect{@admin_1.make_reservation(4,3,"Jessie lee",start_date_3,end_date_3)}.must_raise ArgumentError
+
+    end
+
+    it "raise ArgumentError if start_date is ealier than today" do
+      start_date_3 = Date.new(2018,8,5)
+      end_date_3 = Date.new(2018,12,3)
+      expect{@admin_1.make_reservation(4,3,"Jessie lee",start_date_3,end_date_3)}.must_raise ArgumentError
+
+
+    end
+
+    # it "will return a message when no room is available for trip" do
+    #
+    #
+    #   expect(@dispatcher.request_trip(6)).must_equal "No driver available at this time."
+    # end
+    #
+    # it "will not create a reservation if no room is available" do
+    #
+    #
+    #   expect(@dispatcher.trips.length).must_equal trip_count
+    #
+    # end
+
+  end
+
+  # # describe "list_reservations on a specific date" do
+  #     before do
   #
-  #   it "will add a reservation object to Reservation array" do
-  #       reservation_made = @admin.make_reservation()
-  #       driven_trips = trip_generated.room.driven_trips
-  #
-  #       expect(driven_trips).must_include trip_generated
-  #   end
   #
   #
-  #   it "will add the  object to passenger's trips array" do
-  #     trip_generated = @dispatcher.request_trip(1)
-  #     trips = trip_generated.passenger.trips
-  #
-  #     expect(trips).must_include trip_generated
-  #   end
-  #
-  #   it "will add the trip object to the collection of all trips in trip dispatcher" do
-  #     all_trips = @dispatcher.trips
-  #     trip_count = all_trips.length
-  #     trip_generated = @dispatcher.request_trip(1)
-  #
-  #     expect(all_trips).must_include trip_generated
-  #     expect(all_trips.length).must_equal trip_count + 1
-  #
-  #   end
-  #
-  #   it "will change the driver status to unavailabe" do
-  #     trip_generated = @dispatcher.request_trip(1)
-  #     status = trip_generated.driver.status
-  #
-  #     expect(status).must_equal :UNAVAILABLE
-  #
-  #   end
-  #
-  #   it "will return the trip" do
-  #     trip_generated = @dispatcher.request_trip(1)
-  #
-  #     expect(trip_generated).must_be_kind_of RideShare::Trip
-  #
-  #   end
-  #
-  #   it "will return a message when no driver is available for trip" do
-  #     @dispatcher.drivers.each do |driver|
-  #       driver.status = :UNAVAILABLE
   #     end
   #
-  #     expect(@dispatcher.request_trip(6)).must_equal "No driver available at this time."
-  #   end
+  #     it "returns nil if no result being found" do
   #
-  #   it "will not create a trip if no driver is available" do
-  #     @dispatcher.drivers.each do |driver|
-  #       driver.status = :UNAVAILABLE
   #     end
-  #     trip_count = @dispatcher.trips.length
-  #     @dispatcher.request_trip(6)
   #
-  #     expect(@dispatcher.trips.length).must_equal trip_count
+  #     it "if result being found, must return an array of resrvations " do
+  #
+  #     end
+  #
+  #     if "must return the right list of reservations " do
+  #
+  #     end
   #
   #   end
-  #
-  # end
 
-  # describe "list_reservations on a specific date" do
-  #   it "returns an array of reservations" do
-  #     expect
-  #
-  # end
+  describe "find_room method" do
 
-  # describe "find_room method" do
-  #   before do
-  #     @admin = Admin.new(3)
-  #   end
-  #
-  #   it "throws an argument error for a bad ID" do
-  #     expect{ @admin.find_room(0) }.must_raise ArgumentError
-  #   end
-  #
-  #   it "finds a room instance" do
-  #     room_found = @admin.find_room(2)
-  #     expect(passenger).must_be_kind_of Room
-  #   end
-  # end
+    it "throws an argument error for a bad ID" do
+      expect{ @admin_1.find_room(0) }.must_raise ArgumentError
+    end
+
+    it "finds a room instance" do
+      room_found = @admin_1.find_room(2)
+      expect(room_found).must_be_kind_of Room
+    end
+  end
 
 end
