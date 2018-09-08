@@ -94,6 +94,12 @@ module Hotel
       return @rooms
     end
 
+    # Method to return all of reservations for given date
+    # take in date as parameter
+    # search through room_calendar to see if any rooms include it as value
+    # if date is there, add that reservation to an array of days_reseravtions
+    # return array
+
     # Method to get total cost of reservation
     def get_reservation_cost(nights, cost_per_night)
       total_cost = nights * cost_per_night
@@ -103,9 +109,23 @@ module Hotel
     # Method to check room availability here? Or in room? Or calendar?
     # when check if something is available
     # search through reservations for room with nil -> reserve
-    # if none with nil, search from beginning for date with specific dates.
-    # if found, move to next room to check.
-    # do rooms have a list of reserved dates? or no knowledge of dates?
+    def find_reservations_on_date(date, calendar)
+      search_date = Date.parse(date)
+      found_reservations = []
+
+       calendar.each do |room, info|
+         info.each do |date, reservation|
+           if date == search_date
+           found_reservations << reservation
+          else
+            next
+          end
+        end # of info each
+       end # end of calendar each
+       # Add return message for no reservations found?
+       return found_reservations
+    end # of find reservation by date method
+
   end # of class BookingManager
 
 end # of module Hotel
