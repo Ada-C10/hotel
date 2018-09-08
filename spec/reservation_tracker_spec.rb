@@ -152,4 +152,73 @@ describe "ReservationTracker class" do
       expect{ reservation_tracker.get_blocked_rooms(requested_amt, @requested_dates) }.must_raise Hotel::ReservationTracker::NotEnoughError
     end
   end
+
+  describe "#block_rooms method" do
+    before do
+      @reservation_tracker = Hotel::ReservationTracker.new
+      @start_date = Date.today
+      @end_date = @start_date + 5
+      @input = {
+        start_date: @start_date,
+        end_date: @end_date,
+        num_rooms: 5
+      }
+
+      @reservation_tracker.block_rooms(@input)
+      @requested_dates = Hotel::DateRange.new(@start_date, @end_date)
+    end
+
+    it "blocks rooms if available" do
+      previous_num_block = @reservation_tracker.blocked_rooms.length
+
+      new_block = @reservation_tracker.block_rooms(@input)
+      current_num_block = @reservation_tracker.blocked_rooms.length
+
+      expect(new_block).must_be_kind_of Hotel::Block
+      expect(current_num_block).must_equal previous_num_block + 1
+    end
+  end
+
+  describe "add_reservation from blocked room method" do
+    before do
+      @reservation_tracker = Hotel::ReservationTracker.new
+      @num_of_rooms = 5
+      @start_date = Date.today
+      @end_date = @start_date + 5
+      @block_input = {
+        start_date: @start_date,
+        end_date: @end_date,
+        num_rooms: 5
+      }
+      @res_input = {
+        block_id: 1,
+        start_date: @start_date,
+        end_date: @end_date
+      }
+
+      @reservation_tracker.reserve_room(@res_input)
+      @requested_dates = Hotel::DateRange.new(@start_date, @end_date)
+    end
+
+    it "adds a reservation with a block_id" do
+      reserve_room_with_block_id = @reservation_tracker.reserve_room(@res_input)
+      reserve_room_with_block_id.must_be_instance_of Hotel::Reservation
+    end
+
+    it "adds new block to blocks array" do
+      initial_length = @reservation_tracker.blocked_rooms.length
+      @reservation_tracker.block_rooms(@block_input)
+      new_length = @reservation_tracker.blocked_rooms.length
+      new_length.must_equal initial_length + 1
+    end
+
+    it "adds a second reservation with a block_id to the next available room in the block" do
+      initial_length = @reservation_tracker.reservations.length
+      @reservation_tracker.block_rooms(@block_input)
+      @reservation_tracker.reserve_room(@res_input)
+      @reservation_tracker.reserve_room(@res_input)
+      new_length = @reservation_tracker.reservations.length
+      expect(new_length).must_equal initial_length + 2
+    end
+  end
 end

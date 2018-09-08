@@ -11,12 +11,12 @@ module Hotel
     class TooManyRoomsError < StandardError; end
     class NotEnoughError < StandardError; end
 
-    attr_reader :reservations, :rooms
+    attr_reader :rooms, :reservations, :blocked_rooms
 
     def initialize
       @rooms = load_rooms
       @reservations = []
-      @block_rooms = []
+      @blocked_rooms = []
     end
 
     def load_rooms
@@ -99,11 +99,11 @@ module Hotel
     def block_rooms(input)
       requested_dates = get_requested_dates(input)
       block_id = @blocked_rooms.length + 1
-      num_rooms = get_blocked_rooms(number_of_rooms, requested_dates)
+      blocked_amt_rooms = get_blocked_rooms(input[:num_rooms], requested_dates)
 
       block_data = {
         id: block_id,
-        num_rooms: num_rooms,
+        num_rooms: blocked_amt_rooms,
         date_range: requested_dates
       }
 
@@ -113,7 +113,7 @@ module Hotel
     end
 
     private
-    
+
     def check_enough_rooms?(available_rooms, requested_amt)
       if available_rooms.length < requested_amt
         raise NotEnoughError.new("There are not enough rooms to block")
