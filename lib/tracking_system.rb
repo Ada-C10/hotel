@@ -1,16 +1,18 @@
 require_relative 'room'
 require_relative 'reservation'
+require_relative 'block'
 require 'pry'
 
 NUMBER_OF_ROOMS = 20
 STANDARD_ROOM_PRICE = 200.00
 
 class TrackingSystem
-  attr_reader :all_rooms, :reservations
+  attr_reader :all_rooms, :reservations, :blocks
 
   def initialize
     @all_rooms = add_rooms
     @reservations = []
+    @blocks = []
   end
 
   # def total_cost_of_reservation(room_num)
@@ -50,7 +52,7 @@ class TrackingSystem
   end
 
   #reserve an available room for a given date range
-  #this method ONLY adds reservations for rooms that aren't in a block 
+  #this method ONLY adds reservations for rooms that aren't in a block
   def add_reservation(start_time: Date.now, end_time: Date.now + 1, number_of_rooms: 1)
     available_rooms = view_available_rooms_on(start_time: start_time, end_time: end_time) #<--returns an array of available rooms that also aren't in a block
     raise ArgumentError.new"Not enough rooms available on those dates" if available_rooms.length < number_of_rooms
@@ -59,6 +61,27 @@ class TrackingSystem
       available_rooms[i].reserved_dates << {start_time: start_time, end_time: end_time}
     end
     @reservations
+  end
+
+  def generate_block_id
+    (0..3).map { (65 + rand(26)).chr }.join
+  end
+
+  def add_block(start_time: Date.today + 7, end_time: Date.today.next_month, number_of_rooms: 5, discount: 10)
+    raise ArgumentError unless discount.instance_of? Integer
+    raise ArgumentError.new"start_time must be before end_time" unless start_time < end_time
+    raise ArgumentError.new"number_of_rooms must be >= 1 && <= 5" unless number_of_rooms >= 1 && number_of_rooms <=5
+    available_rooms = view_available_rooms_on(start_time: start_time, end_time: end_time) #makes sure dates dont overlap and block status is :na
+    raise ArgumentError.new"not enough available rooms for this date range" if available_rooms.length < number_of_rooms
+    block_id = generate_block_id.to_sym
+    block = Block.new({rooms: [], start_time: start_time, end_time: end_time, discount: discount, block: block_id })
+    number_of_rooms.times do |i|
+      available_rooms[i].block = block_id
+      block.rooms << available_rooms[i]
+    end
+    @blocks << block
+    binding.pry
+    return @blocks
   end
   #need to come back here and create i instances of reservation..but first need to change Reservation.rooms to hold an Integer instead of Array
   # available_rooms.each do |room|
@@ -90,6 +113,8 @@ class TrackingSystem
   #
   # view a list of rooms that are not reserved(aka available) for a given date range
 
+
+  # If a room is set aside in a block, it is not available for reservation by the general public, nor can it be included in another block
   def view_available_rooms_on(start_time: Date.now, end_time: Date.now + 1)
     raise ArgumentError.new"start_time must be before end_time" unless start_time < end_time
     #another test to create is making sure its an instance of Date
