@@ -6,20 +6,13 @@ module Hotel
 
     def initialize(input)
 
-      # QUESTION: maybe DateRange class can handle all things date-related, including error handling?
-      unless /\d{4}-\d{1,2}-\d{1,2}/.match(input[:check_in]) && /\d{4}-\d{1,2}-\d{1,2}/.match(input[:check_out])
-        raise StandardError, "Improper date format: date must be entered as YYYY-MM-DD."
-      end
-
       @id = input[:id].to_i
       @room_num = input[:room_num]
+      #TODO: date_range CAL instantiate here
       @check_in = Date.parse(input[:check_in])
       @check_out = Date.parse(input[:check_out])
       @daily_rate = input[:daily_rate] ? input[:daily_rate] : 200
 
-      unless @check_out > @check_in
-        raise StandardError, "Invalid date range: end date must occur after start date."
-      end
     end
 
     def dates_reserved()

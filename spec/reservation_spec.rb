@@ -17,42 +17,6 @@ describe "Reservation" do
       expect(reservation.id).must_equal 2
     end
 
-    it "throws a StandardError if fed improper date format for check_in or check_out" do
-    expect {
-      Hotel::Reservation.new({
-        id: "5",
-        room_num: "8",
-        check_in: "2009,7,2",
-        check_out: "2009-7-1"
-        })}.must_raise StandardError
-
-    expect {
-      Hotel::Reservation.new({
-        id: "5",
-        room_num: "8",
-        check_in: "2009-7-2",
-        check_out: "2009,7,1"
-        })}.must_raise StandardError
-    end
-
-    it "throws a StandardError if check_out occurs before or on same day as check_in" do
-    expect {
-      Hotel::Reservation.new({
-        id: "5",
-        room_num: "8",
-        check_in: "2009-7-2",
-        check_out: "2009-7-1"
-        })}.must_raise StandardError
-
-    expect {
-      Hotel::Reservation.new({
-        id: "5",
-        room_num: "8",
-        check_in: "2009-7-1",
-        check_out: "2009-7-1"
-        })}.must_raise StandardError
-    end
-
     it "can create a reservation with a one-night stay" do
       # edge case
       one_night_stay = Hotel::Reservation.new({
@@ -88,21 +52,22 @@ describe "Reservation" do
   end
 
   describe "#dates_reserved" do
-    it "returns an array of Date objects" do
-      expect(reservation.dates_reserved).must_be_kind_of Array
-      expect(reservation.dates_reserved[0]).must_be_kind_of Date
-    end
-
-    it "can list all the dates of a reservation" do
-      date1_s = reservation.dates_reserved[0].strftime('%Y %b %d')
-      date2_s = reservation.dates_reserved[1].strftime('%Y %b %d')
-      date3_s = reservation.dates_reserved[2].strftime('%Y %b %d')
-
-      expect(reservation.dates_reserved.length).must_equal 3
-      expect(date1_s).must_equal "2004 Jul 01"
-      expect(date2_s).must_equal "2004 Jul 02"
-      expect(date3_s).must_equal "2004 Jul 03"
-    end
+    # NOTE: tests in cal??
+    # it "returns an array of Date objects" do
+    #   expect(reservation.dates_reserved).must_be_kind_of Array
+    #   expect(reservation.dates_reserved[0]).must_be_kind_of Date
+    # end
+    #
+    # it "can list all the dates of a reservation" do
+    #   date1_s = reservation.dates_reserved[0].strftime('%Y %b %d')
+    #   date2_s = reservation.dates_reserved[1].strftime('%Y %b %d')
+    #   date3_s = reservation.dates_reserved[2].strftime('%Y %b %d')
+    #
+    #   expect(reservation.dates_reserved.length).must_equal 3
+    #   expect(date1_s).must_equal "2004 Jul 01"
+    #   expect(date2_s).must_equal "2004 Jul 02"
+    #   expect(date3_s).must_equal "2004 Jul 03"
+    # end
   end
 
   describe "#total_stay_cost" do

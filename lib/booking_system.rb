@@ -1,6 +1,6 @@
 require "date"
 
-# require_relative 'room'
+require_relative 'calendar'
 require_relative 'reservation'
 
 module Hotel
@@ -17,18 +17,20 @@ module Hotel
       # all_rooms = nums.map { |num| Hotel::Room.new(num: num)}
     end
 
-    def create_date_range(start_date, end_date)
-      # TODO: error handling should probably go to cal class (take from reservation plus tests -- 2x)
-      return (start_date...end_date).to_a
+    def construct_cal_checker(start_date:, end_date:)
+      #QUESTION: initialize this???
+      construct_cal_checker = Calendar.new(start_date: start_date, end_date: end_date)
+      # QUESTION: kwargs? RETURN DATE RANGE OR THE CALENDAR?
+      # return DateRange.new(start_date, end_date).create_date_range #<-- returns array of Date objects
     end
 
-    def generate_res_id()
-      if @reservations.empty?
-        return 1
-      else
-        return @reservations.max_by { |reservation| reservation.id}.id + 1
-      end
-    end
+    # def generate_res_id()
+    #   if @reservations.empty?
+    #     return 1
+    #   else
+    #     return @reservations.max_by { |reservation| reservation.id}.id + 1
+    #   end
+    # end
 
 
 #     # TODO: maybe use date range instead of start/end?
