@@ -1,5 +1,5 @@
 require_relative 'reservation.rb'
-
+require 'pry'
 
 class BookingManager
 
@@ -28,5 +28,7 @@ class BookingManager
     @reservations << reservation
     return reservation
   end
+
+
 
 end
