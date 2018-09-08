@@ -27,7 +27,7 @@ module Hotel
       check_out = Date.parse(check_out)
       date_range = Hotel::DateRange.new(check_in, check_out)
 
-      # 
+      #
       # # TODO make sure check_in and check_out into dates here instad of reservation
       # @booked_dates.each do |range|
       #   if range.overlaps?(date_range)
@@ -44,7 +44,20 @@ module Hotel
     end
 
     def find_reservations(date)
+      matching_reservations = []
+      date = Date.parse(date)
 
+      if @reservations.length == []
+        return nil
+      end
+
+      @reservations.each do |reservation|
+        reservation_dates = reservation.date_range.dates_booked
+        if reservation_dates.include?(date)
+          matching_reservations << reservation
+        end
+      end
+      return matching_reservations
     end
 
     def all_booked_dates()

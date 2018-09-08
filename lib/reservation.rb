@@ -4,8 +4,8 @@ require 'date'
 
 module Hotel
   class Reservation
-    attr_reader :id, :date_range, :room
-    attr_accessor :cost
+    attr_reader :id, :date_range
+    attr_accessor :cost, :room
 
     def initialize(id, date_range)
       @id = id

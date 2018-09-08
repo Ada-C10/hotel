@@ -52,7 +52,7 @@ describe "HotelBooker class" do
     it "Returns an array of reservations" do
       expect(@booker.find_reservations('2018-09-05')).must_be_kind_of Array
       expect(@booker.find_reservations('2018-09-06')[0]).must_be_kind_of Hotel::Reservation
-      expect(@booker.find_reservations('2018-09-06').length).must_equal 2
+      expect(@booker.find_reservations('2018-09-07').length).must_equal 3
     end
   end
 
