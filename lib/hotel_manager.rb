@@ -60,7 +60,7 @@ module Hotel
         Room.change_status_of_room(rooms, room_number, start_date: start_date, end_date: end_date)
       end
 
-      return final_list
+      return new_block
     end
 
     # As an administrator, I can access the list of reservations for a specific date

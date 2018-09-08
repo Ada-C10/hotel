@@ -10,9 +10,6 @@ describe "HotelManager" do
   let (:end_date) {
     "2018-10-16"
   }
-  let (:id) {
-    8
-  }
 
   describe "#initialize" do
     it "Creates an instance of Hotel Manager" do
@@ -42,71 +39,99 @@ describe "HotelManager" do
     end
   end
 
-  # describe "#make_reservation" do
-  #   it "Creates a reservation for the public" do
-  #   end
-  #
-  #   it "Creates a reservation for a room in the block" do
-  #   end
-  #
-  #   it "Raises an error if there are no available rooms left to reserve" do
-  #   end
-  #
-  #   it "Allows a reservation to be created on the same day another party checks out" do
-  #   end
-  #
-  #   it "Creates a list of accurate available rooms so that a room in a block cannot be booked by the public" do
-  #   end
-  #
-  #   it "Does not allow a reservation to be created when dates overlap for the same room" do
-  #   end
-    # it "Updates all reservations by creating a Reservation" do
-    #   my_hotel.reserve(start_date: start_date, end_date: end_date)
-    #
-    #   expect(my_hotel.reservations.last.start_date).must_equal Date.parse(start_date)
-    #   expect(my_hotel.reservations.last.end_date).must_equal Date.parse(end_date)
-    # end
-    #
-    # it "Updates Room status to Unavailable for selected dates" do
-    #   my_room = my_hotel.rooms.find {|r| r.id == id}
-    #   my_hotel.reserve(id, start_date: start_date, end_date: end_date)
-    #
-    #   (Date.parse(start_date)...Date.parse(end_date)).each do |date|
-    #     expect(my_room.status_by_date[date]).must_equal :UNAVAILABLE
-    #   end
-    # end
-    #
-    # it "Creates and stores a reservation when there are no reservations yet" do
-    #   my_reservations = my_hotel.reservations.clear
-    #
-    #   my_hotel.reserve(id, start_date: start_date, end_date: end_date)
-    #
-    #   expect(my_reservations.length).must_equal 1
-    #   expect(my_reservations.first.room_number).must_equal id
-    #   expect(my_reservations.first.start_date).must_equal Date.parse(start_date)
-    #   expect(my_reservations.first.end_date).must_equal Date.parse(end_date)
-    # end
-    #
-    # it "Raises an error if no rooms are available for a specific date" do
-    #   # call it 20 times on a specific date range
-    #   room_number = 1337
-    #   room = Hotel::Room.new(room_number)
-    #   my_hotel.rooms << room
-    #   Hotel::Room.change_status_of_room(my_hotel.rooms, room_number, start_date: start_date, end_date: end_date)
-    #
-    #   expect {
-    #     my_hotel.reserve(room_number, start_date: start_date, end_date: end_date)
-    #   }.must_raise StandardError
-    # end
-    #
-    # it "Raises an error if trying ot make a reservation when room is in a block" do
-    # end
-    #
-    # it "raises an error if the block isn't found" do
-    # end
-    #
-  #   # it ""
-  # end
+  describe "#make_reservation" do
+    it "Creates a reservation for a room in the block" do
+      my_hotel.make_reservation(start_date: start_date, end_date: end_date, group_name: "Puzzled Pint People")
+
+      expect(my_hotel.blocks.last.group_name).must_equal "Puzzled Pint People"
+    end
+
+    it "Allows a reservation to be created on the same day another party checks out" do
+      my_hotel.make_reservation(start_date: start_date, end_date: end_date)
+      expect(my_hotel.reservations.last.room_number).must_equal 1
+
+      my_hotel.make_reservation(start_date: "2018-10-16", end_date: "2018-10-18")
+      expect(my_hotel.reservations.last.room_number).must_equal 1
+    end
+
+    it "Does not allow a reservation to be created when dates overlap in the back for the same room" do
+      my_hotel.make_reservation(start_date: start_date, end_date: end_date)
+      expect(my_hotel.reservations.last.room_number).must_equal 1
+
+      my_hotel.make_reservation(start_date: "2018-10-08", end_date: "2018-10-18")
+      expect(my_hotel.reservations.last.room_number).wont_equal 1
+    end
+
+    it "Does not allow a reservation to be created when dates overlap in the front for the same room" do
+      my_hotel.make_reservation(start_date: start_date, end_date: end_date)
+      expect(my_hotel.reservations.last.room_number).must_equal 1
+
+      my_hotel.make_reservation(start_date: "2018-10-01", end_date: "2018-10-08")
+      expect(my_hotel.reservations.last.room_number).wont_equal 1
+    end
+
+    it "Does not allow a reservation to be created when dates are completely contained for the same room" do
+      my_hotel.make_reservation(start_date: start_date, end_date: end_date)
+      expect(my_hotel.reservations.last.room_number).must_equal 1
+
+      my_hotel.make_reservation(start_date: "2018-10-08", end_date: "2018-10-10")
+      expect(my_hotel.reservations.last.room_number).wont_equal 1
+    end
+
+    it "Does not allow a reservation to be created when dates are completely containing for the same room" do
+      my_hotel.make_reservation(start_date: start_date, end_date: end_date)
+      expect(my_hotel.reservations.last.room_number).must_equal 1
+
+      my_hotel.make_reservation(start_date: "2018-10-03", end_date: "2018-10-18")
+      expect(my_hotel.reservations.last.room_number).wont_equal 1
+    end
+
+    it "Does not allow a reservation to be created when dates are the same for the same room" do
+      my_hotel.make_reservation(start_date: start_date, end_date: end_date)
+      expect(my_hotel.reservations.last.room_number).must_equal 1
+
+      my_hotel.make_reservation(start_date: start_date, end_date: end_date)
+      expect(my_hotel.reservations.last.room_number).wont_equal 1
+    end
+
+    it "Updates all reservations by creating a Reservation" do
+      my_hotel.make_reservation(start_date: start_date, end_date: end_date)
+
+      expect(my_hotel.reservations.last.start_date).must_equal Date.parse(start_date)
+      expect(my_hotel.reservations.last.end_date).must_equal Date.parse(end_date)
+    end
+
+    it "Creates and stores a reservation when there are no reservations yet" do
+      my_reservations = my_hotel.reservations.clear
+
+      my_hotel.make_reservation(start_date: start_date, end_date: end_date)
+
+      expect(my_reservations.length).must_equal 1
+      expect(my_reservations.first.room_number).must_equal 1
+      expect(my_reservations.first.start_date).must_equal Date.parse(start_date)
+      expect(my_reservations.first.end_date).must_equal Date.parse(end_date)
+    end
+
+    it "Raises an error if no rooms are available for a specific date" do
+      20.times do
+        my_hotel.make_reservation(start_date: start_date, end_date: end_date)
+      end
+
+      expect {
+        my_hotel.make_reservation(start_date: start_date, end_date: end_date)
+      }.must_raise ArgumentError
+    end
+
+    it "Raises an error if not enough rooms are available for a specific date" do
+      15.times do
+        my_hotel.make_reservation(start_date: start_date, end_date: end_date)
+      end
+
+      expect {
+        my_hotel.make_reservation(start_date: start_date, end_date: end_date, num_of_rooms: 6)
+      }.must_raise StandardError
+    end
+  end
 
   describe "#create_a_block" do
     before do
