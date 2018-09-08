@@ -3,45 +3,45 @@ require_relative 'spec_helper'
 
 # TODO: edge case --> multimonth stay??
 describe "Calendar" do
-    let(:cal) {Hotel::Calendar.new(start_date: "1986-07-29", end_date: "1986-07-31")}
+    let(:cal) {Hotel::Calendar.new(check_in: "1986-07-29", check_out: "1986-07-31")}
 
   describe "#initialize" do
     it "can create a new instance of Calendar" do
       expect(cal).must_be_kind_of Hotel::Calendar
     end
     it "correctly loads date attributes" do
-      expect(cal.start_date).must_be_kind_of Date
-      expect(cal.start_date.strftime('%Y %b %d')).must_equal "1986 Jul 29"
+      expect(cal.check_in).must_be_kind_of Date
+      expect(cal.check_in.strftime('%Y %b %d')).must_equal "1986 Jul 29"
 
-      expect(cal.end_date).must_be_kind_of Date
-      expect(cal.end_date.strftime('%Y %b %d')).must_equal "1986 Jul 31"
+      expect(cal.check_out).must_be_kind_of Date
+      expect(cal.check_out.strftime('%Y %b %d')).must_equal "1986 Jul 31"
     end
 
     it "throws a StandardError if fed improper date format for start or end date" do
     expect {
       Hotel::Calendar.new(
-        start_date: "2009,7,2",
-        end_date: "2009-7-1"
+        check_in: "2009,7,2",
+        check_out: "2009-7-1"
         )}.must_raise StandardError
 
     expect {
       Hotel::Calendar.new({
-        start_date: "2009-7-2",
-        end_date: "2009,7,1"
+        check_in: "2009-7-2",
+        check_out: "2009,7,1"
         })}.must_raise StandardError
     end
 
     it "throws a StandardError if end date occurs before or on same day as start date" do
     expect {
       Hotel::Calendar.new({
-        start_date: "2009-7-2",
-        end_date: "2009-7-1"
+        check_in: "2009-7-2",
+        check_out: "2009-7-1"
         })}.must_raise StandardError
 
     expect {
       Hotel::Calendar.new({
-        start_date: "2009-7-1",
-        end_date: "2009-7-1"
+        check_in: "2009-7-1",
+        check_out: "2009-7-1"
         })}.must_raise StandardError
     end
   end

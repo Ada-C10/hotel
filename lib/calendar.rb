@@ -2,19 +2,20 @@ require 'date'
 
 module Hotel
   class Calendar
-    attr_reader :start_date, :end_date
+    attr_reader :check_in, :check_out
 
-    def initialize(start_date:, end_date:)
+    def initialize(check_in:, check_out:)
 
-# QUESTION: separate error handling into its own method?
-      unless /\d{4}-\d{1,2}-\d{1,2}/.match(start_date) && /\d{4}-\d{1,2}-\d{1,2}/.match(end_date)
+# QUESTION: separate error handling into its own method? YES
+# ^^ also if check_out is nil --> just look at one date 
+      unless /\d{4}-\d{1,2}-\d{1,2}/.match(check_in) && /\d{4}-\d{1,2}-\d{1,2}/.match(check_out)
         raise StandardError, "Improper date format: date must be entered as YYYY-MM-DD."
       end
 
-      @start_date = Date.parse(start_date)
-      @end_date = Date.parse(end_date)
+      @check_in = Date.parse(check_in)
+      @check_out = Date.parse(check_out)
 
-      unless @start_date < @end_date
+      unless @check_in < @check_out
         raise StandardError, "Invalid date range: end date must occur after start date."
       end
     end
@@ -22,7 +23,7 @@ module Hotel
 # TODO: create date range and check without arrays?
     def create_date_range()
       # QUESTION: shoudl i just use instance var instead of input local var?
-      return (@start_date...@end_date).to_a
+      return (@check_in...@check_out).to_a
     end
 
 
@@ -32,6 +33,6 @@ module Hotel
 end
 
 #
-# cal = Hotel::Calendar.new(start_date: "1986-07-29", end_date: "1986-07-31")
+# cal = Hotel::Calendar.new(check_in: "1986-07-29", check_out: "1986-07-31")
 #
 # puts cal

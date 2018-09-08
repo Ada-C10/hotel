@@ -1,17 +1,19 @@
 require 'date'
+require_relative 'calendar'
 
 module Hotel
-  class Reservation
-    attr_reader :id, :room, :check_in, :check_out, :daily_rate
+  class Reservation < Calendar
+    attr_reader :id, :room, :daily_rate
 
-    def initialize(input)
+    def initialize(check_in:, check_out:, id:, room_num:, daily_rate:200)
+      super(check_in: check_in, check_out: check_out)
 
-      @id = input[:id].to_i
-      @room_num = input[:room_num]
+      @id = id.to_i
+      @room_num = room_num.to_i
       #TODO: date_range CAL instantiate here
-      @check_in = Date.parse(input[:check_in])
-      @check_out = Date.parse(input[:check_out])
-      @daily_rate = input[:daily_rate] ? input[:daily_rate] : 200
+      # @check_in = Date.parse(input[:check_in])
+      # @check_out = Date.parse(input[:check_out])
+      @daily_rate = daily_rate.to_f
 
     end
 
@@ -28,11 +30,11 @@ module Hotel
 end
 
 
-# res = Hotel::Reservation.new({
-#   id: "2",
-#   room_num: "3",
-#   check_in: "2004,5,6",
-#   check_out: "2004-7-4"})
-#
-# p res.dates_reserved.class
-# p res.dates_reserved[0].class
+res = Hotel::Reservation.new(
+  id: "2",
+  room_num: "3",
+  check_in: "2004-5-6",
+  check_out: "2004-7-4")
+
+p res.create_date_range
+p res.create_date_range.class

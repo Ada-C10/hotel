@@ -18,19 +18,16 @@ module Hotel
     end
 
     def construct_cal_checker(start_date:, end_date:)
-      #QUESTION: initialize this???
-      construct_cal_checker = Calendar.new(start_date: start_date, end_date: end_date)
-      # QUESTION: kwargs? RETURN DATE RANGE OR THE CALENDAR?
-      # return DateRange.new(start_date, end_date).create_date_range #<-- returns array of Date objects
+      return Calendar.new(start_date: start_date, end_date: end_date)
     end
 
-    # def generate_res_id()
-    #   if @reservations.empty?
-    #     return 1
-    #   else
-    #     return @reservations.max_by { |reservation| reservation.id}.id + 1
-    #   end
-    # end
+    def generate_res_id()
+      if @reservations.empty?
+        return 1
+      else
+        return @reservations.max_by { |reservation| reservation.id}.id + 1
+      end
+    end
 
 
 #     # TODO: maybe use date range instead of start/end?

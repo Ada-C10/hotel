@@ -5,11 +5,11 @@ describe "Reservation" do
   # TODO: test id as any pos int?
   # TODO: test room_num as 1-20?
 
-  let(:reservation) {Hotel::Reservation.new({
+  let(:reservation) {Hotel::Reservation.new(
     id: "2",
     room_num: "3",
     check_in: "2004-7-1",
-    check_out: "2004-7-4"})}
+    check_out: "2004-7-4")}
 
   describe "#initialize" do
     it "can create a new instance of reservation" do
@@ -19,33 +19,33 @@ describe "Reservation" do
 
     it "can create a reservation with a one-night stay" do
       # edge case
-      one_night_stay = Hotel::Reservation.new({
+      one_night_stay = Hotel::Reservation.new(
         id: "66",
         room_num: "19",
         check_in:"2009-7-29",
-        check_out: "2009-7-30"})
+        check_out: "2009-7-30")
       expect(one_night_stay).must_be_kind_of Hotel::Reservation
       expect(one_night_stay.id).must_equal 66
     end
 
     it "sets daily rate to default value if no value given" do
-      typical_room = Hotel::Reservation.new({
+      typical_room = Hotel::Reservation.new(
       id: "66",
       room_num: "19",
       check_in:"2009-7-29",
-      check_out: "2009-7-30"})
+      check_out: "2009-7-30")
 
       expect(typical_room.daily_rate).must_equal 200
     end
 
     # QUESTION: do we need error handling for numeric value for daily_rate?
     it "can override default value for daily rate" do
-    rare_room = Hotel::Reservation.new({
+    rare_room = Hotel::Reservation.new(
       id: "66",
       room_num: "19",
       check_in:"2009-7-29",
       check_out: "2009-7-30",
-      daily_rate: 500})
+      daily_rate: 500)
 
       expect(rare_room.daily_rate).must_equal 500
     end

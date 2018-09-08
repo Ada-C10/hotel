@@ -40,41 +40,37 @@ describe "BookingSystem class" do
     end
   end
 
-  describe "#construct_cal" do
-    # see additional tests in Calendar
+  describe "#construct_cal_checker" do
+    # see additional constructor tests in Calendar
     it "creates a new instance of Calendar" do
       booking_system.construct_cal_checker(start_date: "1990-10-01", end_date: "1990-10-15").must_be_kind_of Hotel::Calendar
+      #TODO: check for endd_date as nil?
     end
   end
 
-  # describe "#generate_res_id" do
-  #   let(:first_res) {Reservation.new("1996-08-01", "1996-08-03")}
-  #   let(:second_res) {Reservation.new("1996-09-09", "1996-08-13")}
-  #   let(:third_res) {Reservation.new("1996-10-01-", "1996-10-10")}
-  #
-  #   it "creates the first reservation ID if it's the first reservation in reservations list" do
-  #     booking_system.reservations << first_res
-  #
-  #     expect(reservations.generate_res_id[0].id).must_equal 1
-  #   end
-  #
-  #   it "can generate accurate IDs when new reservations are added to reservations list" do
-  #     booking_system.reservations << first_res
-  #     booking_system.reservations << second_res
-  #
-  #     expect(reservations.generate_res_id[0].id).must_equal 1
-  #     expect(reservations.generate_res_id[1].id).must_equal 2
-  #
-  #     booking_system.reservations << third_res
-  #
-  #     expect(reservations.generate_res_id[-1].id).must_equal 3
-  #   end
+  describe "#generate_res_id" do
+    let(:first_res) {Reservation.new("1996-08-01", "1996-08-03")}
+    let(:second_res) {Reservation.new("1996-09-09", "1996-08-13")}
+    let(:third_res) {Reservation.new("1996-10-01-", "1996-10-10")}
 
+    it "creates the first reservation ID if it's the first reservation in reservations list" do
+      booking_system.reservations << first_res
+  
+      expect(reservations.generate_res_id[0].id).must_equal 1
+    end
 
+    it "can generate accurate IDs when new reservations are added to reservations list" do
+      booking_system.reservations << first_res
+      booking_system.reservations << second_res
 
+      expect(reservations.generate_res_id[0].id).must_equal 1
+      expect(reservations.generate_res_id[1].id).must_equal 2
 
+      booking_system.reservations << third_res
 
-  # end
+      expect(reservations.generate_res_id[-1].id).must_equal 3
+    end
+  end
 #
 #   describe "#list_all_rooms" do
 #     let(:all_rooms_str) {booking_system.list_all_rooms()}
