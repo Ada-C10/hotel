@@ -33,9 +33,9 @@ module HotBook
       return oldrange.end_date <= start_date
     end
 
-    # def to_range
-    #   return (@start_date..@end_date)
-    # end
+    def to_range
+      return (@start_date..@end_date)
+    end
 
   end
 end

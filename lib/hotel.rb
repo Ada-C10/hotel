@@ -15,12 +15,12 @@ module HotBook
 
     def initialize(room_rate: 200.0, room_numbers: ROOM_NUMBERS)
       @room_rate = room_rate
-      @room_numbers = upcase_room_numbers(room_numbers)
+      @room_numbers = upcase(room_numbers)
       @rooms = load_rooms # array of hashes
       # a "room" Hash ==== {room_number: "String", room_rate: 200.0}
     end
 
-    def upcase_room_numbers(room_numbers)
+    def upcase(room_numbers)
       return room_numbers.map! { |room_number| room_number.upcase }
     end
 
@@ -36,9 +36,9 @@ module HotBook
     end
 
     def find_room_by_number(query)
-      query = query.upcase
       raise ArgumentError, "Your query (room number) must be a String, not " \
                            "a #{query.class}" unless query.is_a? String
+      query = query.upcase
       raise StandardError, "No room by that number" unless
                             room_numbers.include?(query) # customize this error
       return rooms.find { |room| room[:room_number] == query}

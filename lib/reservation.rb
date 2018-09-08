@@ -19,6 +19,10 @@ module HotBook
       return duration * room_rate
     end
 
+    def range
+      return daterange.to_range
+    end
+
   end
 
 end
