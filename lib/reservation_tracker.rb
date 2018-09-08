@@ -39,7 +39,7 @@ class ReservationTracker
 
   # accesses the list of reservations for a specific date
   def list_of_reservations(date)
-    return @reservations.find_all { |reservation| reservation.nights stayed == date }
+    return @reservations.find_all { |reservation| reservation.nights_stayed == date }
   end
 
   # calculates the total cost for a given reservation
