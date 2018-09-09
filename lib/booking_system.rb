@@ -28,6 +28,15 @@ module Hotel
       end
     end
 
+    def list_res_for_date(check_date)
+      matching_res = @reservations.select { |reservation| reservation.has_date?(check_date) } #==false
+        # check for no overlap in dates
+        # if (reservation.date_range & check_date_range).empty?
+
+      return matching_res.empty? ? nil : matching_res
+
+    end
+
 
 #     # TODO: maybe use date range instead of start/end?
 #     def create_reservation(start_date, end_date)
@@ -89,14 +98,7 @@ module Hotel
 #       return @rooms.find {|room| room.num == room_num.to_i}
 #     end
 #
-#     def list_avail_rooms_for_date(check_date)
-#       avail_rooms = @reservations.select { |reservation| !reservation.date_range.include?(check_date) } #==false
-#         # check for no overlap in dates
-#         # if (reservation.date_range & check_date_range).empty?
-#
-#       return avail_rooms.empty? ? nil : avail_rooms
-#
-#     end
+
 #
 #     def list_avail_rooms_for_range(start_date, end_date)
 #       check_date_range = create_date_range(start_date, end_date)
@@ -114,8 +116,8 @@ module Hotel
 end
 
 
-booking = Hotel::BookingSystem.new()
-puts booking.reservations.empty?
+# booking = Hotel::BookingSystem.new()
+# puts booking.reservations.empty?
 # #
 # res_3 = booking.create_reservation({
 #   id: "4",

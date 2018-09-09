@@ -26,16 +26,23 @@ module Hotel
     #   return (@check_in...@check_out).to_a
     # end
 
-    def overlap?(other_dates) # param: Calendar obj
-      if !(other_dates.check_in <= @check_out-1) || !(other_dates.check_out-1 >= @check_in)
-        return false
-      else
-        return true
-      end
+
+  def has_date?(other_date)
+    other_date = Date.parse(other_date)
+    if (other_date >= @check_in) && (other_date <= @check_out - 1)
+      return true
+    else
+      return false
     end
+  end
 
-
-
+  def overlap?(other_dates) # param: Calendar obj
+    if !(other_dates.check_in <= @check_out-1) || !(other_dates.check_out-1 >= @check_in)
+      return false
+    else
+      return true
+    end
+  end
 
   end
 end

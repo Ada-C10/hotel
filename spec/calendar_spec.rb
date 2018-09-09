@@ -64,6 +64,57 @@ describe "Calendar" do
   #   end
   # end
 
+  describe "#has_date?" do
+    it "returns true if other date is between check in and check out dates: in the middle" do
+      other_date = "1986-07-25"
+
+      has_date = cal.has_date?(other_date)
+
+      expect(has_date).must_equal true
+    end
+
+    it "returns true if other date is between check in and check out dates: on check in date" do
+      other_date = "1986-07-20"
+
+      has_date = cal.has_date?(other_date)
+
+      expect(has_date).must_equal true
+    end
+
+    it "returns true if other date is between check in and check out dates: on day before check out" do
+      other_date = "1986-07-28"
+
+      has_date = cal.has_date?(other_date)
+
+      expect(has_date).must_equal true
+    end
+
+    it "returns false if other date is outside of check in and check out dates: before check in date" do
+      other_date = "1986-07-15"
+
+      has_date = cal.has_date?(other_date)
+
+      expect(has_date).must_equal false
+    end
+
+    it "returns false if other date is outside of check in and check out dates: after check out date" do
+      other_date = "1986-07-31"
+
+      has_date = cal.has_date?(other_date)
+
+      expect(has_date).must_equal false
+    end
+    
+    it "returns false if other date is outside of check in and check out dates: on check out date" do
+      # edge case
+      other_date = "1986-07-29"
+
+      has_date = cal.has_date?(other_date)
+
+      expect(has_date).must_equal false
+    end
+  end
+
   describe "#overlap?" do
     it "returns false for no overlap: other dates begin and end before reserved dates" do
       other_dates = Hotel::Calendar.new(check_in: "1986-07-01", check_out: "1986-07-15")
