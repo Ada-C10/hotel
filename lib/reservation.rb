@@ -1,3 +1,4 @@
+# require_relative 'block'
 class Reservation
 
   PRICE = 200
@@ -24,7 +25,7 @@ class Reservation
       all_dates << date
       date += 1
     end
-      
+
     return all_dates
   end
 

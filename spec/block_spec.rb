@@ -17,5 +17,17 @@ describe Block do
     it "can be instantiated" do
       expect(block2).must_be_kind_of Block
     end
+    it "assigns discount based on number_of_rooms" do
+      expect(block2.discount).must_equal 10
+      expect(block3.discount).must_equal 20
+      expect(block4.discount).must_equal 30
+      expect(block5.discount).must_equal 40
+    end
+    it "includes discount in cost" do
+      expect(block2.cost).must_equal 790
+      expect(block3.cost).must_equal 780
+      expect(block4.cost).must_equal 770
+      expect(block5.cost).must_equal 760
+    end
   end
 end
