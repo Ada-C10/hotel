@@ -1,10 +1,11 @@
-
+require 'pry'
 require 'Date'
 COST = 200
+BLOCKED_COST = 160
 
 class Reservation
   @@num = 0
-  @@array_of_reservations = []
+  @@reservations = []
   def initialize(room_number, check_in_date, check_out_date)
     @room_number = room_number
     @check_in_date = check_in_date
@@ -13,7 +14,7 @@ class Reservation
     @@reservation_id = "2018/#{@@num}"
     @cost = cost
     check_for_dates_clash
-    @@array_of_reservations << [@room_number, @check_in_date, @check_out_date, @@reservation_id, @cost]
+    @@reservations << [@room_number, @check_in_date, @check_out_date, @@reservation_id, @cost]
   end
 
   attr_writer :room_number, :check_in_date, :check_out_date, :reservation_id
@@ -26,6 +27,7 @@ class Reservation
   end
 
   def cost
+    total = 0
     if @check_in_date != nil && @check_out_date != nil
       days = calculate_number_of_days
       total = (days - 1) * COST
@@ -33,12 +35,16 @@ class Reservation
     return total
   end
 
+  def cost_special
+    (@@reservations[-1])[-1] = (@@reservations[-1])[-1] * 0.8
+  end
+
   def check_for_dates_clash
-    if @@array_of_reservations != []
-      @@array_of_reservations.each do |array|
-        if array[0] == @room_number && array[1] != nil &&
-          Date.parse(@check_in_date) >= Date.parse(array[1]) &&
-          Date.parse(@check_out_date) <= Date.parse(array[2])
+    if @@reservations != []
+      @@reservations.each do |reservation|
+        if reservation[0] == @room_number && reservation[1] != nil &&
+          Date.parse(@check_in_date) >= Date.parse(reservation[1]) &&
+          Date.parse(@check_out_date) <= Date.parse(reservation[2])
             raise ArgumentError, "These dates are booked!!"
         end
       end
@@ -46,7 +52,7 @@ class Reservation
   end
 
   def self.reservations
-      return @@array_of_reservations
+      return @@reservations
   end
 
 end
