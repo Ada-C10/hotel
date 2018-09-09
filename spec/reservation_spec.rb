@@ -16,19 +16,18 @@ describe Reservation do
       expect(reservation).must_respond_to :check_in
       expect(reservation).must_respond_to :check_out
     end
-    it "converts check_in to Date object" do
+    it "converts check_in and check_ou to Date objects" do
       expect(reservation.check_in).must_be_kind_of Date
-      # expect(reservation.check_in).must_equal 2018-12-02
+      expect(reservation.check_out).must_be_kind_of Date
     end
     it "stores number of nights" do
       expect(reservation.number_of_nights).must_equal 2
     end
     it "raises StandardError if given invalid date range" do
-      expect(Reservation.new('181202', '181201')).must_raise StandardError, "Invalid date range."
+      expect(error_reservation).must_raise StandardError, "Invalid date range."
     end
     it "calculates and stores cost" do
       expect(reservation.cost).must_equal 400
-      expect(reservation).must_respond_to :cost
     end
   end
 
@@ -46,7 +45,9 @@ describe Reservation do
     it "contains all dates for reservation" do
       expect(reservation.get_all_dates.length).must_equal 2
       expect(reservation.get_all_dates[0]).must_be_kind_of Date
-      expect(reservation.get_all_dates[1]).must_be_kind_of Date
+      expect(reservation.get_all_dates[0]).must_equal reservation.check_in
+      expect(reservation.get_all_dates[-1]).must_be_kind_of Date
+      expect(reservation.get_all_dates[-1]).must_equal reservation.check_out - 1
     end
   end
 end
