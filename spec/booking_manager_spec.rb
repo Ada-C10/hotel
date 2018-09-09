@@ -175,7 +175,7 @@ describe "BookingManager class" do
       @hotel.add_reservation_to_calendar(booking5)
       @hotel.add_reservation_to_calendar(booking6)
 
-      expect(@hotel.find_vacancies_on_date("June 10, 2018", @hotel.room_calendar).length).must_equal 0
+      expect(@hotel.find_vacancies_on_date("June 10, 2018", @hotel.room_calendar)).must_be_kind_of String 
     end # no find_vacancies no vacancy it
   end # of find vacancies on date method
 

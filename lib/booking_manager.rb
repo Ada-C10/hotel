@@ -119,9 +119,13 @@ module Hotel
         end
       end
 
-      return found_vacancies
+      return found_vacancies.empty? ? no_vacancies_message: found_vacancies
     end # of find vacancy
 
-  end # of class BookingManager
 
+    def no_vacancies_message
+      return "There are no vacancies for the given date range."
+    end
+
+  end # of class BookingManager
 end # of module Hotel
