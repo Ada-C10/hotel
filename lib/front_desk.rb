@@ -80,6 +80,9 @@ class FrontDesk
     converted_rooms = block_room_list_to_room(block_rooms)
     new_block = Block.new(block_start, block_end, rate, converted_rooms)
     @blocks << new_block
+    converted_rooms.each do |room|
+      room.add_reservation_to_room(new_block)
+    end
     return new_block
 end
 
@@ -92,9 +95,24 @@ end
   end
 
 
+  def find_block_by_id(block_ID)
+    return @blocks.find {|block| block.block_ID == block_ID}
+  end
 
-  def find_block_by_id
-    return @block.find {|block| block.block_ID == block_ID}
+  def find_available_rooms_in_block(block_ID)
+    available_rooms = []
+    block = find_block_by_id(block_ID)
+    rooms = block.converted_rooms
+    @block_rooms.each do |room|
+      room_is_available = true
+      (block_start...block_end).each do |date|
+        if !room.is_available?(date)
+          room_is_available = false
+        end
+      end
+      available_rooms << room.room_number if room_is_available
+    end
+    return available_rooms
   end
 
 

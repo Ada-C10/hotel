@@ -94,10 +94,26 @@ describe "FrontDesk class" do
 
       it "raises an error if unavailable rooms are requested in block" do
         @my_front_desk = FrontDesk.new
-        @separate_res = Reservation.new(3, "2012-4-12", "2012-4-14",200)
+        @my_front_desk.create_reservation(3, "2012-4-16", "2012-4-20",200)
+        expect{@my_front_desk.create_block("2012-4-16", "2012-4-20", 150, [3,4,5])}.must_raise StandardError
+      end
+
+      it "makes a blocked room unavailable after block is created, but before actual block reservaion" do
+        @my_front_desk = FrontDesk.new
         @block = @my_front_desk.create_block("2012-4-16", "2012-4-20", 150, [3,4,5])
-        expect{@block}.must_raise StandardError
-      
+        expect{@front_desk.create_reservation(3, "2012-4-16", "2012-4-18",200)}.must_raise StandardError
       end
     end
+
+    describe "find block info by block ID" do
+
+      it "an instance of block can be found by block by ID method" do
+
+        @my_front_desk = FrontDesk.new
+        @block = @my_front_desk.create_block("2012-4-16", "2012-4-20", 150, [3,4,5])
+        id = @block.block_ID
+        expect(@my_front_desk.find_block_by_id(id)).must_be_instance_of Block
+      end
+    end
+
   end
