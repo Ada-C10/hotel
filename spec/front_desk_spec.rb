@@ -67,13 +67,29 @@ describe "Front Desk Class" do
     #   expect{room}.must_raise StandardError
     # end
 
-    it "holds number of block rooms" do
+
+
+
+######## addd describe block to this methods so it stops using the room to test from top #####
+    it "makes a block reservation for 1 to 5 rooms" do
       expect(@admin.block_hold(('2018-02-01'),('2018-02-03'),2).length).must_equal 2
     end
 
-    it "raises error" do
+    it "raises error if standard reservation conflicts with block reservation" do
     @admin.block_hold(('2018-02-01'),('2018-02-11'),2)
     expect {@admin.reserve_room(1,('2018-02-01'),('2018-02-10'))}.must_raise StandardError
+    end
+
+    it "raises error if block reservation exceeds maximum(5) block reservation" do
+    expect {@admin.block_hold(('2018-02-01'),('2018-02-11'),6)}.must_raise StandardError
+    end
+
+    it "raises error if block reservations conflict" do
+      @admin.block_hold(('2018-02-01'),('2018-02-11'),5)
+      @admin.block_hold(('2018-02-01'),('2018-02-11'),5)
+      @admin.block_hold(('2018-02-01'),('2018-02-11'),5)
+      @admin.block_hold(('2018-02-01'),('2018-02-11'),4)
+      expect {@admin.block_hold(('2018-02-01'),('2018-02-10'),2)}.must_raise StandardError
     end
 
   end

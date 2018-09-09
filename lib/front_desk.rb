@@ -28,7 +28,6 @@ class Front_Desk
   def reserve_room(room_number,start_date, end_date)
 
     available_rooms = available_rooms(start_date,end_date)
-
     if !available_rooms.find { |room| room.room_number == room_number }
       raise StandardError
     end
@@ -81,21 +80,27 @@ class Front_Desk
 
   def block_hold(start_date, end_date, number_of_rooms)
     available_rooms = available_rooms(start_date,end_date)
+    # if !available_rooms.find { |room| room.room_number == room_number }
+    #   raise StandardError
+    # end
+
+    if number_of_rooms > 5 && number_of_rooms != 0
+      raise StandardError
+    end
 
     number_of_rooms.times do |index|
-      if available_rooms[index]
 
-        input = {}
-        input[:room_number] = available_rooms[index].room_number
-        input[:start_date] = start_date
-        input[:end_date] = end_date
+      input = {}
+      input[:room_number] = available_rooms[index].room_number
+      input[:start_date] = start_date
+      input[:end_date] = end_date
 
-        block_hold = Reservation.new(input)
-        @block_hold << block_hold
-      end
+      block_hold = Reservation.new(input)
+      @block_hold << block_hold
     end
     return @block_hold
   end
+
 
 
 
