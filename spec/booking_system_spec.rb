@@ -28,21 +28,26 @@ describe "BookingSystem class" do
     expect(@reservation.calculate_booking_cost).must_equal 600
   end
 
-  it "list all bookings of that date" do
-    bad_reservation = @booking.make_reservation(check_in_date: 180909, check_out_date: 1809010)
+  it "list all bookings of that includes that date" do
+    bad_reservation = @booking.make_reservation(check_in_date: 180909, check_out_date: 180910)
+    new_reservation = @booking.make_reservation(check_in_date: 180904, check_out_date: 180906)
+    fourth_reservation = @booking.make_reservation(check_in_date: 180903, check_out_date: 180906)
 
+    expect(@booking.reservations.length).must_equal 4
     expect(@booking.list_reservations_by_date(180904)).must_include @reservation
     expect(@booking.list_reservations_by_date(180904)).wont_include bad_reservation
+    expect(@booking.list_reservations_by_date(180904).length).must_equal 3
   end
 
-  it "returns msg if more than one reservation created" do
-    bad_reservation = @booking.make_reservation(check_in_date: 180909, check_out_date: 1809010)
-    expect(@booking.reservations.length).must_equal 2
+  it "accepts reservations that aren't overlapping in dates with other bookings" do
+    new_reservation = @booking.make_reservation(check_in_date: 180909, check_out_date: 1809010)
+    another_booking = @booking.make_reservation(check_in_date: 180909, check_out_date: 180910)
+
+    expect(@booking.reservations.length).must_equal 3
   end
 
   # it "does not create reservation if dates are booked" do
-  #   bad_reservation = @booking.make_reservation(check_in_date: 180904, check_out_date: 180905)
   #
-  #   expect{(@booking)}.must_raise 0
+  #   expect{ @booking.make_reservation(check_in_date: 180904, check_out_date: 180906) }.must_raise ArgumentError
   # end
 end
