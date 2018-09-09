@@ -238,4 +238,11 @@ describe "Booking Manager class" do
 
   end
 
+  # describe 'check_block_status' do
+  #   before do
+  #   end
+  #
+  #   it 'takes a name of a block and returns an array whether of rooms in that block have that have a an :AVAILABLE status' do
+  # end
+
 end

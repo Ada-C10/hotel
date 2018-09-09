@@ -19,10 +19,5 @@ describe "Room class" do
       expect(@room.reservations).must_be_kind_of Array
     end
 
-    it "has a cost associated with it" do
-      expect(@room.room_cost).must_equal 200.0
-      expect(@room.room_cost).must_be_kind_of Float
-    end
-
   end
 end
