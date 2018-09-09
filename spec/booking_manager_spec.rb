@@ -51,13 +51,19 @@ describe BookingManager do
       # manager.add_block(block3)
       # manager.add_block(block4)
     end
-    it "returns 'Added!' message" do
-      expect(manager.add_reservation(reservation1)).must_equal "Added!"
-    end
     it "adds all reservation dates to first available room" do
       expect(calendar.room_assignments[1]).must_equal reservation1.get_all_dates + reservation2.get_all_dates + reservation4.get_all_dates
       expect(calendar.room_assignments[2]).must_equal reservation3.get_all_dates
       expect(calendar.room_assignments[3]).must_equal reservation5.get_all_dates
+    end
+    it "returns assigned room if room is assigned" do
+      expect(manager.add_reservation(reservation1)).must_equal 4
+    end
+    it "returns 'no rooms' message if no room is assigned" do
+      17.times do
+        manager.add_reservation(reservation1)
+      end
+      expect(manager.add_reservation(reservation1)).must_equal "No available rooms."
     end
   end
 
