@@ -38,7 +38,7 @@ class ReservationMaker
     booked_rooms = []
     unless @@reservations.nil?
       @@reservations.each do |reservation|
-        if @start_date < reservation.start_date && @end_date < reservation.end_date || @start_date > reservation.start_date && @end_date > reservation.end_date || @start_date >= reservation.end_date
+        if @start_date < reservation.start_date && @end_date <= reservation.start_date || @start_date >= reservation.end_date
           booked_rooms << reservation.room
           # binding.pry
         end
@@ -56,10 +56,11 @@ class ReservationMaker
     unless booked_room_list.nil?
       rooms.each do |room|
         if booked_room_list.include?(room)
-
+          #seems clunky here, but .exclude? didn't work
         else
           available_rooms << room
         end
+
       end
     end
     return available_rooms
