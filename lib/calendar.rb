@@ -15,7 +15,7 @@ class Calendar
 
   def available_room?(room, reservation)
     dates = reservation.get_all_dates
-    if dates.any? { |date| room_assignments[room].include? (date)}
+    if dates.any? { |date| room_assignments[room].flatten.include? (date)}
       return false
     end
 

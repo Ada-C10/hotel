@@ -23,6 +23,21 @@ describe Calendar do
   let(:reservation5) {
     Reservation.new('181130', '181206')
   }
+  let(:block2) {
+    Block.new('181202', '181204', 2)
+  }
+  let(:block3) {
+    Block.new('181204', '181206', 3)
+  }
+  let(:block4) {
+    Block.new('181129', '181201', 4)
+  }
+  let(:block5) {
+    Block.new('181203', '181204', 5)
+  }
+  let(:block6) {
+    Block.new('181201', '181205', 5)
+  }
 
   describe "#initalize" do
     it "can be instantiated" do
@@ -62,17 +77,42 @@ describe Calendar do
   describe "#available_room?" do
     before do
       manager.add_reservation(reservation1)
+      manager.add_block(block2)
+      # manager.add_block(block3)
+      # manager.add_block(block4)
+      # manager.add_block(block5)
+      # binding.pry
     end
     it "returns false if room is reserved for all given dates" do
       expect(calendar.available_room?(1, reservation1)).must_equal false
+    end
+    it "returns false if block is reserved for all given dates" do
+      expect(calendar.available_room?(2, block2)).must_equal false
     end
     it "returns true if room isn't reserved for any given dates" do
       expect(calendar.available_room?(1, reservation2)).must_equal true
       expect(calendar.available_room?(1, reservation4)).must_equal true
     end
+    it "returns true if block isn't reserved for any given dates" do
+      (1..3).each do |i|
+        expect(calendar.available_room?(i, block3)).must_equal true
+      end
+      (1..4).each do |i|
+        expect(calendar.available_room?(2, block4)).must_equal true
+      end
+    end
     it "returns false if room is reserved for any given dates" do
       expect(calendar.available_room?(1, reservation3)).must_equal false
       expect(calendar.available_room?(1, reservation5)).must_equal false
+    end
+    it "returns false if block is reserved for any given dates" do
+      (1..3).each do |i|
+        expect(calendar.available_room?(i, block5)).must_equal false
+      end
+      (1..3).each do |i|
+        expect(calendar.available_room?(i, block6)).must_equal false
+      end
+      # expect(calendar.available_room?(1, reservation5)).must_equal false
     end
   end
 
