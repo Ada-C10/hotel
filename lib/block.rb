@@ -2,7 +2,7 @@ require_relative 'reservation'
 
 class Block < Reservation
 
-  attr_reader :number_of_rooms, :discount
+  attr_reader :number_of_rooms, :discount, :rooms
 
   def initialize(check_in, check_out, number_of_rooms)
     super(check_in, check_out)
@@ -19,5 +19,6 @@ class Block < Reservation
     end
     @discount = discount
     @cost -= @discount
+    @rooms = {}
   end
 end

@@ -29,5 +29,9 @@ describe Block do
       expect(block4.cost).must_equal 770
       expect(block5.cost).must_equal 760
     end
+    it "stores hash of rooms" do
+      expect(block2.rooms).must_be_kind_of Hash
+      expect(block2.rooms).must_be_empty
+    end
   end
 end
