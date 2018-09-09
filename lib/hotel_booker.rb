@@ -43,6 +43,12 @@ module Hotel
       @booked_dates << date_range.dates_booked
     end
 
+    def unreserved_rooms(check_in, check_out)
+      check_in = Date.parse(check_in)
+      check_out = Date.parse(check_out)
+
+    end
+
     def find_reservations(date)
       matching_reservations = []
       date = Date.parse(date)
@@ -55,6 +61,8 @@ module Hotel
       end
       return matching_reservations
     end
+
+
 
     def all_booked_dates()
     end
