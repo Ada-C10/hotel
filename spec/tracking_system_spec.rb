@@ -240,11 +240,12 @@ describe 'TrackingSystem class' do
       expect{@tracker.rooms_available_in_block("Hi")}.must_raise ArgumentError
     end
 
-    it "returns list of rooms that are available in a block" do
-      # add_reservation_in_block(start_time: Date.now, end_time: Date.now + 1, number_of_rooms: 1, block: :NA)
+    it "returns correct number of rooms that are available in a block" do
+      @block = @tracker.add_block(start_time: Date.new(2018,10,5), end_time: Date.new(2018,10,10), number_of_rooms:5)
+      @starting_num_of_availablitilies = (@tracker.rooms_available_in_block(@blockid)).length
       @reservation1 = @tracker.add_reservation_in_block(start_time: Date.new(2018,10,5), end_time: Date.new(2018,10,10), number_of_rooms:1, block: @blockid)
-      date_range = @tracker.retrieve_block_dates(@blockid)
-      expect(@tracker.rooms_available_in_block(@blockid)).must_be_kind_of Array
+      @updated_num_of_availablitilies = (@tracker.rooms_available_in_block(@blockid)).length
+      expect(@starting_num_of_availablitilies - @updated_num_of_availablitilies).must_equal 1
     end
   end
 
@@ -255,13 +256,34 @@ describe 'TrackingSystem class' do
       @blockid = @tracker.blocks[0].block
     end
 
-    it "Adds a reservation to each room's list of reservations" do
-      # expect(@tracker.add_reservation_in_block)
+    # it "Adds a reservation to each room's list of reservations" do
+    #
+    # end
+
+    it "raises ArgumentError if the number of rooms requested is greater than the number of available rooms " do
+      expect{@tracker.add_reservation_in_block(start_time: Date.new(2018,10,5), end_time: Date.new(2018,10,10), number_of_rooms:555, block: @blockid)}.must_raise ArgumentError
+    end
+
+    it "returns an Array of reservations" do
+      # @block = @tracker.add_block(start_time: Date.new(2018,10,5), end_time: Date.new(2018,10,10), number_of_rooms:5)
+      @blockid = @tracker.blocks[0].block
+      expect(@tracker.add_reservation_in_block(start_time: Date.new(2018,10,5), end_time: Date.new(2018,10,10), number_of_rooms:2, block: @blockid)).must_be_kind_of Array
     end
   end
 
 
 
+  # def add_reservation_in_block(start_time: Date.today, end_time: Date.today + 1, number_of_rooms: 1, block: :NA) #block(id) defaults to :NA already but just clarifying here
+  #   available_rooms = rooms_available_in_block(block) #<--returns an array of available rooms in this sepcifci block
+  #   raise ArgumentError.new"Not enough rooms available on those dates" if available_rooms.length < number_of_rooms
+  #   #call method taht gets block discount here
+  #   discount = retrieve_block_discount(block)
+  #   number_of_rooms.times do |i|
+  #     @reservations << Reservation.new({room_num: available_rooms[i].room_num, start_time: start_time, end_time: end_time, price: 200.00 -(200.00 * discount)})
+  #     available_rooms[i].reserved_dates << {start_time: start_time, end_time: end_time}
+  #   end
+  #   @reservations
+  # end
 
 
   describe "#retrieve_block_discount" do

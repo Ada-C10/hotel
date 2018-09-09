@@ -166,18 +166,23 @@ def add_reservation_in_block(start_time: Date.now, end_time: Date.now + 1, numbe
   #call method taht gets block discount here
   discount = retrieve_block_discount(block)
   number_of_rooms.times do |i|
-    @reservations << Reservation.new({room_num: available_rooms[i].room_num, start_time: start_time, end_time: end_time, price: 200.00 -(200.00 * discount)})
+    # binding.pry
+    @reservations << Reservation.new({room_num: available_rooms[i].room_num, start_time: start_time, end_time: end_time, price: STANDARD_ROOM_PRICE - (STANDARD_ROOM_PRICE * discount)})
     available_rooms[i].reserved_dates << {start_time: start_time, end_time: end_time}
   end
   @reservations
 end
 
 def retrieve_block_discount(block_id)
-  @blocks.each do |individual_block|
-    if individual_block.block == block_id
-      return individual_block.discount / 100
+  discount = 0
+  @blocks.length.times do |i|
+    if @blocks[i].block == block_id
+      discount = (@blocks[i].discount / 100)
+    else
+      puts "hello "
     end
   end
+  return discount
 end
 #create helper method that finds the block discount rate by block id?
 
