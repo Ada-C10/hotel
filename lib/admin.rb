@@ -43,34 +43,31 @@ class Admin
       if (@room_unbooked_dates & dates_needed) == dates_needed
         dates_available_rooms << room
       end
-
     end
-
     return dates_available_rooms
   end
 
 
-  def make_reservation(reservation_id, customer_name, room_id, start_date, end_date)
-
-    # loop through the existing reservation array, by room, compare the booked dates array under each room with the dates_required
-
-    # if we found the dates_required do not have a date in common with the dates booked, return the that room, create a new reservation item, and add it to the reservation array .
-
-    # call the add_reserve_dates method under that room, and add it to room
+  def make_reservation(reservation_id, customer_name, start_date, end_date)
 
     if start_date.class != Date || end_date.class != Date
       raise ArgumentError, "start_date and end_Date should be Date objects"
     end
+
     if start_date >= end_date || start_date < Date.today || end_date > (Date.today + 365)
       raise ArgumentError, "invlid dates entered"
     end
 
-    room = find_room(room_id)
+    rooms_not_booked = find_room_available(start_date, end_date)
+
+    if rooms_not_booked == []
+      return "No room available at this time."
+    else
+      room = rooms_not_booked.first
+    end
 
     result = Reservation.new(reservation_id, customer_name, room, start_date, end_date)
-
     @reservations << result
-
     start_d = start_date
 
     while start_d < end_date
@@ -79,9 +76,7 @@ class Admin
     end
 
     return result
-
   end
-
 
   # input a string of date, to return the list of the reservations on that date
   def list_reservations(date_selected)

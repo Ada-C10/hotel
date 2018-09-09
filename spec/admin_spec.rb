@@ -26,13 +26,16 @@ describe "Admin class" do
     before do
       @start_date_1 = Date.new(2018,12,4)
       @end_date_1 = Date.new(2018,12,6)
-      @res_1 = @admin_1.make_reservation(2,"Mike Murry",1,@start_date_1, @end_date_1)
+      @res_1 = @admin_1.make_reservation(1,"Mike Murry",@start_date_1, @end_date_1)
       @count_1 = @admin_1.reservations.count
       @start_date_2 = Date.new(2018,12,5)
       @end_date_2 = Date.new(2018,12,7)
-      @res_2 = @admin_1.make_reservation(3,"Julie Smith",2,@start_date_2, @end_date_2)
+      @res_2 = @admin_1.make_reservation(2,"Julie Smith",@start_date_2, @end_date_2)
       @count_2 = @admin_1.reservations.count
 
+      20.times do |i|
+        @admin_1.make_reservation(@count_2 + i + 1, "Lily Xia", Date.new(2018,9,25), Date.new(2018,9,27))
+      end
     end
 
     it "will add a reservation object to reservation array" do
@@ -61,36 +64,34 @@ describe "Admin class" do
       end
       expect(result).must_equal true
       expect(result_2).must_equal false
-      expect(@admin_1.room_unbooked_dates.length).must_equal 7296
+      expect(@admin_1.room_unbooked_dates.length).must_equal 7256
 
     end
 
     it "raise ArgumentError if start_date is not ealier than end_date" do
       start_date_3 = Date.new(2018,12,5)
       end_date_3 = Date.new(2018,12,3)
-      expect{@admin_1.make_reservation(4,"Jessie lee",3,start_date_3,end_date_3)}.must_raise ArgumentError
+      expect{@admin_1.make_reservation(23,"Jessica lee", start_date_3,end_date_3)}.must_raise ArgumentError
 
     end
 
     it "raise ArgumentError if start_date is ealier than today" do
       start_date_3 = Date.new(2018,8,5)
       end_date_3 = Date.new(2018,12,3)
-      expect{@admin_1.make_reservation(4,"Jessie lee",3,start_date_3,end_date_3)}.must_raise ArgumentError
+      expect{@admin_1.make_reservation(23,"Jessca lee",start_date_3,end_date_3)}.must_raise ArgumentError
 
     end
 
-    # it "will return a message when no room is available for trip" do
-    #
-    #
-    #   expect(@dispatcher.request_trip(6)).must_equal "No driver available at this time."
-    # end
-    #
-    # it "will not create a reservation if no room is available" do
-    #
-    #
-    #   expect(@dispatcher.trips.length).must_equal trip_count
-    #
-    # end
+    it "will return a message when no room is available for trip" do
+
+      expect(@admin_1.make_reservation(23,"Jessica lee",Date.new(2018,9,25),Date.new(2018,9,26))).must_equal "No room available at this time."
+    end
+
+    it "will not create a reservation if no room is available" do
+
+      expect(@admin_1.reservations.length).must_equal 22
+
+    end
 
   end
 
@@ -98,11 +99,11 @@ describe "Admin class" do
     before do
       @start_date_1 = Date.new(2018,12,4)
       @end_date_1 = Date.new(2018,12,6)
-      @res_1 = @admin_1.make_reservation(2,"Mike Murry",1,@start_date_1, @end_date_1)
+      @res_1 = @admin_1.make_reservation(2,"Mike Murry",@start_date_1, @end_date_1)
       @count_1 = @admin_1.reservations.count
       @start_date_2 = Date.new(2018,12,5)
       @end_date_2 = Date.new(2018,12,7)
-      @res_2 = @admin_1.make_reservation(3,"Julie Smith",2,@start_date_2, @end_date_2)
+      @res_2 = @admin_1.make_reservation(3,"Julie Smith",@start_date_2, @end_date_2)
       @count_2 = @admin_1.reservations.count
 
     end
@@ -137,11 +138,11 @@ describe "Admin class" do
     before do
       @start_date_1 = Date.new(2018,12,4)
       @end_date_1 = Date.new(2018,12,6)
-      @res_1 = @admin_1.make_reservation(2,"Mike Murry",1,@start_date_1, @end_date_1)
+      @res_1 = @admin_1.make_reservation(2,"Mike Murry",@start_date_1, @end_date_1)
       @count_1 = @admin_1.reservations.count
       @start_date_2 = Date.new(2018,12,5)
       @end_date_2 = Date.new(2018,12,7)
-      @res_2 = @admin_1.make_reservation(3,"Julie Smith",2,@start_date_2, @end_date_2)
+      @res_2 = @admin_1.make_reservation(3,"Julie Smith",@start_date_2, @end_date_2)
       @count_2 = @admin_1.reservations.count
 
     end
@@ -163,11 +164,11 @@ describe "Admin class" do
     before do
       @start_date_1 = Date.new(2018,12,4)
       @end_date_1 = Date.new(2018,12,6)
-      @res_1 = @admin_1.make_reservation(2,"Mike Murry",1,@start_date_1, @end_date_1)
+      @res_1 = @admin_1.make_reservation(2,"Mike Murry",@start_date_1, @end_date_1)
       @count_1 = @admin_1.reservations.count
       @start_date_2 = Date.new(2018,12,5)
       @end_date_2 = Date.new(2018,12,7)
-      @res_2 = @admin_1.make_reservation(3,"Julie Smith",2,@start_date_2, @end_date_2)
+      @res_2 = @admin_1.make_reservation(3,"Julie Smith",@start_date_2, @end_date_2)
       @count_2 = @admin_1.reservations.count
 
     end
@@ -182,11 +183,11 @@ describe "Admin class" do
     before do
       @start_date_1 = Date.new(2018,12,4)
       @end_date_1 = Date.new(2018,12,6)
-      @res_1 = @admin_1.make_reservation(2,"Mike Murry",1,@start_date_1, @end_date_1)
+      @res_1 = @admin_1.make_reservation(2,"Mike Murry",@start_date_1, @end_date_1)
 
       @start_date_2 = Date.new(2018,12,5)
       @end_date_2 = Date.new(2018,12,7)
-      @res_2 = @admin_1.make_reservation(3,"Julie Smith",2,@start_date_2, @end_date_2)
+      @res_2 = @admin_1.make_reservation(3,"Julie Smith",@start_date_2, @end_date_2)
 
     end
 
@@ -198,9 +199,9 @@ describe "Admin class" do
     end
 
     it "returns the right number of rooms " do
-      room_three = @admin_1.find_room(3)
+      room_book = @admin_1.find_room(3)
       expect(@admin_1.find_room_available(Date.new(2018,12,4),Date.new(2018,12,5)).length).must_equal 18
-      expect(@admin_1.find_room_available(Date.new(2018,12,4),Date.new(2018,12,5))).must_include room_three
+      expect(@admin_1.find_room_available(Date.new(2018,12,4),Date.new(2018,12,5))).must_include room_book
 
     end
 
