@@ -97,13 +97,32 @@ describe "Booking Manager class" do
 
   describe 'total_cost_of_stay method' do
     before do
+      @date = Date.new(2018, 6, 6)
+      @date2 = Date.new(2018, 6, 9)
       @hotel = Hotel::Booking_Manager.new
-      @input = {name:"Dr. Frankenstein", room_number: 6,check_in_date: Date.new(2018, 6, 6), check_out_date: Date.new(2018, 6, 9)}
+      @input = { name:"Dr. Frankenstein",
+        room_number: 6,
+        check_in_date: @date,
+        check_out_date: @date2
+      }
       @reservation = Hotel::Reservation.new(@input)
+      @input2 = {
+        check_in_date: @date,
+        check_out_date: @date2,
+        block_name: "Munster - Addams Wedding",
+        block_discount: 0.05,
+        number_of_rooms_to_block: 3
+      }
+      @block_room = Hotel::Block_Room.new(@input2)
     end
 
-    it 'correctly sums the cost of a stay at the hotel' do
-      expect(@hotel.total_cost_of_stay(@reservation)).must_equal 600
+    it 'correctly sums the cost of a stay at the hotel and returns a float' do
+      expect(@hotel.total_cost_of_stay(@reservation)).must_equal 600.0
+      expect(@hotel.total_cost_of_stay(@reservation)).must_be_kind_of Float
+    end
+
+    it 'correctly sums the cost of a block room reservation' do
+      expect(@hotel.total_cost_of_stay(@block_room)).must_equal 570.0
     end
   end
 

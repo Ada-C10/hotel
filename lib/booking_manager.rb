@@ -10,7 +10,7 @@ module Hotel
     attr_reader :rooms, :hotel_reservations, :block_reservations
 
     ROOM_NUMBERS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
-    ROOM_COST = 200
+    ROOM_COST = 200.0
 
     def initialize
       @rooms = load_rooms
@@ -95,7 +95,12 @@ module Hotel
     end
 
     def total_cost_of_stay(reservation)
-      return (reservation.nights_of_stay.length * ROOM_COST)
+      cost = (reservation.nights_of_stay.length * ROOM_COST)
+      if reservation.class == Hotel::Block_Room
+        return (cost - (cost * reservation.block_discount))
+      else
+        return cost
+      end
     end
 
     def load_rooms
