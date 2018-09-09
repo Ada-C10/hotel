@@ -28,7 +28,7 @@ describe 'Reservation class' do
 
   describe "#total_cost" do
     before do
-      attributes = {room_num: 1 ,start_time: Date.new(2018,8,1),end_time: Date.new(2018,8,2),price: 200.23111111}
+      attributes = {room_num: 1 ,start_time: Date.new(2018,8,1),end_time: Date.new(2018,8,4),price: 200.23111111}
       @reservation = Reservation.new(attributes)
     end
 
@@ -37,21 +37,7 @@ describe 'Reservation class' do
     end
 
     it "rounds the return value to 2 decimals" do
-      expect(@reservation.total_cost).must_equal 200.23
+      expect(@reservation.total_cost).must_equal 600.69
     end
   end
-
-  # def total_cost
-  #   total_cost = 0
-  #   return total_cost = ((end_time - start_time) * price).round(2)
-  # end
-  #
-  #
-  # it "checkin_time must be before checkout_time" do
-  # end
-
-
-
-
-
 end

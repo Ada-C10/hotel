@@ -6,7 +6,6 @@ require_relative '../lib/block'
 require 'pry'
 
 describe 'TrackingSystem class' do
-  ###### WAVE 1 ##################################################################
   describe "#initialize" do
     before do
       @tracker = TrackingSystem.new
@@ -31,23 +30,113 @@ describe 'TrackingSystem class' do
 
   end
 
-  describe "access the list of all 20 rooms in the hotel" do
+
+  describe "#view_all_rooms" do
     before do
       @tracker = TrackingSystem.new
     end
 
-    it 'must return an Array' do
-      expect(@tracker.all_rooms).must_be_instance_of Array
+    it "returns a list" do
+      expect(@tracker.view_all_rooms).must_be_kind_of Array
     end
 
     it 'must contain 20 elements' do
-      expect(@tracker.all_rooms.length).must_equal 20
+      expect(@tracker.view_all_rooms.length).must_equal 20
     end
 
     it 'must contain only instances of Room' do
-      expect(@tracker.all_rooms.all? {|room| room.class == Room}).must_equal true
+      expect(@tracker.view_all_rooms.all? {|room| room.class == Room}).must_equal true
     end
   end
+
+
+  describe "#view_reservations_on(date)" do
+    before do
+      @tracker = TrackingSystem.new
+    end
+
+    it "returns an array" do
+      @reservation = @tracker.add_reservation(start_time: Date.new(2018,10,5), end_time: Date.new(2018,10,10), number_of_rooms:1)
+      @reservation1 = @tracker.add_reservation(start_time: Date.new(2018,10,5), end_time: Date.new(2018,10,10), number_of_rooms:1)
+      expect(@tracker.view_reservations_on(Date.new(2018,10,5))).must_be_kind_of Array
+    end
+    #this one is working 3333,10,5
+    it "raises an ArgumentError if no reservations are available on given date" do
+      expect{@tracker.view_reservations_on(Date.new(3333,10,5))}.must_raise ArgumentError
+    end
+    #this one is not working!!!!!!
+    it "raises an ArgumentError if given date is not an instance of Date class" do
+      expect{@tracker.view_reservations_on("some date")}.must_raise ArgumentError
+    end
+  end
+
+
+
+  describe "#total_cost_of_reservation" do
+    before do
+      @tracker = TrackingSystem.new
+      attributes = {room_num: 1 ,start_time: Date.new(2018,8,1),end_time: Date.new(2018,9,1),price: 200.00}
+      @reservation = Reservation.new(attributes)
+    end
+
+    it "raises ArgumentError unless argument is an instance of Reservation" do
+      expect{@tracker.total_cost_of_reservation("hello there!")}.must_raise ArgumentError
+    end
+
+    it "returns an instance of a Float" do
+      expect(@tracker.total_cost_of_reservation(@reservation)).must_be_kind_of Float
+    end
+
+    it "returns a postive number" do
+      expect(@tracker.total_cost_of_reservation(@reservation)).must_equal 6200.00
+    end
+  end
+
+
+  describe "#view_available_rooms_on" do
+    before do
+      @tracker = TrackingSystem.new
+    end
+
+    it "raises ArgumentError if start_time is > end_time" do
+      @tracker = TrackingSystem.new
+      expect{@tracker.view_available_rooms_on(start_time: Date.new(2018,10,5),end_time:Date.new(2018,9,5))}.must_raise ArgumentError
+    end
+
+
+    it "returns an array" do
+      @tracker = TrackingSystem.new
+      @available_rooms = @tracker.view_available_rooms_on(start_time: Date.new(2018,8,1),end_time:Date.new(2018,9,5))
+      expect(@available_rooms).must_be_kind_of Array
+    end
+
+    it "returns an array containing instances of Room" do
+      @tracker = TrackingSystem.new
+      @available_rooms = @tracker.view_available_rooms_on(start_time: Date.new(2018,8,1),end_time:Date.new(2018,9,5))
+      expect(@available_rooms[0]).must_be_kind_of Room
+    end
+
+    it "raises ArgumentError if no rooms are available on these dates(aka they're in a block or reserved)" do
+      @tracker = TrackingSystem.new
+      @tracker.all_rooms.each do |room|
+        room.reserved_dates << {start_time: Date.new(2018,1,1), end_time: Date.new(2018,1,2)}
+      end
+      expect{@tracker.view_available_rooms_on(start_time: Date.new(2018,1,1),end_time:Date.new(2018,1,2))}.must_raise ArgumentError
+    end
+
+    # it "ensures rooms returned aren't in a block" do
+    #   #make a new block for that date, reserve rooms that are in that block,
+    #   # then call view_availa rooms on that date
+    #   @tracker.add_block(start_time: Date.new(2018,1,1), end_time: Date.new(2018,1,29), number_of_rooms: 5, discount: 10)
+    #   block_id = @tracker.blocks[0].block
+    #   @tracker.add_reservation_in_block(start_time: Date.new(2018,1,1), end_time: Date.new(2018,1,29), number_of_rooms: 5, block: block_id)
+    #   available_rooms = @tracker.view_available_rooms_on(start_time: Date.new(2018,1,1), end_time: Date.new(2018,1,29))
+    #   binding.pry
+    # end
+
+  end
+
+
 
   describe "#add_reservation" do
     before do
@@ -79,98 +168,12 @@ describe 'TrackingSystem class' do
 
 
 
-  describe "#view_available_rooms_on" do
-    before do
-      @tracker = TrackingSystem.new
-    end
-
-    it "makes sure date ranges dont overlap " do 
-    end
-
-    it "returns an array" do
-      @tracker = TrackingSystem.new
-      @available_rooms = @tracker.view_available_rooms_on(start_time: Date.new(2018,8,1),end_time:Date.new(2018,9,5))
-      expect(@available_rooms).must_be_kind_of Array
-    end
-
-    it "returns an array containing instances of Room" do
-      @tracker = TrackingSystem.new
-      @available_rooms = @tracker.view_available_rooms_on(start_time: Date.new(2018,8,1),end_time:Date.new(2018,9,5))
-      expect(@available_rooms[0]).must_be_kind_of Room
-    end
-
-    it "raises ArgumentError if no rooms are available on these dates" do
-      @tracker = TrackingSystem.new
-      @tracker.all_rooms.each do |room|
-        room.reserved_dates << {start_time: Date.new(2018,1,1), end_time: Date.new(2018,1,2)}
-      end
-      #need to create add_reservation and then call it 20 times on the same date then the 21st time it'll raise an error
-      expect{@tracker.view_available_rooms_on(start_time: Date.new(2018,1,1),end_time:Date.new(2018,1,2))}.must_raise ArgumentError
-    end
-
-    it "raises ArgumentError if start_time is > end_time" do
-      @tracker = TrackingSystem.new
-      expect{@tracker.view_available_rooms_on(start_time: Date.new(2018,10,5),end_time:Date.new(2018,9,5))}.must_raise ArgumentError
-    end
-
-    # it "ensures that room is not in a block" do
-    # end
-  end
 
 
 
-  describe "#view_reservations_on" do
-    before do
-      @tracker = TrackingSystem.new
-    end
-
-    it "returns an array" do
-      @reservation = @tracker.add_reservation(start_time: Date.new(2018,10,5), end_time: Date.new(2018,10,10), number_of_rooms:1)
-      @reservation1 = @tracker.add_reservation(start_time: Date.new(2018,10,5), end_time: Date.new(2018,10,10), number_of_rooms:1)
-      expect(@tracker.view_reservations_on(Date.new(2018,10,5))).must_be_kind_of Array
-    end
-
-    it "raises an ArgumentError if no reservations are available on given date" do
-      expect{@tracker.view_reservations_on(Date.new(3333,10,5))}.must_raise ArgumentError
-    end
-
-    it "raises an ArgumentError if given date is not an instance of Date class" do
-      expect{@tracker.view_reservations_on(2018,2,1)}.must_raise ArgumentError
-    end
-  end
 
 
-  describe "#total_cost_of_reservation" do
-    before do
-      @tracker = TrackingSystem.new
-      attributes = {room_num: 1 ,start_time: Date.new(2018,8,1),end_time: Date.new(2018,9,1),price: 200.00}
-      @reservation = Reservation.new(attributes)
-    end
 
-    it "raises ArgumentError unless argument is an instance of Reservation" do
-      expect{@tracker.total_cost_of_reservation("hello there!")}.must_raise ArgumentError
-    end
-
-    it "returns an instance of a Float" do
-      expect(@tracker.total_cost_of_reservation(@reservation)).must_be_kind_of Float
-    end
-
-    it "returns a postive number" do
-      expect(@tracker.total_cost_of_reservation(@reservation)).must_equal 6200.00
-    end
-
-  end
-
-
-  describe "#view_all_rooms" do
-    before do
-      @tracker = TrackingSystem.new
-    end
-
-    it "returns a list" do
-      expect(@tracker.view_all_rooms).must_be_kind_of Array
-    end
-  end
 
 
 
@@ -200,10 +203,6 @@ describe 'TrackingSystem class' do
       expect{@tracker.add_block(start_time: Date.new(2018,10,5),end_time:Date.new(2018,9,5))}.must_raise ArgumentError
     end
   end
-
-
-
-
 
 
   describe "#rooms_available_in_block" do

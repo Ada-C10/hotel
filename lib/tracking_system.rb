@@ -35,10 +35,10 @@ class TrackingSystem
   # 2. (wave 1 num 2 is the same as wave 2 num 2)
   # 3. As an administrator, I can access the list of reservations for a specific date
   def view_reservations_on(date)
-    raise ArgumentError.new"#{date} must be instance of Date" unless date.instance_of?(Date)
+    raise ArgumentError.new"#{date} must be instance of Date" unless date.instance_of? Date
     all_reservations = []
     @reservations.each do |reservation|
-      if (reservation.start_time...reservation.end_time).include?(date) #maybe this boolean can be deleted
+      if (reservation.start_time...reservation.end_time).include?(date)
         all_reservations << reservation
       end
     end
@@ -48,9 +48,10 @@ class TrackingSystem
       return all_reservations
     end
   end
+
   # 4. As an administrator, I can get the total cost for a given reservation
   def total_cost_of_reservation(reservation)
-    raise ArgumentError.new"#{reservation} is an invalid argument type" unless reservation.instance_of? Reservation
+    raise ArgumentError.new"#{reservation} must be instance of Reservation" unless reservation.instance_of? Reservation
     return reservation.total_cost
   end
 
@@ -70,7 +71,7 @@ class TrackingSystem
       else
         room.reserved_dates.each do |dates_hash| #<---date_range could be a hash like {checkin_time: checkin, checkout_time: checkout}
           if ranges_overlap?((dates_hash[:start_time]...dates_hash[:end_time]).to_a, (start_time..end_time).to_a) == false && room.block == :NA
-            available_rooms << room
+            available_rooms << room #not quite sure how to write a test for this conditional, "ensures rooms not in a block", "ensures rooms dates dont overlap"
           else
             unavailable_count += 1
           end
