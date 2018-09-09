@@ -11,7 +11,7 @@ module Hotel
     attr_reader :room_num
     attr_accessor :start_date, :end_date
 
-    def initialize (start_date, end_date, room_num)
+    def initialize(start_date, end_date, room_num)
       @start_date = start_date
       @end_date = end_date
       @room_num = room_num
@@ -21,12 +21,12 @@ module Hotel
     end
 
 
-    def valid_dates? (start_date, end_date)
+    def valid_dates?(start_date, end_date)
       return start_date < end_date
     end
 
     #Date.parse format: Date.parse("10/5/2018"), 10 is day, 5 is month
-    def argument_error_dates (start_date, end_date)
+    def argument_error_dates(start_date, end_date)
       if !valid_dates?(@start_date, @end_date)
         raise ArgumentError, "start date has to before end date start date: #{@start_date}"
       end

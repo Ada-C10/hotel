@@ -47,11 +47,14 @@ describe 'Module Hotel' do
     @start_date1 = Date.parse("4/9/2018")
     @end_date1 = Date.parse("6/9/2018")
 
+    reservation1 = @hotel.assigns_a_reservation(@start_date, @end_date)
 
-    reservation = @hotel.assigns_a_reservation(@start_date, @end_date)
+    reservation2 = @hotel.assigns_a_reservation(@start_date1, @end_date1)
 
-    reservation1 = @hotel.assigns_a_reservation(@start_date1, @end_date1)
     expect(@hotel.reservations).must_be_kind_of Array
+    expect(reservation1).must_be_kind_of Hotel::Reservation
+    expect(reservation2).must_be_kind_of Hotel::Reservation
+
 
   end
 
@@ -62,7 +65,8 @@ describe 'Module Hotel' do
     @start_date1 = Date.parse("4/9/2018")
     @end_date1 = Date.parse("6/9/2018")
 
-    nomatch_res = @hotel.assigns_a_reservation(@start_date1, @end_date1)
+    # nomatch_res = (warning: assigned but unused variable - nomatch_res so commented it out)
+    @hotel.assigns_a_reservation(@start_date1, @end_date1)
 
     reservations_fordate = @hotel.reservations_for_date(@start_date)
 
@@ -82,6 +86,7 @@ describe 'Module Hotel' do
   reservations_fordates = @hotel.reserved_rooms_for_dates(@start_date, @end_date)
 
   expect(reservations_fordates).must_be_kind_of Array
+  expect(reservation1).must_be_kind_of Hotel::Reservation
   expect(reservations_fordates[0]).must_equal 1
 end
 
@@ -94,10 +99,23 @@ it "gives list of rooms that are available after some of them have been reserved
   avail_rooms = @hotel.nonreserved_rooms_fordates(@start_date, @end_date)
 
   expect(avail_rooms).must_be_kind_of Array
+  expect(reservation1).must_be_kind_of Hotel::Reservation
   expect(avail_rooms).must_equal [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
 
 end
 
+it "reserves an available room for a given date range" do
+
+  22.times do |i|
+    @hotel.assigns_a_reservation((@start_date - i), (@end_date - i))
+  end
+
+  expect(@hotel).must_be_kind_of Hotel::Hotel
+  expect(@hotel.reservations.length).must_equal 22
+  expect(@hotel.reservations.class).must_equal Array
+
+
+end
 
 
 

@@ -33,9 +33,12 @@ module Hotel
       # @reservations.each do |reservation|
       #   if reservation.start_date == start_date
       # end
+      avail_rooms = nonreserved_rooms_fordates(start_date, end_date)
 
-      room_numbers = get_all_numbers
-      return room_numbers.first
+
+      # room_numbers = get_all_numbers
+      # rooms = avail_rooms - room_numbers
+      return avail_rooms.first
     end
 
     #assigns a reservation given a vaild date, and also calls the get_available_room method which will then return a room number. @reservation is storing all the reservations
@@ -45,6 +48,7 @@ module Hotel
       @reservations << reservation
       return reservation
     end
+
 
     #returns matched reservations for a specific date
     def reservations_for_date(date)
@@ -57,7 +61,8 @@ module Hotel
       end
     end
 
-    def reserved_rooms_for_dates (start_date, end_date)
+
+    def reserved_rooms_for_dates(start_date, end_date)
       matched_date_range = []
       @reservations.each do |reservation|
         if reservation.start_date.between?(start_date, end_date)
@@ -72,15 +77,15 @@ module Hotel
     end
 
 
-    def nonreserved_rooms_fordates (start_date, end_date)
+    def nonreserved_rooms_fordates(start_date, end_date)
       matched_rooms_range = reserved_rooms_for_dates(start_date, end_date)
-
       all_room_numbers = get_all_numbers
-
       avail_rooms = all_room_numbers - matched_rooms_range
-
       return avail_rooms
     end
+
+
+
 
 
   end
