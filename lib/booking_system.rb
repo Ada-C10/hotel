@@ -1,7 +1,7 @@
 require_relative 'reservation.rb'
 module Hotel
   class BookingSystem
-    attr_accessor :rooms, :reservations
+    attr_reader :rooms, :reservations
     def initialize(room_file = 'data/rooms.csv',
                    reservation_file = 'data/reservations.csv')
       @rooms = load_rooms(room_file)
@@ -79,7 +79,6 @@ module Hotel
       check_out = Date.parse(check_out)
       all_rooms_arr = (Room.all).map { |room| room.id}
       unavailable_rooms = []
-      # binding.pry
       @reservations.each do |rsv|
         if (rsv.rsv_start > check_in && rsv.rsv_end < check_out) || \
            (rsv.rsv_start <= check_out && rsv.rsv_end > check_in)
@@ -91,14 +90,15 @@ module Hotel
       return available_rooms
     end
 
-    def make_a_reservation(guest, check_in, check_out, number_of_rooms = 1)
+    def make_a_reservation(guest, check_in, check_out, number_of_rooms = 1, status = :BASERATE)
+
+      raise ArgumentError, 'Too many rooms' if number_of_rooms > 20 || !(number_of_rooms.is_a? Integer)
       open_rooms = find_available_rooms(check_in, check_out).first(number_of_rooms)
       res_id = @reservations.length
       new_res = Hotel::Reservation.new(id: res_id, guest_name: guest,
                                        included_rooms: open_rooms,
                                        rsv_start: check_in,
                                        rsv_end: check_out)
-      # binding.pry
 
       @reservations << new_res
 

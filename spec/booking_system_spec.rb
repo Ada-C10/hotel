@@ -83,7 +83,33 @@ describe 'BookingSystem' do
       check_out = "March 20 2022"
       expect((admin.find_available_rooms(check_in, check_out)).length).must_equal 20
     end
+    it 'returns room as available when booked rsv_end date overlaps a start date for new reservation' do
+      # id: 7,guest_name: Carolina Rivers,included_rooms: [5],rsv_start: March 13 2019, rsv_end: March 18 2019
+      # id: 8,guest_name: Carp L Tunnel,included_rooms: [13],rsv_start: March 13 2019, rsv_end: March 21 2019
+      check_in = "March 18 2019"
+      check_out = "March 20 2019"
+      expect(admin.find_available_rooms(check_in, check_out)).must_include 5
+      expect(admin.find_available_rooms(check_in, check_out)).wont_include 13
     end
+
+    it 'will not return a room where the rsv_start and rsv_end does not overlap with new reservation but other days in range overlap' do
+      # id: 7,guest_name: Carolina Rivers,included_rooms: [5],rsv_start: March 13 2019, rsv_end: March 18 2019
+      check_in = "March 12 2019"
+      check_out = "March 19 2019"
+      expect(admin.find_available_rooms(check_in, check_out)).wont_include 5
+    end
+
+    it 'will not return a room where any dates overlap' do
+      # id: 7,guest_name: Carolina Rivers,included_rooms: [5],rsv_start: March 13 2019, rsv_end: March 18 2019
+      check_in = "March 12 2019"
+      check_out = "March 14 2019"
+      expect(admin.find_available_rooms(check_in, check_out)).wont_include 5
+      # id: 8,guest_name: Carp L Tunnel,included_rooms: [13],rsv_start: March 13 2019, rsv_end: March 21 2019
+      check_in = "March 20 2019"
+      check_out = "March 21 2019"
+      expect(admin.find_available_rooms(check_in, check_out)).wont_include 13
+    end
+end
 
   describe 'it can create a reservation' do
     let(:admin) do
@@ -95,18 +121,69 @@ describe 'BookingSystem' do
       check_in = "March 18 2019"
       check_out = "March 20 2019"
       expect(admin.make_a_reservation(guest, check_in, check_out)).must_be_kind_of Hotel::Reservation
-
+    end
+    it 'defaults to a single room reservation' do
+      guest = "test test"
+      check_in = "September 3 2020"
+      check_out = "September 4 2020"
+      test = admin.make_a_reservation(guest, check_in, check_out)
+      expect(test.included_rooms.length).must_equal 1
     end
 
-  #   it 'can handle when a reservation end date overlaps a start date for new reservation' do
-  #
+    it 'can book more than one room in a single reservation' do
+      guest = "test test"
+      check_in = "September 3 2020"
+      check_out = "September 4 2020"
+      test = admin.make_a_reservation(guest, check_in, check_out, 5)
+      expect(test.included_rooms.length).must_equal 5
+    end
+
+    it 'raises an error when the requested number of rooms is invalid' do
+      guest = "test test"
+      check_in = "September 3 2020"
+      check_out = "September 4 2020"
+      expect{admin.make_a_reservation(guest, check_in, check_out, 21)}.must_raise ArgumentError
+      expect{admin.make_a_reservation(guest, check_in, check_out, 'test')}.must_raise ArgumentError
+    end
+
+    it 'increases the reservation id by 1 when a new reservation is added' do
+      initial = admin.reservations.length
+      guest = "Richardina Pardina"
+      check_in = "March 18 2019"
+      check_out = "March 20 2019"
+      admin.make_a_reservation(guest, check_in, check_out)
+      expect(admin.reservations.length).must_equal (initial + 1)
+    end
+
+    it 'raises an argument error when no rooms are available' do
+      guest = "testing"
+      check_in = "September 3 2019"
+      check_out = "September 4 2019"
+      # fill up the 20 room hotel with sept 3-4 bookings
+      admin.make_a_reservation(guest, check_in, check_out, 20)
+
+      expect{
+        guest = "testing"
+        check_in = "September 3 2019"
+        check_out = "September 4 2019"
+        admin.make_a_reservation(guest, check_in, check_out)}.must_raise StandardError
+    end
+  end
+
+  # describe 'block bookings' do
+  #   let(:admin) do
+  #     Hotel::BookingSystem.new
   #   end
   #
-  #
-  #
+  #   it 'can create block bookings' do
+  #     group_name = "Block Testing"
+  #     check_in = "September 3 2019"
+  #     check_out = "September 4 2019"
+  #     admin.make_a_block(group_name, check_in, check_out, 4, :BLOCK)
+  #   end
   # end
   # # it 'can make a reservation' do
   #   # expect(Hotel::BookingSystem.new_reservation).must_be_kind_of Hotel::BookingSystem
   # end
   end
-end
+
