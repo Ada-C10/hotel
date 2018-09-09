@@ -97,6 +97,30 @@ describe BookingManager do
       expect(calendar.room_assignments[4].include? block4.get_all_dates).must_equal false
     end
   end
+  describe "#reserve_block_room" do
+    before do
+      manager.add_reservation(reservation1)
+    end
+    it "reserves first available room in a block" do
+      manager.add_block(block2)
+      expect(manager.reserve_block_room(block2)).must_equal 2
+      expect(block2.rooms[2]).must_equal :unavailable
+    end
+    it "reserves last available room in a block" do
+      manager.add_block(block2)
+      manager.reserve_block_room(block2)
+      # binding.pry
+      expect(manager.reserve_block_room(block2)).must_equal 3
+      expect(block2.rooms[3]).must_equal :unavailable
+    end
+    it "returns 'no rooms' message if block is full" do
+      manager.add_block(block2)
+      2.times do
+        manager.reserve_block_room(block2)
+      end
+      expect(manager.reserve_block_room(block2)).must_equal "No available rooms in block."
+    end
+  end
 end
   # end
   # end

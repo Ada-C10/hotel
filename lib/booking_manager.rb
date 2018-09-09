@@ -1,5 +1,3 @@
-require_relative 'block'
-require_relative 'calendar'
 class BookingManager
 
   attr_reader :calendar
@@ -10,7 +8,7 @@ class BookingManager
 
   def add_reservation(reservation)
     dates = reservation.get_all_dates
-    room = calendar.list_available_rooms(reservation).first
+    room = calendar.available_rooms(reservation).first
     dates.each do |date|
       calendar.room_assignments[room] << date
     end
@@ -20,7 +18,7 @@ class BookingManager
 
   def add_block(block)
     dates = block.get_all_dates
-    rooms = calendar.list_available_rooms(block)
+    rooms = calendar.available_rooms(block)
     if rooms.length < block.number_of_rooms
       return "Not enough available rooms."
     end
@@ -34,6 +32,20 @@ class BookingManager
       block.rooms[room] = :available
     end
     return block_rooms
+  end
+
+  def reserve_block_room(block)
+    available = block.rooms.select do |k, v|
+      v == :available
+    end
+
+    if available.empty?
+      return "No available rooms in block."
+    end
+
+    room = available.first[0]
+    block.rooms[room] = :unavailable
+    return room
   end
 
 end

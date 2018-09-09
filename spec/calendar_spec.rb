@@ -67,7 +67,7 @@ describe Calendar do
       manager.add_reservation(reservation4)
     end
     it "returns list of reserved rooms for provided date" do
-      reservations = calendar.reservation_list('181203')
+      reservations = calendar.reservations('181203')
       expect(reservations.length).must_equal 3
       expect(reservations[0]).must_equal 1
       expect(reservations[2]).must_equal 3
@@ -112,44 +112,21 @@ describe Calendar do
       (1..3).each do |i|
         expect(calendar.available_room?(i, block6)).must_equal false
       end
-      # expect(calendar.available_room?(1, reservation5)).must_equal false
     end
   end
 
-  describe "#list_available_rooms" do
+  describe "#available_rooms" do
     before do
       manager.add_reservation(reservation1)
     end
     it "returns array of available rooms" do
-      available_rooms = calendar.list_available_rooms(reservation1)
+      available_rooms = calendar.available_rooms(reservation1)
       expect(available_rooms).must_be_kind_of Array
       expect(available_rooms.length).must_equal 19
       expect(available_rooms.first).must_equal 2
     end
   end
 
-  # describe "#available_block_rooms" do
-  #   before do
-  #     manager.add_reservation(reservation1)
-  #     # binding.pry
-  #   end
-  #   it "returns array of available rooms in block" do
-  #     manager.add_block(block2)
-  #     expect(block2.rooms.keys).must_equal [2, 3]
-  #     expect(calendar.available_block_rooms(block2)).must_be_kind_of Array
-  # rooms = calendar.available_block_rooms(block2)
-  # expect(rooms.length).must_equal block2.number_of_rooms
-  # available_block_rooms = calendar.available_block_rooms(block2)
-  # expect(available_block_rooms).must_be_kind_of Array
-  # expect(available_block_rooms.length).must_equal block2.number_of_rooms
-  # end
-  describe "#reserve_block_room" do
-    it "reserves a room within a block" do
-      manager.add_reservation(reservation1)
-      manager.add_block(block2)
-      expect(calendar.reserve_block_room(block2)).must_equal 2
-      expect(block2.rooms[2]).must_equal :unavailable
-    end
-  end
+  
 end
 # end
