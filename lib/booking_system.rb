@@ -1,11 +1,46 @@
 require_relative 'reservation.rb'
 module Hotel
   class BookingSystem
-    def initialize
-      @reservations = Hotel::Reservation.load_reservations
+    attr_accessor :rooms, :reservations
+    def initialize(room_file = 'data/rooms.csv',
+                   reservation_file = 'data/reservations.csv')
+      @rooms = load_rooms(room_file)
+      @reservations = load_reservations(reservation_file)
     end
+
+    def load_rooms(filename)
+      all_rooms = []
+      CSV.read(filename, headers: true).each do |line|
+        input = {}
+        input[:id] = line[0]
+        input[:cost] = line[1]
+
+        all_rooms << Room.new(input)
+      end
+
+      return all_rooms
+    end
+
+    def load_reservations(filename)
+      all_reservations = []
+      CSV.read(filename, headers: true)
+                         .each do |line|
+        input = {}
+        input[:id] = line[0]
+        input[:guest_name] = line[1]
+        input[:included_rooms] = line[2].split(';').map { |num| num.to_i }
+        input[:rsv_start] = line[3]
+        input[:rsv_end] = line[4]
+
+        all_reservations << Reservation.new(input)
+      end
+
+      return all_reservations
+    end
+
     # method to find a reservation based on an inspect date 'insp_date'
-    def self.find_reservations_by_date(inspect_date)
+    def find_reservations_by_date(inspect_date)
+      # binding.pry
       # standardize input date
       search_date = Date.parse(inspect_date)
       # select all reservation instances that have booked dates that match
@@ -18,33 +53,34 @@ module Hotel
       end
 
       found_reservations = 0 if found_reservations.empty?
+
       return found_reservations
     end
 
     # method to find reservation based on id
-    def self.find_a_reservation(id)
-      reservation = Hotel::Reservation.load_reservations.find { |rsv| rsv.id == id }
+    def find_a_reservation(id)
+      reservation = @reservations.find { |rsv| rsv.id == id }
       raise ArgumentError, 'ID does not exist' if reservation.nil?
+      # implicitly returns 0 if reservation.empty?
       return reservation
     end
 
     # method to return total cost based on reservation id
-    def self.get_reservation_total(id)
+    def get_reservation_total(id)
       rsv = find_a_reservation(id)
       total = rsv.total_cost
+
       return total
     end
 
 
-    def self.find_available_rooms(check_in, check_out)
+    def find_available_rooms(check_in, check_out)
       check_in = Date.parse(check_in)
       check_out = Date.parse(check_out)
       all_rooms_arr = (Room.all).map { |room| room.id}
       unavailable_rooms = []
-      # load reservations
-      current_reservations = Hotel::Reservation.load_reservations
       # binding.pry
-      current_reservations.each do |rsv|
+      @reservations.each do |rsv|
         if (rsv.rsv_start > check_in && rsv.rsv_end < check_out) || \
            (rsv.rsv_start <= check_out && rsv.rsv_end > check_in)
           unavailable_rooms << rsv.included_rooms
@@ -55,11 +91,17 @@ module Hotel
       return available_rooms
     end
 
-    def self.make_a_reservation(guest, check_in, check_out, number_of_rooms = 1)
+    def make_a_reservation(guest, check_in, check_out, number_of_rooms = 1)
       open_rooms = find_available_rooms(check_in, check_out).first(number_of_rooms)
       res_id = @reservations.length
-      new_res = Hotel::Reservation.new(res_id, guest, open_rooms, check_in, check_out)
+      new_res = Hotel::Reservation.new(id: res_id, guest_name: guest,
+                                       included_rooms: open_rooms,
+                                       rsv_start: check_in,
+                                       rsv_end: check_out)
+      # binding.pry
+
       @reservations << new_res
+
       return new_res
     end
 
