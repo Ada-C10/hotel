@@ -70,7 +70,7 @@ class TrackingSystem
         available_rooms << room
       else
         room.reserved_dates.each do |dates_hash| #<---date_range could be a hash like {checkin_time: checkin, checkout_time: checkout}
-          if ranges_overlap?((dates_hash[:start_time]...dates_hash[:end_time]).to_a, (start_time..end_time).to_a) == false
+          if ranges_overlap?((dates_hash[:start_time]...dates_hash[:end_time]).to_a, (start_time..end_time).to_a) == false && room.block == :NA
             available_rooms << room #not quite sure how to write a test for this conditional, "ensures rooms not in a block", "ensures rooms dates dont overlap"
           else
             unavailable_count += 1
@@ -123,6 +123,7 @@ class TrackingSystem
   end
 
   def retrieve_block_dates(block_id)
+    raise ArgumentError.new"#{block_id} must be a Symbol" unless block_id.instance_of? Symbol
     dates_hash = {}
     range_array = []
     @blocks.each do |block|
@@ -132,6 +133,7 @@ class TrackingSystem
         range_array = (dates_hash[:start_time]...dates_hash[:end_time]).to_a
       end
     end
+    # binding.pry
     raise ArgumentError if dates_hash.empty?
     return range_array #returns array of teh date range
   end

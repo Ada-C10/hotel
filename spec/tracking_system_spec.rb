@@ -195,6 +195,13 @@ describe 'TrackingSystem class' do
       @tracker = TrackingSystem.new
       expect{@tracker.add_block(start_time: Date.new(2018,10,5),end_time:Date.new(2018,9,5))}.must_raise ArgumentError
     end
+
+    it "modifys each room's block id to the same block id as its Block" do
+      @block = @tracker.add_block(start_time: Date.new(2018,8,1), end_time: Date.new(2018,8,25), number_of_rooms:5)
+      @blockid = @tracker.blocks[0].block
+      @room_block = @tracker.blocks[0].rooms[0].block
+      expect(@blockid == @room_block).must_equal true
+    end
   end
 
 
@@ -229,6 +236,44 @@ describe 'TrackingSystem class' do
     end
   end
 
+  describe "#retrieve_block_dates" do
+    before do
+      @tracker = TrackingSystem.new
+      @block = @tracker.add_block(start_time: Date.new(2018,7,5), end_time: Date.new(2018,7,10), number_of_rooms:5)
+
+    end
+
+    it "returns the date range as an Array " do
+      @blockid = @tracker.blocks[0].block
+      @date_range = @tracker.retrieve_block_dates(@blockid)
+      expect(@date_range).must_be_kind_of Array
+    end
+
+    it "returns date range that excludes the end date " do
+      @blockid = @tracker.blocks[0].block
+      @date_range = @tracker.retrieve_block_dates(@blockid)
+      expect(@date_range.last).must_equal Date.new(2018,7,9)
+    end
+
+#this isn't working either, can't figure out how to make it fail when it should
+    it "raises ArgumentError unless argument is a Symbol" do
+      expect{@tracker.retrieve_block_dates("hello")}.must_raise ArgumentError
+    end
+    # def retrieve_block_dates(block_id)
+    #   dates_hash = {}
+    #   range_array = []
+    #   @blocks.each do |block|
+    #     if block.block == block_id
+    #       dates_hash[:start_time] = block.start_time
+    #       dates_hash[:end_time] = block.end_time
+    #       range_array = (dates_hash[:start_time]...dates_hash[:end_time]).to_a
+    #     end
+    #   end
+    #   raise ArgumentError if dates_hash.empty?
+    #   return range_array #returns array of teh date range
+    # end
+  end
+
 
 
   describe "#retrieve_block_discount" do
@@ -239,13 +284,6 @@ describe 'TrackingSystem class' do
     it "raises ArgumentError unless argument is a Symbol" do
     end
   end
-  # def retrieve_block_discount(block_id)
-  #   @blocks.each do |individual_block|
-  #     if individual_block.block == block_id
-  #       return individual_block.discount / 100
-  #     end
-  #   end
-  # end
 
 
 
