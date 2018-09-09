@@ -1,6 +1,6 @@
 require_relative 'room'
 require_relative 'reservation'
-# require 'pry'
+require 'pry'
 
 module Hotel
   class BookingManager
@@ -70,6 +70,12 @@ module Hotel
       return @room_calendar
     end
 
+    def check_dates(start_date, end_date)
+      if start_date > end_date
+        raise ArgumentError.new "Invalid date range. Start date must be before end date, both in format of 'Month dd, yyyy'. "
+      end
+    end
+
     # Method to list all reservation instances
     def list_reservations
       return @reservations
@@ -122,10 +128,49 @@ module Hotel
       return found_vacancies.empty? ? no_vacancies_message: found_vacancies
     end # of find vacancy
 
-
     def no_vacancies_message
       return "There are no vacancies for the given date range."
     end
+
+
+    def reserve_available_room(guest_name, start_date, end_date)
+      check_dates(start_date, end_date)
+      room_available = "undefined"
+
+      start_date = Date.parse(start_date)
+      end_date = Date.parse(end_date)
+      # should instead use find_vacancies_on_date method?
+      @room_calendar.each do |room, reserved_dates|
+        if reserved_dates.empty?
+          room_available = room
+        else
+          search_date = start_date
+          while search_date < end_date
+            # search_date.each do |search_date|
+              if reserved_dates.include? search_date
+                next
+              else
+                room_available = room
+                exit
+               #exit? # not next bc shouldn't bother with rest of room
+                # reserved_dates.each do |reserved_dates
+              end
+              search_date += 1
+            # end
+          end
+        end
+        # binding.pry
+        # return room_available
+      end #@room each
+
+      new_reservation = Reservation.new(room_available, guest_name: guest_name, start_date: start_date, end_date: end_date)
+      add_reservation(new_reservation)
+      add_reservation_to_calendar(new_reservation)
+      binding.pry
+      return new_reservation
+    end # def reserve_available_room
+
+
 
   end # of class BookingManager
 end # of module Hotel

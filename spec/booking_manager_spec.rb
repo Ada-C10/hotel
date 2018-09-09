@@ -175,8 +175,33 @@ describe "BookingManager class" do
       @hotel.add_reservation_to_calendar(booking5)
       @hotel.add_reservation_to_calendar(booking6)
 
-      expect(@hotel.find_vacancies_on_date("June 10, 2018", @hotel.room_calendar)).must_be_kind_of String 
+      expect(@hotel.find_vacancies_on_date("June 10, 2018", @hotel.room_calendar)).must_be_kind_of String
     end # no find_vacancies no vacancy it
   end # of find vacancies on date method
+
+  describe "reserve_available_room method" do
+    before do
+      @hotel = Hotel::BookingManager.new(5)
+      room4 = Hotel::Room.new(4)
+      room5 = Hotel::Room.new(5)
+
+      booking5 = Hotel::Reservation.new(room4, guest_name: "Horis Who", start_date: "June 08, 2018", end_date: "June 14, 2018")
+      booking6 = Hotel::Reservation.new(room5, guest_name: "Dorian Damian", start_date: "June 06, 2018", end_date: "June 11, 2018")
+
+      @hotel.add_reservation(booking5)
+      @hotel.add_reservation(booking6)
+      #
+      @number_prior_reservations = @hotel.reservations.length
+      @hotel.reserve_available_room("Donna Foster", "January 02, 2019", "January 08, 2019")
+    end
+
+    it "only allows reservations for rooms/dates not already reserved" do
+
+    end
+
+    it "reserves available room for given date range" do
+      expect(@hotel.reservations.length).must_equal @number_prior_reservations + 1
+    end
+  end # of reserve available room method
 
 end # end of describe BookingManager class
