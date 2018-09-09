@@ -13,7 +13,7 @@ describe 'reservation class' do
       }
       @reservation = Hotel::Reservation.new(input)
     end
-    #
+
     it 'creates an instance of a Reservation' do
       expect(@reservation).must_be_kind_of Hotel::Reservation
     end
@@ -25,7 +25,7 @@ describe 'reservation class' do
     it 'has has a room number ' do
       expect(@reservation.room_number).must_equal 9
     end
-    #
+
     it 'has a check-in date' do
       expect(@reservation.check_in_date).must_be_kind_of Date
     end

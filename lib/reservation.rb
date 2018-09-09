@@ -2,8 +2,6 @@ module Hotel
   class Reservation
     attr_reader :name, :room_number, :check_in_date, :check_out_date, :nights_of_stay
 
-    ROOM_COST = 200
-
     def initialize(input)
 
       check_in = input[:check_in_date]
