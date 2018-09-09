@@ -56,6 +56,7 @@ class ReservationTracker
 
 
   def reserve_block(date_range, num_rooms, discount_rate)
+    raise ArgumentError, "5 room limit for blocks" if num_rooms > 5
     date_range = Dates::date_range_format(date_range)
 
     room_block = @rooms.find_block_of_rooms(num_rooms, occupied_rooms(date_range))

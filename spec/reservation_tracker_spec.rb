@@ -58,16 +58,13 @@ describe "ReservationTracker class" do
       expect (@room_block.rate).must_equal 150
     end
 
-    it "adds block of rooms to occupied_rooms" do
-      expect (@reservations.occupied_rooms(@date_range)).must_equal [1, 2, 3, 4, 5, 6, 7]
+    it "raises an ArgumentError if number of rooms requested is greater than 5" do
+
+      expect { @reservations.reserve_block(@date_range, 6, 125) }.must_raise ArgumentError
     end
 
-    it "prevents non-block reservation of block rooms" do
-      @rooms = Room.new
-      date_range = Dates::date_range_format(@date_range)
-      occupied_rooms = @reservations.occupied_rooms(date_range)
-      available_rooms = @rooms.find_all_open_rooms(occupied_rooms)
-      expect (available_rooms.include?(4)).must_equal false
+    it "adds block of rooms to occupied_rooms" do
+      expect (@reservations.occupied_rooms(@date_range)).must_equal [1, 2, 3, 4, 5, 6, 7]
     end
   end
 
