@@ -257,7 +257,7 @@ describe "Booking Manager class" do
 
   end
 
-  describe 'check_block_status' do
+  describe 'check_block_status method' do
     before do
       @hotel = Hotel::Booking_Manager.new
       @date = Date.new(2028,8,8)
@@ -277,7 +277,37 @@ describe "Booking Manager class" do
       @check = @hotel.check_block_status(@input2)
       expect(@check).must_be_kind_of Array
       expect(@check.length).must_equal 3
+      expect(@check.first.block_reservation_status).must_equal :AVAILABLE
     end
   end
 
+  describe 'reserve_room_in_block method' do
+    before do
+      @hotel = Hotel::Booking_Manager.new
+      @date = Date.new(2028,8,8)
+      @date2 = Date.new(2028,8,11)
+      @input = {
+        check_in_date: @date,
+        check_out_date: @date2,
+        block_name: "Munster - Addams Wedding",
+        block_discount: 0.08,
+        number_of_rooms_to_block: 3
+      }
+      @input2 = {block_name: "Munster - Addams Wedding", name: "Cousin IT"}
+      @block = @hotel.create_block(@input)
+    end
+
+    it 'changes a block room reservation that is :AVAILABLE to :BOOKED' do
+      @check_block = @hotel.block_reservations.first
+      expect(@check_block.first.block_reservation_status).must_equal :AVAILABLE
+      @hotel.reserve_room_in_block(@input2)
+      expect(@check_block.first.block_reservation_status).must_equal :BOOKED
+
+    end
+
+    it 'changes the name of the reservation but keeps that name of the block reservation' do
+      @hotel.reserve_room_in_block(@input2)
+      expect(@check_block.first.name).must_equal "Cousin IT"
+    end
+  end
 end
