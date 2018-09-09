@@ -165,7 +165,7 @@ describe "ReservationMaker" do
       end
       start_date1 = Date.new(2018,2,4)
       end_date1 = Date.new(2018,2,5)
-      ReservationMaker.new(start_date1, end_date1).create_reservation
+      example = ReservationMaker.new(start_date1, end_date1)
 
       expect(ReservationMaker.reservations.length).must_equal 20
 

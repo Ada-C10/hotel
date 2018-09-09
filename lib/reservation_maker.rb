@@ -38,8 +38,9 @@ class ReservationMaker
     booked_rooms = []
     unless @@reservations.nil?
       @@reservations.each do |reservation|
-        if reservation.start_date >= @start_date && reservation.end_date < @end_date || reservation.end_date - 1 >= @start_date
+        if @start_date < reservation.start_date && @end_date < reservation.end_date || @start_date > reservation.start_date && @end_date > reservation.end_date || @start_date >= reservation.end_date
           booked_rooms << reservation.room
+          # binding.pry
         end
       end
     end
