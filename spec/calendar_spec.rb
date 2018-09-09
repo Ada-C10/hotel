@@ -7,7 +7,7 @@ describe Calendar do
   }
   let(:manager) {
     BookingManager.new(calendar)
-    }
+  }
   let(:reservation1) {
     Reservation.new('181202', '181204')
   }
@@ -128,4 +128,28 @@ describe Calendar do
     end
   end
 
+  # describe "#available_block_rooms" do
+  #   before do
+  #     manager.add_reservation(reservation1)
+  #     # binding.pry
+  #   end
+  #   it "returns array of available rooms in block" do
+  #     manager.add_block(block2)
+  #     expect(block2.rooms.keys).must_equal [2, 3]
+  #     expect(calendar.available_block_rooms(block2)).must_be_kind_of Array
+  # rooms = calendar.available_block_rooms(block2)
+  # expect(rooms.length).must_equal block2.number_of_rooms
+  # available_block_rooms = calendar.available_block_rooms(block2)
+  # expect(available_block_rooms).must_be_kind_of Array
+  # expect(available_block_rooms.length).must_equal block2.number_of_rooms
+  # end
+  describe "#reserve_block_room" do
+    it "reserves a room within a block" do
+      manager.add_reservation(reservation1)
+      manager.add_block(block2)
+      expect(calendar.reserve_block_room(block2)).must_equal 2
+      expect(block2.rooms[2]).must_equal :unavailable
+    end
+  end
 end
+# end

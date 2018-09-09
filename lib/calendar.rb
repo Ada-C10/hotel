@@ -1,3 +1,5 @@
+require_relative 'block'
+require_relative 'booking_manager'
 class Calendar
 
   attr_reader :rooms, :room_assignments
@@ -26,5 +28,18 @@ class Calendar
     available_rooms = rooms.select { |room| available_room?(room, reservation)}
   end
 
+  # def available_block_rooms(block)
+  #   rooms = block.rooms.keys
+  #   available_rooms = rooms.select { |room| available_room?(room, block)}
+  # end
+
+  def reserve_block_room(block)
+    block.rooms.each do |k, v|
+      if v == :available
+        block.rooms[k] = :unavailable
+        return k
+      end
+    end
+  end
 
 end
