@@ -23,6 +23,7 @@ describe "Front Desk Class" do
     before do
       @admin = Front_Desk.new
       @new_reservation = @admin.reserve_room(5,('2018-02-03'),('2018-02-06'))
+
     end
 
     it "has a room number assisnged to the reservation" do
@@ -42,10 +43,13 @@ describe "Front Desk Class" do
     end
 
     it "returns all reservation within that date" do
-      expect(@admin.search_reserved_by_date('2018-02-05').length).must_equal 1
+      @admin.block_hold(('2018-02-03'),('2018-02-06'),2)
+      @admin.reserve_room(5,('2018-02-01'),('2018-02-03'))
+      expect(@admin.search_reserved_by_date('2018-02-05').length).must_equal 3
     end
 
-    it "returns reservations all reservation within that date" do
+    it "returns zero for day of" do
+      @admin.block_hold(('2018-02-03'),('2018-02-06'),2)
       expect(@admin.search_reserved_by_date('2018-02-06').length).must_equal 0
     end
 
@@ -71,6 +75,7 @@ describe "Front Desk Class" do
 
 
 ######## addd describe block to this methods so it stops using the room to test from top #####
+
     it "makes a block reservation for 1 to 5 rooms" do
       expect(@admin.block_hold(('2018-02-01'),('2018-02-03'),2).length).must_equal 2
     end

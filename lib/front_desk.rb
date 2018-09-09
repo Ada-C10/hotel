@@ -46,9 +46,21 @@ class Front_Desk
   #method to grab reservation by Date
   def search_reserved_by_date(search_date)
     search_date = Date.parse(search_date)
-    @reservations.select do |reservation|
-      reservation.start_date <= search_date && search_date < reservation.end_date
+    results = []
+
+    @reservations.each do |reservation|
+      if reservation.start_date <= search_date && search_date < reservation.end_date
+        results << @reservations
+      end
     end
+
+    @block_hold.each do |reservation|
+      if reservation.start_date <= search_date && search_date < reservation.end_date
+        results << @block_hold
+      end
+    end
+
+    return results
   end
 
   def available_rooms(start_date,end_date)
@@ -62,7 +74,6 @@ class Front_Desk
       #    !(reservation.start_date < end_date) && !(reservation.end_date < end_date)
 
       if !((start_date < reservation.start_date && end_date <= reservation.start_date) ||
-        # binding.pry
         (end_date > reservation.end_date && start_date >= reservation.end_date))
         list_of_rooms.reject! { |room| room.room_number == reservation.room_number }
       end
@@ -80,16 +91,12 @@ class Front_Desk
 
   def block_hold(start_date, end_date, number_of_rooms)
     available_rooms = available_rooms(start_date,end_date)
-    # if !available_rooms.find { |room| room.room_number == room_number }
-    #   raise StandardError
-    # end
 
     if number_of_rooms > 5 && number_of_rooms != 0
       raise StandardError
     end
 
     number_of_rooms.times do |index|
-
       input = {}
       input[:room_number] = available_rooms[index].room_number
       input[:start_date] = start_date
@@ -100,6 +107,8 @@ class Front_Desk
     end
     return @block_hold
   end
+
+
 
 
 
