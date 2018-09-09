@@ -3,9 +3,6 @@
 # describe 'Lodging module methods' do
 #
 #   describe 'create rooms' do
-#     before(:each) do
-#       Lodging::Room.class_variable_set(:@@room_list, [])
-#     end
 #
 #     let(:concierge) {
 #       Lodging::Concierge.new(10)

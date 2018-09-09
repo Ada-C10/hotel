@@ -11,4 +11,24 @@ module Lodging
       i += 1
     end
   end
+
+  def self.total_owed #totals cost of length of stay
+    puts "sup"
+  end
+
+def self.room_status(input) #check room_status
+  avail = input.find do |room|
+    room[:status] == "available" #returns first instance it finds of available room
+  end
+
+  raise ArgumentError if avail == false
+
+  return avail
+end
+
+def self.create_date_range(date1, date2)
+  return (Date.parse(date1)..Date.parse(date2)).to_a 
+end
+
+
 end

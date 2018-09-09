@@ -3,11 +3,14 @@ require_relative 'spec_helper'
 describe 'room class' do
   #to clear CSV file before each test
   before(:each) do
-    CSV.open('all hotel rooms.csv', 'w', headers: true) do |csv|
+    CSV.open('data/all_hotel_rooms.csv', 'w', headers: true) do |csv|
       csv << ['room_number','cost','status']
-  end
-end
+    end
 
+    CSV.open('data/reservations.csv', 'w', headers: true) do |csv|
+      csv << ['room_number','cost','status','check_in','check_out']
+    end
+  end
 
   describe 'initialize' do
     it 'creates a new instance of room' do
@@ -23,10 +26,22 @@ end
   it 'adds each new instance of room into csv file' do
     Lodging.create_rooms(5)
 
-    rooms = CSV.read('all hotel rooms.csv', headers: true)
+    rooms = CSV.read('data/all_hotel_rooms.csv', headers: true)
 
     expect(rooms).must_be_instance_of CSV::Table
     expect(rooms.length).must_equal 5
+  end
+
+  describe 'available room' do
+    # let(:new_room) {
+    #   CSV.read('all_hotel_rooms.csv', headers: true)
+    # }
+
+    it 'returns CSV row of available room' do
+      Lodging.create_rooms(5)
+
+      expect(Lodging::Room.available_room).must_be_instance_of CSV::Row
+    end
   end
 
 end
