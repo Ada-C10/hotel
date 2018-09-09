@@ -10,7 +10,12 @@ describe Reservation do
   let (:months_reservation) {
     Reservation.new('181130', '181204')
   }
-
+  let (:same_reservation) {
+    Reservation.new('181130', '181130')
+  }
+  let (:years_reservation) {
+    Reservation.new('181230', '190103')
+  }
   describe "#initialize" do
     it "can be instantiated" do
       expect(reservation).must_be_kind_of Reservation
@@ -22,8 +27,11 @@ describe Reservation do
     it "stores number of nights" do
       expect(reservation.number_of_nights).must_equal 2
     end
-    it "raises StandardError if given invalid date range" do
+    it "raises StandardError if check_out is earlier than check_in" do
       expect(error_reservation).must_raise StandardError, "Invalid date range."
+    end
+    it "raises StandardError if check_out is the same as check_in" do
+      expect(same_reservation).must_raise StandardError, "Invalid date range."
     end
     it "calculates and stores cost" do
       expect(reservation.cost).must_equal 400
@@ -37,6 +45,9 @@ describe Reservation do
     end
     it "returns negative number if check_out is earlier than check_in" do
       expect(error_reservation.number_of_nights).must_equal -2
+    end
+    it "returns 0 if check_out is the same as check_in" do
+      expect(same_reservation.number_of_nights).must_equal 0
     end
   end
 
@@ -59,6 +70,14 @@ describe Reservation do
       expect(months_reservation.get_all_dates.length).must_equal 4
       expect(months_reservation.get_all_dates[0]).must_equal months_reservation.check_in
       expect(months_reservation.get_all_dates[-1]).must_equal months_reservation.check_out - 1
+    end
+    it "contains all dates for reservation in 2 years" do
+      years_reservation.get_all_dates.each do |date|
+        expect(date).must_be_kind_of Date
+      end
+      expect(years_reservation.get_all_dates.length).must_equal 4
+      expect(years_reservation.get_all_dates[0]).must_equal years_reservation.check_in
+      expect(years_reservation.get_all_dates[-1]).must_equal years_reservation.check_out - 1
     end
   end
 end
