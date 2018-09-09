@@ -72,8 +72,13 @@ describe BookingManager do
       manager.add_block(block4)
       # binding.pry
     end
-    it "returns 'Added!' message" do
-      expect(manager.add_block(block2)).must_equal "Added!"
+    it "returns array of block rooms" do
+      expect(manager.add_block(block3)).must_equal [1, 2, 3]
+    end
+    it "adds rooms to block object" do
+      manager.add_block(block3)
+      expect(block3.rooms.keys).must_equal [1, 2, 3]
+      expect(block3.rooms.values).must_equal [:available, :available, :available]
     end
     it "adds all reservation dates to all block rooms" do
       # binding.pry

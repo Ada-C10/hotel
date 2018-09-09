@@ -1,3 +1,5 @@
+require_relative 'block'
+require_relative 'calendar'
 class BookingManager
 
   attr_reader :calendar
@@ -28,7 +30,10 @@ class BookingManager
         calendar.room_assignments[room] << dates
       # end
     end
-    return "Added!"
+    block_rooms.each do |room|
+      block.rooms[room] = :available
+    end
+    return block_rooms
   end
 
 end
