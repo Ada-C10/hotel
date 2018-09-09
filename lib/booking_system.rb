@@ -19,28 +19,33 @@ module Hotel
 
 
 
-      if @reservations.empty?
+      # if @reservations.empty?
+      #   @reservations << reservation
+      #   return reservation
+      # elsif @reservations.length >= 1
+      #   requested_dates = reservation.date_range
+      #   count = requested_dates.length - 1
+      #
+      #   @reservations.each do |booking|
+      #     booked_dates = booking.date_range
+      #     while count >= 0
+      #       if booked_dates.include?(requested_dates[count])
+      #           if booking.room_number == reservation.room_number
+      #
+      #             unless reservation.room_number == 20
+      #               reservation.room_number += 1
+      #             end
+      #           end
+      #       end
+      #
+      #       count -= 1
+      #     end
+      #
+      #   end
+      #
         @reservations << reservation
         return reservation
-      elsif @reservations.length >= 1
-        requested_dates = reservation.date_range
-        count = requested_dates.length - 1
-
-        @reservations.each do |booking|
-          booked_dates = booking.date_range
-          while count >= 0
-            if booked_dates.include?(requested_dates[count])
-                raise ArgumentError, "unavailable date"
-            end
-
-            count -= 1
-          end
-
-        end
-
-        @reservations << reservation
-        return @reservations
-      end
+      # end
     end
 
     def get_available_room(check_in_date:, check_out_date:)
@@ -52,24 +57,75 @@ module Hotel
     end
 
     def list_reservations_by_date(date)
-      bookings_by_date = []
-
       specific_date = Date.parse("#{date}")
+
+      bookings_by_date = []
       @reservations.each do |booking|
-        booking.date_range.each do |date|
-          if specific_date == date
-            bookings_by_date << booking
-          end
+        dates = booking.date_range
+        if dates.include?(specific_date)
+          bookings_by_date << booking
         end
       end
 
       return bookings_by_date
     end
 
-    def available_rooms_for_date_range(check_in_date:, check_out_date:)
-
-
-      @reservations
-    end
+    # def available_rooms_for_date_range(check_in_date:, check_out_date:)
+    #
+    #
+    #   @reservations
+    # end
   end
 end
+
+#
+# if @reservations.empty?
+#   @reservations << reservation
+#   return reservation
+# elsif @reservations.length >= 1
+#   requested_dates = reservation.date_range
+#   count = requested_dates.length - 1
+#
+#   @reservations.each do |booking|
+#     booked_dates = booking.date_range
+#     while count >= 0
+#       if booked_dates.include?(requested_dates[count])
+#           if booking.room_number == reservation.room_number
+#
+#             unless reservation.room_number == 20
+#               reservation.room_number += 1
+#             end
+#           end
+#       end
+#
+#       count -= 1
+#     end
+#
+#   end
+#
+#   @reservations << reservation
+#   return reservation
+# end
+# end
+
+
+
+
+
+
+
+
+# def list_reservations_by_date(date)
+#   specific_date = Date.parse("#{date}")
+#
+#   bookings_by_date = []
+#   @reservations.each do |booking|
+#     dates = booking.date_range
+#     if dates.include?(specific_date)
+#       bookings_by_date << booking
+#     end
+#     # binding.pry
+#   end
+#
+#   return bookings_by_date
+# end
