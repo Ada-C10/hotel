@@ -30,6 +30,7 @@ class ReservationMgr
     return available_rooms
   end
 
+  
   def make_reservation(check_in,check_out,rooms: 1, block_id: nil)
     if block_id == nil
       new_reservations = create_reservation(check_in,check_out,rooms, block_id)
@@ -72,6 +73,7 @@ class ReservationMgr
     if rooms > 5
       raise ArgumentError.new('You cannot block more than 5 rooms')
     end
+
     new_block_reservations = create_reservation(check_in,check_out,rooms, block_id)
     return new_block_reservations
   end

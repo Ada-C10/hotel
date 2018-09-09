@@ -26,6 +26,7 @@ describe "Reservation Test" do
     it "the block_available instance variable will be true if block_id is associated" do
       new_Res = Reservation.new("2018-09-05","2018-09-07",2,block_id: "Metzner")
       expect(new_Res.block_available).must_equal true
+      expect(new_Res.block_id).must_equal "Metzner"
     end
 
   end
