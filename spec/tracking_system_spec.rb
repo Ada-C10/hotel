@@ -243,8 +243,6 @@ describe 'TrackingSystem class' do
     it "returns list of rooms that are available in a block" do
       # add_reservation_in_block(start_time: Date.now, end_time: Date.now + 1, number_of_rooms: 1, block: :NA)
       @reservation1 = @tracker.add_reservation_in_block(start_time: Date.new(2018,10,5), end_time: Date.new(2018,10,10), number_of_rooms:1, block: @blockid)
-      @reservation2 = @tracker.add_reservation_in_block(start_time: Date.new(2018,10,5), end_time: Date.new(2018,10,10), number_of_rooms:1, block: @blockid)
-      @reservation3 = @tracker.add_reservation_in_block(start_time: Date.new(2018,10,5), end_time: Date.new(2018,10,10), number_of_rooms:1, block: @blockid)
       date_range = @tracker.retrieve_block_dates(@blockid)
       expect(@tracker.rooms_available_in_block(@blockid)).must_be_kind_of Array
     end

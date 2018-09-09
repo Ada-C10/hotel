@@ -146,7 +146,7 @@ class TrackingSystem
           if room.reserved_dates.empty?
             available_rooms << room
           else room.reserved_dates.each do |dates_hash| #see the reserved dates of each room
-            if (dates_hash[:start_time]...dates_hash[:end_time]).to_a.sort == retrieve_block_dates(block_id).sort #checks if both date ranges are the same
+            if (dates_hash[:start_time]...dates_hash[:end_time]).to_a.sort != retrieve_block_dates(block_id).sort #checks if both date ranges are the same
               available_rooms << room
             end
           end
