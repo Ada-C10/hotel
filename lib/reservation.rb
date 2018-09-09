@@ -13,7 +13,7 @@ module Hotel
       @checkout_date = Date.parse(input[:checkout_date])
       validate_date
 
-      @room_number = input[:room_number].to_i
+      @room_number = input[:room_number]
       @total_cost = input[:total_cost].to_i
       @confirmation_id = input[:confirmation_id].to_s
     end

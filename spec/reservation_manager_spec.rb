@@ -229,15 +229,42 @@ describe 'ReservationManager' do
       expect(make_two_not_allowed_overlapping_manager.rooms[1].reservations.length).must_equal 1
     end
 
+    # #Lazy Test of RoomBlock Methods and Class
+    # #<Hotel::RoomBlock:0x00007ffb71ad0ec0
+    # @checkin_date=#<Date: 2018-01-01 ((2458120j,0s,0n),+0s,2299161j)>,
+    # @checkout_date=#<Date: 2018-01-03 ((2458122j,0s,0n),+0s,2299161j)>,
+    # @confirmation_id="BLOCK39065",
+    # @num_rooms=3,
+    # @reservations=
+    # [#<Hotel::Reservation:0x00007ffb721d0f40
+    #   @checkin_date=#<Date: 2018-01-01 ((2458120j,0s,0n),+0s,2299161j)>,
+    #   @checkout_date=#<Date: 2018-01-03 ((2458122j,0s,0n),+0s,2299161j)>,
+    #   @confirmation_id="ZPY64192",
+    #   @room_number=1,
+    #   @total_cost=320>,
+    #   #<Hotel::Reservation:0x00007ffb71ad38c8
+    #   @checkin_date=#<Date: 2018-01-01 ((2458120j,0s,0n),+0s,2299161j)>,
+    #   @checkout_date=#<Date: 2018-01-03 ((2458122j,0s,0n),+0s,2299161j)>,
+    #   @confirmation_id="EOV80156",
+    #   @room_number=2,
+    #   @total_cost=320>,
+    #   #<Hotel::Reservation:0x00007ffb71ad1aa0
+    #   @checkin_date=#<Date: 2018-01-01 ((2458120j,0s,0n),+0s,2299161j)>,
+    #   @checkout_date=#<Date: 2018-01-03 ((2458122j,0s,0n),+0s,2299161j)>,
+    #   @confirmation_id="NHX45362",
+    #   @room_number=3,
+    #   @total_cost=320>],
+    #   @room_number=[1, 2, 3],
+    #   @total_cost=960>
+
     let(:room_block) {
       manager = Hotel::ReservationManager.new()
       manager.make_reservation("01/01/2018", "03/01/2018", true, 3)
     }
 
-    it 'will make a room block if room block is true' do
+    it 'will make a room block if room block param is true and number of rooms passed in' do
 
       expect(room_block).must_be_instance_of Hotel::RoomBlock
-
     end
   end
 

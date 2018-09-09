@@ -10,13 +10,14 @@ module Hotel
     #RESERVATION_NAMING_CONVENTION = /^[A-Z]{3}+[\d]{5}/
     #BLOCK_NAMING_CONVENTION = /BLOCK+[\d]{5}/
 
-    attr_reader :reservations, :rooms, :room_cost, :room_block_discount
+    attr_reader :reservations, :rooms, :room_blocks, :room_cost, :room_block_discount
 
     def initialize
 
       @room_cost = 200
       @room_block_discount = 0.8
       @reservations = []
+      @room_blocks = []
       generate_room_ids(VALID_ROOM_IDS)
     end
 
@@ -60,10 +61,10 @@ module Hotel
     end
 
     #creates a reservation if there's an available room and adds to list
-    def make_reservation(checkin_date, checkout_date, room_block = false, num_rooms = 1)
+    def make_reservation(checkin_date, checkout_date, room_block = false, num_rooms = 1, room_block_discount = 1)
 
       if room_block == true
-        return make_room_block(checkin_date, checkout_date, num_rooms, @room_block_discount)
+        return make_room_block(checkin_date, checkout_date, num_rooms)
       end
 
       #find room in range
@@ -71,7 +72,7 @@ module Hotel
       room = find_available_room(range) #error here
 
       #parse data into a form needed for reservation
-      input = parse_reservation_data(checkin_date, checkout_date, room)
+      input = parse_reservation_data(checkin_date, checkout_date, room, room_block_discount)
 
       #create a room reservation from our input
       reservation = Hotel::Reservation.new(input)
@@ -83,39 +84,39 @@ module Hotel
     end
 
     # helper method for making room_block / parsing the room_block data
-    def parse_room_block_data(checkin_date, checkout_date, num_rooms, room_block_discount)
+    def parse_room_block_data(checkin_date, checkout_date, num_rooms, room_numbers)
 
       return { checkin_date: checkin_date, checkout_date: checkout_date,
-        room_number: "BLOCK#{generate_random_block_id}",
-        total_cost: calculate_total_cost(checkin_date, checkout_date, @room_cost),
+        confirmation_id: "BLOCK#{generate_random_block_id}", room_number: room_numbers,
+        total_cost: num_rooms * (calculate_total_cost(checkin_date, checkout_date, @room_cost, @room_block_discount )),
         reservations: reservations, num_rooms: num_rooms}
     end
 
-    def make_room_block(checkin_date, checkout_date, num_rooms = 2, room_block_discount = 1)
-      reservations = []
 
-      num_rooms.times.each do
-        reservation = make_reservation(checkin_date, checkout_date)
-        reservations  << reservation
-      end
-
-      block_data = parse_room_block_data(checkin_date, checkout_date, num_rooms, room_block_discount)
-
-      return Hotel::RoomBlock.new(block_data)
+    #helper method for storing a room_block/ adding it to the list
+    def add_room_block_to_list(room_block)
+      raise ArgumentError.new('Not a valid reservation.') if room_block.class != Hotel::RoomBlock
+      @room_blocks << room_block
     end
 
-    # def make_reservation(checkin_date, checkout_date, room_block = false, num_rooms = 1, room_block_discount = 0)
-    #   if room_block
-    #     # make_block_reservations(checkin_date, checkout_date, num_rooms)
-    #   else
-    #     make_reservation(checkin_date, checkout_date)
-    #   end
-    # end
+    #helper method for make reservation, which makes room block and its reservations
+    def make_room_block(checkin_date, checkout_date, num_rooms = 2)
+      reservations = []
+      room_numbers = []
 
-    # num_rooms.times do
-    #   make_reservation(checkin_date, checkout_date, room_block = false, num_rooms = 1, room_block_discount = 0)
-    # end
+      num_rooms.times do
+        reservation = make_reservation(checkin_date, checkout_date, false, 1, @room_block_discount)
+        reservations << reservation
+        room_numbers << reservation.room_number
+      end
 
+      block_data = parse_room_block_data(checkin_date, checkout_date, num_rooms, room_numbers)
+
+      room_block =  Hotel::RoomBlock.new(block_data)
+      add_room_block_to_list(room_block)
+
+      return room_block
+    end
 
     #returns total cost for a given reservation
     def get_total_reservation_cost(given_confirmation_id)
