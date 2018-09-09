@@ -1,5 +1,4 @@
 require 'date'
-require 'pry'
 require_relative 'room'
 require_relative 'reservation'
 require_relative 'block_room'
@@ -17,7 +16,6 @@ module Hotel
       @rooms = load_rooms
       @block_reservations = []
     end
-
 
 ### RESRVATION METHODS ###
     def reserve_room(input)

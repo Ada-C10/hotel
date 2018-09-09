@@ -7,6 +7,7 @@ module Hotel
     end
 
     def self.sort_block_reservations_by_name(list_of_block_reservations)
+      # SORTS AN ARRAY OF ARRAYS BY NAME
       list_of_block_reservations.sort! { |a,b| a.first.block_name <=> b.first.block_name }
     end
 
@@ -104,6 +105,6 @@ module Hotel
       end
       return nights_stay
     end
-    
+
   end
 end

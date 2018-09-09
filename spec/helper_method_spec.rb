@@ -271,8 +271,6 @@ describe 'self.binary_search_list_of_reservations_for_vacancy method' do
 
       it 'takes an array of arrays, checks the first index at each array and sorts each block reservation by name' do
 
-      expect(@block_reservations.first[0].block_name).must_equal "Munster - Addams Wedding"
-      expect(@block_reservations.last[0].block_name).must_equal "Barnabas Collins Family Reunion"
       Hotel::Helper_Method.sort_block_reservations_by_name(@block_reservations)
       expect(@block_reservations.first[0].block_name).must_equal "Barnabas Collins Family Reunion"
       expect(@block_reservations.last[0].block_name).must_equal "Munster - Addams Wedding"
