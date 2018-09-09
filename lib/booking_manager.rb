@@ -9,9 +9,11 @@ class BookingManager
   def add_reservation(reservation)
     dates = reservation.get_all_dates
     room = calendar.available_rooms(reservation).first
+
     if room.nil?
       return "No available rooms."
     end
+
     dates.each do |date|
       calendar.room_assignments[room] << date
     end
@@ -21,21 +23,19 @@ class BookingManager
 
   def add_block(block)
     dates = block.get_all_dates
-    rooms = calendar.available_rooms(block)
+    available_rooms = calendar.available_rooms(block)
+    block_size = block.number_of_rooms
 
-    if rooms.length < block.number_of_rooms
+    if available_rooms.length < block_size
       return "Not enough available rooms."
     end
 
-    block_rooms = rooms[0..(block.number_of_rooms - 1)]
+    block_rooms = available_rooms[0..(block_size - 1)]
     block_rooms.each do |room|
-      # dates.each do |date|
-        calendar.room_assignments[room] << dates
-      # end
-    end
-    block_rooms.each do |room|
+      calendar.room_assignments[room] << dates
       block.rooms[room] = :available
     end
+
     return block_rooms
   end
 
@@ -48,9 +48,9 @@ class BookingManager
       return "No available rooms in block."
     end
 
-    room = available.first[0]
-    block.rooms[room] = :unavailable
-    return room
+    reserved_room = available.first[0]
+    block.rooms[reserved_room] = :unavailable
+    return reserved_room
   end
 
 end
