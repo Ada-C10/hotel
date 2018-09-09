@@ -14,6 +14,12 @@ describe Calendar do
   let(:reservation3) {
     Reservation.new('181203', '181204')
   }
+  let(:reservation4) {
+    Reservation.new('181130', '181202')
+  }
+  let(:reservation5) {
+    Reservation.new('181130', '181206')
+  }
   let(:list) {
     calendar.list_available_rooms(reservation1)
   }
@@ -45,14 +51,16 @@ describe Calendar do
     before do
       calendar.add_reservation(reservation1)
     end
-    it "returns false if room is reserved for given dates" do
-
-      # binding.pry
+    it "returns false if room is reserved for all given dates" do
       expect(calendar.available_room?(1, reservation1)).must_equal false
     end
-    it "returns true if room isn't reserved for given dates" do
+    it "returns true if room isn't reserved for any given dates" do
       expect(calendar.available_room?(1, reservation2)).must_equal true
-      # expect(calendar.available_room?(1, @reservation4)).must_equal false
+      expect(calendar.available_room?(1, reservation4)).must_equal true
+    end
+    it "returns false if room is reserved for any given dates" do
+      expect(calendar.available_room?(1, reservation3)).must_equal false
+      expect(calendar.available_room?(1, reservation5)).must_equal false
     end
   end
 
@@ -69,17 +77,19 @@ describe Calendar do
 
   describe "#add_reservation" do
     before do
-      3.times do
-        calendar.add_reservation(reservation1)
-      end
-    end
-    it "adds all reservation dates to first available room" do
-      expect(calendar.room_assignments[1]).must_equal reservation1.get_all_dates
-      expect(calendar.room_assignments[2]).must_equal reservation1.get_all_dates
-      expect(calendar.room_assignments[3]).must_equal reservation1.get_all_dates
+      calendar.add_reservation(reservation1)
+      calendar.add_reservation(reservation2)
+      calendar.add_reservation(reservation3)
+      calendar.add_reservation(reservation4)
+      calendar.add_reservation(reservation5)
     end
     it "returns 'Added!' message" do
       expect(calendar.add_reservation(reservation1)).must_equal "Added!"
+    end
+    it "adds all reservation dates to first available room" do
+      expect(calendar.room_assignments[1]).must_equal reservation1.get_all_dates + reservation2.get_all_dates + reservation4.get_all_dates
+      expect(calendar.room_assignments[2]).must_equal reservation3.get_all_dates
+      expect(calendar.room_assignments[3]).must_equal reservation5.get_all_dates
     end
   end
 end
