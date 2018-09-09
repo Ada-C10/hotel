@@ -149,10 +149,10 @@ describe "BookingManager class" do
       @hotel = Hotel::BookingManager.new(5)
       room1 = Hotel::Room.new(1)
       room2 = Hotel::Room.new(2)
-      room3 = Hotel::Room.new(3)
+      @room3 = Hotel::Room.new(3)
       booking1 = Hotel::Reservation.new(room1, guest_name: "Tony Blaze", start_date: "June 10, 2018", end_date: "June 12, 2018")
       booking2 = Hotel::Reservation.new(room2, guest_name: "Jane James", start_date: "June 10, 2018", end_date: "June 14, 2018")
-      booking3 = Hotel::Reservation.new(room3, guest_name: "Jessie Jade", start_date: "June 14, 2018", end_date: "June 16, 2018")
+      booking3 = Hotel::Reservation.new(@room3, guest_name: "Jessie Jade", start_date: "June 14, 2018", end_date: "June 16, 2018")
       @hotel.add_reservation_to_calendar(booking1)
       @hotel.add_reservation_to_calendar(booking2)
       @hotel.add_reservation_to_calendar(booking3)
@@ -163,6 +163,20 @@ describe "BookingManager class" do
       expect(@hotel.find_vacancies_on_date("June 17, 2018", @hotel.room_calendar).length).must_equal 5
     end # of find vacancies it
 
+    it "returns message of no vacancies when all rooms are reserved" do
+      room4 = Hotel::Room.new(4)
+      room5 = Hotel::Room.new(5)
+
+      booking4 = Hotel::Reservation.new(@room3, guest_name: "Lady Day", start_date: "June 10, 2018", end_date: "June 11, 2018")
+      booking5 = Hotel::Reservation.new(room4, guest_name: "Horis Who", start_date: "June 8, 2018", end_date: "June 14, 2018")
+      booking6 = Hotel::Reservation.new(room5, guest_name: "Dorian Damian", start_date: "June 6, 2018", end_date: "June 11, 2018")
+
+      @hotel.add_reservation_to_calendar(booking4)
+      @hotel.add_reservation_to_calendar(booking5)
+      @hotel.add_reservation_to_calendar(booking6)
+
+      expect(@hotel.find_vacancies_on_date("June 10, 2018", @hotel.room_calendar).length).must_equal 0
+    end # no find_vacancies no vacancy it
   end # of find vacancies on date method
 
 end # end of describe BookingManager class
