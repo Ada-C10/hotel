@@ -125,6 +125,14 @@ it "reserves an available room for a given date range" do
 
 end
 
+it "Raises an ArgumentError when all the rooms have been reserved out and there are no longer any more rooms available" do
+  proc {
+    22.times do |i|
+      @hotel.assigns_a_reservation((@start_date - i), (@end_date + i))
+    end
+  }.must_raise ArgumentError
+
+end
 
 
 end

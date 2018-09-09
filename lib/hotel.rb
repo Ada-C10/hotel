@@ -35,15 +35,18 @@ module Hotel
       # end
       avail_rooms = nonreserved_rooms_fordates(start_date, end_date)
 
-
-      # room_numbers = get_all_numbers
-      # rooms = avail_rooms - room_numbers
       return avail_rooms.first
     end
 
     #assigns a reservation given a vaild date, and also calls the get_available_room method which will then return a room number. @reservation is storing all the reservations
     def assigns_a_reservation(start_date, end_date)
+
       room_num = get_available_room(start_date, end_date)
+
+      if room_num == nil
+          raise ArgumentError.new("There are no more rooms available at this time, you are not allowed to reserve a room that is not available")
+      end
+
       reservation = Reservation.new(start_date, end_date, room_num)
       @reservations << reservation
       return reservation
