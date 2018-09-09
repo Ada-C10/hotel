@@ -174,12 +174,6 @@ describe 'BookingSystem class' do
 
     end
 
-    it 'reserves the first available room for the given date range' do
-      skip
-      expect(hotel_booker.make_reservation(today + 1, today + 2).room_num).must_equal 2
-      expect(hotel_booker.make_reservation(today + 1, today + 9).room_num).must_equal 3
-    end
-
     it 'raises an error if normal booking tries to reserve a room in a block' do
       room_block
       expect{hotel_booker.make_reservation(Hotel::DateRange.new(today, res2_checkout), 3)}.must_raise StandardError
@@ -214,10 +208,10 @@ describe 'BookingSystem class' do
     end
 
     it 'raises an exception if no rooms are available for that date range' do
-      18.times do
+      20.times do
         hotel_booker.reserve_standard_room(today + 7, today + 8)
       end
-
+      # binding.pry
       expect{hotel_booker.reserve_standard_room}.must_raise StandardError
     end
 
