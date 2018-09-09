@@ -32,6 +32,13 @@ module Hotel
       Hotel::Helper_Method.sort_reservations(@hotel_reservations)
     end
 
+    def reserve_room_in_block(input)
+      customer_name = input[:name]
+      available_rooms_in_block = check_block_status(input[:block_name])
+      available_rooms_in_block.first.name = customer_name
+      available_rooms_in_block.first.block_reservation_status = :BOOKED
+    end
+
     def create_block(input)
       check_in_date = input[:check_in_date]
       check_out_date = input[:check_out_date]
@@ -96,7 +103,7 @@ module Hotel
 
     def check_block_status(name_of_block)
       available_rooms = []
-      name = name_of_block[:block_name]
+      name = name_of_block
       @block_reservations.each do |block|
         if block.first.block_name == name
           block.each do |reservation|

@@ -269,7 +269,8 @@ describe "Booking Manager class" do
         block_discount: 0.08,
         number_of_rooms_to_block: 3
       }
-      @input2 = {block_name: "Munster - Addams Wedding"}
+      @input2 = "Munster - Addams Wedding"
+      @input3 = {block_name: "Munster - Addams Wedding", name: "Cousin IT"}
       @block = @hotel.create_block(@input)
     end
 
@@ -279,6 +280,13 @@ describe "Booking Manager class" do
       expect(@check.length).must_equal 3
       expect(@check.first.block_reservation_status).must_equal :AVAILABLE
     end
+
+    it 'returns a smaller array if one of the block rooms gets booked' do
+      @hotel.reserve_room_in_block(@input3)
+      @check2 = @hotel.check_block_status(@input2)
+      expect(@check2.length).must_equal 2
+    end
+
   end
 
   describe 'reserve_room_in_block method' do
@@ -306,8 +314,10 @@ describe "Booking Manager class" do
     end
 
     it 'changes the name of the reservation but keeps that name of the block reservation' do
+      @check_block = @hotel.block_reservations.first
       @hotel.reserve_room_in_block(@input2)
       expect(@check_block.first.name).must_equal "Cousin IT"
+      expect(@check_block.first.block_name).must_equal "Munster - Addams Wedding"
     end
   end
 end
