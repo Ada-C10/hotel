@@ -13,9 +13,19 @@ describe Block do
   let(:block5) {
     Block.new('181202', '181206', 5)
   }
+  let(:block6) {
+    Block.new('181202', '181206', 6)
+  }
+  let(:block1) {
+    Block.new('181202', '181206', 1)
+  }
   describe "#initalize" do
     it "can be instantiated" do
       expect(block2).must_be_kind_of Block
+    end
+    it "raises ArgumentError if number_of_rooms not in range" do
+      expect{Block.new('181202', '181206', 6)}.must_raise ArgumentError
+      expect{Block.new('181202', '181206', 1)}.must_raise ArgumentError
     end
     it "assigns discount based on number_of_rooms" do
       expect(block2.discount).must_equal 10
@@ -33,5 +43,8 @@ describe Block do
       expect(block2.rooms).must_be_kind_of Hash
       expect(block2.rooms).must_be_empty
     end
+  end
+  describe "#number_of_rooms" do
+
   end
 end

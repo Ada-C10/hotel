@@ -6,7 +6,13 @@ class Block < Reservation
 
   def initialize(check_in, check_out, number_of_rooms)
     super(check_in, check_out)
+
     @number_of_rooms = number_of_rooms
+
+    if number_of_rooms < 2 || number_of_rooms > 5
+      raise ArgumentError, "Number of rooms must be between 2 and 5"
+    end
+
     case number_of_rooms
     when 2
       discount = 0.05 * PRICE
@@ -17,8 +23,11 @@ class Block < Reservation
     when 5
       discount = 0.2 * PRICE
     end
+
     @discount = discount
+
     @cost -= @discount
+
     @rooms = {}
   end
 end
