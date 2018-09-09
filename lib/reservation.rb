@@ -12,6 +12,7 @@ class Reservation
     @@num += 1
     @@reservation_id = "2018/#{@@num}"
     @cost = cost
+    check_for_dates_clash
     @@array_of_reservations << [@room_number, @check_in_date, @check_out_date, @@reservation_id, @cost]
   end
 
@@ -32,7 +33,20 @@ class Reservation
     return total
   end
 
-  def self.reservations
-    return @@array_of_reservations
+  def check_for_dates_clash
+    if @@array_of_reservations != []
+      @@array_of_reservations.each do |array|
+        if array[0] == @room_number && array[1] != nil &&
+          Date.parse(@check_in_date) >= Date.parse(array[1]) &&
+          Date.parse(@check_out_date) <= Date.parse(array[2])
+            raise ArgumentError, "These dates are booked!!"
+        end
+      end
+    end
   end
+
+  def self.reservations
+      return @@array_of_reservations
+  end
+
 end
