@@ -116,7 +116,7 @@ describe 'self.binary_search_list_of_reservations_for_vacancy method' do
     expect(Hotel::Helper_Method.binary_search_list_of_reservations_for_vacancy(@array_of_reservations, @array_of_possible_dates)).must_equal false
   end
 
-  describe 'self.sort_reservations' do
+  describe 'self.sort_reservations_by_date' do
     it 'given an array of dates, it will sort in ascending order' do
         @input = { name: "Mx Thing",
           room_number: 1,
@@ -137,7 +137,7 @@ describe 'self.binary_search_list_of_reservations_for_vacancy method' do
         }
         @reservation3 = Hotel::Reservation.new(@input3)
         @reservations = [@reservation1,@reservation2,@reservation3]
-        Hotel::Helper_Method.sort_reservations(@reservations)
+        Hotel::Helper_Method.sort_reservations_by_date(@reservations)
 
         expect(@reservations.first.name).must_equal "Teen Wolf"
         expect(@reservations.last.name).must_equal "Mx Thing"

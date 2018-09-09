@@ -65,7 +65,7 @@ module Hotel
       return nights_stay
     end
 
-    def self.sort_reservations(list_of_reservations)
+    def self.sort_reservations_by_date(list_of_reservations)
       list_of_reservations.sort! { |a,b| a.check_in_date <=> b.check_in_date }
     end
 
@@ -75,7 +75,7 @@ module Hotel
         return raise ArgumentError, 'No Rooms Available in date range'
       end
       connected_room_number.reservations << reservation
-      Hotel::Helper_Method.sort_reservations(connected_room_number.reservations)
+      Hotel::Helper_Method.sort_reservations_by_date(connected_room_number.reservations)
     end
 
     def self.check_valid_date_range(check_in, check_out)
