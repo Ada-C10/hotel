@@ -8,9 +8,19 @@ describe "HotBook::Book class" do
   let(:new_reservation) { book.new_reservation(daterange) }
 
   describe "new_reservation method" do
-    it "raises ArgError if the argument isn't a DateRange" do
+    it "raises ArgError if the daterange isn't a DateRange" do
       badrange = "some_string"
       expect{book.new_reservation(badrange)}.must_raise ArgumentError
+    end
+
+    it "raises ArgError if the room number isn't a String" do
+      bad_room_number = 99
+      expect{book.new_reservation(daterange, room_number: bad_room_number)}.must_raise ArgumentError
+    end
+
+    it "raises StandardError if there's no room by that number" do
+      bad_room_number = "not a room number"
+      expect{book.new_reservation(daterange, room_number: bad_room_number)}.must_raise StandardError
     end
 
     it "creates a Reservation object and stores in @reservations" do
@@ -21,9 +31,9 @@ describe "HotBook::Book class" do
     end
   end
 
-  describe "default_room method" do
-    it "returns what you friggin want" do
-      expect(book.default_room).must_equal "1"
+  describe "suggested_room method" do
+    it "returns the correct room number" do
+      expect(book.suggested_room(daterange)).must_equal "4"
     end
   end
 
@@ -49,10 +59,19 @@ describe "HotBook::Book class" do
     end
   end
 
-  describe "list_available_rooms method" do
+  describe "room_is_bookable? method" do
+    it "correctly checks if a room has a reservation on that date" do
+      room_number = "10"
+      expect(book.room_is_bookable?(room_number, daterange)).must_equal true
+      room_number = "2"
+      expect{book.room_is_bookable?(room_number, daterange)}.must_raise StandardError
+    end
+  end
+
+  describe "list_available_room_numbers method" do
     it "returns an array that's a subset (or equal to) all room numbers" do
       all = hotel.room_numbers
-      list = book.list_available_rooms(daterange)
+      list = book.list_available_room_numbers(daterange)
       expect(book.reservations.size).must_equal 6
       expect((all - list).size).must_equal (all.size - list.size)
       expect(list.first).must_equal "4"
