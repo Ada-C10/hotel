@@ -24,14 +24,11 @@ describe BookingManager do
     Reservation.new('181130', '181206')
   }
 
-
   describe "#initialize" do
     it "can be instantiated" do
       expect(manager).must_be_kind_of BookingManager
     end
   end
-
-
 
   describe "#add_reservation" do
     before do
@@ -50,8 +47,4 @@ describe BookingManager do
       expect(calendar.room_assignments[3]).must_equal reservation5.get_all_dates
     end
   end
-
-
-
 end
-# end
