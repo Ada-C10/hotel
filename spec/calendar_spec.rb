@@ -3,7 +3,7 @@ require 'pry'
 
 describe Calendar do
   let(:calendar) {
-    Calendar.new
+    Calendar.new(20)
   }
   let(:reservation1) {
     Reservation.new('181202', '181204')
@@ -22,9 +22,22 @@ describe Calendar do
     it "can be instantiated" do
       expect(calendar).must_be_kind_of Calendar
     end
-    it "stores rooms constant" do
+    it "stores rooms and room_assignments" do
+      expect(calendar).must_respond_to :rooms
+      expect(calendar).must_respond_to :room_assignments
+    end
+    it "creates accurate array of rooms" do
+      expect(calendar.rooms[-1]).must_equal 20
       expect(calendar.rooms).must_be_kind_of Array
       expect(calendar.rooms[0]).must_equal 1
+    end
+    it "creates accurate room_assignments hash" do
+      expect(calendar.room_assignments).must_be_kind_of Hash
+      expect(calendar.room_assignments.keys).must_equal calendar.rooms
+      calendar.room_assignments.values.each do |v|
+        expect(v).must_be_kind_of Array
+        expect(v).must_be_empty
+      end
     end
   end
 

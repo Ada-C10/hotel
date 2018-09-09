@@ -1,11 +1,9 @@
 class Calendar
 
-  # ROOMS = [*1..20]
-
   attr_reader :rooms, :room_assignments
 
-  def initialize
-    @rooms = [*1..20]
+  def initialize(number_of_rooms)
+    @rooms = [*1..(number_of_rooms)]
     @room_assignments = Hash[ @rooms.collect { |room| [room, []] } ]
   end
 

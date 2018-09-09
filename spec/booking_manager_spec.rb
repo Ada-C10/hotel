@@ -3,7 +3,7 @@ require 'pry'
 
 describe BookingManager do
   let(:calendar) {
-    Calendar.new
+    Calendar.new(20)
   }
   let(:manager) {
     BookingManager.new(calendar)
@@ -28,11 +28,7 @@ describe BookingManager do
   end
 
   describe "#print_all_rooms" do
-    before do
-      calendar = Calendar.new
-      manager = BookingManager.new(calendar)
-    end
-    it "returns array" do
+        it "returns array" do
       expect(manager.print_all_rooms).must_be_kind_of Array
     end
   end
