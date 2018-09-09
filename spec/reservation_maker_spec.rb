@@ -69,15 +69,14 @@ describe "ReservationMaker" do
       end_date1 = Date.new(2018,2,5)
       example1 = ReservationMaker.new(start_date1, end_date1).create_reservation
 
-      expect(ReservationMaker.reservations.length).must_raise StandardError
+      expect(example1).must_raise StandardError
+      # expect(ReservationMaker.reservations.length).must_raise StandardError
 
     end
   end
 
-  describe "tests for StandardError if all rooms are booked. " do
-    it "it will throw an error if there are 20 reservations already booked for that date range" do
-
-      available_rooms = nil
+  describe "tests for correctly making reservations. " do
+    it "it will add all 20 reservations booked for the same date" do
 
       start_date = Date.new(2018,2,3)
       end_date = Date.new(2018,2,5)
@@ -92,22 +91,131 @@ describe "ReservationMaker" do
   end
 
   describe "tests whether another reservation will be made if all rooms are booked. " do
-    it "it will not create another reservation because there are no rooms available for that dates range" do
+    it "it will NOT create another reservation because the 21st reservation is for the SAME DATES as the first 20 reservations." do
 
-      available_rooms = nil
 
       start_date = Date.new(2018,2,3)
       end_date = Date.new(2018,2,5)
-      example = nil
       20.times do |i|
         ReservationMaker.new(start_date, end_date).create_reservation
       end
+      start_date1 = Date.new(2018,2,3)
+      end_date1 = Date.new(2018,2,5)
+      example1 = ReservationMaker.new(start_date, end_date).create_reservation
 
-      example = ReservationMaker.new(start_date, end_date).create_reservation
+      # expect(example1).must_raise StandardError
+      expect(ReservationMaker.reservations.length).must_equal 20
 
-      expect(example.create_reservation).must_raise StandardError
+    end
+
+    it "it will NOT create another reservation because the 21st reservation OVERLAPS with the START dates of the first 20 reservations." do
+
+
+      start_date = Date.new(2018,2,3)
+      end_date = Date.new(2018,2,5)
+      20.times do |i|
+        ReservationMaker.new(start_date, end_date).create_reservation
+      end
+      start_date1 = Date.new(2018,2,3)
+      end_date1 = Date.new(2018,2,8)
+      ReservationMaker.new(start_date1, end_date1).create_reservation
+
+      expect(ReservationMaker.reservations.length).must_equal 20
+
+    end
+
+    it "it will NOT create another reservation because the 21st reservation STARTS ON THE CHECK-OUT dates of the first 20 reservations." do
+
+
+      start_date = Date.new(2018,2,3)
+      end_date = Date.new(2018,2,5)
+      20.times do |i|
+        ReservationMaker.new(start_date, end_date).create_reservation
+      end
+      start_date1 = Date.new(2018,2,5)
+      end_date1 = Date.new(2018,2,8)
+      ReservationMaker.new(start_date1, end_date1).create_reservation
+
+      expect(ReservationMaker.reservations.length).must_equal 21
+
+    end
+
+    it "it WILL create another reservation because the 21st reservation starts on the check-out dates of the first 20 reservations." do
+
+
+      start_date = Date.new(2018,2,3)
+      end_date = Date.new(2018,2,5)
+      20.times do |i|
+        ReservationMaker.new(start_date, end_date).create_reservation
+      end
+      start_date1 = Date.new(2018,2,5)
+      end_date1 = Date.new(2018,2,8)
+      ReservationMaker.new(start_date1, end_date1).create_reservation
+
+      expect(ReservationMaker.reservations.length).must_equal 21
+
+    end
+
+    it "it will NOT create another reservation because the 21st reservation is for dates contained within the start and end dates of the first 20 reservations." do
+
+      start_date = Date.new(2018,2,3)
+      end_date = Date.new(2018,2,6)
+      20.times do |i|
+        ReservationMaker.new(start_date, end_date).create_reservation
+      end
+      start_date1 = Date.new(2018,2,4)
+      end_date1 = Date.new(2018,2,5)
+      ReservationMaker.new(start_date1, end_date1).create_reservation
+
+      expect(ReservationMaker.reservations.length).must_equal 20
+
+    end
+
+    it "it WILL create another reservation because the 21st reservation is for dates COMPLETELY BEFORE the start and end dates of the first 20 reservations." do
+
+      start_date = Date.new(2018,2,3)
+      end_date = Date.new(2018,2,6)
+      20.times do |i|
+        ReservationMaker.new(start_date, end_date).create_reservation
+      end
+      start_date1 = Date.new(2018,1,4)
+      end_date1 = Date.new(2018,1,5)
+      ReservationMaker.new(start_date1, end_date1).create_reservation
+
+      expect(ReservationMaker.reservations.length).must_equal 21
+
+    end
+
+    it "it WILL create another reservation because the 21st reservation is for dates COMPLETELY AFTER the start and end dates of the first 20 reservations." do
+
+      start_date = Date.new(2018,2,3)
+      end_date = Date.new(2018,2,6)
+      20.times do |i|
+        ReservationMaker.new(start_date, end_date).create_reservation
+      end
+      start_date1 = Date.new(2018,3,4)
+      end_date1 = Date.new(2018,3,5)
+      ReservationMaker.new(start_date1, end_date1).create_reservation
+
+      expect(ReservationMaker.reservations.length).must_equal 21
+
+    end
+
+    it "it will NOT create another reservation because the 21st reservation is for dates that END ON THE CHECKIN DATE of the first 20 reservations." do
+
+      start_date = Date.new(2018,2,3)
+      end_date = Date.new(2018,2,6)
+      20.times do |i|
+        ReservationMaker.new(start_date, end_date).create_reservation
+      end
+      start_date1 = Date.new(2018,2,1)
+      end_date1 = Date.new(2018,2,4)
+      ReservationMaker.new(start_date1, end_date1).create_reservation
+
+      expect(ReservationMaker.reservations.length).must_equal 20
 
     end
   end
+
 
 end

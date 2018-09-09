@@ -49,7 +49,7 @@ class ReservationMaker
     unless booked_room_list.nil?
       rooms.each do |room|
         if booked_room_list.include?(room)
-          
+
         else
           available_rooms << room
         end
