@@ -29,7 +29,7 @@ module Hotel
       reservation = Hotel::Reservation.new(reserve)
       Hotel::Helper_Method.connect_reservation_to_room_and_sort(@rooms, input[:room_number], reservation)
       @hotel_reservations << reservation
-      Hotel::Helper_Method.sort_reservations(@hotel_reservations)
+      Hotel::Helper_Method.sort_reservations_by_date(@hotel_reservations)
     end
 
     def reserve_room_in_block(input)
@@ -60,7 +60,7 @@ module Hotel
         reservation = Hotel::Block_Room.new(block_room_hash)
         Hotel::Helper_Method.connect_reservation_to_room_and_sort(@rooms, block_room_hash[:room_number], reservation)
         @hotel_reservations << reservation
-        Hotel::Helper_Method.sort_reservations(@hotel_reservations)
+        Hotel::Helper_Method.sort_reservations_by_date(@hotel_reservations)
 
         blocked_rooms << reservation
       end

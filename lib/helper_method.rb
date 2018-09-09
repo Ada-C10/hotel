@@ -69,6 +69,10 @@ module Hotel
       list_of_reservations.sort! { |a,b| a.check_in_date <=> b.check_in_date }
     end
 
+    def self.sort_block_reservations_by_name(list_of_block_reservations)
+      list_of_block_reservations.sort! { |a,b| a.first.block_name <=> b.first.block_name }
+    end
+
     def self.connect_reservation_to_room_and_sort(list_of_rooms, room_number, reservation)
       connected_room_number = Hotel::Helper_Method.find_room_number(list_of_rooms, room_number)
       if Hotel::Helper_Method.check_a_room_for_availability(connected_room_number, reservation.check_in_date, reservation.check_out_date) == :BOOKED

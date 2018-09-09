@@ -242,4 +242,41 @@ describe 'self.binary_search_list_of_reservations_for_vacancy method' do
       end
     end
 
+    describe 'self.sort_block_reservations_by_name' do
+      before do
+        @date = Date.new(2020,1,9)
+        @date2 = Date.new(2020,1,13)
+        @date3 = Date.new(2020,2,10)
+        @date4 = Date.new(2020,2,12)
+        @hotel = Hotel::Booking_Manager.new
+        @input = {
+          check_in_date: @date,
+          check_out_date: @date2,
+          block_name: "Munster - Addams Wedding",
+          block_discount: 0.08,
+          number_of_rooms_to_block: 3
+        }
+        @input2 = {
+          check_in_date: @date3,
+          check_out_date: @date4,
+          block_name: "Barnabas Collins Family Reunion",
+          block_discount: 0.06,
+          number_of_rooms_to_block: 2
+        }
+        @hotel.create_block(@input)
+        @hotel.create_block(@input2)
+
+        @block_reservations = @hotel.block_reservations
+      end
+
+      it 'takes an array of arrays, checks the first index at each array and sorts each block reservation by name' do
+
+      expect(@block_reservations.first[0].block_name).must_equal "Munster - Addams Wedding"
+      expect(@block_reservations.last[0].block_name).must_equal "Barnabas Collins Family Reunion"
+      Hotel::Helper_Method.sort_block_reservations_by_name(@block_reservations)
+      expect(@block_reservations.first[0].block_name).must_equal "Barnabas Collins Family Reunion"
+      expect(@block_reservations.last[0].block_name).must_equal "Munster - Addams Wedding"
+      end
+    end
+
 end
