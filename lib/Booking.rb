@@ -48,16 +48,15 @@ class Booking
   # Helper method to return first available room
   def first_available_room(start_date, end_date)
     return list_rooms_available_for_date_range(start_date, end_date).first.room_number
-    # binding.pry
   end
 
   # Maybe have room_number default to first available room for date range?
-  # Wave 2 - Room must be available to be reserved
   def add_reservation(check_in, check_out, room_number = nil)
-    # Raise an error if list of available rooms does not include the given room number
+    # If not given a room, choose the first available room for the date range
     room_number ||= first_available_room(check_in, check_out)
     available_rooms = list_rooms_available_for_date_range(check_in, check_out)
     room = find_room(room_number)
+    # Raise an error if list of available rooms does not include the given room number
     if available_rooms.include?(room) == false
       raise RoomUnavailableError, "Room #{room_number} is not available between #{check_in} and #{check_out}"
     end
@@ -82,10 +81,6 @@ class Booking
   # Helper method to check if date ranges overlap
   # Depends on order of arguments, maybe refactor as a hash
   def date_range_overlap?(start_date_one, end_date_one, start_date_two, end_date_two)
-    # TRUE if dates match
-    # if start_date_one == start_date_two && end_date_one == end_date_two
-    #   return true
-      # TRUE is date ranges overlap in the front
     if start_date_one < end_date_two && start_date_two < end_date_one
         return true
     else
@@ -96,13 +91,11 @@ class Booking
   # Default start date to today/end date to today + 2?
   # Change to keyword arguments or maybe a hash so order doesn't matter
   def list_rooms_available_for_date_range(start_date, end_date)
-    # Create daterange helper method to check if ranges overlap
-    # It's okay if start_date and the last day of reservation are the same. (Do check_out - 1 for range end)
-    # If any of the room's reservations are within the given range, room is not available
     # Select room if all reservations for the room return false for overlap with the given start date end date
     rooms_available = @rooms.select do |room|
      room.reservations.all? { |reservation| date_range_overlap?(start_date, end_date, reservation.check_in, reservation.check_out) == FALSE }
     end
+    # If there is no room available, raise an error
     if rooms_available.empty?
       raise NoRoomsAvailableError, "No rooms are available for this date range"
     else
@@ -126,7 +119,4 @@ class Booking
       room_with_reservation[0].find_reservation(room_number, start_date, end_date, cost_per_night).total
     end
   end
-
 end
-
-  # TODO Can reserve an available room for a given date range

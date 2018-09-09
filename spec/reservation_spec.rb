@@ -53,4 +53,10 @@ describe "Reservation" do
     expect(@test_reservation.number_of_days_reserved).must_equal (@test_reservation.check_out - @test_reservation.check_in).to_i
     expect(@test_reservation).kind_of? Integer
   end
+
+  describe "BlockRoom" do
+    it "Is able to check if a date range is reserved for a BlockRoom" do
+      # Would be a helper method of some sort for Room to check Reservation to see if date range has been reserved for a BlockRoom
+    end
+  end
 end

@@ -51,4 +51,22 @@ describe "Room" do
       expect(@room3.is_available?(Date.new(2018, 9, 1))).must_equal FALSE
     end
   end
+
+  describe "BlockRoom" do
+    it "Is able to be added to a BlockRoom if available for date range given" do
+      #
+    end
+
+    it "Raises an error if attempting to be reserved for a BlockRoom when not available for the given date range" do
+
+    end 
+
+  it "Raises an error if reserved for a BlockRoom and someone is attempting a regular reservation" do
+
+  end
+
+  it "Is able to be reserved for block date range" do
+
+  end
+
 end

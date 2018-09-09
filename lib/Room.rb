@@ -7,6 +7,7 @@ class Room
   attr_reader :room_number, :reservations
 
   # Refactor note: Might be better to default reservations to an empty array?
+  # May change to a collection of public_reservations and another collection of block_reservations
   def initialize(room_number, reservations)
     @room_number = room_number.to_i
     if room_number.between?(1,20) == false
@@ -37,7 +38,7 @@ class Room
   def is_available?(date)
     # This way Booking can ask each room if they have availability
     # Check reservations to see if room is available
-    # Maybe access reservations and ask if any of the ranges include the date
+    # Access reservations and ask if any of the ranges include the date
     # If so, return false
     # if not, return true
     !@reservations.any? do |reservation|

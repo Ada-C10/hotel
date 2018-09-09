@@ -1,5 +1,5 @@
 require 'date'
-# Responsability - Handle date methods
+# Responsability - Handle date range methods
 
 class DateRange
   attr_reader :start_date, :end_date
@@ -19,12 +19,11 @@ class DateRange
   end
 
   def date_within_range?(date)
-    return (@start_date .. @end_date).cover?(date)
+    return ( @start_date .. @end_date ).cover?(date)
   end
 
   # Was not successful transferring this to Reservations class to calculate cost
   def number_of_days
-    return (@end_date - @start_date).to_i
+    return ( @end_date - @start_date ).to_i
   end
-
 end
