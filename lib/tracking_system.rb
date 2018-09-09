@@ -66,11 +66,11 @@ class TrackingSystem
     available_rooms = []
     unavailable_count = 0
     @all_rooms.each do |room|
-      if room.reserved_dates.empty?
+      if room.reserved_dates.empty? && room.block == :NA
         available_rooms << room
       else
         room.reserved_dates.each do |dates_hash| #<---date_range could be a hash like {checkin_time: checkin, checkout_time: checkout}
-          if ranges_overlap?((dates_hash[:start_time]...dates_hash[:end_time]).to_a, (start_time..end_time).to_a) == false && room.block == :NA
+          if ranges_overlap?((dates_hash[:start_time]...dates_hash[:end_time]).to_a, (start_time..end_time).to_a) == false
             available_rooms << room #not quite sure how to write a test for this conditional, "ensures rooms not in a block", "ensures rooms dates dont overlap"
           else
             unavailable_count += 1
@@ -97,14 +97,6 @@ class TrackingSystem
     @reservations
   end
 
-  def generate_block_id
-    (0..3).map { (65 + rand(26)).chr }.join
-  end
-
-
-  def ranges_overlap?(r1, r2)
-    r1.include?(r2.first) || r2.include?(r1.first)
-  end
 
   # Wave3 (1~3)
   # 1. As an administrator, I can create a block of rooms
@@ -185,10 +177,22 @@ class TrackingSystem
   end
   #create helper method that finds the block discount rate by block id?
 
+  private
+
+  def generate_block_id
+    (0..3).map { (65 + rand(26)).chr }.join
+  end
+
+  def ranges_overlap?(r1, r2)
+    r1.include?(r2.first) || r2.include?(r1.first)
+  end
+
 
 
 
 end #class end
+
+
 
 
 #############################  #############################   #############################

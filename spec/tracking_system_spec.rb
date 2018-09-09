@@ -169,14 +169,6 @@ describe 'TrackingSystem class' do
 
 
 
-
-
-
-
-
-
-
-
   describe "#add_block" do
     before do
       @tracker = TrackingSystem.new
@@ -195,6 +187,7 @@ describe 'TrackingSystem class' do
     it "returns an array of blocks" do
       @block = @tracker.add_block(start_time: Date.new(2018,8,1), end_time: Date.new(2018,8,25), number_of_rooms:5)
       @block = @tracker.add_block(start_time: Date.new(2018,7,1), end_time: Date.new(2018,7,10), number_of_rooms:4)
+      # binding.pry
       expect(@tracker.blocks).must_be_kind_of Array
     end
 
