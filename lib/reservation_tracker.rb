@@ -10,7 +10,7 @@ class ReservationTracker
   def initialize
     @all_reservations = []
     @rooms = Room.new
-    @block_reservations = []
+    @all_blocks = []
     @block_room_reservations = []
   end
 
@@ -40,7 +40,6 @@ class ReservationTracker
   def occupied_rooms(date_range)
     occupied_rooms = []
     date_range = Dates::date_range_format(date_range)
-
     @all_reservations.each do |reservation|
       if Dates::date_range_comparison(date_range, reservation.date_range)
         if reservation.room_num.class == Array
@@ -63,8 +62,45 @@ class ReservationTracker
 
     reservation = Reservation.new(date_range, room_block, discount_rate)
 
-    @block_reservations << reservation
+    @all_blocks << reservation
     @all_reservations << reservation
+    return reservation
+  end
+
+
+  def occupied_block_rooms(date_range)
+    used_block_rooms = []
+    date_range = Dates::date_range_format(date_range)
+    reservations = @block_room_reservations.find_all { |reservation| reservation.date_range == date_range }
+    occupied_block_rooms = reservations.map { |reservation| used_block_rooms << reservation.room_num }
+    return used_block_rooms
+  end
+
+
+  def open_rooms_in_block(date_range)
+    date_range = Dates::date_range_format(date_range)
+    block = @all_blocks.find{ |block| block.date_range == date_range }
+    block_rooms = block.room_num
+    open_rooms = block_rooms - occupied_block_rooms(date_range)
+    return open_rooms
+  end
+
+  def first_available_block_room(date_range)
+    rooms = open_rooms_in_block(date_range)
+    return rooms.first
+  end
+
+
+  def new_block_room_reservation(date_range)
+    date_range = Dates::date_range_format(date_range)
+
+    room_num = first_available_block_room(date_range)
+
+    rate = (@all_blocks.find{ |block| block.date_range == date_range }).rate
+
+    reservation = Reservation.new(date_range, room_num, rate)
+    @all_reservations << reservation
+    @block_room_reservations << reservation
     return reservation
   end
 end

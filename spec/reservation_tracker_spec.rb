@@ -64,7 +64,19 @@ describe "ReservationTracker class" do
     end
 
     it "adds block of rooms to occupied_rooms" do
-      expect (@reservations.occupied_rooms(@date_range)).must_equal [1, 2, 3, 4, 5, 6, 7]
+      expect ( @reservations.occupied_rooms(@date_range) ).must_equal [1, 2, 3, 4, 5, 6, 7]
+    end
+
+    it "reserves a room from within a block of rooms" do
+      new_block_room_reservation = @reservations.new_block_room_reservation(@date_range)
+      expect ( new_block_room_reservation ).must_be_kind_of Reservation
+    end
+
+    it "lists available rooms in a block" do
+      3.times do
+        reservation = @reservations.new_block_room_reservation(@date_range)
+      end
+      expect ( @reservations.open_rooms_in_block(@date_range) ).must_equal [6, 7]
     end
   end
 
@@ -72,13 +84,13 @@ describe "ReservationTracker class" do
 
   describe "lists of reservations" do
     it "creates a list of all reservations" do
-      expect (@reservations.all_reservations).must_be_kind_of Array
-      expect (@reservations.all_reservations.length).must_equal 3
+      expect ( @reservations.all_reservations ).must_be_kind_of Array
+      expect ( @reservations.all_reservations.length ).must_equal 3
     end
 
     it "can access the list of reservations for a specific date" do
       current_reservations = @reservations.reservation_list_by_date('9-15-2018')
-      expect (current_reservations.length).must_equal 3
+      expect ( current_reservations.length ).must_equal 3
     end
   end
 
@@ -87,7 +99,7 @@ describe "ReservationTracker class" do
   describe "list of open rooms" do
     it "can report a list of rooms that are not reserved for a given date range" do
       open_rooms = @reservations.rooms.find_all_open_rooms(@reservations.occupied_rooms(begin_date: '9-18-2018', end_date: '9-20-2018'))
-      expect (open_rooms).must_equal [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
+      expect ( open_rooms ).must_equal [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
     end
   end
 end
