@@ -27,12 +27,16 @@ describe "a date range" do
   end
 
   it "each date range must ben an integer" do
-    @date_range.duration.must_be_kind_of Integer 
+    @date_range.duration.must_be_kind_of Integer
   end
 
   it "raises a standard error if end date is before start date" do
     expect{ Hotel::DateRange.new(@check_out, @check_in) }.must_raise StandardError
   end
 
+  it "checks to see if a given date is within the date range" do
+
+    @date_range.include?(@check_in).must_equal true
+  end
 
 end

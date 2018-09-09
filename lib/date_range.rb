@@ -8,7 +8,7 @@ module Hotel
       if (end_date < start_date)
         raise StandardError
       end
-      
+
       @start_date = start_date
       @end_date = end_date
     end
@@ -17,6 +17,8 @@ module Hotel
       return (@end_date - @start_date).to_i
     end
 
-
+    def include?(date)
+      return (start_date <= date && end_date > date)
+    end
   end
 end
