@@ -42,6 +42,10 @@ describe 'Room class' do
     [Date.parse("Oct 9 2018"), Date.parse("Oct 10 2018"), Date.parse("Oct 11 2018")]
   }
 
+  let (:overlap_block) {
+    [Date.parse("Dec 2 2018"), Date.parse("Dec 3 2018"), Date.parse("Dec 4 2018")]
+  }
+
   describe 'Initializer' do
     it 'is an instance of Room' do
       expect(@room).must_be_kind_of Room
@@ -72,23 +76,29 @@ describe 'Room class' do
     end
 
     it 'returns false if room is blocked' do
-      expect(@room.is_not_blocked?(no_overlap_after)).must_equal false
+      expect(@room.is_not_blocked?(overlap_block)).must_equal false
     end
   end
 
   describe 'add_reservation_to_room' do
     it "adds a reservation instance to room's reservations array" do
-      expect(@room.reservations).must_be_kind_of Array
-      expect(@room.reservations.count).must_equal 2
-      expect(@room.reservations[0]).must_be_kind_of Reservation
+      my_res = Reservation.new("Nov 1 2018", "Nov 5 2018")
+      room_reservations = @room.add_reservation_to_room(my_res)
+
+      expect(room_reservations).must_be_kind_of Array
+      expect(room_reservations.count).must_equal 3
+      expect(room_reservations[0]).must_be_kind_of Reservation
     end
   end
 
   describe 'add_block_to_room' do
     it "adds a block instance to room_blocks array" do
-      expect(@room.room_blocks).must_be_kind_of Array
-      expect(@room.room_blocks.count).must_equal 2
-      expect(@room.room_blocks[0]).must_be_kind_of BlockOfRooms
+      my_block = BlockOfRooms.new("Nov 1 2018", "Nov 5 2018")
+      room_blocked = @room.add_block_to_room(my_block)
+
+      expect(room_blocked).must_be_kind_of Array
+      expect(room_blocked.count).must_equal 3
+      expect(room_blocked[0]).must_be_kind_of BlockOfRooms
     end
   end
 end

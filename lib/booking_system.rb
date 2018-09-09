@@ -97,16 +97,29 @@ class BookingSystem
 
   # create block of rooms
   def create_block_of_rooms(start_date, end_date, discounted_rate)
+    dates = date_range(start_date, end_date)
     new_block = BlockOfRooms.new(start_date, end_date, room_cost: discounted_rate)
-    unreserved_rooms = unreserved_rooms_by_date(start_date, end_date)
+    new_block.id = assign_block_id
 
-    5.times do |i|
-      new_block.add_room(unreserved_rooms[i])
+    num_of_rooms = 0
+    @rooms.each do |room|
+      if room.is_available?(dates) && room.is_not_blocked?(dates)
+        room.add_block_to_room(new_block)
+        new_block.add_room(room)
+        num_of_rooms += 1
+      end
+      if num_of_rooms == 5
+        break
+      end
     end
 
     @room_blocks << new_block
 
     return new_block
+  end
+
+  def assign_block_id
+    return @room_blocks.count + 1
   end
 
   # check if block of rooms has availability

@@ -5,6 +5,7 @@ describe 'BookingSystem class' do
   before do
     @booking = BookingSystem.new
     @booking.reserve_room("Oct 4 2018", "Oct 7 2018")
+    @booking.create_block_of_rooms("Dec 1 2018", "Dec 5 2018", 180)
   end
 
   let (:overlap_before) {
@@ -204,10 +205,8 @@ describe 'BookingSystem class' do
     end
 
     it 'returns an array of unreserved rooms given a date range that conflicts' do
-
       start_date = "Oct 4 2018"
       end_date = "Oct 7 2018"
-
       unreserved_rooms = @booking.unreserved_rooms_by_date(start_date, end_date)
 
       expect(unreserved_rooms).must_be_kind_of Array
@@ -216,7 +215,6 @@ describe 'BookingSystem class' do
     end
 
     it "returns same number of unreserved_rooms given a date range that doesn't conflict" do
-
       start_date = "Nov 4 2018"
       end_date = "Nov 7 2018"
       unreserved_rooms = @booking.unreserved_rooms_by_date(start_date, end_date)
@@ -226,16 +224,17 @@ describe 'BookingSystem class' do
   end
 
   describe 'create_block_of_rooms' do
-    it 'returns an array with 5 elements max representing block of rooms' do
+    it 'returns a BlockOfRooms instance with 5 elements max representing block of rooms' do
       start_date = "Oct 4 2018"
       end_date = "Oct 7 2018"
       discounted_rate = 180
       my_block = @booking.create_block_of_rooms(start_date, end_date, 180)
 
-      expect(my_block ).must_be_kind_of BlockOfRooms
+      expect(my_block).must_be_kind_of BlockOfRooms
       expect(my_block.check_in_date).must_equal Date.parse(start_date)
       expect(my_block.check_out_date).must_equal Date.parse(end_date)
       expect(my_block.room_cost).must_equal discounted_rate
+      expect(my_block.collection_rooms.count).must_equal 5
       expect(my_block.collection_rooms.count).must_be :<=, 5
     end
   end
