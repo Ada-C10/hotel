@@ -1,2 +1,5 @@
 # hotel/refactors.txt
-Todo:
+Notes:
+
+does hotel really need to have room numbers and rates?
+yes, because reservation doesn't need to know that, really

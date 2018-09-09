@@ -8,6 +8,7 @@ require "minitest/pride"
 require "pry"
 require "awesome_print"
 require "date"
+require "csv"
 
 # Add lib files here (require_relative "../")
 require_relative "../lib/book.rb"

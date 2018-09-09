@@ -26,36 +26,26 @@ describe "HotBook::Hotel class" do
     end
   end
 
+## Project Requirement: User can view a list of rooms
   describe "load_rooms method" do
-    it "room numbers are all valid key/value pairs" do
+    it "room numbers are all valid-type key/value pairs" do
       rooms.each_with_index do |room, index|
         expect(room[:room_number]).must_be_instance_of String
         expect(room[:room_number]).must_equal valid_room_numbers[index]
       end
     end
 
-    it "room rates are all valid key/value pairs" do
+    it "room rates are all valid-type key/value pairs" do
       rooms.each do |room|
         expect(room[:room_rate]).must_equal 200.0
       end
     end
   end
 
-  describe "find_room_by_number method" do
-    it "raises StandardError if room not found" do
-      query = "21"
-      expect{hotel.find_room_by_number(query)}.must_raise StandardError
-    end
-
-    it "raises ArgumentError if query != String" do
-      query = 21
-      expect{hotel.find_room_by_number(query)}.must_raise ArgumentError
-    end
-
-    it "correctly finds the room you searched for" do
-      found_room = hotel.find_room_by_number("13")
-      expect(found_room).must_be_instance_of Hash
-      expect(found_room[:room_number]).must_equal "13"
+  describe "project requirement: user can view a list of rooms" do
+    # This requires that test(s) MUST pass for "load rooms method"
+    it "can return a list of rooms" do
+      expect(hotel.rooms).must_be_instance_of Array
     end
   end
 

@@ -62,42 +62,57 @@ describe "HotBook::DateRange class" do
   #   end
   # end
 
-  describe "is_after? method" do
-    # existing range:
-    oldrange = HotBook::DateRange.new(start_date: "apr_6", end_date: "apr_10")
-    # check these new ranges against existing range:
-    ok1 = HotBook::DateRange.new(start_date: "apr_29", end_date: "apr_30")
-    ok2 = HotBook::DateRange.new(start_date: "apr_10", end_date: "apr_30")
-    notok1= HotBook::DateRange.new(start_date: "apr_9", end_date: "apr_30")
-    notok2 = HotBook::DateRange.new(start_date: "apr_1", end_date: "apr_6")
-    notok3 = HotBook::DateRange.new(start_date: "apr_1", end_date: "apr_5")
+  describe "conflict? method" do
+    range1 = HotBook::DateRange.new(start_date: "apr_6", end_date: "apr_10")
+    # check these new ranges against range1:
+    noconflict1 = HotBook::DateRange.new(start_date: "apr_1", end_date: "apr_6")
+    noconflict2 = HotBook::DateRange.new(start_date: "apr_1", end_date: "apr_3")
+    noconflict3 = HotBook::DateRange.new(start_date: "apr_10", end_date: "apr_30")
+    noconflict4 = HotBook::DateRange.new(start_date: "apr_11", end_date: "apr_30")
+    conflict1= HotBook::DateRange.new(start_date: "apr_1", end_date: "apr_7")
+    conflict2 = HotBook::DateRange.new(start_date: "apr_6", end_date: "apr_7")
+    conflict3= HotBook::DateRange.new(start_date: "apr_6", end_date: "apr_10")
+    conflict4 = HotBook::DateRange.new(start_date: "apr_6", end_date: "apr_12")
+    conflict5 = HotBook::DateRange.new(start_date: "apr_7", end_date: "apr_10")
+    conflict6 = HotBook::DateRange.new(start_date: "apr_7", end_date: "apr_30")
 
-      it "will return true if ranges don't conflict" do
-        expect(ok1.is_after?(oldrange)).must_equal true
-      end
+    it "will return false if ranges don't conflict" do
+      expect(range1.conflict?(noconflict1)).must_equal false
+      expect(range1.conflict?(noconflict2)).must_equal false
+      expect(range1.conflict?(noconflict3)).must_equal false
+      expect(range1.conflict?(noconflict4)).must_equal false
+    end
 
-      it "allows a new range (reservation) to start on the same day" \
-         "that another one ends" do
-        expect(ok2.is_after?(oldrange)).must_equal true
-      end
+    it "will return true if ranges do conflict" do
+      expect(range1.conflict?(conflict1)).must_equal true
+      expect(range1.conflict?(conflict2)).must_equal true
+      expect(range1.conflict?(conflict3)).must_equal true
+      expect(range1.conflict?(conflict4)).must_equal true
+      expect(range1.conflict?(conflict5)).must_equal true
+      expect(range1.conflict?(conflict6)).must_equal true
+    end
 
-      it "will return false if ranges do conflict" do
-        expect(notok1.is_after?(oldrange)).must_equal false
-      end
+    it "will work in reverse" do
+      expect(noconflict1.conflict?(range1)).must_equal false
+      expect(noconflict2.conflict?(range1)).must_equal false
+      expect(noconflict3.conflict?(range1)).must_equal false
+      expect(noconflict4.conflict?(range1)).must_equal false
+      expect(conflict1.conflict?(range1)).must_equal true
+      expect(conflict2.conflict?(range1)).must_equal true
+      expect(conflict3.conflict?(range1)).must_equal true
+      expect(conflict4.conflict?(range1)).must_equal true
+      expect(conflict5.conflict?(range1)).must_equal true
+      expect(conflict6.conflict?(range1)).must_equal true
+    end
+  end
 
-      it "will return false if new range is before oldrange" do
-        expect(notok2.is_after?(oldrange)).must_equal false
-        expect(notok3.is_after?(oldrange)).must_equal false
-      end
-
-    # describe "to_range method" do
-    #   it "will return a Range class object" do
-    #     daterange = HotBook::DateRange.new(start_date: "apr_1",
-    #                                        end_date: "apr_2")
-    #     range = daterange.to_range
-    #     expect(range).must_be_instance_of Range
-    #   end
-    # end
+  describe "to_range method" do
+    it "will return a Range class object" do
+      daterange = HotBook::DateRange.new(start_date: "apr_1",
+                                         end_date: "apr_2")
+      range = daterange.to_range
+      expect(range).must_be_instance_of Range
+    end
   end
 
 end
