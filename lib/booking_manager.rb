@@ -48,9 +48,6 @@ module Hotel
       if number_of_rooms_to_block > 5
         return raise ArgumentError, 'Limit exceeded. Cannot create block larger than 5 rooms.'
       end
-      if vacant_rooms.length < number_of_rooms_to_block
-        return raise ArgumentError, 'Not enough available rooms to block.'
-      end
       blocked_rooms = []
       number_of_rooms_to_block.times do |i|
         block_room_hash = {
@@ -98,7 +95,11 @@ module Hotel
           reservations << room.reservations[index]
         end
       end
-      return reservations
+      if reservations.empty?
+        return raise StandardError, "No rooms reserved on provided date."
+      else
+        return reservations
+      end
     end
 
     def check_block_status(name_of_block)
@@ -113,7 +114,11 @@ module Hotel
           end
         end
       end
-      return available_rooms
+      if available_rooms.empty?
+        return raise StandardError, "All rooms in block booked."
+      else
+        return available_rooms
+      end
     end
 
     def total_cost_of_stay(reservation)

@@ -81,20 +81,23 @@ describe "Booking Manager class" do
         check_in_date: Date.new(2018, 6, 6),
         check_out_date: Date.new(2018, 6, 12)
       }
-      @hotel.reserve_room(@input1)
-      @hotel.reserve_room(@input2)
       @names = ["Dr. Frankenstein", "Mx. Mummy"]
     end
 
     it 'returns an array of all reservations for that date' do
+      @hotel.reserve_room(@input1)
+      @hotel.reserve_room(@input2)
       expect(@hotel.list_reservations(@date)).must_be_kind_of Array
       @list = @hotel.list_reservations(@date)
       @list.each do |reservation|
           expect(@names.include?(reservation.name)).must_equal true
       end
     end
+    it 'returns an error if no rooms booked on given date' do
+      expect{ @hotel.list_reservations(@date) }.must_raise StandardError
+    end
   end
-
+  
   describe 'total_cost_of_stay method' do
     before do
       @date = Date.new(2018, 6, 6)
@@ -285,6 +288,13 @@ describe "Booking Manager class" do
       @hotel.reserve_room_in_block(@input3)
       @check2 = @hotel.check_block_status(@input2)
       expect(@check2.length).must_equal 2
+    end
+
+    it 'returns an error if all rooms in block booked' do
+      @hotel.reserve_room_in_block(@input3)
+      @hotel.reserve_room_in_block(@input3)
+      @hotel.reserve_room_in_block(@input3)
+      expect{ @hotel.check_block_status(@input2) }.must_raise StandardError
     end
 
   end
