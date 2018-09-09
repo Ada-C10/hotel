@@ -15,3 +15,5 @@ I would like to consolidate parsing room_block and reservation data, esp. in the
 I probably have a few too many helper methods.
 
 I'm not sure if RoomBlock fits as a child of Reservation esp. as room_number is now an array for RoomBlock and just one single integer for Reservation. If I kept this structure, I'd  instantiate RoomBlock with instance variable room_numbers instead of room_number. I'd change Reservation to SingularBooking and RoomBlock to BlockBooking or something like that, and change ReservationManager to ReservationBooker.
+
+In the method list_daily_reservations, I'm not sure if I should include the checkout_date. I guess I'd need to know what the list is used for to determine whether to include it or not. 

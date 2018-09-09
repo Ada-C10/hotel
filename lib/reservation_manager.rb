@@ -74,17 +74,12 @@ module Hotel
         raise ArgumentError.new("Please enter room numbers larger than 0.") if num_rooms
       end
 
-      #find room in range
       range = (Date.parse(checkin_date)..Date.parse(checkout_date)).to_a
-      room = find_available_room(range) #error here
+      room = find_available_room(range) 
 
-      #parse data into a form needed for reservation
       input = parse_reservation_data(checkin_date, checkout_date, room.room_number, room_block_discount)
-
-      #create a room reservation from our input
       reservation = Hotel::Reservation.new(input)
 
-      #add new reservation to list of rooms and list of reservations in ReservationManager
       room.add_reservation(reservation)
       add_reservation_to_list(reservation)
       return reservation
