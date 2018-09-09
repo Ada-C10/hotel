@@ -4,7 +4,6 @@ require 'pry'
 describe 'ReservationManager' do
   let(:manager){ Hotel::ReservationManager.new }
 
-
   describe 'initialize' do
 
     it 'is set up for specific instance variables and data types' do
@@ -19,7 +18,7 @@ describe 'ReservationManager' do
 
       expect(manager.rooms[0]).must_be_instance_of Hotel::Room
       expect(manager.rooms[19]).must_be_instance_of Hotel::Room
-      expect(manager.rooms[20]).must_equal nil
+      expect(manager.rooms[20]).must_be_nil
     end
 
     it 'will throw an error if you try to generate more than  20 rooms' do
@@ -48,6 +47,12 @@ describe 'ReservationManager' do
     rooms
   }
 
+  let(:fully_booked_manager) {
+    fully_booked_manager = Hotel::ReservationManager.new()
+    20.times { fully_booked_manager.make_reservation("10/05/2018", "14/05/2018") }
+    fully_booked_manager
+  }
+
   describe 'find_available_room' do
     it 'will return the first available room for reservation that date range' do
       expect(find_first_room).must_be_instance_of Hotel::Room
@@ -62,16 +67,12 @@ describe 'ReservationManager' do
       expect(find_two_rooms[1].room_number).must_equal 1
     end
 
-    it 'will throw an error if no available rooms' do
-      expect{
-        date_range = (Date.parse("10/08/2018")..Date.parse("14/08/2018")).to_a
-        21.times do
-          room = manager.find_available_room(date_range)
-          rooms << room
-        end
-        rooms
-      }.must_raise StandardError
+    it 'will return a message to user if no room available for that date' do
+      date_range = (Date.parse("10/05/2018")..Date.parse("14/05/2018")).to_a
+      expect(fully_booked_manager.find_available_room(date_range)).must_be_kind_of String
+      expect(fully_booked_manager.find_available_room(date_range)).must_equal "Hotel fully booked for this date range. Try a different date."
     end
+
   end
 
   let(:valid_total_cost) {
@@ -114,7 +115,7 @@ describe 'ReservationManager' do
     manager.reservations
   }
 
-  let(:some_reservations) {
+  let(:one_reservation) {
     input = { checkin_date: "12/09/2018", checkout_date: "15/09/2018", room_number: 2, total_cost: 600, confirmation_id: "ABC12345" }
     reservation = Hotel::Reservation.new(input)
     manager = Hotel::ReservationManager.new
@@ -131,7 +132,7 @@ describe 'ReservationManager' do
     it 'will increase the count of reservations by 1' do
 
       expect(no_reservations.length).must_equal 0
-      expect(some_reservations.length).must_equal 1
+      expect(one_reservation.length).must_equal 1
     end
 
     it 'will throw an argument error if param is not a valid reservation' do
@@ -142,9 +143,187 @@ describe 'ReservationManager' do
     end
   end
 
-  describe 'parse_input' do
+  describe 'parse_data' do
+
+    let(:parse_one_reservation) {
+      manager = Hotel::ReservationManager.new
+      #3nights
+      checkin_date = "12/09/2018"
+      checkout_date = "15/09/2018"
+      date_range = (Date.parse(checkin_date)..Date.parse(checkout_date)).to_a
+      room_object = manager.find_available_room(date_range)
+      manager.parse_data(checkin_date, checkout_date, room_object)
+    }
+
+    it 'will parse data into form usable by reservation class' do
+
+      expect(parse_one_reservation[:checkin_date]).must_equal "12/09/2018"
+      expect(parse_one_reservation[:checkout_date]).must_equal "15/09/2018"
+      expect(parse_one_reservation[:room_number]).must_equal 1
+      expect(parse_one_reservation[:confirmation_id]).must_match(/^[A-Z]{3}+[\d]{5}/)
+      expect(parse_one_reservation[:total_cost]).must_equal 200 * 3
+    end
   end
 
+  let(:make_one_reservation) {
+    manager = Hotel::ReservationManager.new
+    checkin_date = "12/09/2018"
+    checkout_date = "15/09/2018"
+    manager.make_reservation(checkin_date, checkout_date)
+  }
+
+  let(:make_two_reservations) {
+    manager = Hotel::ReservationManager.new
+    checkin_date1 = "10/09/2018"
+    checkout_date1 = "12/09/2018"
+    manager.make_reservation(checkin_date1, checkout_date1)
+    checkin_date2 = "12/09/2018"
+    checkout_date2 = "15/09/2018"
+    manager.make_reservation(checkin_date2, checkout_date2)
+  }
+
+  let(:no_reservations_manager){ Hotel::ReservationManager.new }
+
+  let(:make_one_reservation_manager) {
+    manager = Hotel::ReservationManager.new
+    checkin_date = "12/09/2018"
+    checkout_date = "15/09/2018"
+    manager.make_reservation(checkin_date, checkout_date)
+    manager
+  }
+
+  let(:make_three_allowed_overlapping_manager) {
+    manager.make_reservation("12/07/2018", "14/07/2018")
+    manager.make_reservation("14/07/2018", "16/07/2018")
+    manager.make_reservation("16/07/2018", "18/07/2018")
+    manager
+  }
+  let(:make_two_not_allowed_overlapping_manager) {
+    manager.make_reservation("12/07/2018", "15/07/2018")
+    manager.make_reservation("14/07/2018", "16/07/2018")
+    manager
+  }
+
+  describe 'make_reservation' do
+
+    it 'will create a new instance of reservation object' do
+      expect(make_one_reservation[0]).must_be_instance_of Hotel::Reservation
+    end
+
+    #increase count by one
+    it 'will increase number of reservations in ReservationManager by 1 each time called' do
+      expect(manager.reservations.length).must_equal 0
+      expect(make_one_reservation.length).must_equal 1
+      expect(make_two_reservations.length).must_equal 2
+    end
+
+    #increase count by one
+    it 'will increase the number of reservations in the first room of rooms in ReservationManager by 1' do
+      expect(no_reservations_manager.rooms[0].reservations.length).must_equal 0
+      expect(make_one_reservation_manager.rooms[0].reservations.length).must_equal 1
+      expect(make_one_reservation_manager.rooms[0].reservations[0]).must_be_instance_of Hotel::Reservation
+    end
+
+    it 'will store the reservation in the first room for 2 reservations even if they have an overlapping start and end date' do
+      expect(make_three_allowed_overlapping_manager.rooms[0].reservations.length).must_equal 3
+      expect(make_three_allowed_overlapping_manager.rooms[1].reservations.length).must_equal 0
+    end
+
+    it 'will store the reservation in the first and second room if 2 reservations overlap in a bad way' do
+      expect(make_two_not_allowed_overlapping_manager.rooms[0].reservations.length).must_equal 1
+      expect(make_two_not_allowed_overlapping_manager.rooms[1].reservations.length).must_equal 1
+    end
+  end
+
+  let(:get_reservation_cost) {
+    manager = Hotel::ReservationManager.new
+    manager.make_reservation("10/09/2018", "12/09/2018")
+    manager.get_total_reservation_cost(manager.reservations[0].confirmation_id)
+  }
+
+  describe 'get_reservation_total_cost' do
+
+    it 'will retrieve the total_cost of the reservation' do
+      expect(get_reservation_cost).must_equal 2 * 200
+    end
+  end
+
+  describe 'list_all_rooms_in_hotel' do
+     it 'will list all rooms' do
+       expect(manager.list_all_rooms_in_hotel).must_be_instance_of Array
+       expect(manager.list_all_rooms_in_hotel.length).must_equal 20
+       expect(manager.list_all_rooms_in_hotel[0]).must_equal 1
+     end
+  end
+
+  let(:one_less_reservation) {
+    manager = Hotel::ReservationManager.new
+    manager.make_reservation("10/09/2018", "12/09/2018")
+    manager
+  }
+
+  describe 'find_all_available_rooms' do
+
+    it 'will return all rooms ids if no rooms booked for that date range' do
+
+      date_range = (Date.parse("10/09/2018")..Date.parse("14/09/2018")).to_a
+      rooms_available = manager.find_all_available_rooms(date_range)
+      expect(rooms_available).must_be_kind_of Array
+      expect(rooms_available.length).must_equal 20
+      expect(rooms_available[0]).must_be_kind_of Numeric
+    end
+
+    it 'will return one less room id if a room is booked for a date range' do
+
+      date_range = (Date.parse("10/09/2018")..Date.parse("12/09/2018")).to_a
+      expect(one_less_reservation.find_all_available_rooms(date_range)).must_be_kind_of Array
+      expect((one_less_reservation.find_all_available_rooms(date_range)).length).must_equal 19
+      expect((one_less_reservation.find_all_available_rooms(date_range))[0]).must_be_kind_of Numeric
+    end
+
+    it 'will return a message to user if no rooms available for that date' do
+      date_range = (Date.parse("10/05/2018")..Date.parse("14/05/2018")).to_a
+      expect(fully_booked_manager.find_all_available_rooms(date_range)).must_be_kind_of String
+      expect(fully_booked_manager.find_all_available_rooms(date_range)).must_equal "Hotel fully booked for this date range. Try a different date."
+    end
+  end
+
+  describe 'list_rooms_available_today' do
+    it 'will lists all rooms available today' do
+      expect(manager.list_rooms_available_today).must_be_kind_of Array
+      expect((manager.list_rooms_available_today).length).must_equal 20
+    end
+  end
+
+  describe 'list_available_rooms' do
+    it 'will lists all room numbers available for given date range' do
+      date_range = (Date.parse("10/01/2018")..Date.parse("14/01/2018")).to_a
+      rooms_available = manager.list_available_rooms(date_range)
+      expect(rooms_available).must_be_kind_of Array
+      expect(rooms_available.length).must_equal 20
+      expect(rooms_available[0]).must_be_kind_of Numeric
+    end
+  end
+
+  let(:no_daily_reservations) {
+    manager = Hotel::ReservationManager.new()
+    manager.list_daily_reservations("12/09/2018")
+  }
+
+  describe 'list_daily_reservations' do
+
+    it 'will return a message to user if no reservations were made for that date' do
+      expect(no_daily_reservations).must_be_kind_of String
+      expect(no_daily_reservations).must_equal "No reservations for 2018-09-12."
+    end
+
+    it 'will raise an array of reservations if found' do
+      fully_booked_reservations = fully_booked_manager.list_daily_reservations("10/05/2018")
+      expect(fully_booked_reservations).must_be_kind_of Array
+      expect(fully_booked_reservations.length).must_equal 20
+      expect(fully_booked_reservations[0]).must_match(/^[A-Z]{3}+[\d]{5}/)
+    end
+  end
 
 
 end

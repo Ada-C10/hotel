@@ -9,16 +9,13 @@ module Hotel
     #initializes a reservation with date #MM/DD/YYYY
     def initialize(input)
 
-      #if no checkout given, make it the day after?
-      #what is the default for checkin/checkout or shoudl I raise an error?
-
       @checkin_date = Date.parse(input[:checkin_date])
       @checkout_date = Date.parse(input[:checkout_date])
       validate_date
 
       @room_number = input[:room_number].to_i
       @total_cost = input[:total_cost].to_i
-      @confirmation_id = input[:confirmation_id]
+      @confirmation_id = input[:confirmation_id].to_s
     end
 
     def validate_date

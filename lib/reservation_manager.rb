@@ -13,7 +13,7 @@ module Hotel
     def initialize
 
       @room_cost = 200
-      @room_block_cost = 200 * 0.8
+      @room_block_cost = (200 * 0.8).to_i
       @reservations = []
       generate_room_ids(VALID_ROOM_IDS)
     end
@@ -21,11 +21,13 @@ module Hotel
     #helper method for make_reservation / finding one available room
     def find_available_room(date_range)
 
-      #return room if available one found, else return nil
-      return @rooms.find do |room|
-        raise StandardError.new("Hotel fully booked for this date range. Try a different date.") if nil
-        room.is_available?(date_range)
+      @rooms.each() do |room|
+        if room.is_available?(date_range)
+          return room
+        end
       end
+
+      return "Hotel fully booked for this date range. Try a different date."
     end
 
     #helper method for making a reservation / calculating cost
@@ -34,7 +36,7 @@ module Hotel
       if total_cost <= 0
         raise ArgumentError.new('Total cost can\'t be $0 or less. Please give me a valid date range: MM/DD/YYYY and a room cost greater than 0.')
       end
-      return total_cost
+      return total_cost.to_i
       #modified julian number #starts from midnight # .mjd #do I need?
     end
 
@@ -44,13 +46,12 @@ module Hotel
       @reservations << reservation
     end
 
-    #helper method for making reservation / parsing input
-    #can be altered to load in csv data from list of reservations
-    def parse_input(checkin_date, checkout_date, room_object)
+    # helper method for making reservation / parsing the data
+    def parse_data(checkin_date, checkout_date, room_object)
 
-      input = { checkin_date: checkin_date, checkout_date: checkout_date,
-        room_number: room.room_number, confirmation_id: generate_random_reservation_id,
-        room_cost: calculate_total_cost(checkin_date, checkout_date, @room_cost) }
+      return { checkin_date: checkin_date, checkout_date: checkout_date,
+        room_number: room_object.room_number, confirmation_id: generate_random_reservation_id,
+        total_cost: calculate_total_cost(checkin_date, checkout_date, @room_cost) }
     end
 
     #creates a reservation if there's an available room and adds to list
@@ -58,10 +59,10 @@ module Hotel
 
       #find room in range
       range = (Date.parse(checkin_date)..Date.parse(checkout_date)).to_a
-      room = @rooms.find_available_room(range)
+      room = find_available_room(range) #error here
 
       #parse data into a form needed for reservation
-      input = parse_input(checkout_date, check_in_date, room)
+      input = parse_data(checkin_date, checkout_date, room)
 
       #create a room reservation from our input
       reservation = Hotel::Reservation.new(input)
@@ -72,10 +73,11 @@ module Hotel
     end
 
     #returns total cost for a given reservation
-    def get_reservation_total_cost(given_confirmation_id)
-      @reservations.each do |reservation|
-        if reservation.confirmation_id == given_confirmation_id
-          return reservation.total_cost
+    def get_total_reservation_cost(given_confirmation_id)
+
+      return @reservations.reduce(0) do |cost, reservation|
+        if reservation.confirmation_id == given_confirmation_id.to_s
+          cost + reservation.total_cost
         end
       end
     end
@@ -86,14 +88,20 @@ module Hotel
       return @rooms.map { |room| room.room_number }
     end
 
-    #helper method for finding all available rooms
+    #helper method for listing all available rooms
     def find_all_available_rooms(given_date_range)
 
-      #return rooms in array if available one found, else return nil
-      return @rooms.find_all do |room|
-        raise StandardError.new("Hotel fully booked for this date range. Try a different date.") if nil
-        room.is_available?(given_date_range)
+
+      available_rooms = []
+
+      @rooms.find_all do |room|
+        if (room.is_available?(given_date_range))
+          available_rooms << room.room_number
+        end
       end
+
+      return "Hotel fully booked for this date range. Try a different date." if available_rooms.empty?
+      return available_rooms
     end
 
     #returns array of rooms available today
@@ -109,64 +117,21 @@ module Hotel
     end
 
     # returns an array of the list of reservations for a specific date
+    # won't return the reservation if checkout on is on the given_day
     def list_daily_reservations(given_date)
-      given_date = Date.parse(given_date)
 
-      return @reservations.map do |reservation|
-        if reservation.date == given_date
-          reservation.confirmation_id
+      given_date = Date.parse(given_date)
+      daily_reservations = []
+
+      @reservations.find_all do |reservation|
+        if ((reservation.checkin_date..reservation.checkout_date).to_a - [reservation.checkout_date]).include?(given_date)
+          daily_reservations << reservation.confirmation_id
         end
       end
+
+      return "No reservations for #{given_date}." if daily_reservations.empty?
+      return daily_reservations
     end
-
-    #prints array of list of room numbers in all rooms
-    # def list_all_rooms_in_hotel
-    #   intro = "Room list: \n"
-    #   return @rooms.reduce(intro) do |statement, room|
-    #     statement + room.room_number
-    #   end
-    # end
-
-    # #returns string of rooms available for a given date
-    # def print_available_rooms(given_date_range)
-    #
-    #   available_rooms = find_all_available_rooms(given_date_range)
-    #
-    #   intro = "Rooms available for today: \n"
-    #
-    #   return available_rooms.reduce(intro) do |statement, room|
-    #     if room.is_available?
-    #       statement + ", " + room
-    #     end
-    #   end
-    # end
-
-    # #returns string of rooms available today
-    # def print_rooms_available_today
-    #
-    #   available_rooms = find_all_available_rooms([Date.today()])
-    #
-    #   intro = "Rooms available for today: \n"
-    #
-    #   return available_rooms.reduce(intro) do |statement, room|
-    #     if room.is_available?
-    #       statement + ", " + room
-    #     end
-    #   end
-    # end
-
-    # returns a string of the list of reservations for a specific date
-    # def print_daily_reservations(given_date)
-    #
-    #   "Reservations for #{given_date}: \n"
-    #   given_date = Date.parse(given_date)
-    #
-    #   return @reservations.reduce(intro) do |statement, reservation|
-    #     if reservation.date == given_date
-    #       statement +  ", " + reservation.confirmation_id
-    #     end
-    #   end
-    # end
 
     private
 

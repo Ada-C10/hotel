@@ -20,6 +20,10 @@ module Hotel
     #does the date range overlap with a reservation?
     def is_available?(date_range)
 
+      if @reservations.empty?
+        return true
+      end
+
       @reservations.each do |reservation|
 
         # #if date_range has nothing in common with reservations range, then set_difference is date_range

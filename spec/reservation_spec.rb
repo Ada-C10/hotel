@@ -25,4 +25,28 @@ describe 'Reservation' do
     end
   end
 
+  describe 'validate_date' do
+
+    it 'will throw an error if checkout before checkin' do
+      expect {
+        input = { checkin_date: "15/09/2018", checkout_date: "12/09/2018", room_number: 2, total_cost: 600, confirmation_id: "ABC12345" }
+        Hotel::Reservation.new(input)
+      }.must_raise StandardError
+    end
+
+    it 'will throw an error for invalid checkin date' do
+      expect {
+        input = { checkin_date: "15/09/2018", checkout_date: "0", room_number: 2, total_cost: 600, confirmation_id: "ABC12345" }
+        Hotel::Reservation.new(input)
+      }.must_raise StandardError
+    end
+
+    it 'will throw an error for invalid checkout date' do
+      expect {
+        input = { checkin_date: "0", checkout_date: "15/09/2018", room_number: 2, total_cost: 600, confirmation_id: "ABC12345" }
+        Hotel::Reservation.new(input)
+      }.must_raise StandardError
+    end
+  end
+
 end
