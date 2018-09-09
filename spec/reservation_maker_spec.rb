@@ -96,7 +96,7 @@ describe "ReservationMaker" do
     it "it will NOT create another reservation because the 21st reservation is for the SAME DATES as the first 20 reservations." do
 
       ReservationMaker.new(Date.new(2018,2,3), Date.new(2018,2,5)).create_reservation
-      # binding.pry
+
       expect(ReservationMaker.reservations.length).must_equal 20
 
     end

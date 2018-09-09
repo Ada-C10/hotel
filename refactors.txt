@@ -1,0 +1,6 @@
+Make a short list of the changes that you could make, particularly in terms of naming conventions
+
+1.  I would be able to de-bug my code, for sure.  I've gone over the tests and the booked_rooms conditionals a ton of times from different angles, but still can't figure out what's wrong.  Perhaps it's a bigger issue that just the conditional.  At this late hour, however, I'm not going to re-work the rest of the code and break everything.
+2.  I definitely see the benefit of breaking the booked_rooms and available_rooms methods off into an additional class -- perhaps called Date Class (as it is considering whether the @start_date and @end_date are eligible dates).  This would, of course, require a big change in my code, as the @@reservations variable cannot be in two classes at once.  At least I don't think it can be.
+3. I think my method names are pretty good (with the exception of the method mentioned below), but I might re-name the start_date and end_date throughout, as the names are longer than needed.  start and end should suffice.
+4.  I'd definitely change the reservation_duration method name to duration.
