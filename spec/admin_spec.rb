@@ -47,7 +47,7 @@ describe "Admin class" do
 
     it "will reduce the room_unbooked_dates array correctly" do
       room_1 = @admin_1.find_room(1)
-      room_2 = @admin_1.find_room(2)
+      # room_2 = @admin_1.find_room(2)
       result = false
       selected = @admin_1.room_unbooked_dates.select {|a, b| a == room_1 && b == @start_date_1}
       if selected == []
@@ -178,35 +178,39 @@ describe "Admin class" do
     end
   end
 
-  # describe "find room availabe " do
-  #   before do
-  #     @start_date_1 = Date.new(2018,12,4)
-  #     @end_date_1 = Date.new(2018,12,6)
-  #     @res_1 = @admin_1.make_reservation(2,"Mike Murry",1,@start_date_1, @end_date_1)
-  #
-  #     @start_date_2 = Date.new(2018,12,5)
-  #     @end_date_2 = Date.new(2018,12,7)
-  #     @res_2 = @admin_1.make_reservation(3,"Julie Smith",2,@start_date_2, @end_date_2)
-  #
-  #   end
-  #
-  #   it "returns an array of rooms" do
-  #     room_list_1 = @admin_1.find_room_available(Date.new(2018,12,4),Date.new(2018,12,5))
-  #
-  #     expect(room_list_1).must_be_kind_of Array
-  #     expect(room_list_1.first).must_be_kind_of Room
-  #   end
-  #
-  #   it "returns the right number of rooms " do
-  #     room_three = @admin_1.find_room(3)
-  #     expect(@admin_1.find_room_available(Date.new(2018,12,4),Date.new(2018,12,5)).length).must_equal 18
-  #     expect(@admin_1.find_room_available(Date.new(2018,12,4),Date.new(2018,12,5))).must_include room_three
-  #
-  #   end
-  #
-  #   it " will not include a room already booked on that day" do
-  #     room_first = @admin_1.find_room(1)
-  #     expect(@admin_1.find_room_available(Date.new(2018,12,4), Date.new(2018,12,5))).must_not_include room_first
-  #   end
-  # end
+  describe "find room availabe " do
+    before do
+      @start_date_1 = Date.new(2018,12,4)
+      @end_date_1 = Date.new(2018,12,6)
+      @res_1 = @admin_1.make_reservation(2,"Mike Murry",1,@start_date_1, @end_date_1)
+
+      @start_date_2 = Date.new(2018,12,5)
+      @end_date_2 = Date.new(2018,12,7)
+      @res_2 = @admin_1.make_reservation(3,"Julie Smith",2,@start_date_2, @end_date_2)
+
+    end
+
+    it "returns an array of rooms" do
+      room_list_1 = @admin_1.find_room_available(Date.new(2018,12,4),Date.new(2018,12,5))
+
+      expect(room_list_1).must_be_kind_of Array
+      expect(room_list_1.first).must_be_kind_of Room
+    end
+
+    it "returns the right number of rooms " do
+      room_three = @admin_1.find_room(3)
+      expect(@admin_1.find_room_available(Date.new(2018,12,4),Date.new(2018,12,5)).length).must_equal 18
+      expect(@admin_1.find_room_available(Date.new(2018,12,4),Date.new(2018,12,5))).must_include room_three
+
+    end
+
+    it " will not include a room already booked on that day" do
+      room_first = @admin_1.find_room(1)
+      room_selected = @admin_1.find_room_available(Date.new(2018,12,4), Date.new(2018,12,5))
+
+      expect(room_selected.include? room_first).must_equal false
+    end
+
+
+  end
 end

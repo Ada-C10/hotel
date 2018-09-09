@@ -14,20 +14,43 @@ class Admin
     20.times do |i|
       room_new = Room.new(i+1)
       @rooms << room_new
-      365.times do |i|
-        date_new = Date.today + i
+      365.times do |num|
+        date_new = Date.today + num
         @room_unbooked_dates << {room_n: room_new, unbooked_date: date_new}
       end
     end
   end
 
   def find_room_available(start_date, end_date)
+    if start_date.class != Date || end_date.class != Date
+      raise ArgumentError, "start_date and end_Date should be Date objects"
+    end
+    if start_date >= end_date
+      raise ArgumentError, "invlid dates entered, start_date should be ealier than end_date"
+    end
 
+    dates_available_rooms = []
 
+    @rooms.each do |room|
+      dates_needed = []
+      start_d = start_date
+
+      while start_d <= end_date
+        dates_needed << {room_n: room, unbooked_date: start_d}
+        start_d += 1
+      end
+
+      if (@room_unbooked_dates & dates_needed) == dates_needed
+        dates_available_rooms << room
+      end
+
+    end
+
+    return dates_available_rooms
   end
 
 
-  def make_reservation(reservation_id, customer_name,room_id, start_date, end_date)
+  def make_reservation(reservation_id, customer_name, room_id, start_date, end_date)
 
     # loop through the existing reservation array, by room, compare the booked dates array under each room with the dates_required
 
