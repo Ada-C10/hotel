@@ -187,7 +187,6 @@ describe 'TrackingSystem class' do
     it "returns an array of blocks" do
       @block = @tracker.add_block(start_time: Date.new(2018,8,1), end_time: Date.new(2018,8,25), number_of_rooms:5)
       @block = @tracker.add_block(start_time: Date.new(2018,7,1), end_time: Date.new(2018,7,10), number_of_rooms:4)
-      # binding.pry
       expect(@tracker.blocks).must_be_kind_of Array
     end
 
@@ -201,38 +200,6 @@ describe 'TrackingSystem class' do
       @blockid = @tracker.blocks[0].block
       @room_block = @tracker.blocks[0].rooms[0].block
       expect(@blockid == @room_block).must_equal true
-    end
-  end
-
-
-  describe "#rooms_available_in_block" do
-    before do
-      @tracker = TrackingSystem.new
-      @block = @tracker.add_block(start_time: Date.new(2018,10,5), end_time: Date.new(2018,10,10), number_of_rooms:5)
-      @blockid = @tracker.blocks[0].block
-    end
-
-    it "returns list of rooms that are available in a block" do
-      @reservation1 = @tracker.add_reservation(start_time: Date.new(2018,10,5), end_time: Date.new(2018,10,10), number_of_rooms:1)
-      @reservation2 = @tracker.add_reservation(start_time: Date.new(2018,10,5), end_time: Date.new(2018,10,10), number_of_rooms:1)
-      @reservation3 = @tracker.add_reservation(start_time: Date.new(2018,10,5), end_time: Date.new(2018,10,10), number_of_rooms:1)
-      expect(@tracker.rooms_available_in_block(@blockid)).must_be_kind_of Array
-    end
-
-    it "raises ArgumentError unless argument is instance of Symbol" do
-      expect{@tracker.rooms_available_in_block("Hi")}.must_raise ArgumentError
-    end
-  end
-
-  describe "#add_reservation_in_block" do
-    before do
-      @tracker = TrackingSystem.new
-      @block = @tracker.add_block(start_time: Date.new(2018,10,5), end_time: Date.new(2018,10,10), number_of_rooms:5)
-      @blockid = @tracker.blocks[0].block
-    end
-
-    it "Adds a reservation to each room's list of reservations" do
-      # expect(@tracker.add_reservation_in_block)
     end
   end
 
@@ -255,24 +222,47 @@ describe 'TrackingSystem class' do
       expect(@date_range.last).must_equal Date.new(2018,7,9)
     end
 
-#this isn't working either, can't figure out how to make it fail when it should
+    #this isn't working either, can't figure out how to make it fail when it should
     it "raises ArgumentError unless argument is a Symbol" do
       expect{@tracker.retrieve_block_dates("hello")}.must_raise ArgumentError
     end
-    # def retrieve_block_dates(block_id)
-    #   dates_hash = {}
-    #   range_array = []
-    #   @blocks.each do |block|
-    #     if block.block == block_id
-    #       dates_hash[:start_time] = block.start_time
-    #       dates_hash[:end_time] = block.end_time
-    #       range_array = (dates_hash[:start_time]...dates_hash[:end_time]).to_a
-    #     end
-    #   end
-    #   raise ArgumentError if dates_hash.empty?
-    #   return range_array #returns array of teh date range
-    # end
   end
+
+
+  describe "#rooms_available_in_block" do
+    before do
+      @tracker = TrackingSystem.new
+      @block = @tracker.add_block(start_time: Date.new(2018,10,5), end_time: Date.new(2018,10,10), number_of_rooms:5)
+      @blockid = @tracker.blocks[0].block
+    end
+
+    it "raises ArgumentError unless argument is instance of Symbol" do
+      expect{@tracker.rooms_available_in_block("Hi")}.must_raise ArgumentError
+    end
+
+    it "returns list of rooms that are available in a block" do
+      # add_reservation_in_block(start_time: Date.now, end_time: Date.now + 1, number_of_rooms: 1, block: :NA)
+      @reservation1 = @tracker.add_reservation_in_block(start_time: Date.new(2018,10,5), end_time: Date.new(2018,10,10), number_of_rooms:1, block: @blockid)
+      @reservation2 = @tracker.add_reservation_in_block(start_time: Date.new(2018,10,5), end_time: Date.new(2018,10,10), number_of_rooms:1, block: @blockid)
+      @reservation3 = @tracker.add_reservation_in_block(start_time: Date.new(2018,10,5), end_time: Date.new(2018,10,10), number_of_rooms:1, block: @blockid)
+      date_range = @tracker.retrieve_block_dates(@blockid)
+      expect(@tracker.rooms_available_in_block(@blockid)).must_be_kind_of Array
+    end
+  end
+
+  describe "#add_reservation_in_block" do
+    before do
+      @tracker = TrackingSystem.new
+      @block = @tracker.add_block(start_time: Date.new(2018,10,5), end_time: Date.new(2018,10,10), number_of_rooms:5)
+      @blockid = @tracker.blocks[0].block
+    end
+
+    it "Adds a reservation to each room's list of reservations" do
+      # expect(@tracker.add_reservation_in_block)
+    end
+  end
+
+
 
 
 

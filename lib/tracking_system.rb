@@ -133,7 +133,6 @@ class TrackingSystem
         range_array = (dates_hash[:start_time]...dates_hash[:end_time]).to_a
       end
     end
-    # binding.pry
     raise ArgumentError if dates_hash.empty?
     return range_array #returns array of teh date range
   end
@@ -142,10 +141,12 @@ class TrackingSystem
     raise ArgumentError.new"#{block_id} must be a Symbol" unless block_id.instance_of? Symbol
     available_rooms = []
     @blocks.each do |individual_block|
-      if individual_block.block == block_id
-        individual_block.rooms.each do |room|
-          room.reserved_dates.each do |dates_hash|
-            if (dates_hash[:start_time]...dates_hash[:end_time]).to_a != retrieve_block_dates(block_id)
+      if individual_block.block == block_id #if block id matches
+        individual_block.rooms.each do |room| #find all rooms in that block( none of the rooms are reerved)
+          if room.reserved_dates.empty?
+            available_rooms << room
+          else room.reserved_dates.each do |dates_hash| #see the reserved dates of each room
+            if (dates_hash[:start_time]...dates_hash[:end_time]).to_a.sort == retrieve_block_dates(block_id).sort #checks if both date ranges are the same
               available_rooms << room
             end
           end
@@ -154,40 +155,41 @@ class TrackingSystem
       return available_rooms
     end
   end
-  #i can combine this method with making a reservation if it returns a list of rooms available
-  #a block has a : start, end, rooms, discount, block(id)
-  #how do i get the discount rate applied?
-  # 3. As an administrator, I can reserve a room from within a block of rooms
-  def add_reservation_in_block(start_time: Date.now, end_time: Date.now + 1, number_of_rooms: 1, block: :NA) #block(id) defaults to :NA already but just clarifying here
-    available_rooms = rooms_available_in_block(block) #<--returns an array of available rooms in this sepcifci block
-    raise ArgumentError.new"Not enough rooms available on those dates" if available_rooms.length < number_of_rooms
-    #call method taht gets block discount here
-    discount = retrieve_block_discount(block)
-    number_of_rooms.times do |i|
-      @reservations << Reservation.new({room_num: available_rooms[i].room_num, start_time: start_time, end_time: end_time, price: 200.00 -(200.00 * discount)})
-      available_rooms[i].reserved_dates << {start_time: start_time, end_time: end_time}
+end
+#i can combine this method with making a reservation if it returns a list of rooms available
+#a block has a : start, end, rooms, discount, block(id)
+#how do i get the discount rate applied?
+# 3. As an administrator, I can reserve a room from within a block of rooms
+def add_reservation_in_block(start_time: Date.now, end_time: Date.now + 1, number_of_rooms: 1, block: :NA) #block(id) defaults to :NA already but just clarifying here
+  available_rooms = rooms_available_in_block(block) #<--returns an array of available rooms in this sepcifci block
+  raise ArgumentError.new"Not enough rooms available on those dates" if available_rooms.length < number_of_rooms
+  #call method taht gets block discount here
+  discount = retrieve_block_discount(block)
+  number_of_rooms.times do |i|
+    @reservations << Reservation.new({room_num: available_rooms[i].room_num, start_time: start_time, end_time: end_time, price: 200.00 -(200.00 * discount)})
+    available_rooms[i].reserved_dates << {start_time: start_time, end_time: end_time}
+  end
+  @reservations
+end
+
+def retrieve_block_discount(block_id)
+  @blocks.each do |individual_block|
+    if individual_block.block == block_id
+      return individual_block.discount / 100
     end
-    @reservations
   end
+end
+#create helper method that finds the block discount rate by block id?
 
-  def retrieve_block_discount(block_id)
-    @blocks.each do |individual_block|
-      if individual_block.block == block_id
-        return individual_block.discount / 100
-      end
-    end
-  end
-  #create helper method that finds the block discount rate by block id?
+private
 
-  private
+def generate_block_id
+  (0..3).map { (65 + rand(26)).chr }.join
+end
 
-  def generate_block_id
-    (0..3).map { (65 + rand(26)).chr }.join
-  end
-
-  def ranges_overlap?(r1, r2)
-    r1.include?(r2.first) || r2.include?(r1.first)
-  end
+def ranges_overlap?(r1, r2)
+  r1.include?(r2.first) || r2.include?(r1.first)
+end
 
 
 
