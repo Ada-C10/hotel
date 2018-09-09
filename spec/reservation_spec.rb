@@ -1,19 +1,18 @@
 require_relative 'spec_helper'
 
-describe "Reservation Class" do
+describe "Reservation class tests" do
+  before do
+    room_num = 1
+    room = Hotel::Room.new(room_num)
+    @reserv_data = {
+      id: 1011,
+      room: room,
+      start_date: "2018-03-09",
+      end_date: "2018-03-15",
+    }
+    @reservation = Hotel::Reservation.new(@reserv_data)
+  end
   describe "initializer" do
-    before do
-      # input_dates = { start_date: "2018-03-09", end_date: "2018-03-15"}
-      @reserv_data = {id: 1011,
-          room: Hotel::Room.new(),
-          start_date: "2018-03-09",
-          end_date: "2018-03-15",
-          # date_range: Hotel::DateRange.new(input_dates),
-          total_cost: 600.0
-      }
-      @reservation = Hotel::Reservation.new(@reserv_data)
-      end
-
     it "is an instance of Reservation" do
       expect(@reservation).must_be_kind_of Hotel::Reservation
     end
@@ -22,22 +21,20 @@ describe "Reservation Class" do
       expect(@reservation.id).must_be_kind_of Integer
       expect(@reservation.room).must_be_kind_of Hotel::Room
       expect(@reservation.date_range).must_be_kind_of Hotel::DateRange
-      expect(@reservation.total_cost).must_be_kind_of Float
     end
+  end
 
+  describe "accurately caluclates total cost for a reservation" do
     it "accurately calculates the total cost of the stay" do
-      start_date = "2018-09-10"
-      end_date = "2018-09-12"
-      reserve_range = Hotel::DateRange.new(start_date, end_date)
+      @reserv_data[:start_date] = "2018-09-10"
+      @reserv_data[:end_date] = "2018-09-12"
 
-
-      @reserv_data[:date_range] = reserve_range
       reserve = Hotel::Reservation.new(@reserv_data)
 
-      cost = reserve.cost_calculator
+      cost = reserve.total_cost
 
-      expect(cost).must_equal 400
+      expect(cost).must_equal 400.00
+      # expect(cost).must_be_kind_of Float
     end
-
   end
 end

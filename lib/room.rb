@@ -6,13 +6,13 @@ module Hotel
   class Room
     attr_reader :room_num, :room_reservations
 
-    def initialize
+    def initialize(room_num)
       @room_num = room_num
       @room_reservations = []
     end
 
-    def add_bookings(new_reserv)
-      unless reservation.is_a?(Reservation)
+    def add_booking(new_reserv)
+      unless new_reserv.is_a?(Hotel::Reservation)
         raise ArgumentError
       end
 
