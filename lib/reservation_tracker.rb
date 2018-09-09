@@ -142,7 +142,7 @@ module Hotel
     end
 
     private
-
+    
     def check_dates_validity?(start_date, end_date)
       unless (start_date.is_a?(Date) && end_date.is_a?(Date))
         raise InvalidDateError.new("That is not a Date type")
