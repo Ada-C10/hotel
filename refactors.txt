@@ -1,0 +1,14 @@
+Possible Refactors:
+  1.  make method names clearer/more succinct
+      - currently has long method names for BookingSystem class
+      - unsure if it makes it unclear as to the single responsibility of the method
+  2.  use keyword arguments for constructors, methods that require lengthy arguments
+      - currently, all classes take in either positional arguments only or a mix of positional and keyword (but keyword is only for default values or to load previously existng data)
+      - in future changes, make it explicit what you are asking for
+  3.  consolidate redundant code into separate method or class
+      - error validation seems to be everywhere
+      - ask whether it should be it's own class or a part of construction
+  4.  rescue Errors, especially if user-facing portion is created
+      - some errors shouldn't stop the program and should prompt for a new input (i.e. room number, id block, etc.)
+  5.  pull test data into CSV and load from there to create all of the let statements
+      - as it is, the spec files have redundant method calls
