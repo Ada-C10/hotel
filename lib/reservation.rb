@@ -19,21 +19,10 @@ module Hotel
       # return true
     end
 
-    def assign_room(rooms)
-      @room = rooms[0]
-      return rooms[0]
-    end
-
     def calculate_total_cost
       total_days = @date_range.dates_booked.length
       total_cost = 200 * total_days
     end
-
-
-    # def add_reservation(reserv)
-    #   # add the reservation to the array @reservations
-    # end
-
 
   end
 end

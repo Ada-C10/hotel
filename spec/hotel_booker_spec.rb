@@ -62,15 +62,28 @@ describe "HotelBooker class" do
 
   describe "unreserved_rooms method" do
     before do
+
+      @date1 = Date.parse('2018-09-05')
+      @date2 = Date.parse('2018-09-09')
+      @date3 = Date.parse('2018-09-10')
+      @date4 = Date.parse('2018-09-11')
+
+      @date_range1 = Hotel::DateRange.new(@date1, @date2)
+      @date_range2 = Hotel::DateRange.new(@date1, @date3)
+      @date_range3 = Hotel::DateRange.new(@date2, @date3)
+      @date_range4 = Hotel::DateRange.new(@date3, @date4)
+
+
       @booker = Hotel::HotelBooker.new
       @booker.make_reservation(1, '2018-09-05', '2018-09-08')
       @booker.make_reservation(2, '2018-09-06', '2018-09-08')
       @booker.make_reservation(3, '2018-09-07', '2018-09-09')
+      @date
     end
 
     it "returns an array of unreserved rooms for date range given unreserved rooms exist" do
-      expect(@booker.unreserved_rooms('2018-09-05', '2018-09-08')).must_be_kind_of Array
-      expect(@booker.unreserved_rooms('2018-09-05', '2018-09-08')[0]).must_be_kind_of Hotel::Rooms
+      expect(@booker.unreserved_rooms(@date1, @date2)).must_be_kind_of Array
+      expect(@booker.unreserved_rooms(@date1, @date2)[0]).must_be_kind_of Hotel::Room
     end
 
     # it "returns an empty array if there are no unavailable rooms for that date" do

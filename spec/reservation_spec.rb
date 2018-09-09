@@ -32,19 +32,19 @@ describe "Reservation Class" do
     end
   end
 
-  describe "assign_room method" do
-    it "assigns Room to reservation from array of Rooms" do
-      reservation = Hotel::Reservation.new(1, date_range)
-      rooms = [Hotel::Room.new(1), Hotel::Room.new(2), Hotel::Room.new(3)]
-
-      reservation.assign_room(rooms)
-      expect(reservation.room).must_be_kind_of Hotel::Room
-    end
-
-    # it "assigns " do
-    #   reservation.assign_room(rooms)
-    #   expect(reservation.room).must_be_kind_of Hotel::Room
-    # end
-  end
+  # describe "assign_room method" do
+  #   it "assigns Room to reservation from array of Rooms" do
+  #     reservation = Hotel::Reservation.new(1, date_range)
+  #     rooms = [Hotel::Room.new(1), Hotel::Room.new(2), Hotel::Room.new(3)]
+  #
+  #     reservation.assign_room(rooms)
+  #     expect(reservation.room).must_be_kind_of Hotel::Room
+  #   end
+  #
+  #   # it "assigns " do
+  #   #   reservation.assign_room(rooms)
+  #   #   expect(reservation.room).must_be_kind_of Hotel::Room
+  #   # end
+  # end
 
 end

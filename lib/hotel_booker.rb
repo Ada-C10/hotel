@@ -22,30 +22,42 @@ module Hotel
       end
     end
 
+    # arguments for dates are strings
     def make_reservation(id, check_in, check_out)
       check_in = Date.parse(check_in)
       check_out = Date.parse(check_out)
       date_range = Hotel::DateRange.new(check_in, check_out)
-
-      #
-      # # TODO make sure check_in and check_out into dates here instad of reservation
-      # @booked_dates.each do |range|
-      #   if range.overlaps?(date_range)
-      #
-      #   end
-      # end
-      #
-
       reservation = Hotel::Reservation.new(id, date_range)
-      reservation.assign_room(@rooms)
+
+      available = unreserved_rooms(check_in, check_out)
+      if available == []
+        raise StandardError, "There are no more available rooms for this date range!"
+      else
+        reservation.room = available[0]
+      end
+
 
       @reservations << reservation
       @booked_dates << date_range.dates_booked
     end
 
+    # arguments must be Dates, not strings
     def unreserved_rooms(check_in, check_out)
-      check_in = Date.parse(check_in)
-      check_out = Date.parse(check_out)
+      reserved_rooms = []
+      new_range = Hotel::DateRange.new(check_in, check_out)
+
+      @reservations.each do |reservation|
+        reservation_range =
+        if reservation.date_range.overlaps?(new_range)
+          reserved_rooms << reservation.room
+        end
+      end
+
+      unreserved = @rooms - reserved_rooms
+
+
+
+      return unreserved
 
     end
 
