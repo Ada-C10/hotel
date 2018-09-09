@@ -23,7 +23,7 @@ module Hotel
     def make_reservation(date_range)
       #think...what if there's no available rooms, raise an exception
 
-      room = find_available_rooms(date_range)[0]
+      room = find_available_rooms(date_range).first
 
       reservation = Reservation.new(date_range, room)
 
@@ -57,8 +57,6 @@ module Hotel
         if date_range.dates_overlap?(res.date_range)
           # binding.pry
           unavailable_rooms << res.room_number
-        else
-
         end
       end
 
@@ -70,34 +68,39 @@ module Hotel
       # puts
       # puts
 
+      begin
 
-      available_rooms = @room.reject { |r| unavailable_rooms.include?(r) }
+        available_rooms = @room.reject { |r| unavailable_rooms.include?(r) }
+
+        raise "No rooms available for those dates." if available_rooms.empty?
+
+      rescue RuntimeError => exception
+          puts "Please try another hotel. #{exception.message}"
 
 
-      # binding.pry
+          # binding.pry
 
-      # @room.each do |r|
-      #   unavailable_rooms.each do |unavailable_room|
-      #     if r != unavailable_room
-      #       available_rooms << r
-      #
-      #     end
-      #   end
-      # end
+          # @room.each do |r|
+          #   unavailable_rooms.each do |unavailable_room|
+          #     if r != unavailable_room
+          #       available_rooms << r
+          #
+          #     end
+          #   end
+          # end
 
-      # puts "AFTER ROOM LOOP"
-      # puts "unavailable rooms:"
-      # puts "#{unavailable_rooms}"
-      # puts "available rooms"
-      # puts "#{available_rooms}"
-      # puts
-      # puts
-      # puts "ROOM ARRAY"
-      # puts "#{@room}"
-      # puts "*" * 50
+          # puts "AFTER ROOM LOOP"
+          # puts "unavailable rooms:"
+          # puts "#{unavailable_rooms}"
+          # puts "available rooms"
+          # puts "#{available_rooms}"
+          # puts
+          # puts
+          # puts "ROOM ARRAY"
+          # puts "#{@room}"
+          # puts "*" * 50
+        end
       return available_rooms
-
-
     end
 
     def list_available_rooms(date_range)
@@ -108,6 +111,8 @@ module Hotel
     #   return @@available_rooms
     # end
     end
+
+  
 
 
   end
@@ -120,21 +125,23 @@ date_range_4 = Hotel::DateRange.new('2018-10-01', '2018-10-20')
 reservation = Hotel::BookingSystem.new()
 reservation_1 = Hotel::BookingSystem.new()
 
-5.times do
+20.times do
   reservation.make_reservation(date_range_1)
 end
 
-2.times do
-  reservation.make_reservation(date_range_2)
-end
+# 2.times do
+#   reservation.make_reservation(date_range_2)
+# end
+#
+# 3.times do
+#   reservation.make_reservation(date_range_3)
+# end
 
-3.times do
-  reservation.make_reservation(date_range_3)
-end
+puts reservation.find_available_rooms(date_range_1)
 
-puts "#{reservation.list_available_rooms(date_range_1)}"
-puts "#{reservation_1.list_available_rooms(date_range_1)}"
-puts "#{reservation.list_available_rooms(date_range_4)}"
+# puts "#{reservation.list_available_rooms(date_range_1)}"
+# puts "#{reservation_1.list_available_rooms(date_range_1)}"
+# puts "#{reservation.list_available_rooms(date_range_4)}"
 
 
 #

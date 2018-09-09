@@ -124,12 +124,24 @@ describe "BookingSystem Class" do
   end
 
   describe 'find_available_rooms method' do
-    before do
-      @reservation_2 = Hotel::BookingSystem.new()
+    let (:reservation_2) { Hotel::BookingSystem.new() }
+    let (:reservation_3) { Hotel::BookingSystem.new() }
+    let (:hotel_full) {
+      20.times do
+        hotel_full.make_reservation(@date_range_1)
+      end
+    }
+
+    it 'Returns an array of available rooms for the date range' do
+
     end
 
     it 'Returns 1 if the reservations are empty' do
-      expect(@reservation_2.find_available_rooms(@date_range_2).first).must_equal 1
+      expect(reservation_2.find_available_rooms(@date_range_1).first).must_equal 1
+    end
+
+    it 'Raises an exception when there are no available rooms' do
+      
     end
 
     # it 'Returns the first available room' do
