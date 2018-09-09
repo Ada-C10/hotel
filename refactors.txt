@@ -1,0 +1,3 @@
+Change some method names in reservation_tracker to make difference between single and block room methods more clear.
+
+Rename Dates class.
