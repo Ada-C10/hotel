@@ -1,4 +1,5 @@
 require_relative 'spec_helper'
+require 'date'
 
 describe "BookingSystem Class" do
   before do
@@ -23,34 +24,52 @@ describe "BookingSystem Class" do
   describe "Initializer" do
     it 'Creates an array of room numbers' do
       expect(@reservation.room).must_be_kind_of Array
+      expect(@reservation.room.length).must_equal 20
     end
 
     it 'Creates an array of reservation instances' do
-      expect(@reservation.reservations[0]).must_be_kind_of Hotel::Reservation
+      expect(@reservation.reservations.length).must_equal 10
+      all_rervations = @reservation.reservations
+      all_rervations.each do |r|
+        expect(r).must_be_kind_of Hotel::Reservation
+      end
     end
   end
-
-  # describe 'make_reservation method' do
-  # end
 
   describe "list_rooms method" do
     it 'Returns an array of room numbers' do
       expect(@reservation.list_rooms).must_be_kind_of Array
+      expect(@reservation.room.length).must_equal 20
     end
   end
 
-  describe 'reservations_by_date method' do
+  describe 'make_reservation method' do
+  end
+
+  describe 'list_reservations_by_date method' do
+    let (:reservations_list) { @reservation.list_reservations_by_date(@date_range_2)
+    }
 
     it 'Returns an array of reservation instances' do
-      expect(@reservation.reservations_by_date(@date_range_1)).must_be_kind_of Array
+      res_by_date = @reservation.list_reservations_by_date(@date_range_1)
+      expect(res_by_date).must_be_kind_of Array
     end
 
     it 'Returns the correct length of the array' do
-      expect(@reservation.reservations_by_date(@date_range_1).length).must_equal 10
+      expect(@reservation.list_reservations_by_date(@date_range_1).length).must_equal 5
+    end
+
+    it 'Correctly returns the reservations for that date range' do
+      expect(reservations_list).must_equal reservations_list
     end
 
     it 'Correctly returns the first reservation for that date range' do
-      expect(@reservation).reservations_by_date(@date_range_2)
+      first = reservations_list.first
+      date = Date.parse('2018-09-15')
+
+      binding.pry
+      expect(first.room_number).must_equal 6
+      expect(first.date_range.start_date).must_equal date
     end
 
     it 'Correctly returns the last reservation for that date range' do
@@ -61,7 +80,6 @@ describe "BookingSystem Class" do
 
   describe 'find_available_room method' do
     before do
-      @date_range_2 = Hotel::DateRange.new('2018-09-01', '2018-09-05')
       @reservation_2 = Hotel::BookingSystem.new()
     end
 
