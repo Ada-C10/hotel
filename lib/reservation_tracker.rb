@@ -10,6 +10,8 @@ class ReservationTracker
   def initialize
     @all_reservations = []
     @rooms = Room.new
+    @block_reservations = []
+    @block_room_reservations = []
   end
 
 
@@ -30,7 +32,7 @@ class ReservationTracker
     date = Dates::date_format(date)
 
     reservation_list_by_date = @all_reservations.find_all { |reservation|
-      date >= reservation.begin_date && date < reservation.end_date }
+      date >= reservation.date_range[:begin_date] && date < reservation.date_range[:end_date] }
     return reservation_list_by_date
   end
 
@@ -40,13 +42,7 @@ class ReservationTracker
     date_range = Dates::date_range_format(date_range)
 
     @all_reservations.each do |reservation|
-      if date_range[:end_date] > reservation.begin_date && date_range[:end_date] <= reservation.end_date ||
-
-        date_range[:begin_date] >= reservation.begin_date && date_range[:begin_date] < reservation.end_date ||
-
-        date_range[:begin_date] <= reservation.begin_date && date_range[:end_date] >= reservation.end_date ||
-
-        date_range[:begin_date] > reservation.begin_date && date_range[:end_date] < reservation.end_date
+      if Dates::date_range_comparison(date_range, reservation.date_range)
         if reservation.room_num.class == Array
           reservation.room_num.each do |num| occupied_rooms << num
           end
@@ -58,6 +54,7 @@ class ReservationTracker
     return occupied_rooms
   end
 
+
   def reserve_block(date_range, num_rooms, discount_rate)
     date_range = Dates::date_range_format(date_range)
 
@@ -65,7 +62,7 @@ class ReservationTracker
 
     reservation = Reservation.new(date_range, room_block, discount_rate)
 
-    # @block_reservations << reservation
+    @block_reservations << reservation
     @all_reservations << reservation
     return reservation
   end
