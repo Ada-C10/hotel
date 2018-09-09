@@ -1,6 +1,6 @@
 module Hotel
   class BookingSystem
-    attr_accessor :rooms, :reservations
+    attr_accessor :rooms, :reservations, :all_ids, :blocks
 
     def initialize
       @rooms = load_rooms
@@ -21,7 +21,7 @@ module Hotel
     end
 
     def make_reservation(start_date, end_date)
-      reservation = Hotel::Reservation.new(id: generate_id, room: assign_available_room(start_date, end_date), start_date: start_date, end_date: end_date, price_per_night: 200)
+      reservation = Hotel::Reservation.new(reservation_id: generate_id, room: assign_available_room(start_date, end_date), start_date: start_date, end_date: end_date, price_per_night: 200)
       @reservations << reservation
       # binding.pry
     end
@@ -30,8 +30,22 @@ module Hotel
       if number_of_rooms > 5
         raise ArgumentError, "Cannot reserve more than 5 rooms"
       end
-      block = Hotel::Block.new(block_id: generate_id, number_of_rooms: number_of_rooms, assigned_rooms: idksofar, tart_date: start_date, end_date: end_date, discounted_price: 150)
+
+      id = generate_id
+
+      block = Hotel::Block.new(block_id: id, number_of_rooms: number_of_rooms, start_date: start_date, end_date: end_date, discounted_price: 150)
       @blocks << block
+
+      number_of_rooms.times do
+        block_reservation = Hotel::BlockReservation.new(block_id: id,  reservation_id: nil, room: assign_available_room(start_date, end_date), start_date: start_date, end_date: end_date, discounted_price: 150)
+        @reservations << block_reservation
+      end
+    end
+
+    def make_block_reservation(block_id)
+      block_reservation = find_block_reservation(block_id)
+      block_reservation.reservation_id = generate_id
+      return block_reservation
     end
 
     def assign_available_room(start_date, end_date)
@@ -60,26 +74,32 @@ module Hotel
       return reservations_within_date
     end
 
-    def find_reservation(id)
-      reservation = @reservations.find { |reservation| reservation.id == id }
+    def find_reservation(reservation_id)
+      reservation = @reservations.find { |reservation| reservation.reservation_id == reservation_id }
       return reservation
     end
 
-    def generate_id
-      id = rand(1..100000)
-      check_id(id)
-      @all_ids << id
-      return id
+    def find_block_reservation(block_id)
+      block_reservation = @reservations.find { |block_reservation| block_reservation.block_id == block_id }
+      return block_reservation
     end
 
-    def check_id(id)
-      if @all_ids.include?(id)
-        raise ArgumentError, "id already exists"
+
+    def generate_id
+      reservation_id = rand(1..100000)
+      check_id(reservation_id)
+      @all_ids << reservation_id
+      return reservation_id
+    end
+
+    def check_id(reservation_id)
+      if @all_ids.include?(reservation_id)
+        raise ArgumentError, "reservation_id already exists"
       end
     end
 
-    def total_cost(id)
-      reservation = find_reservation(id)
+    def total_cost(reservation_id)
+      reservation = find_reservation(reservation_id)
       nights = reservation.end_date - reservation.start_date
       total_cost = nights * reservation.price_per_night
       return total_cost

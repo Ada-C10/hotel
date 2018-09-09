@@ -19,7 +19,7 @@ describe "BookingSystem class" do
   describe "make reservation" do
     it "makes a reservation" do
       @system.make_reservation(Date.new(2018,1,1), Date.new(2018,1,5))
-      reservation = Hotel::Reservation.new(id: 1, room: 1, start_date: Date.new(2018, 1, 1), end_date: Date.new(2018, 1, 5), price_per_night: 200)
+      reservation = Hotel::Reservation.new(reservation_id: 1, room: 1, start_date: Date.new(2018, 1, 1), end_date: Date.new(2018, 1, 5), price_per_night: 200)
       expect(@system.reservations.length).must_equal 1
     end
 
@@ -30,16 +30,16 @@ describe "BookingSystem class" do
 
       # @system.make_reservation(Date.new(2018, 1, 1), Date.new(2018, 1, 5))
 
-      reservation1 = Hotel::Reservation.new(id: 1, room: 1, start_date: Date.new(2018, 1, 7), end_date: Date.new(2018, 1, 8), price_per_night: 200)
+      reservation1 = Hotel::Reservation.new(reservation_id: 1, room: 1, start_date: Date.new(2018, 1, 7), end_date: Date.new(2018, 1, 8), price_per_night: 200)
       @system.reservations << reservation1
 
       # @system.make_reservation(Date.new(2018, 1, 6), Date.new(2018, 1, 7))
 
-      reservation2 = Hotel::Reservation.new(id: 2, room: 2, start_date: Date.new(2018, 1, 1), end_date: Date.new(2018, 1, 5), price_per_night: 200)
+      reservation2 = Hotel::Reservation.new(reservation_id: 2, room: 2, start_date: Date.new(2018, 1, 1), end_date: Date.new(2018, 1, 5), price_per_night: 200)
       @system.reservations << reservation2
 
 
-      reservation3 = Hotel::Reservation.new(id: 3, room: @system.assign_available_room(Date.new(2018, 1, 6), Date.new(2018, 1, 9)), start_date: Date.new(2018, 1, 6), end_date: Date.new(2018, 1, 9), price_per_night: 200)
+      reservation3 = Hotel::Reservation.new(reservation_id: 3, room: @system.assign_available_room(Date.new(2018, 1, 6), Date.new(2018, 1, 9)), start_date: Date.new(2018, 1, 6), end_date: Date.new(2018, 1, 9), price_per_night: 200)
       @system.reservations << reservation3
       expect(reservation3.room).must_equal 2
     end
@@ -48,10 +48,10 @@ describe "BookingSystem class" do
   describe "search reservation dates" do
     before do
 
-      reservation1 = Hotel::Reservation.new(id: 1, room: 1, start_date: Date.new(2018, 1, 1), end_date: Date.new(2018, 1, 8), price_per_night: 200)
+      reservation1 = Hotel::Reservation.new(reservation_id: 1, room: 1, start_date: Date.new(2018, 1, 1), end_date: Date.new(2018, 1, 8), price_per_night: 200)
       @system.reservations << reservation1
 
-      reservation2 = Hotel::Reservation.new(id: 2, room: 2, start_date: Date.new(2018, 1, 7), end_date: Date.new(2018, 1, 15), price_per_night: 200)
+      reservation2 = Hotel::Reservation.new(reservation_id: 2, room: 2, start_date: Date.new(2018, 1, 7), end_date: Date.new(2018, 1, 15), price_per_night: 200)
       @system.reservations << reservation2
 
     end
@@ -62,13 +62,13 @@ describe "BookingSystem class" do
 
     it "returns reservations that overlap on the existing reservation start date" do
 
-      expect(@system.search_reservations(Date.new(2017, 12, 30), Date.new(2018, 1, 5))[0].id).must_equal 1
+      expect(@system.search_reservations(Date.new(2017, 12, 30), Date.new(2018, 1, 5))[0].reservation_id).must_equal 1
 
     end
 
     it "returns reservations that overlap on the existing reservation end" do
 
-      expect(@system.search_reservations(Date.new(2018, 1, 10), Date.new(2018, 1, 20))[0].id).must_equal 2
+      expect(@system.search_reservations(Date.new(2018, 1, 10), Date.new(2018, 1, 20))[0].reservation_id).must_equal 2
 
     end
 
@@ -92,19 +92,19 @@ describe "BookingSystem class" do
 
   end
 
-  describe "find reservation method with id" do
-    it "returns the corresponding reservation given id" do
-      reservation = Hotel::Reservation.new(id: 1, room: 1, start_date: Date.new(2018, 1, 1), end_date: Date.new(2018, 1, 5), price_per_night: 200)
+  describe "find reservation method with reservation_id" do
+    it "returns the corresponding reservation given reservation_id" do
+      reservation = Hotel::Reservation.new(reservation_id: 1, room: 1, start_date: Date.new(2018, 1, 1), end_date: Date.new(2018, 1, 5), price_per_night: 200)
       @system.reservations << reservation
 
-      expect(@system.find_reservation(1))[0].id.must_equal 1
+      expect(@system.find_reservation(1))[0].reservation_id.must_equal 1
     end
   end
 
   describe "total cost of reservation" do
-    it "finds the total cost of reservation given id" do
+    it "finds the total cost of reservation given reservation_id" do
 
-      reservation = Hotel::Reservation.new(id: 1, room: 1, start_date: Date.new(2018, 1, 1), end_date: Date.new(2018, 1, 5), price_per_night: 200)
+      reservation = Hotel::Reservation.new(reservation_id: 1, room: 1, start_date: Date.new(2018, 1, 1), end_date: Date.new(2018, 1, 5), price_per_night: 200)
       @system.reservations << reservation
 
       expect(@system.total_cost(1)).must_equal 800
@@ -112,22 +112,22 @@ describe "BookingSystem class" do
   end
 
   describe "generate_id" do
-    it "generates an integer id" do
+    it "generates an integer reservation_id" do
       expect(@system.generate_id).must_be_kind_of Integer
     end
 
-    it "assigns id to reservation" do
-      reservation1 = Hotel::Reservation.new(id: @system.generate_id, room: 1, start_date: Date.new(2018, 1, 1), end_date: Date.new(2018, 1, 5), price_per_night: 200)
+    it "assigns reservation_id to reservation" do
+      reservation1 = Hotel::Reservation.new(reservation_id: @system.generate_id, room: 1, start_date: Date.new(2018, 1, 1), end_date: Date.new(2018, 1, 5), price_per_night: 200)
       @system.reservations << reservation1
 
-      expect(reservation1.id).must_be_kind_of Integer
+      expect(reservation1.reservation_id).must_be_kind_of Integer
     end
 
-    it "raises an Argument Error if id is not unique" do
+    it "raises an Argument Error if reservation_id is not unique" do
       # binding.pry
-      reservation1 = Hotel::Reservation.new(id: @system.generate_id, room: 1, start_date: Date.new(2018, 1, 1), end_date: Date.new(2018, 1, 5), price_per_night: 200)
+      reservation1 = Hotel::Reservation.new(reservation_id: @system.generate_id, room: 1, start_date: Date.new(2018, 1, 1), end_date: Date.new(2018, 1, 5), price_per_night: 200)
       @system.reservations << reservation1
-      expect { @system.check_id(reservation1.id) }.must_raise ArgumentError
+      expect { @system.check_id(reservation1.reservation_id) }.must_raise ArgumentError
     end
   end
 
@@ -135,9 +135,35 @@ describe "BookingSystem class" do
     it "raises ArgumentError if more than 5 rooms booked" do
       expect { @system.make_block((Date.new(2018, 1, 1)), (Date.new(2018, 1, 2)), 6) }.must_raise ArgumentError
     end
-  end
 
+    it "creates a block" do
+      @system.make_block((Date.new(2018,1,1)), (Date.new(2018,1,5)), 5)
+
+      expect(@system.blocks.length).must_equal 1
+    end
+
+    it "creates x number of reservations for x rooms in the block (x = 5)" do
+      @system.make_block((Date.new(2018,1,1)), (Date.new(2018,1,5)), 5)
+
+      expect(@system.reservations.length).must_equal 5
+    end
+
+    it "finds a block reservation given the block id" do
+      block_reservation = Hotel::BlockReservation.new(block_id: 20,  reservation_id: nil, room: 2, start_date: Date.new(2018,1,1), end_date: Date.new(2018,1,5), discounted_price: 150)
+      @system.reservations << block_reservation
+
+      expect(@system.find_block_reservation(20)).must_equal block_reservation
+    end
+
+    it "changes reservation_id from nil to integer when making a block_reservation" do
+      block_reservation = Hotel::BlockReservation.new(block_id: 20,  reservation_id: nil, room: 2, start_date: Date.new(2018,1,1), end_date: Date.new(2018,1,5), discounted_price: 150)
+      @system.reservations << block_reservation
+
+      expect((@system.make_block_reservation(20)).reservation_id).must_be_kind_of Integer
+    end
+  end
 end
+
 
 # Hi! In Edges we talked about interesting test cases for date overlaps this afternoon. Here is a full list of all the cases I’ll be looking for when I give feedback:
 #

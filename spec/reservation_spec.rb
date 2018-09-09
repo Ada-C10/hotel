@@ -6,7 +6,7 @@ describe "Reservation class" do
 
   describe "Reservation instantiation" do
     before do
-      @reservation = Hotel::Reservation.new(id: 5, room: 1, start_date: Date.new(2018, 1, 1), end_date: Date.new(2018, 1, 2), price_per_night: 200)
+      @reservation = Hotel::Reservation.new(reservation_id: 5, room: 1, start_date: Date.new(2018, 1, 1), end_date: Date.new(2018, 1, 2), price_per_night: 200)
     end
 
     it "is an instance of Reservation" do

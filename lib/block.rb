@@ -1,11 +1,10 @@
 module Hotel
   class Block
-    attr_accessor :block_id, :number_of_rooms, :assigned_rooms, :start_date, :end_date, :discounted_price
+    attr_accessor :block_id, :number_of_rooms, :start_date, :end_date, :discounted_price
 
-    def initialize(block_id:,  number_of_rooms:, assigned_rooms:, start_date:, end_date:, discounted_price:)
+    def initialize(block_id:,  number_of_rooms:, start_date:, end_date:, discounted_price:)
       @block_id = block_id
       @number_of_rooms = number_of_rooms
-      @assigned_rooms = assigned_rooms
       @start_date = start_date
       @end_date = end_date
       @discounted_price = discounted_price
