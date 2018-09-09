@@ -224,16 +224,19 @@ describe 'BookingSystem class' do
       expect(unreserved_rooms.count).must_equal 20
     end
   end
-#
-#   describe 'create_block_of_rooms' do
-#     it 'returns an array with 5 elements max representing block of rooms' do
-#       start_date = "Oct 4 2018"
-#       end_date = "Oct 7 2018"
-#       block_rooms = @booking.create_block_of_rooms(start_date, end_date)
-#
-#       expect(block_rooms).must_be_kind_of Array
-#       expect(block_rooms[0]).must_be_kind_of Room
-#       expect(block_rooms.count).must_be :<=, 5
-#     end
-#   end
+
+  describe 'create_block_of_rooms' do
+    it 'returns an array with 5 elements max representing block of rooms' do
+      start_date = "Oct 4 2018"
+      end_date = "Oct 7 2018"
+      discounted_rate = 180
+      my_block = @booking.create_block_of_rooms(start_date, end_date, 180)
+
+      expect(my_block ).must_be_kind_of BlockOfRooms
+      expect(my_block.check_in_date).must_equal Date.parse(start_date)
+      expect(my_block.check_out_date).must_equal Date.parse(end_date)
+      expect(my_block.room_cost).must_equal discounted_rate
+      expect(my_block.collection_rooms.count).must_be :<=, 5
+    end
+  end
 end

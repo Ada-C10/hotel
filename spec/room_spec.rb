@@ -2,11 +2,16 @@ require_relative 'spec_helper'
 
 describe 'Room class' do
   before do
-    res1 = Reservation.new("Oct 4 2018", "Oct 7 2018")
-    res2 = Reservation.new("Oct 7 2018", "Oct 9 2018")
-    @room = Room.new(room_num: 1)
-    @room.add_reservation_to_room(res1)
-    @room.add_reservation_to_room(res2)
+    room_res = []
+    room_res << Reservation.new("Oct 4 2018", "Oct 7 2018")
+    room_res << Reservation.new("Oct 7 2018", "Oct 9 2018")
+
+    room_blocked = []
+    room_blocked << BlockOfRooms.new("Nov 1 2018", "Nov 5 2018")
+    room_blocked << BlockOfRooms.new("Dec 1 2018", "Dec 4 2018")
+
+    @room = Room.new(room_num: 1, reservations: room_res, room_blocks: room_blocked)
+
   end
 
   let (:overlap_before) {
@@ -61,6 +66,16 @@ describe 'Room class' do
     end
   end
 
+  describe 'is_not_blocked' do
+    it 'returns true if room is not blocked' do
+      expect(@room.is_not_blocked?(no_overlap_before)).must_equal true
+    end
+
+    it 'returns false if room is blocked' do
+      expect(@room.is_not_blocked?(no_overlap_after)).must_equal false
+    end
+  end
+
   describe 'add_reservation_to_room' do
     it "adds a reservation instance to room's reservations array" do
       expect(@room.reservations).must_be_kind_of Array
@@ -69,25 +84,11 @@ describe 'Room class' do
     end
   end
 
-  # describe 'add_booked_dates' do
-  #   it "adds a range of dates into the room's booked_dates array" do
-  #     room = Room.new(room_num: 1)
-  #     room.add_booked_dates(date_range)
-  #
-  #     expect(room.dates_booked).must_be_kind_of Array
-  #     expect(room.dates_booked[0]).must_equal Date.parse("Oct 4 2018")
-  #     expect(room.dates_booked[2]).must_equal Date.parse("Oct 6 2018")
-  #   end
-  # end
-
-  # describe 'add_reservation' do
-  #   it "adds a reservation instance to the room's array of reservations" do
-  #     room = Room.new(room_num: 1)
-  #     room.add_reservation(Reservation.new("Oct 5 2018", "Oct 8 2018"))
-  #
-  #     expect(room.reservations).must_be_kind_of Array
-  #     expect(room.reservations.count).must_equal 1
-  #     expect(room.reservations[0]).must_be_kind_of Reservation
-  #   end
-  # end
+  describe 'add_block_to_room' do
+    it "adds a block instance to room_blocks array" do
+      expect(@room.room_blocks).must_be_kind_of Array
+      expect(@room.room_blocks.count).must_equal 2
+      expect(@room.room_blocks[0]).must_be_kind_of BlockOfRooms
+    end
+  end
 end

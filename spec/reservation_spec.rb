@@ -56,30 +56,33 @@ describe 'Reservation class' do
   end
 end
 
-# describe 'BlockOfRooms class' do
-#
-#   before do
-#     start_date = "Oct 1 2018"
-#     end_date = "Oct 4 2018"
-#     discounted_rate = 180
-#     @my_block = BlockOfRooms.new(start_date, end_date, room_cost: discounted_rate)
-#   end
-#   describe 'Initializer' do
-#     it 'is an instance of BlockOfRooms' do
-#       expect(@my_block).must_be_kind_of BlockOfRooms
-#     end
-#   end
-#
-#   describe 'add_room' do
-#     it 'adds a collection of room instances' do
-#       room1 = Room.new(room_num: 1)
-#       room2 = Room.new(room_num: 2)
-#
-#       @my_block.add_room(room1)
-#       @my_block.add_room(room2)
-#
-#       expect(@my_block.collection_rooms.count).must_equal 2
-#       expect(@my_block.collection_rooms[0]).must_be_kind_of Room
-#     end
-#   end
-# end
+describe 'BlockOfRooms class' do
+  before do
+    start_date = "Oct 1 2018"
+    end_date = "Oct 4 2018"
+    discounted_rate = 180
+    @my_block = BlockOfRooms.new(start_date, end_date, room_cost: discounted_rate)
+  end
+
+  describe 'Initializer' do
+    it 'is an instance of BlockOfRooms' do
+      expect(@my_block).must_be_kind_of BlockOfRooms
+      expect(@my_block.room_cost).must_equal 180
+      expect(@my_block.dates_booked).must_be_kind_of Array
+      expect(@my_block.dates_booked[0]).must_be_kind_of Date
+    end
+  end
+
+  describe 'add_room' do
+    it 'adds a collection of room instances' do
+      room1 = Room.new(room_num: 1)
+      room2 = Room.new(room_num: 2)
+
+      @my_block.add_room(room1)
+      @my_block.add_room(room2)
+
+      expect(@my_block.collection_rooms.count).must_equal 2
+      expect(@my_block.collection_rooms[0]).must_be_kind_of Room
+    end
+  end
+end

@@ -39,8 +39,11 @@ end
 class BlockOfRooms < Reservation
   attr_accessor :collection_rooms
 
-  def initialize(check_in_date, check_out_date, room_cost: 200)
-    super(check_in_date, check_out_date)
+  def initialize(check_in_date, check_out_date, id: 0, room_cost: 200)
+    @check_in_date = Date.parse(check_in_date)
+    @check_out_date = Date.parse(check_out_date)
+    raise ArgumentError, "invalid dates" if @check_in_date >= @check_out_date
+    @dates_booked = date_range(check_in_date, check_out_date)
     @id = 0
     @room_cost = room_cost
     @collection_rooms = []
