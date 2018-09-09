@@ -12,14 +12,18 @@ describe BookingManager do
     Reservation.new('181202', '181204')
   }
   let(:reservation2) {
-    Reservation.new('181203', '181206')
-  }
-  let(:reservation3) {
-    Reservation.new('181205', '181206')
-  }
-  let(:reservation4) {
     Reservation.new('181204', '181206')
   }
+  let(:reservation3) {
+    Reservation.new('181203', '181204')
+  }
+  let(:reservation4) {
+    Reservation.new('181130', '181202')
+  }
+  let(:reservation5) {
+    Reservation.new('181130', '181206')
+  }
+
 
   describe "#initialize" do
     it "can be instantiated" do
@@ -27,33 +31,27 @@ describe BookingManager do
     end
   end
 
-  describe "#print_all_rooms" do
-        it "returns array" do
-      expect(manager.print_all_rooms).must_be_kind_of Array
-    end
-  end
 
-  describe "#reservation_list" do
+
+  describe "#add_reservation" do
     before do
-      calendar.add_reservation(reservation1)
-      calendar.add_reservation(reservation1)
-      calendar.add_reservation(reservation2)
-      calendar.add_reservation(reservation3)
-      calendar.add_reservation(reservation4)
+      manager.add_reservation(reservation1)
+      manager.add_reservation(reservation2)
+      manager.add_reservation(reservation3)
+      manager.add_reservation(reservation4)
+      manager.add_reservation(reservation5)
     end
-    it "returns list of reserved rooms for provided date" do
-      list = manager.reservation_list('181203')
-      expect(list.length).must_equal 3
-      expect(list[0]).must_equal 1
-      expect(list[2]).must_equal 3
+    it "returns 'Added!' message" do
+      expect(manager.add_reservation(reservation1)).must_equal "Added!"
     end
-
-
-    describe "#print_available_rooms" do
-      it "returns available rooms for given date range" do
-        available = manager.print_available_rooms('181202', '181204')
-        expect(available.length).must_equal 17
-      end
+    it "adds all reservation dates to first available room" do
+      expect(calendar.room_assignments[1]).must_equal reservation1.get_all_dates + reservation2.get_all_dates + reservation4.get_all_dates
+      expect(calendar.room_assignments[2]).must_equal reservation3.get_all_dates
+      expect(calendar.room_assignments[3]).must_equal reservation5.get_all_dates
     end
   end
+
+
+
 end
+# end

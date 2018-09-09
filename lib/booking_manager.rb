@@ -6,15 +6,16 @@ class BookingManager
     @calendar = calendar
   end
 
-  def reservation_list(date)
-    room_assignments = calendar.room_assignments
-    date = Date.parse(date)
-    reservations = room_assignments.select { |room, dates|  dates.include? (date) }.keys
+  def add_reservation(reservation)
+    dates = reservation.get_all_dates
+    room = calendar.list_available_rooms(reservation).first
+    dates.each do |date|
+      calendar.room_assignments[room] << date
+    end
+
+    return "Added!"
   end
 
-  def print_available_rooms(check_in, check_out)
-    request = Reservation.new(check_in, check_out)
-    return calendar.list_available_rooms(request)
-  end
+
 
 end

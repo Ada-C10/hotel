@@ -5,6 +5,24 @@ describe Calendar do
   let(:calendar) {
     Calendar.new(20)
   }
+  let(:manager) {
+    BookingManager.new(calendar)
+    # }
+    # let(:reservation1) {
+    #   Reservation.new('181202', '181204')
+    # }
+    # let(:reservation2) {
+    #   Reservation.new('181203', '181206')
+    # }
+    # let(:reservation3) {
+    #   Reservation.new('181205', '181206')
+    # }
+    # let(:reservation4) {
+    #   Reservation.new('181204', '181206')
+    }
+  let(:list) {
+    calendar.list_available_rooms(reservation1)
+  }
   let(:reservation1) {
     Reservation.new('181202', '181204')
   }
@@ -19,9 +37,6 @@ describe Calendar do
   }
   let(:reservation5) {
     Reservation.new('181130', '181206')
-  }
-  let(:list) {
-    calendar.list_available_rooms(reservation1)
   }
 
   describe "#initalize" do
@@ -47,16 +62,32 @@ describe Calendar do
     end
   end
 
+  describe "#reservation_list" do
+    before do
+      manager.add_reservation(reservation1)
+      manager.add_reservation(reservation1)
+      manager.add_reservation(reservation2)
+      manager.add_reservation(reservation3)
+      manager.add_reservation(reservation4)
+    end
+    it "returns list of reserved rooms for provided date" do
+      list = calendar.reservation_list('181203')
+      expect(list.length).must_equal 3
+      expect(list[0]).must_equal 1
+      expect(list[2]).must_equal 3
+    end
+  end
+
   describe "#available_room?" do
     before do
-      calendar.add_reservation(reservation1)
+      manager.add_reservation(reservation1)
     end
     it "returns false if room is reserved for all given dates" do
       expect(calendar.available_room?(1, reservation1)).must_equal false
     end
     it "returns true if room isn't reserved for any given dates" do
       expect(calendar.available_room?(1, reservation2)).must_equal true
-      expect(calendar.available_room?(1, reservation4)).must_equal true
+        # expect(calendar.available_room?(1, reservation4)).must_equal true
     end
     it "returns false if room is reserved for any given dates" do
       expect(calendar.available_room?(1, reservation3)).must_equal false
@@ -66,7 +97,7 @@ describe Calendar do
 
   describe "#list_available_rooms" do
     before do
-      calendar.add_reservation(reservation1)
+      manager.add_reservation(reservation1)
     end
     it "returns array of available rooms" do
       expect(list).must_be_kind_of Array
@@ -75,23 +106,7 @@ describe Calendar do
     end
   end
 
-  describe "#add_reservation" do
-    before do
-      calendar.add_reservation(reservation1)
-      calendar.add_reservation(reservation2)
-      calendar.add_reservation(reservation3)
-      calendar.add_reservation(reservation4)
-      calendar.add_reservation(reservation5)
-    end
-    it "returns 'Added!' message" do
-      expect(calendar.add_reservation(reservation1)).must_equal "Added!"
-    end
-    it "adds all reservation dates to first available room" do
-      expect(calendar.room_assignments[1]).must_equal reservation1.get_all_dates + reservation2.get_all_dates + reservation4.get_all_dates
-      expect(calendar.room_assignments[2]).must_equal reservation3.get_all_dates
-      expect(calendar.room_assignments[3]).must_equal reservation5.get_all_dates
-    end
-  end
 end
-  # end
-  # end
+# end
+# end
+# end
