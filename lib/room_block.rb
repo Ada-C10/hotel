@@ -14,8 +14,7 @@ module Hotel
       validate_date
 
       @num_rooms = input[:num_rooms]
-      raise ArgumentError.new("Room blocks of more than 5 and less than 2 are not allowed.") if @num_rooms > 5 || @num_rooms < 2
-
+      @room_number = input[:room_number].nil? ? [] : input[:room_number]
       @reservations = input[:reservations].nil? ? [] : input[:reservations]
     end
 

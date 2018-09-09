@@ -53,18 +53,24 @@ module Hotel
     end
 
     # helper method for making reservation / parsing the reservation data
-    def parse_reservation_data(checkin_date, checkout_date, room_object, room_block_discount = 1)
+    def parse_reservation_data(checkin_date, checkout_date, room_number, room_block_discount = 1)
 
       return { checkin_date: checkin_date, checkout_date: checkout_date,
-        room_number: room_object.room_number, confirmation_id: generate_random_reservation_id,
+        room_number: room_number, confirmation_id: generate_random_reservation_id,
         total_cost: calculate_total_cost(checkin_date, checkout_date, @room_cost, room_block_discount) }
     end
 
     #creates a reservation if there's an available room and adds to list
-    def make_reservation(checkin_date, checkout_date, room_block = false, num_rooms = 1, room_block_discount = 1)
+    def make_reservation(checkin_date, checkout_date, num_rooms = 1, room_block_discount = 1)
 
-      if room_block == true
+      num_rooms = num_rooms.to_i
+
+      if num_rooms > 2 && num_rooms < 5
         return make_room_block(checkin_date, checkout_date, num_rooms)
+      elsif num_rooms > 5
+        raise ArgumentError.new("Room blocks of more than 5 are not allowed. Please split up reservations.") if num_rooms > 5
+      elsif num_rooms <= 0
+        raise ArgumentError.new("Please enter room numbers larger than 0.") if num_rooms
       end
 
       #find room in range
@@ -72,7 +78,7 @@ module Hotel
       room = find_available_room(range) #error here
 
       #parse data into a form needed for reservation
-      input = parse_reservation_data(checkin_date, checkout_date, room, room_block_discount)
+      input = parse_reservation_data(checkin_date, checkout_date, room.room_number, room_block_discount)
 
       #create a room reservation from our input
       reservation = Hotel::Reservation.new(input)
@@ -87,11 +93,10 @@ module Hotel
     def parse_room_block_data(checkin_date, checkout_date, num_rooms, room_numbers)
 
       return { checkin_date: checkin_date, checkout_date: checkout_date,
-        confirmation_id: "BLOCK#{generate_random_block_id}", room_number: room_numbers,
-        total_cost: num_rooms * (calculate_total_cost(checkin_date, checkout_date, @room_cost, @room_block_discount )),
-        reservations: reservations, num_rooms: num_rooms}
+        confirmation_id: "BLOCK#{generate_random_block_id}", num_rooms: num_rooms,
+        room_number: room_numbers, reservations: reservations, total_cost: num_rooms * (calculate_total_cost(checkin_date, checkout_date, @room_cost, @room_block_discount ))
+      }
     end
-
 
     #helper method for storing a room_block/ adding it to the list
     def add_room_block_to_list(room_block)
@@ -105,7 +110,7 @@ module Hotel
       room_numbers = []
 
       num_rooms.times do
-        reservation = make_reservation(checkin_date, checkout_date, false, 1, @room_block_discount)
+        reservation = make_reservation(checkin_date, checkout_date, 1, @room_block_discount)
         reservations << reservation
         room_numbers << reservation.room_number
       end

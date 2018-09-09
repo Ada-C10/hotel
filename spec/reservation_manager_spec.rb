@@ -152,7 +152,8 @@ describe 'ReservationManager' do
       checkout_date = "15/09/2018"
       date_range = (Date.parse(checkin_date)..Date.parse(checkout_date)).to_a
       room_object = manager.find_available_room(date_range)
-      manager.parse_reservation_data(checkin_date, checkout_date, room_object)
+      room_number = room_object.room_number
+      manager.parse_reservation_data(checkin_date, checkout_date, room_number)
     }
 
     it 'will parse data into form usable by reservation class' do
@@ -259,12 +260,26 @@ describe 'ReservationManager' do
 
     let(:room_block) {
       manager = Hotel::ReservationManager.new()
-      manager.make_reservation("01/01/2018", "03/01/2018", true, 3)
+      manager.make_reservation("01/01/2018", "03/01/2018", 3)
     }
 
-    it 'will make a room block if room block param is true and number of rooms passed in' do
+    it 'will make a room block if the number of rooms passed in is between 2 and 5' do
 
-      expect(room_block).must_be_instance_of Hotel::RoomBlock
+      expect( room_block).must_be_instance_of Hotel::RoomBlock
+    end
+
+    it 'will raise an exception if number of rooms is greater than 5' do
+      expect{
+        manager = Hotel::ReservationManager.new()
+        manager.make_reservation("01/01/2018", "03/01/2018", 7)
+      }.must_raise ArgumentError
+    end
+
+    it 'will raise an exception if number of rooms is 0 or less' do
+      expect{
+        manager = Hotel::ReservationManager.new()
+        manager.make_reservation("01/01/2018", "03/01/2018", 7)
+      }.must_raise ArgumentError
     end
   end
 
@@ -357,6 +372,5 @@ describe 'ReservationManager' do
       expect(fully_booked_reservations[0]).must_match(/^[A-Z]{3}+[\d]{5}/)
     end
   end
-
 
 end

@@ -1,0 +1,9 @@
+
+Usually by the end of a project, we can look back on what we made with a clearer understanding of what we actually needed. In industry, this is a great time to do a refactor of some sort. For this project however, you're off the hook... for the moment. We will be revisiting our hotels later on on the course, and you may want to make some changes at that point.
+
+Create a new file in the project called refactors.txt
+Make a short list of the changes that you could make, particularly in terms of naming conventions
+These notes will be used by you in a few weeks, so make sure that they are detailed enough that someone else could understand your thinking and follow your directions
+Do not make any further changes to your code at this time
+
+I want to rescue the date. If entered incorrectly or if date not available. I'm not sure if Hotel::RoomBlock should b a child of Hotel::Reservation so maybe I'd have to refactor there. I'm not sure what to do with RoomBlock greater 5; in this case, I just raised an exception. Maybe rescue this and also can't find date.
