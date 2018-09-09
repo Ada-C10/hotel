@@ -151,4 +151,20 @@ class ReservationTracker
     end
   end
 
+def create_block(event_name, start, ending)
+  rooms_for_block = []
+
+  all_rooms_available = show_available_rooms(start, ending)
+
+  if all_rooms_available.length >= 5
+    5.times do |iterator|
+      rooms_for_block << all_rooms_available[iterator]
+    end
+  else
+    raise StandardError.new("There are not enough rooms available for the given date range to create a block")
+  end
+
+  BlockRoom.new(event_name, start, ending, rooms_for_block)
+end
+
 end
