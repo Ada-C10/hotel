@@ -257,14 +257,14 @@ describe 'ReservationManager' do
     #   @room_number=[1, 2, 3],
     #   @total_cost=960>
 
-    let(:room_block) {
+    let(:valid_room_block) {
       manager = Hotel::ReservationManager.new()
       manager.make_reservation("01/01/2018", "03/01/2018", 3)
     }
 
     it 'will make a room block if the number of rooms passed in is between 2 and 5' do
 
-      expect( room_block).must_be_instance_of Hotel::RoomBlock
+      expect(valid_room_block).must_be_instance_of Hotel::RoomBlock
     end
 
     it 'will raise an exception if number of rooms is greater than 5' do
