@@ -3,7 +3,8 @@ require_relative 'spec_helper'
 
 describe "Admin class" do
   before do
-    @admin_1 = Admin.new
+    list = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]
+    @admin_1 = Admin.new(list, Date.today, Date.today + 365)
   end
 
   describe "Initializer" do
@@ -18,6 +19,7 @@ describe "Admin class" do
       expect(@admin_1.rooms.first).must_be_kind_of Room
       expect(@admin_1.room_unbooked_dates.length).must_equal 7300
       expect(@admin_1.room_unbooked_dates.first[:unbooked_date]).must_equal Date.today
+      expect(@admin_1.room_blocks).must_equal []
     end
   end
 
@@ -211,7 +213,23 @@ describe "Admin class" do
 
       expect(room_selected.include? room_first).must_equal false
     end
+  end
 
+  describe "create_room_block" do
+    before do
+      @start_date_1 = Date.new(2018,12,4)
+      @end_date_1 = Date.new(2018,12,6)
+      @res_1 = @admin_1.make_reservation(1,"Mike Murry",@start_date_1, @end_date_1)
+      @count_1 = @admin_1.reservations.count
+      @start_date_2 = Date.new(2018,12,5)
+      @end_date_2 = Date.new(2018,12,7)
+      @res_2 = @admin_1.make_reservation(2,"Julie Smith",@start_date_2, @end_date_2)
+      @count_2 = @admin_1.reservations.count
+
+      20.times do |i|
+        @admin_1.make_reservation(@count_2 + i + 1, "Lily Xia", Date.new(2018,9,25), Date.new(2018,9,27))
+      end
+    end
 
   end
 end
