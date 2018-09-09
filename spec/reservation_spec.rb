@@ -3,7 +3,8 @@ require_relative 'spec_helper'
 describe 'Reservation class' do
   let (:check_in) { Date.today }
   let (:check_out) { check_in + 2 }
-  let (:reservation) { Hotel::Reservation.new(Hotel::DateRange.new(check_in, check_out), 1)}
+  let (:range) {Hotel::DateRange.new(check_in, check_out)}
+  let (:reservation) { Hotel::Reservation.new(range, 1)}
 
   describe 'Reservation instantiation' do
 
@@ -17,15 +18,15 @@ describe 'Reservation class' do
 
     it 'raises an argument error if room_num is not a number' do
       expect{
-        Hotel::Reservation.new(check_in, check_out, 'Not a number')
+        Hotel::Reservation.new(range, 'Not a number')
       }.must_raise ArgumentError
 
       expect{
-        Hotel::Reservation.new(check_in, check_out, nil)
+        Hotel::Reservation.new(range, nil)
       }.must_raise ArgumentError
 
       expect{
-        Hotel::Reservation.new(check_in, check_out, " ")
+        Hotel::Reservation.new(range, " ")
       }.must_raise ArgumentError
     end
 
