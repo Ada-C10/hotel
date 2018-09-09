@@ -1,6 +1,22 @@
-class DateRange
+require 'date'
 
-  def initilize
+module Hotel
+  class DateRange
+    attr_reader :start_date, :end_date
+
+    def initialize(start_date, end_date)
+      if (end_date < start_date)
+        raise StandardError
+      end
+      
+      @start_date = start_date
+      @end_date = end_date
+    end
+
+    def duration
+      return (@end_date - @start_date).to_i
+    end
+
+
   end
-
 end
