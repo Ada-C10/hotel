@@ -6,10 +6,6 @@ class BookingManager
     @calendar = calendar
   end
 
-  def print_all_rooms
-    return calendar.room_assignments.keys
-  end
-
   def reservation_list(date)
     room_assignments = calendar.room_assignments
     date = Date.parse(date)
