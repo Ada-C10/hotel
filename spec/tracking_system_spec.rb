@@ -79,9 +79,12 @@ describe 'TrackingSystem class' do
 
 
 
-  describe "#view_available_rooms_on specifc date range" do
+  describe "#view_available_rooms_on" do
     before do
       @tracker = TrackingSystem.new
+    end
+
+    it "makes sure date ranges dont overlap " do 
     end
 
     it "returns an array" do
@@ -210,13 +213,48 @@ describe 'TrackingSystem class' do
       @blockid = @tracker.blocks[0].block
     end
 
-    it "returns the number of rooms available in a block" do
+    it "returns list of rooms that are available in a block" do
       @reservation1 = @tracker.add_reservation(start_time: Date.new(2018,10,5), end_time: Date.new(2018,10,10), number_of_rooms:1)
       @reservation2 = @tracker.add_reservation(start_time: Date.new(2018,10,5), end_time: Date.new(2018,10,10), number_of_rooms:1)
       @reservation3 = @tracker.add_reservation(start_time: Date.new(2018,10,5), end_time: Date.new(2018,10,10), number_of_rooms:1)
-      expect(@tracker.rooms_available_in_block(@blockid)).must_equal 2
+      expect(@tracker.rooms_available_in_block(@blockid)).must_be_kind_of Array
+    end
+
+    it "raises ArgumentError unless argument is instance of Symbol" do
+      expect{@tracker.rooms_available_in_block("Hi")}.must_raise ArgumentError
     end
   end
+
+  describe "#add_reservation_in_block" do
+    before do
+      @tracker = TrackingSystem.new
+      @block = @tracker.add_block(start_time: Date.new(2018,10,5), end_time: Date.new(2018,10,10), number_of_rooms:5)
+      @blockid = @tracker.blocks[0].block
+    end
+
+    it "Adds a reservation to each room's list of reservations" do
+      # expect(@tracker.add_reservation_in_block)
+    end
+  end
+
+
+
+  describe "#retrieve_block_discount" do
+    it "returns a block's discount rate" do
+
+    end
+
+    it "raises ArgumentError unless argument is a Symbol" do
+    end
+  end
+  # def retrieve_block_discount(block_id)
+  #   @blocks.each do |individual_block|
+  #     if individual_block.block == block_id
+  #       return individual_block.discount / 100
+  #     end
+  #   end
+  # end
+
 
 
 

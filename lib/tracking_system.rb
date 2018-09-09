@@ -15,26 +15,6 @@ class TrackingSystem
     @blocks = []
   end
 
-  # def total_cost_of_reservation(room_num)
-  #   raise ArgumentError.new"There are no reservations" if @reservations.empty? == true
-  #   @reservations.each do |reservation|
-  #     if reservation.room_num == nil
-  #       raise ArgumentError.new"Room number #{room_num} has no current reservations"
-  #     else reservation.room_num == room_num
-  #
-  #       #insert part where calculation happens
-  #       return reservation.price
-  #     end
-  #   end
-  # end
-  ###########################################################
-  #this method doesn't have tests yet because i'm not sure if im going to combine it with the method above
-  def total_cost_of_reservation(reservation)
-    raise ArgumentError.new"#{reservation} is an invalid argument type" unless reservation.instance_of? Reservation
-    return reservation.total_cost
-  end
-  ###########################################################
-
 
   def add_rooms
     all_rooms = []
@@ -46,74 +26,39 @@ class TrackingSystem
     return all_rooms
   end
 
-  #access the list of all of the rooms in the hotel
+  # Wave1 (1~4)
+  # 1. As an administrator, I can access the list of all of the rooms in the hotel
   def view_all_rooms
     return @all_rooms
   end
 
-  #reserve an available room for a given date range
-  #this method ONLY adds reservations for rooms that aren't in a block
-  def add_reservation(start_time: Date.now, end_time: Date.now + 1, number_of_rooms: 1)
-    available_rooms = view_available_rooms_on(start_time: start_time, end_time: end_time) #<--returns an array of available rooms that also aren't in a block
-    raise ArgumentError.new"Not enough rooms available on those dates" if available_rooms.length < number_of_rooms
-    number_of_rooms.times do |i|
-      @reservations << Reservation.new({room_num: available_rooms[i].room_num, start_time: start_time, end_time: end_time, price: 200.00})
-      available_rooms[i].reserved_dates << {start_time: start_time, end_time: end_time}
+  # 2. (wave 1 num 2 is the same as wave 2 num 2)
+  # 3. As an administrator, I can access the list of reservations for a specific date
+  def view_reservations_on(date)
+    raise ArgumentError.new"#{date} must be instance of Date" unless date.instance_of?(Date)
+    all_reservations = []
+    @reservations.each do |reservation|
+      if (reservation.start_time...reservation.end_time).include?(date) #maybe this boolean can be deleted
+        all_reservations << reservation
+      end
     end
-    @reservations
-  end
-
-  def generate_block_id
-    (0..3).map { (65 + rand(26)).chr }.join
-  end
-
-  def add_block(start_time: Date.today + 7, end_time: Date.today.next_month, number_of_rooms: 5, discount: 10)
-    raise ArgumentError.new"discount rate must be integer" unless discount.instance_of? Integer
-    raise ArgumentError.new"start_time must be before end_time" unless start_time < end_time
-    raise ArgumentError.new"number_of_rooms must be >= 1 && <= 5" unless number_of_rooms >= 1 && number_of_rooms <=5
-    available_rooms = view_available_rooms_on(start_time: start_time, end_time: end_time) #makes sure dates dont overlap and block status is :na
-    raise ArgumentError.new"not enough available rooms for this date range" if available_rooms.length < number_of_rooms
-    block_id = generate_block_id.to_sym
-    block = Block.new({rooms: [], start_time: start_time, end_time: end_time, discount: discount, block: block_id })
-    number_of_rooms.times do |i|
-      available_rooms[i].block = block_id
-      block.rooms << available_rooms[i]
+    if all_reservations.empty?
+      raise ArgumentError.new"There are no reservations on #{date}"
+    else
+      return all_reservations
     end
-    @blocks << block
-    return @blocks
   end
-  #need to come back here and create i instances of reservation..but first need to change Reservation.rooms to hold an Integer instead of Array
-  # available_rooms.each do |room|
-  #   @all_rooms.each do |room|
-  #     number_of_rooms.times do
-  #       if room.reserved_dates.empty?
-  #         reservation = Reservation.new({room: [room.room_num], start_time: start_time, end_time: end_time, price: 200.0})
-  #         @reservations << reservation
-  #         room.reserved_dates << {start_time: start_time, end_time: end_time}
-  #       else
-  #         room.reserved_dates.each do |reserved_dates|
-  #           if !(reserved_dates[:start_time]...reserved_dates[:end_time]).include?(start_time) #&& room.block == :NA
-  #             reservation = Reservation.new({room: not array anymore[room], start_time: start_time, end_time: end_time, price: 200.0})
-  #             @reservations << reservation
-  #             room.reserved_dates << {start_time: start_time, end_time: end_time}
-  #           else raise ArgumentError.new"There is no room available on that date"
-  #           end
-  #         end
-  #       end
-  #       return reservation
-  #     end
-  #   end
-  # end
-  # *********************************************************************************************************
-  #block method idea
-  #this method below is going to return a value that can into the Block.rooms << (aka list of rooms in a block), but how/when do i assign these available rooms a block id? Ah i think that i will
-  # i will create another method called create_block, call view_available_rooms_on(start_time, end_time) within that
-  # and then in that create_block method, update a block status for each room (aka block :A) corresponding to the Block's ID (id: A,B,C etc..)
-  #
-  # view a list of rooms that are not reserved(aka available) for a given date range
+  # 4. As an administrator, I can get the total cost for a given reservation
+  def total_cost_of_reservation(reservation)
+    raise ArgumentError.new"#{reservation} is an invalid argument type" unless reservation.instance_of? Reservation
+    return reservation.total_cost
+  end
 
 
-  # If a room is set aside in a block, it is not available for reservation by the general public, nor can it be included in another block
+
+
+  # Wave2 (1~2)
+  # 1. As an administrator, I can view a list of rooms that are not reserved for a given date range
   def view_available_rooms_on(start_time: Date.now, end_time: Date.now + 1)
     raise ArgumentError.new"start_time must be before end_time" unless start_time < end_time
     #another test to create is making sure its an instance of Date
@@ -139,20 +84,20 @@ class TrackingSystem
     end
   end
 
-  #access the list of reservations for a specific date <---not date range
-  def view_reservations_on(date)
-    raise ArgumentError.new"#{date} must be instance of Date" unless date.instance_of?(Date)
-    all_reservations = []
-    @reservations.each do |reservation|
-      if (reservation.start_time...reservation.end_time).include?(date) #maybe this boolean can be deleted
-        all_reservations << reservation
-      end
+  #2. As an administrator, I can reserve an available room for a given date range
+  #this method ONLY adds reservations for rooms that aren't in a block
+  def add_reservation(start_time: Date.now, end_time: Date.now + 1, number_of_rooms: 1)
+    available_rooms = view_available_rooms_on(start_time: start_time, end_time: end_time) #<--returns an array of available rooms that also aren't in a block
+    raise ArgumentError.new"Not enough rooms available on those dates" if available_rooms.length < number_of_rooms
+    number_of_rooms.times do |i|
+      @reservations << Reservation.new({room_num: available_rooms[i].room_num, start_time: start_time, end_time: end_time, price: 200.00})
+      available_rooms[i].reserved_dates << {start_time: start_time, end_time: end_time}
     end
-    if all_reservations.empty?
-      raise ArgumentError.new"There are no reservations on #{date}"
-    else
-      return all_reservations
-    end
+    @reservations
+  end
+
+  def generate_block_id
+    (0..3).map { (65 + rand(26)).chr }.join
   end
 
 
@@ -160,36 +105,89 @@ class TrackingSystem
     r1.include?(r2.first) || r2.include?(r1.first)
   end
 
+  # Wave3 (1~3)
+  # 1. As an administrator, I can create a block of rooms
+  # A block can contain a maximum of 5 rooms
+  # When a room is reserved from a block of rooms, the reservation dates will always match the date range of the block
+  # To create a block you need a date range, collection of rooms and a discounted room rate
+  # The collection of rooms should only include rooms that are available for the given date range
+  # If a room is set aside in a block, it is not available for reservation by the general public, nor can it be included in another block
+  # All of the availability checking logic from Wave 2 should now respect room blocks as well as individual reservations
+  def add_block(start_time: Date.today + 7, end_time: Date.today.next_month, number_of_rooms: 5, discount: 10)
+    # raise ArgumentError.new"discount rate must be integer" unless discount.instance_of? Integer
+    # raise ArgumentError.new"start_time must be before end_time" unless start_time < end_time
+    raise ArgumentError.new"number_of_rooms must be >= 1 && <= 5" unless number_of_rooms >= 1 && number_of_rooms <=5
+    available_rooms = view_available_rooms_on(start_time: start_time, end_time: end_time) #makes sure dates dont overlap and block status is :na
+    raise ArgumentError.new"not enough available rooms for this date range" if available_rooms.length < number_of_rooms
+    block_id = generate_block_id.to_sym
+    block = Block.new({rooms: [], start_time: start_time, end_time: end_time, discount: discount, block: block_id })
+    number_of_rooms.times do |i|
+      available_rooms[i].block = block_id #assigns each room to this new block (by block_id)
+      block.rooms << available_rooms[i] #shovels each room into the block
+    end
+    @blocks << block #puts new block in list of blocks
+    return @blocks
+  end
+
+  def retrieve_block_dates(block_id)
+    dates_hash = {}
+    range_array = []
+    @blocks.each do |block|
+      if block.block == block_id
+        dates_hash[:start_time] = block.start_time
+        dates_hash[:end_time] = block.end_time
+        range_array = (dates_hash[:start_time]...dates_hash[:end_time]).to_a
+      end
+    end
+    raise ArgumentError if dates_hash.empty?
+    return range_array #returns array of teh date range
+  end
+  # 2. As an administrator, I can check whether a given block has any rooms available
   def rooms_available_in_block(block_id) #block id
-    available_rooms = 0
-    @blocks.each do |a_block|
-      if a_block.block == block_id
-        a_block.rooms.each do |room|
-          if room.reserved_dates.empty?
-            available_rooms += 1
+    raise ArgumentError.new"#{block_id} must be a Symbol" unless block_id.instance_of? Symbol
+    available_rooms = []
+    @blocks.each do |individual_block|
+      if individual_block.block == block_id
+        individual_block.rooms.each do |room|
+          room.reserved_dates.each do |dates_hash|
+            if (dates_hash[:start_time]...dates_hash[:end_time]).to_a != retrieve_block_dates(block_id)
+              available_rooms << room
+            end
           end
         end
       end
+      return available_rooms
     end
-    return available_rooms
+  end
+  #i can combine this method with making a reservation if it returns a list of rooms available
+  #a block has a : start, end, rooms, discount, block(id)
+  #how do i get the discount rate applied?
+  # 3. As an administrator, I can reserve a room from within a block of rooms
+  def add_reservation_in_block(start_time: Date.now, end_time: Date.now + 1, number_of_rooms: 1, block: :NA) #block(id) defaults to :NA already but just clarifying here
+    available_rooms = rooms_available_in_block(block) #<--returns an array of available rooms in this sepcifci block
+    raise ArgumentError.new"Not enough rooms available on those dates" if available_rooms.length < number_of_rooms
+    #call method taht gets block discount here
+    discount = retrieve_block_discount(block)
+    number_of_rooms.times do |i|
+      @reservations << Reservation.new({room_num: available_rooms[i].room_num, start_time: start_time, end_time: end_time, price: 200.00 -(200.00 * discount)})
+      available_rooms[i].reserved_dates << {start_time: start_time, end_time: end_time}
+    end
+    @reservations
   end
 
-
-
-  # As an administrator, I can check whether a given block has any rooms available
-  # #if block.rooms.each do |room|, if room.reservations.empty? == true ,
-  # available_rooms = [], available_rooms << room ,
-  # return available_rooms.length (returns the number of rooms still available in this block
-
+  def retrieve_block_discount(block_id)
+    @blocks.each do |individual_block|
+      if individual_block.block == block_id
+        return individual_block.discount / 100
+      end
+    end
+  end
+  #create helper method that finds the block discount rate by block id?
 
 
 
 
 end #class end
-
-
-#
-
 
 
 #############################  #############################   #############################
@@ -198,16 +196,3 @@ end #class end
 # def check_if_rooms_available_on(date_range) <--or does the view_available_rooms_on() already do this pretty much?
 
 #############################  #############################   #############################
-
-#think about how each room can be reserved thru time
-
-# The hotel has 20 rooms, and they are numbered 1 through 20
-# Every room is identical, and a room always costs $200/night
-# The last day of a reservation is the checkout day, so the
-# guest should not be charged for that night
-# For this wave, any room can be reserved at any time, and
-# you don't need to check whether reservations conflict with each other (this will come in wave 2!)
-
-# def overlap?(x,y)
-#   (x.first - y.end) * (y.first - x.end) > 0
-# end
