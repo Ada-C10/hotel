@@ -1,6 +1,6 @@
 class Block
-  attr_reader :rooms, :start_time, :end_time, :discount
-  attr_accessor :block
+  attr_reader :start_time, :end_time, :rooms
+  attr_accessor :block, :discount
   #need to write a test for these
 
   def initialize(attributes)

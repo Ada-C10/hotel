@@ -68,7 +68,7 @@ class TrackingSystem
   end
 
   def add_block(start_time: Date.today + 7, end_time: Date.today.next_month, number_of_rooms: 5, discount: 10)
-    raise ArgumentError unless discount.instance_of? Integer
+    raise ArgumentError.new"discount rate must be integer" unless discount.instance_of? Integer
     raise ArgumentError.new"start_time must be before end_time" unless start_time < end_time
     raise ArgumentError.new"number_of_rooms must be >= 1 && <= 5" unless number_of_rooms >= 1 && number_of_rooms <=5
     available_rooms = view_available_rooms_on(start_time: start_time, end_time: end_time) #makes sure dates dont overlap and block status is :na
@@ -80,7 +80,6 @@ class TrackingSystem
       block.rooms << available_rooms[i]
     end
     @blocks << block
-    binding.pry
     return @blocks
   end
   #need to come back here and create i instances of reservation..but first need to change Reservation.rooms to hold an Integer instead of Array
@@ -160,6 +159,31 @@ class TrackingSystem
   def ranges_overlap?(r1, r2)
     r1.include?(r2.first) || r2.include?(r1.first)
   end
+
+  def rooms_available_in_block(block_id) #block id
+    available_rooms = 0
+    @blocks.each do |a_block|
+      if a_block.block == block_id
+        a_block.rooms.each do |room|
+          if room.reserved_dates.empty?
+            available_rooms += 1
+          end
+        end
+      end
+    end
+    return available_rooms
+  end
+
+
+
+  # As an administrator, I can check whether a given block has any rooms available
+  # #if block.rooms.each do |room|, if room.reservations.empty? == true ,
+  # available_rooms = [], available_rooms << room ,
+  # return available_rooms.length (returns the number of rooms still available in this block
+
+
+
+
 
 end #class end
 
