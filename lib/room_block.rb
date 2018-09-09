@@ -11,7 +11,7 @@ module Hotel
     def initialize(input)
 
       super(input)
-      validate_date
+      # validate_date
 
       @num_rooms = input[:num_rooms]
       @room_number = input[:room_number].nil? ? [] : input[:room_number]
