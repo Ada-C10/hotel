@@ -29,13 +29,6 @@ module Hotel
       Hotel::Helper_Method.connect_reservation_to_room_and_sort(@rooms, input[:room_number], reservation)
     end
 
-    def reserve_room_in_block(input)
-      customer_name = input[:name]
-      available_rooms_in_block = check_block_status(input[:block_name])
-      available_rooms_in_block.first.name = customer_name
-      available_rooms_in_block.first.block_reservation_status = :BOOKED
-    end
-
     def create_block(input)
       check_in_date = input[:check_in_date]
       check_out_date = input[:check_out_date]
@@ -63,6 +56,13 @@ module Hotel
       Hotel::Helper_Method.sort_block_reservations_by_name(@block_reservations)
     end
 
+    def reserve_room_in_block(input)
+      customer_name = input[:name]
+      available_rooms_in_block = check_block_status(input[:block_name])
+      available_rooms_in_block.first.name = customer_name
+      available_rooms_in_block.first.block_reservation_status = :BOOKED
+    end
+
     def search_all_rooms_availability(check_in_date, check_out_date)
       possible_nights_of_stay = Hotel::Helper_Method.generate_nights(check_in_date, check_out_date)
       vacant_rooms = []
@@ -75,10 +75,6 @@ module Hotel
         return raise ArgumentError, 'No Rooms Available in date range'
       end
       return vacant_rooms
-    end
-
-    def get_rooms
-      return @rooms
     end
 
     def list_reservations(date)
@@ -101,15 +97,8 @@ module Hotel
     def check_block_status(name_of_block)
       available_rooms = []
       name = name_of_block
-      @block_reservations.each do |block|
-        if block.first.block_name == name
-          block.each do |reservation|
-            if reservation.block_reservation_status == :AVAILABLE
-              available_rooms << reservation
-            end
-          end
-        end
-      end
+      block = @block_reservations.find { |block| block.first.block_name == name }
+      available_rooms = block.find_all { |reservation| reservation.block_reservation_status == :AVAILABLE }
       if available_rooms.empty?
         return raise StandardError, "All rooms in block booked."
       else
@@ -124,6 +113,10 @@ module Hotel
       else
         return cost
       end
+    end
+
+    def get_rooms
+      return @rooms
     end
 
     def load_rooms

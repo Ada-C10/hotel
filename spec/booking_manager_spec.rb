@@ -49,9 +49,9 @@ describe "Booking Manager class" do
       }
     end
 
-    it 'adds a reservation to the array of all reservations' do
+    it 'adds a reservation to the array of all reservations for a room' do
       @hotel.reserve_room(@input)
-      expect(@hotel.hotel_reservations[0].name).must_equal "Dr. Frankenstein"
+      expect(@hotel.rooms[5].reservations[0].name).must_equal "Dr. Frankenstein"
     end
 
     it 'checks against room availbility and returns an Argument error if the date range is filled.' do
