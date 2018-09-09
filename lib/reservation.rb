@@ -1,4 +1,5 @@
 # require_relative 'block'
+require 'date'
 class Reservation
 
   PRICE = 200
@@ -6,14 +7,30 @@ class Reservation
   attr_reader :check_in, :check_out, :number_of_nights, :cost
 
   def initialize(check_in, check_out)
-    @check_in = Date.parse(check_in)
-    @check_out = Date.parse(check_out)
-    @number_of_nights = number_of_nights > 0 ? number_of_nights : StandardError, "Invalid date range."
+    @check_in = date_format(check_in)
+    @check_out = date_format(check_out)
+    @number_of_nights = number_of_nights
     @cost = PRICE * number_of_nights
+  end
+
+  def date_format(date)
+    pattern = /^\d{6}$/
+
+    if pattern.match(date).nil?
+      raise ArgumentError, "Date format: YYMMDD."
+    else
+      Date.parse(date)
+    end
+    # pattern.match(date).nil? ? raise(ArgumentError, "Date format: YYMMDD") : Date.parse(date)
   end
 
   def number_of_nights
     nights = check_out - check_in
+
+    if nights.numerator <= 0
+      raise StandardError, "Invalid date range."
+    end
+
     return nights.numerator
   end
 
@@ -28,5 +45,7 @@ class Reservation
 
     return all_dates
   end
+
+
 
 end

@@ -16,25 +16,40 @@ describe Reservation do
   let (:years_reservation) {
     Reservation.new('181230', '190103')
   }
+  let (:date_error1) {
+    Reservation.new('181202', '1812045')
+  }
+  let (:date_error2) {
+    Reservation.new('18120', '181204')
+  }
+  let (:date_error3) {
+    Reservation.new('18-12-02', '1812045')
+  }
   describe "#initialize" do
     it "can be instantiated" do
       expect(reservation).must_be_kind_of Reservation
     end
+    it "stores number of nights" do
+      expect(reservation.number_of_nights).must_equal 2
+    end
+    it "calculates and stores cost" do
+      expect(reservation.cost).must_equal 400
+    end
+  end
+
+  describe "#date_format" do
     it "converts check_in and check_out to Date objects" do
       expect(reservation.check_in).must_be_kind_of Date
       expect(reservation.check_out).must_be_kind_of Date
     end
-    it "stores number of nights" do
-      expect(reservation.number_of_nights).must_equal 2
+    it "raises ArgumentError if date is longer than 6 digits" do
+      expect{Reservation.new('181202', '1812045')}.must_raise ArgumentError, "Date format: YYMMDD."
     end
-    it "raises StandardError if check_out is earlier than check_in" do
-      expect(error_reservation).must_raise StandardError, "Invalid date range."
+    it "raises ArgumentError if date is shorter than 6 digits" do
+      expect{Reservation.new('18120', '181204')}.must_raise ArgumentError, "Date format: YYMMDD."
     end
-    it "raises StandardError if check_out is the same as check_in" do
-      expect(same_reservation).must_raise StandardError, "Invalid date range."
-    end
-    it "calculates and stores cost" do
-      expect(reservation.cost).must_equal 400
+    it "raises ArgumentError if date contains non-numeric characters" do
+      expect{Reservation.new('18-12-02', '1812045')}.must_raise ArgumentError, "Date format: YYMMDD."
     end
   end
 
@@ -43,11 +58,11 @@ describe Reservation do
       expect(reservation.number_of_nights).must_equal 2
       expect(months_reservation.number_of_nights).must_equal 4
     end
-    it "returns negative number if check_out is earlier than check_in" do
-      expect(error_reservation.number_of_nights).must_equal -2
+    it "raises StandardError if check_out is earlier than check_in" do
+      expect{Reservation.new('181204', '181202')}.must_raise StandardError, "Invalid date range."
     end
-    it "returns 0 if check_out is the same as check_in" do
-      expect(same_reservation.number_of_nights).must_equal 0
+    it "raises StandardError if check_out is the same as check_in" do
+      expect{Reservation.new('181130', '181130')}.must_raise StandardError, "Invalid date range."
     end
   end
 
@@ -63,7 +78,7 @@ describe Reservation do
       expect(reservation.get_all_dates[0]).must_equal reservation.check_in
       expect(reservation.get_all_dates[-1]).must_equal reservation.check_out - 1
     end
-    it "contains all dates for reservation in 2 months" do
+    it "contains all dates for reservation spanning 2 months" do
       months_reservation.get_all_dates.each do |date|
         expect(date).must_be_kind_of Date
       end
@@ -71,7 +86,7 @@ describe Reservation do
       expect(months_reservation.get_all_dates[0]).must_equal months_reservation.check_in
       expect(months_reservation.get_all_dates[-1]).must_equal months_reservation.check_out - 1
     end
-    it "contains all dates for reservation in 2 years" do
+    it "contains all dates for reservation spanning 2 years" do
       years_reservation.get_all_dates.each do |date|
         expect(date).must_be_kind_of Date
       end
@@ -80,4 +95,5 @@ describe Reservation do
       expect(years_reservation.get_all_dates[-1]).must_equal years_reservation.check_out - 1
     end
   end
+
 end
