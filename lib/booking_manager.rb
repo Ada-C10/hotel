@@ -14,7 +14,6 @@ module Hotel
 
     def initialize
       @rooms = load_rooms
-      @hotel_reservations = []
       @block_reservations = []
     end
 
@@ -28,8 +27,6 @@ module Hotel
       }
       reservation = Hotel::Reservation.new(reserve)
       Hotel::Helper_Method.connect_reservation_to_room_and_sort(@rooms, input[:room_number], reservation)
-      @hotel_reservations << reservation
-      Hotel::Helper_Method.sort_reservations_by_date(@hotel_reservations)
     end
 
     def reserve_room_in_block(input)
@@ -59,12 +56,11 @@ module Hotel
         }
         reservation = Hotel::Block_Room.new(block_room_hash)
         Hotel::Helper_Method.connect_reservation_to_room_and_sort(@rooms, block_room_hash[:room_number], reservation)
-        @hotel_reservations << reservation
-        Hotel::Helper_Method.sort_reservations_by_date(@hotel_reservations)
 
         blocked_rooms << reservation
       end
       @block_reservations << blocked_rooms
+      Hotel::Helper_Method.sort_block_reservations_by_name(@block_reservations)
     end
 
     def search_all_rooms_availability(check_in_date, check_out_date)

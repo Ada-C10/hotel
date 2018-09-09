@@ -97,7 +97,7 @@ describe "Booking Manager class" do
       expect{ @hotel.list_reservations(@date) }.must_raise StandardError
     end
   end
-  
+
   describe 'total_cost_of_stay method' do
     before do
       @date = Date.new(2018, 6, 6)
