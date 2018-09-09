@@ -43,7 +43,7 @@ describe "Hotel Class: Wave One: Tracking Reservations" do
     end
 
     it "adds a reservation to the first available room" do
-      expect(@hotel.rooms[0].reservations[0]).must_equal @hotel.reservations[0]
+      expect(@hotel.reservations[0].rooms[0]).must_equal @hotel.rooms[0]
     end
 
     it "the reservation and room are connected" do
@@ -131,7 +131,7 @@ end
 
 describe "Hotel Class: Wave Two: Room Availability" do
 
-  describe "list_not_reserved_rooms" do
+  describe "list_available_rooms" do
     before do
       @hotel = Hotel.new(20)
       @hotel.reserve_room('2018-02-03', '2018-02-05', 1)

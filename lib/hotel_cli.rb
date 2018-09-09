@@ -7,9 +7,9 @@ def main
   puts "What do you want to do?\n 1. List all the rooms\n 2. Reserve a room\n 3. List Reservations for a Date\n 4. Find a Reservation Cost\n 5. List Available Rooms for a Date Range\n 6. Create a Room Block\n 7. List Available Block Rooms\n 8. Reserve a Block Room\n 9. Exit"
 
   user_answer = gets.chomp.to_i
-  answers = [1, 2, 3, 4, 5, 6, 8, 9, 10, 11]
+  answers = [1, 2, 3, 4, 5, 6, 8, 9]
 
-  until user_answer == "Exit"
+  until user_answer == 9
     while !(answers.include? user_answer)
       puts "That is not an options. See above for your options or press 9 to exit"
       user_answer = gets.chomp.to_i

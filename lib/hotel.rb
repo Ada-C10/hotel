@@ -38,7 +38,6 @@ class Hotel
     number_of_rooms.times do
       reserved_room = find_available_room(start_date, end_date)
       new_reservation.add_rooms_reserved(reserved_room)
-      reserved_room.add_reservations(new_reservation)
     end
 
   end
@@ -123,8 +122,6 @@ class Hotel
       blocked_room = find_available_room(start_d, end_d)
       new_block.add_rooms_blocked(blocked_room)
       #add the blocked room to the new block booking
-      blocked_room.add_block(new_block)
-      #add the new block booking to the blocked room
     end
 
   end
@@ -155,8 +152,6 @@ class Hotel
       reservations << new_reservation
 
       new_reservation.add_rooms_reserved(block_booking.rooms_blocked[0])
-      block_booking.rooms_blocked[0].add_reservations(new_reservation)
-
       block_booking.add_rooms_reserved(block_booking.rooms_blocked[0])
       block_booking.rooms_blocked.delete(block_booking.rooms_blocked[0])
     end
