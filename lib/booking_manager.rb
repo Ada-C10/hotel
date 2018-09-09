@@ -70,20 +70,7 @@ module Hotel
       return @room_calendar
     end
 
- #    {1=>{},
- # 2=>{},
- # 3=>
- #  {#<Date: 2018-06-11 ((2458281j,0s,0n),+0s,2299161j)>=>
- #    #<Hotel::Reservation:0x00007ffc3f152dc0
- #     @cost_per_night=200.0,
- #     @end_date=
- #      #<Date: 2018-06-14 ((2458284j,0s,0n),+0s,2299161j)>,
- #     @guest_name="Kim Possible",
- #     @room=3,
- #     @start_date=
- #      #<Date: 2018-06-11 ((2458281j,0s,0n),+0s,2299161j)>>}}
-
-    # Method to list all reservations
+    # Method to list all reservation instances
     def list_reservations
       return @reservations
     end
@@ -93,12 +80,6 @@ module Hotel
     def list_rooms
       return @rooms
     end
-
-    # Method to return all of reservations for given date
-    # take in date as parameter
-    # search through room_calendar to see if any rooms include it as value
-    # if date is there, add that reservation to an array of days_reseravtions
-    # return array
 
     # Method to get total cost of reservation
     def get_reservation_cost(nights, cost_per_night)
@@ -116,8 +97,8 @@ module Hotel
        calendar.each do |room, info|
          info.each do |date, reservation|
            if date == search_date
-           found_reservations << reservation
-          else
+             found_reservations << reservation
+           else
             next
           end
         end # of info each
@@ -125,6 +106,21 @@ module Hotel
        # Add return message for no reservations found?
        return found_reservations
     end # of find reservation by date method
+
+    def find_vacancies_on_date(date, calendar)
+      search_date = Date.parse(date)
+      found_vacancies = []
+
+      calendar.each do |room, info|
+        if info == nil
+          found_vacancies << room
+        else
+          info.any? {|date, reservation| date == search_date}? next : found_vacancies << room
+        end
+      end
+
+      return found_vacancies
+    end # of find vacancy
 
   end # of class BookingManager
 
