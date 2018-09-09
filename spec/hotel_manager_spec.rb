@@ -37,13 +37,25 @@ describe "HotelManager" do
         expect(reservation).must_be_kind_of Hotel::Reservation
       end
     end
+
+    it "Keeps track of blocks" do
+      my_hotel.blocks.each do |block|
+        expect(block).must_be_kind_of Hotel::Block
+      end
+    end
   end
 
   describe "#make_reservation" do
-    it "Creates a reservation for a room in the block" do
+    it "Creates a reservation for a room in a new block" do
       my_hotel.make_reservation(start_date: start_date, end_date: end_date, group_name: "Puzzled Pint People")
 
-      expect(my_hotel.blocks.last.group_name).must_equal "Puzzled Pint People"
+      expect(my_hotel.reservations.last.group_name).must_equal "Puzzled Pint People"
+    end
+
+    it "Creates a reservation for a room in an existing block" do
+      my_hotel.make_reservation(start_date: start_date, end_date: end_date, group_name: "NCTM")
+
+      expect(my_hotel.reservations.last.group_name).must_equal "NCTM"
     end
 
     it "Allows a reservation to be created on the same day another party checks out" do
@@ -131,6 +143,37 @@ describe "HotelManager" do
         my_hotel.make_reservation(start_date: start_date, end_date: end_date, num_of_rooms: 6)
       }.must_raise StandardError
     end
+
+    it "Raises an error if not enough rooms are available in the block for a specific date" do
+      5.times do
+        my_hotel.make_reservation(start_date: start_date, end_date: end_date, group_name: "A Whole New World")
+      end
+
+      expect {
+        my_hotel.make_reservation(start_date: start_date, end_date: end_date, group_name: "A Whole New World")
+      }.must_raise StandardError
+    end
+
+    it "Creates a new block for the same group if booked with new dates" do
+      nctm_block = Hotel::Block.find_block(my_hotel.blocks, "NCTM")
+
+      my_hotel.make_reservation(start_date: "2019-06-15", end_date: "2019-06-18", group_name: "NCTM")
+
+
+      expect(my_hotel.blocks.last).wont_equal nctm_block
+    end
+
+    it "Updates existing block for a group if booked with same dates" do
+      4.times do
+        my_hotel.make_reservation(start_date: "2019-02-21", end_date: "2019-02-25", group_name: "NCTM")
+      end
+
+      nctm_block = Hotel::Block.find_block(my_hotel.blocks, "NCTM", start_date: "2019-02-21", end_date: "2019-02-25")
+
+      nctm_block.room_list.each do |room_num, status|
+        expect(status).must_equal :UNAVAILABLE
+      end
+    end
   end
 
   describe "#create_a_block" do
@@ -191,7 +234,6 @@ describe "HotelManager" do
     end
 
     it "Returns an accurate count of Reservations" do
-      # Hard-coded based on test data from CSV file
       reservations = my_hotel.find_reservations(date: @date)
 
       expect(reservations.length).must_equal 2
@@ -199,20 +241,20 @@ describe "HotelManager" do
   end
 
   describe "#find_available_rooms" do
-    it "Returns an accurate count of available rooms as an array" do
-      list = my_hotel.find_available_rooms(my_hotel.rooms, start_date: "2018-10-07", end_date: "2018-10-16")
+    it "Returns an array of all available rooms for a given date range" do
+      list = my_hotel.find_available_rooms(my_hotel.rooms, start_date: "2019-01-13", end_date: "2019-01-15")
 
+      expect(list.length).must_equal 18
       expect(list).must_be_kind_of Array
-      expect(list.length).must_equal 20
     end
   end
 
-  describe "#find_available_rooms_in_block" do
-    it "Returns an accurate count of available rooms as an array" do
-      list = my_hotel.find_available_rooms_in_block(my_hotel.blocks, "NCTM")
+  describe "#find_all_available_rooms_in_block" do
+    it "Returns an array of all available rooms in a given block" do
+      list = my_hotel.find_available_rooms_in_block(my_hotel.blocks, "AdaC10", start_date: "2019-03-02", end_date: "2019-03-05")
 
+      expect(list.length).must_equal 2
       expect(list).must_be_kind_of Array
-      expect(list.length).must_equal 4
     end
   end
 

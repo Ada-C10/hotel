@@ -16,17 +16,30 @@ module Hotel
     # As an administrator, I can reserve an available room for a given date range
     # As an administrator, I can reserve a room from within a block
     def make_reservation(start_date: Date.today, end_date: Date.today + 2, group_name: "", num_of_rooms: 1)
-      if !group_name.empty?
-        new_block = create_a_block(group_name, start_date: start_date, end_date: end_date)
-        final_list = new_block.room_list.keys
-        num_of_rooms.times do |i|
-          room_number = final_list[i]
-          new_reservation = Reservation.new(room_number, start_date: start_date, end_date: end_date, room_rate: new_block.room_rate, group_name: group_name)
-          new_block.room_list[room_number] = :UNAVAILABLE
-          reservations << new_reservation
+      if group_name != ""
+        found_block = Block.find_block(blocks, group_name, start_date: start_date, end_date: end_date)
+
+        if found_block == nil
+          new_block = create_a_block(group_name, start_date: start_date, end_date: end_date)
+        else
+          new_block = found_block
+        end
+
+        final_list = Block.all_available_rooms_in_block(blocks, group_name, start_date: start_date, end_date: end_date)
+
+        if (final_list == nil) || final_list.length < num_of_rooms
+          raise StandardError.new("Not enough available rooms for this date range.")
+        else
+          num_of_rooms.times do |k|
+            room_number = final_list[k]
+            new_reservation = Reservation.new(room_number, start_date: start_date, end_date: end_date, room_rate: new_block.room_rate, group_name: group_name)
+            new_block.room_list[room_number] = :UNAVAILABLE
+            reservations << new_reservation
+          end
         end
       else
         room_list = Room.all_available_rooms(rooms, start_date: start_date, end_date: end_date)
+
         if room_list.length < num_of_rooms
           raise StandardError.new("Not enough available rooms for this date range. Only #{room_list.length} rooms available.")
         else
@@ -87,8 +100,8 @@ module Hotel
     end
 
     # As an administrator, I can check whether a given block has any rooms available and view a list of these rooms
-    def find_available_rooms_in_block(blocks, group_name)
-      return Block.all_available_rooms_in_block(blocks, group_name)
+    def find_available_rooms_in_block(blocks, group_name, start_date: Date.today, end_date: Date.today + 2)
+      return Block.all_available_rooms_in_block(blocks, group_name, start_date: start_date, end_date: end_date)
     end
 
     def load_rooms(filename)

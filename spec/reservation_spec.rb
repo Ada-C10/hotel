@@ -23,11 +23,6 @@ describe "Reservation" do
     end
 
     it "Keeps track of all parameters" do
-
-      [:start_date, :end_date, :room_number].each do |variable|
-        expect(reservation).must_respond_to variable
-      end
-
       expect(reservation.start_date).must_equal Date.parse(start_date)
       expect(reservation.end_date).must_equal Date.parse(end_date)
       expect(reservation.room_number).must_equal room_number
@@ -44,17 +39,13 @@ describe "Reservation" do
 
   describe "#total_cost" do
     it "Calculates the total cost for a reservation" do
-      new_reservation = Hotel::Reservation.new(id, start_date: start_date, end_date: end_date)
-      cost = new_reservation.total_cost
-
-      expect(cost).must_equal 1000
+      expect(reservation.total_cost).must_equal 1000
     end
 
     it "Calculates the total cost for a reservation with a discounted rate" do
       new_reservation = Hotel::Reservation.new(id, start_date: start_date, end_date: end_date, room_rate: 150)
-      cost = new_reservation.total_cost
 
-      expect(cost).must_equal 750
+      expect(new_reservation.total_cost).must_equal 750
     end
   end
 end
