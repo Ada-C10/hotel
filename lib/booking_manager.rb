@@ -94,6 +94,21 @@ module Hotel
       return reservations
     end
 
+    def check_block_status(name_of_block)
+      available_rooms = []
+      name = name_of_block[:block_name]
+      @block_reservations.each do |block|
+        if block.first.block_name == name
+          block.each do |reservation|
+            if reservation.block_reservation_status == :AVAILABLE
+              available_rooms << reservation
+            end
+          end
+        end
+      end
+      return available_rooms
+    end
+
     def total_cost_of_stay(reservation)
       cost = (reservation.nights_of_stay.length * ROOM_COST)
       if reservation.class == Hotel::Block_Room

@@ -257,11 +257,27 @@ describe "Booking Manager class" do
 
   end
 
-  # describe 'check_block_status' do
-  #   before do
-  #   end
-  #
-  #   it 'takes a name of a block and returns an array whether of rooms in that block have that have a an :AVAILABLE status' do
-  # end
+  describe 'check_block_status' do
+    before do
+      @hotel = Hotel::Booking_Manager.new
+      @date = Date.new(2028,8,8)
+      @date2 = Date.new(2028,8,11)
+      @input = {
+        check_in_date: @date,
+        check_out_date: @date2,
+        block_name: "Munster - Addams Wedding",
+        block_discount: 0.08,
+        number_of_rooms_to_block: 3
+      }
+      @input2 = {block_name: "Munster - Addams Wedding"}
+      @block = @hotel.create_block(@input)
+    end
+
+    it 'takes a name of a block and returns an array of rooms in that block have that have a status of :AVAILABLE' do
+      @check = @hotel.check_block_status(@input2)
+      expect(@check).must_be_kind_of Array
+      expect(@check.length).must_equal 3
+    end
+  end
 
 end

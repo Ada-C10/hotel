@@ -2,8 +2,8 @@ require_relative 'reservation'
 
 module Hotel
   class Block_Room < Reservation
-    attr_reader :name, :room_number, :check_in_date, :check_out_date, :nights_of_stay, :block_name, :block_discount
-    attr_accessor :block_reservation_status
+    attr_reader :room_number, :check_in_date, :check_out_date, :nights_of_stay, :block_name, :block_discount
+    attr_accessor :block_reservation_status, :name
 
     BLOCK_RESERVATION_STATUS = [:AVAILABLE, :BOOKED]
 
