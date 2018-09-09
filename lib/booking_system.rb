@@ -33,17 +33,17 @@ module Hotel
 
       id = generate_id
 
-      block = Hotel::Block.new(block_id: id, number_of_rooms: number_of_rooms, start_date: start_date, end_date: end_date, discounted_price: 150)
+      block = Hotel::Block.new(block_id: id, number_of_rooms: number_of_rooms, start_date: start_date, end_date: end_date, price_per_night: 150)
       @blocks << block
 
       number_of_rooms.times do
-        block_reservation = Hotel::BlockReservation.new(block_id: id,  reservation_id: nil, room: assign_available_room(start_date, end_date), start_date: start_date, end_date: end_date, discounted_price: 150)
+        block_reservation = Hotel::BlockReservation.new(block_id: id,  reservation_id: nil, room: assign_available_room(start_date, end_date), start_date: start_date, end_date: end_date, price_per_night: 150)
         @reservations << block_reservation
       end
     end
 
     def make_block_reservation(block_id)
-      block_reservation = find_block_reservation(block_id)
+      block_reservation = find_empty_block_reservation(block_id)
       block_reservation.reservation_id = generate_id
       return block_reservation
     end
@@ -79,11 +79,18 @@ module Hotel
       return reservation
     end
 
-    def find_block_reservation(block_id)
-      block_reservation = @reservations.find { |block_reservation| block_reservation.block_id == block_id }
+    def find_empty_block_reservation(block_id)
+      block_reservation = @reservations.find { |block_reservation| block_reservation.block_id == block_id && block_reservation.reservation_id == nil}
+      if block_reservation == nil
+        raise ArgumentError, "all rooms in block have been reserved"
+      end
       return block_reservation
     end
 
+    # def find_block(block_id)
+    #   block = @reservations.find_all { |block_reservation| block_reservation.block_id == block_id }
+    #   return block
+    # end
 
     def generate_id
       reservation_id = rand(1..100000)

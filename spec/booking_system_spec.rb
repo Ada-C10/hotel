@@ -132,35 +132,54 @@ describe "BookingSystem class" do
   end
 
   describe "block tests" do
-    it "raises ArgumentError if more than 5 rooms booked" do
-      expect { @system.make_block((Date.new(2018, 1, 1)), (Date.new(2018, 1, 2)), 6) }.must_raise ArgumentError
+    describe "make_block method" do
+      it "raises ArgumentError if more than 5 rooms booked" do
+        expect { @system.make_block((Date.new(2018, 1, 1)), (Date.new(2018, 1, 2)), 6) }.must_raise ArgumentError
+      end
+
+      it "creates a block" do
+        @system.make_block((Date.new(2018,1,1)), (Date.new(2018,1,5)), 5)
+
+        expect(@system.blocks.length).must_equal 1
+      end
+
+      it "creates x number of reservations for x rooms in the block (x = 5)" do
+        @system.make_block((Date.new(2018,1,1)), (Date.new(2018,1,5)), 5)
+
+        expect(@system.reservations.length).must_equal 5
+      end
     end
 
-    it "creates a block" do
-      @system.make_block((Date.new(2018,1,1)), (Date.new(2018,1,5)), 5)
+    describe "find_empty_block_reservation" do
+      it "finds an empty block reservation given the block id" do
+        block_reservation = Hotel::BlockReservation.new(block_id: 20,  reservation_id: nil, room: 2, start_date: Date.new(2018,1,1), end_date: Date.new(2018,1,5), price_per_night: 150)
+        @system.reservations << block_reservation
 
-      expect(@system.blocks.length).must_equal 1
+        expect(@system.find_empty_block_reservation(20)).must_equal block_reservation
+      end
+
+      it "will raise argument error if all rooms in block have been reserved" do
+        block_reservation = Hotel::BlockReservation.new(block_id: 20,  reservation_id: 5, room: 2, start_date: Date.new(2018,1,1), end_date: Date.new(2018,1,5), price_per_night: 150)
+        @system.reservations << block_reservation
+
+        expect { @system.find_empty_block_reservation(20) }.must_raise ArgumentError
+      end
     end
 
-    it "creates x number of reservations for x rooms in the block (x = 5)" do
-      @system.make_block((Date.new(2018,1,1)), (Date.new(2018,1,5)), 5)
+    describe "make_block_reservation" do
 
-      expect(@system.reservations.length).must_equal 5
+      it "changes reservation_id from nil to integer when making a block_reservation" do
+        block_reservation = Hotel::BlockReservation.new(block_id: 20,  reservation_id: nil, room: 2, start_date: Date.new(2018,1,1), end_date: Date.new(2018,1,5), price_per_night: 150)
+        @system.reservations << block_reservation
+
+        expect((@system.make_block_reservation(20)).reservation_id).must_be_kind_of Integer
+      end
     end
 
-    it "finds a block reservation given the block id" do
-      block_reservation = Hotel::BlockReservation.new(block_id: 20,  reservation_id: nil, room: 2, start_date: Date.new(2018,1,1), end_date: Date.new(2018,1,5), discounted_price: 150)
-      @system.reservations << block_reservation
+    # describe "find_block" do
+    #   it "finds all rooms in a block in an array" do
+    #     @system.make_block((Date.new(2018,1,1)), (Date.new(2018,1,5)), 5)
 
-      expect(@system.find_block_reservation(20)).must_equal block_reservation
-    end
-
-    it "changes reservation_id from nil to integer when making a block_reservation" do
-      block_reservation = Hotel::BlockReservation.new(block_id: 20,  reservation_id: nil, room: 2, start_date: Date.new(2018,1,1), end_date: Date.new(2018,1,5), discounted_price: 150)
-      @system.reservations << block_reservation
-
-      expect((@system.make_block_reservation(20)).reservation_id).must_be_kind_of Integer
-    end
   end
 end
 

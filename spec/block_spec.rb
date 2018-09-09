@@ -6,7 +6,7 @@ describe "Block class" do
 
   describe "Block instantiation" do
     before do
-      @block = Hotel::Block.new(block_id: nil,  number_of_rooms: nil, start_date: nil, end_date: nil, discounted_price: nil)
+      @block = Hotel::Block.new(block_id: nil,  number_of_rooms: nil, start_date: nil, end_date: nil, price_per_night: nil)
     end
 
     it "is an instance of block" do
