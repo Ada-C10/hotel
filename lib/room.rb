@@ -5,11 +5,10 @@ require_relative 'front_desk'
 
   class Room
 
-    attr_reader :room_number, :cost, :room_reservations
+    attr_reader :room_number, :room_reservations
 
     def initialize(room_number)
       @room_number = room_number
-      @cost = 200
       @room_reservations = []
       if room_number > 20 || room_number < 1
         raise ArgumentError.new "NOT VALID ROOM NUMBER"

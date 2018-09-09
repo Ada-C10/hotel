@@ -28,9 +28,9 @@ class FrontDesk
     end
   end
 
-  def create_reservation(room_number, start_day, end_day)
+  def create_reservation(room_number, start_day, end_day, nightly_cost)
      check_availability(room_number, start_day, end_day)
-    new_reservation = Reservation.new(room_number, start_day, end_day)
+    new_reservation = Reservation.new(room_number, start_day, end_day,nightly_cost)
     reservations << new_reservation
     room = find_room(room_number)
     room.add_reservation_to_room(new_reservation)
@@ -68,6 +68,10 @@ class FrontDesk
   def check_availability(room_number, start_day, end_day)
     available_rooms = find_available_rooms(Date.parse(start_day), Date.parse(end_day))
     raise StandardError, 'Room not available' unless available_rooms.include?(room_number)
+  end
+
+  def create_block(block_start, block_end, rate, block_rooms)
+
   end
 
 

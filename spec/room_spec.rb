@@ -24,7 +24,7 @@ describe "Room class" do
 describe "is a room available" do
   before do
     @room = Room.new(1)
-    @room.add_reservation_to_room(Reservation.new(1,"2019-08-05" , "2019-08-10"))
+    @room.add_reservation_to_room(Reservation.new(1,"2019-08-05" , "2019-08-10",200))
   end
   it "correctly determines if a room is available on a given date" do
     expect(@room.is_available?(Date.new(2019, 8, 5))).must_equal false
