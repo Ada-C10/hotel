@@ -1,0 +1,12 @@
+Changes that I could make:
+1. In the cases where a room or a block could not be found or were not available to book, I either raised
+an error or returned nil. In future changes, I would be more consistent throughout with what to use and when.
+2. I would go through each file and check to see if I could further manage dependencies and create single
+responsibility classes (Hotel Manager is especially huge)
+3. Refactoring the HotelManager#make_reservations method - it currently consists of a bunch of nested if-else
+statements and could be written better
+4. Further consideration into which variables need/should to be keyword arguments and which should be
+positional
+5. In terms of naming conventions, I tried my best to make things clear, even if it meant really long method names.
+There also aren't that many alternatives to "start_date" aside from "check_in" and may a couple of others. I felt like
+I named my classes appropriately and understand the purpose of each.
