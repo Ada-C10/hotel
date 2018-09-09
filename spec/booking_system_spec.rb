@@ -47,32 +47,71 @@ describe "BookingSystem Class" do
   end
 
   describe 'list_reservations_by_date method' do
-    let (:reservations_list) { @reservation.list_reservations_by_date(@date_range_2)
+    let (:reservations_list_1) {
+      @reservation.list_reservations_by_date(@date_range_1)
+    }
+
+    let (:reservations_list_2) {
+      @reservation.list_reservations_by_date(@date_range_2)
+    }
+
+    let (:reservations_list_3) {
+      @reservation.list_reservations_by_date(@date_range_3)
     }
 
     it 'Returns an array of reservation instances' do
-      res_by_date = @reservation.list_reservations_by_date(@date_range_1)
-      expect(res_by_date).must_be_kind_of Array
+      expect(reservations_list_1).must_be_kind_of Array
+      reservations_list_1.each do |r|
+        expect(r).must_be_kind_of Hotel::Reservation
+      end
     end
 
     it 'Returns the correct length of the array' do
-      expect(@reservation.list_reservations_by_date(@date_range_1).length).must_equal 5
+      expect(reservations_list_1.length).must_equal 5
     end
 
     it 'Correctly returns the reservations for that date range' do
-      expect(reservations_list).must_equal reservations_list
+      expect(reservations_list_1).must_equal reservations_list_1
     end
 
-    it 'Correctly returns the first reservation for that date range' do
-      first = reservations_list.first
-      date = Date.parse('2018-09-15')
+    it 'Correctly returns the first reservation on the list for that date range' do
+      first_on_list_1 = reservations_list_1.first
+      date_1 = @date_range_1.start_date
 
-      binding.pry
-      expect(first.room_number).must_equal 6
-      expect(first.date_range.start_date).must_equal date
+      first_on_list_2= reservations_list_2.first
+      date_2 = @date_range_2.start_date
+
+      first_on_list_3 = reservations_list_3.first
+      date_3 = @date_range_3.start_date
+
+      expect(first_on_list_1.room_number).must_equal 1
+      expect(first_on_list_1.date_range.start_date).must_equal date_1
+
+      expect(first_on_list_2.room_number).must_equal 1
+      expect(first_on_list_2.date_range.start_date).must_equal date_2
+
+      expect(first_on_list_3.room_number).must_equal 6
+      expect(first_on_list_3.date_range.start_date).must_equal date_3
     end
 
-    it 'Correctly returns the last reservation for that date range' do
+    it 'Correctly returns the last reservation on the list for that date range' do
+      last_on_list_1 = reservations_list_1.last
+      date_1 = @date_range_1.start_date
+
+      last_on_list_2= reservations_list_2.last
+      date_2 = @date_range_2.start_date
+
+      last_on_list_3 = reservations_list_3.last
+      date_3 = @date_range_3.start_date
+
+      expect(last_on_list_1.room_number).must_equal 5
+      expect(last_on_list_1.date_range.start_date).must_equal date_1
+
+      expect(last_on_list_2.room_number).must_equal 2
+      expect(last_on_list_2.date_range.start_date).must_equal date_2
+
+      expect(last_on_list_3.room_number).must_equal 8
+      expect(last_on_list_3.date_range.start_date).must_equal date_3
     end
 
 
