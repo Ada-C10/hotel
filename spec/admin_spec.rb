@@ -14,7 +14,10 @@ describe "Admin class" do
     it "establishes the base data structures when instantiated" do
       expect(@admin_1.reservations).must_be_kind_of Array
       expect(@admin_1.rooms).must_be_kind_of Array
+      expect(@admin_1.room_unbooked_dates).must_be_kind_of Array
       expect(@admin_1.rooms.first).must_be_kind_of Room
+      expect(@admin_1.room_unbooked_dates.length).must_equal 7300
+      expect(@admin_1.room_unbooked_dates.first[:unbooked_date]).must_equal Date.today
     end
   end
 
@@ -42,12 +45,25 @@ describe "Admin class" do
       expect(@res_2).must_be_kind_of Reservation
     end
 
-    # it "will add the reserved dates to room.reserve_dates" do
-    #   expect(@res_1.room.reserve_dates).must_include @start_date_1
-    #   expect(@res_1.room.reserve_dates).must_not_include @end_date_1
-    #   expect(@res_2.room.reserve_dates).must_include @start_date_2
-    #   expect(@res_2.room.reserve_dates).must_not_include @end_date_2
-    # end
+    it "will reduce the room_unbooked_dates array correctly" do
+      room_1 = @admin_1.find_room(1)
+      room_2 = @admin_1.find_room(2)
+      result = false
+      selected = @admin_1.room_unbooked_dates.select {|a, b| a == room_1 && b == @start_date_1}
+      if selected == []
+        result = true
+      end
+
+      result_2 = false
+      selected_2 = @admin_1.room_unbooked_dates.select {|a, b| a == room_1 && b == @end_date_1}
+      if selected_2 == []
+        result = true
+      end
+      expect(result).must_equal true
+      expect(result_2).must_equal false
+      expect(@admin_1.room_unbooked_dates.length).must_equal 7296
+
+    end
 
     it "raise ArgumentError if start_date is not ealier than end_date" do
       start_date_3 = Date.new(2018,12,5)
@@ -60,7 +76,6 @@ describe "Admin class" do
       start_date_3 = Date.new(2018,8,5)
       end_date_3 = Date.new(2018,12,3)
       expect{@admin_1.make_reservation(4,"Jessie lee",3,start_date_3,end_date_3)}.must_raise ArgumentError
-
 
     end
 
@@ -162,4 +177,36 @@ describe "Admin class" do
       expect(cost).must_equal 400
     end
   end
+
+  # describe "find room availabe " do
+  #   before do
+  #     @start_date_1 = Date.new(2018,12,4)
+  #     @end_date_1 = Date.new(2018,12,6)
+  #     @res_1 = @admin_1.make_reservation(2,"Mike Murry",1,@start_date_1, @end_date_1)
+  #
+  #     @start_date_2 = Date.new(2018,12,5)
+  #     @end_date_2 = Date.new(2018,12,7)
+  #     @res_2 = @admin_1.make_reservation(3,"Julie Smith",2,@start_date_2, @end_date_2)
+  #
+  #   end
+  #
+  #   it "returns an array of rooms" do
+  #     room_list_1 = @admin_1.find_room_available(Date.new(2018,12,4),Date.new(2018,12,5))
+  #
+  #     expect(room_list_1).must_be_kind_of Array
+  #     expect(room_list_1.first).must_be_kind_of Room
+  #   end
+  #
+  #   it "returns the right number of rooms " do
+  #     room_three = @admin_1.find_room(3)
+  #     expect(@admin_1.find_room_available(Date.new(2018,12,4),Date.new(2018,12,5)).length).must_equal 18
+  #     expect(@admin_1.find_room_available(Date.new(2018,12,4),Date.new(2018,12,5))).must_include room_three
+  #
+  #   end
+  #
+  #   it " will not include a room already booked on that day" do
+  #     room_first = @admin_1.find_room(1)
+  #     expect(@admin_1.find_room_available(Date.new(2018,12,4), Date.new(2018,12,5))).must_not_include room_first
+  #   end
+  # end
 end

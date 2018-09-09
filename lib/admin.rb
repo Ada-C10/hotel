@@ -4,17 +4,27 @@ require_relative 'reservation'
 require_relative 'room'
 
 class Admin
-  attr_reader :reservations, :rooms
+  attr_reader :reservations, :rooms, :room_unbooked_dates
 
   def initialize
     @rooms = []
     @reservations = []
+    @room_unbooked_dates = []
+
     20.times do |i|
       room_new = Room.new(i+1)
       @rooms << room_new
+      365.times do |i|
+        date_new = Date.today + i
+        @room_unbooked_dates << {room_n: room_new, unbooked_date: date_new}
+      end
     end
   end
 
+  def find_room_available(start_date, end_date)
+
+
+  end
 
 
   def make_reservation(reservation_id, customer_name,room_id, start_date, end_date)
@@ -28,7 +38,7 @@ class Admin
     if start_date.class != Date || end_date.class != Date
       raise ArgumentError, "start_date and end_Date should be Date objects"
     end
-    if start_date >= end_date || start_date < Date.today
+    if start_date >= end_date || start_date < Date.today || end_date > (Date.today + 365)
       raise ArgumentError, "invlid dates entered"
     end
 
@@ -37,6 +47,14 @@ class Admin
     result = Reservation.new(reservation_id, customer_name, room, start_date, end_date)
 
     @reservations << result
+
+    start_d = start_date
+
+    while start_d < end_date
+      @room_unbooked_dates.reject! {|item| item == {room_n: room, unbooked_date: start_d}}
+      start_d += 1
+    end
+
     return result
 
   end
@@ -50,12 +68,12 @@ class Admin
 
 
   def find_room(id)
-    check_id(id)
+    raise ArgumentError, "ID cannot be blank, less than zero or more than 20. (got #{id})" if id.nil? || id <= 0 || id > 20
     return @rooms.find { |room| room.room_num == id }
   end
 
   def find_reservation(id)
-    check_id(id)
+    raise ArgumentError, "ID cannot be blank or less than zero. (got #{id})" if id.nil? || id <= 0
     return @reservations.find {|reserve| reserve.id == id }
 
   end
@@ -66,17 +84,4 @@ class Admin
 
   end
 
-  private
-    def list_dates(start_date, end_date)
-      dates = []
-
-      while start_date < end_date
-        dates << start_date
-        start_date += end_date
-      end
-    end
-
-    def check_id(id)
-      raise ArgumentError, "ID cannot be blank or less than zero. (got #{id})" if id.nil? || id <= 0
-    end
 end
