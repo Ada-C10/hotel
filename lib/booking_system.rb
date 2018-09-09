@@ -74,8 +74,8 @@ class BookingSystem
   end
 
   # get the total cost for a given reservation
-  def total_cost_of_reservation(search_id)
-    if reservation = @reservations.find { |res| res.id == search_id}
+  def total_cost_of_reservation(res_id)
+    if reservation = @reservations.find { |res| res.id == res_id}
       return reservation.total_cost
     else
       return nil
@@ -123,12 +123,40 @@ class BookingSystem
   end
 
   # check if block of rooms has availability
-  def block_of_rooms_available?(block_id)
+  def block_available?(block_id)
     selected_block = @room_blocks.find { |block| block.id == block_id}
+    dates = date_range("#{selected_block.check_in_date}", "#{selected_block.check_out_date}")
 
+    selected_block.collection_rooms.each do |room_blocked|
+      check_room = @rooms.find { |room| room.room_num == room_blocked.room_num }
+      if check_room.is_available?(dates)
+        return true
+      end
+    end
+    return false
   end
 
   # # reserve a room from within a block of rooms
-  # def reserve_within_block(block_id)
-  # end
+  def reserve_within_block(block_id)
+    selected_block = @room_blocks.find { |block| block.id == block_id}
+    new_reservation = nil
+    dates = date_range("#{selected_block.check_in_date}", "#{selected_block.check_out_date}")
+
+    selected_block.collection_rooms.each do |room_blocked|
+      check_room = @rooms.find { |room| room.room_num == room_blocked.room_num }
+      if check_room.is_available?(dates)
+        new_reservation = Reservation.new("#{selected_block.check_in_date}", "#{selected_block.check_out_date}")
+        new_reservation.id = assign_res_id
+        check_room.add_reservation_to_room(new_reservation)
+        @reservations << new_reservation
+        break
+      end
+    end
+
+    if new_reservation != nil
+      return new_reservation
+    else
+      raise ArgumentError, 'no rooms available in block'
+    end
+  end
 end

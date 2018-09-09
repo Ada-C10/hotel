@@ -50,6 +50,12 @@ describe 'BookingSystem class' do
     @booking.reserve_room(check_in, check_out)
   }
 
+  let (:overlap_block) {
+    check_in = "Dec 1 2018"
+    check_out = "Dec 3 2018"
+    @booking.reserve_room(check_in, check_out)
+  }
+
 
   describe 'Initializer' do
     it 'is an instance of BookingSystem' do
@@ -150,6 +156,29 @@ describe 'BookingSystem class' do
         @booking.reserve_room(check_in, check_out)
       }.must_raise ArgumentError
     end
+
+    it 'selects another room when requested date overlaps with block' do
+      room1_before = @booking.rooms[0].reservations.count
+      room2_before = @booking.rooms[1].reservations.count
+      room3_before = @booking.rooms[2].reservations.count
+      room4_before = @booking.rooms[3].reservations.count
+      room5_before = @booking.rooms[4].reservations.count
+      room6_before = @booking.rooms[5].reservations.count
+      overlap_block
+      room1_after = @booking.rooms[0].reservations.count
+      room2_after = @booking.rooms[1].reservations.count
+      room3_after = @booking.rooms[2].reservations.count
+      room4_after = @booking.rooms[3].reservations.count
+      room5_after = @booking.rooms[4].reservations.count
+      room6_after = @booking.rooms[5].reservations.count
+
+      expect(room1_after).must_equal room1_before
+      expect(room2_after).must_equal room2_before
+      expect(room3_after).must_equal room3_before
+      expect(room4_after).must_equal room4_before
+      expect(room5_after).must_equal room5_before
+      expect(room6_after).must_equal room6_before + 1
+    end
   end
 
   describe 'date_range' do
@@ -236,6 +265,35 @@ describe 'BookingSystem class' do
       expect(my_block.room_cost).must_equal discounted_rate
       expect(my_block.collection_rooms.count).must_equal 5
       expect(my_block.collection_rooms.count).must_be :<=, 5
+    end
+  end
+
+  describe 'block_available?' do
+    it 'returns true if block has availability' do
+      expect(@booking.block_available?(@booking.room_blocks[0].id)).must_equal true
+    end
+
+    it 'returns false if block has no availability' do
+      5.times do |i|
+        @booking.reserve_within_block(@booking.room_blocks[0].id)
+      end
+
+      expect(@booking.block_available?(@booking.room_blocks[0].id)).must_equal false
+    end
+  end
+
+  describe 'reserve_within_block' do
+    it 'creates a reservation within a block' do
+      room1_before = @booking.rooms[0].reservations.count
+      room2_before = @booking.rooms[1].reservations.count
+
+      @booking.reserve_within_block(@booking.room_blocks[0].id)
+
+      room1_after = @booking.rooms[0].reservations.count
+      room2_after = @booking.rooms[1].reservations.count
+
+      expect(room1_after).must_equal room1_before + 1
+      expect(room2_after).must_equal room2_before
     end
   end
 end
