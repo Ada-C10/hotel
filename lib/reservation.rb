@@ -13,5 +13,9 @@ module Hotel
       return @room_price * @stay_duration.duration
     end
 
+    def within_reservation?(date)
+      return @stay_duration.include?(date)
+    end
+
   end
 end

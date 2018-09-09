@@ -6,10 +6,10 @@ describe "a reservation" do
   before do
     room_number = 12
     room_price = 200
-    check_in = Date.new(2018, 8, 24)
-    check_out = check_in + 5
-    stay_duration = Hotel::DateRange.new(check_in, check_out)
-    @reservation = Hotel::Reservation.new(room_number, room_price, stay_duration)
+    @check_in = Date.new(2018, 8, 24)
+    @check_out = @check_in + 5
+    @stay_duration = Hotel::DateRange.new(@check_in, @check_out)
+    @reservation = Hotel::Reservation.new(room_number, room_price, @stay_duration)
   end
 
   it "creates a new reservation" do
@@ -32,7 +32,10 @@ describe "a reservation" do
     @reservation.stay_total_cost.must_equal 1000
   end
 
+  it "checks to see if a given date is within a reservation" do
 
+    @reservation.within_reservation?(@check_in).must_equal true
+  end
 
 
 end
