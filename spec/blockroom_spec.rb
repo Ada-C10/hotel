@@ -9,17 +9,27 @@ require_relative 'spec_helper'
 
 # Admin can check if block has any rooms available
 # Admin can reserve a room from a block of rooms
-describe "block room initalization" do
+describe "block room initialization" do
 
-it "can be initalized" do
-# need a date range/collection of rooms, discounted rate
+  before do
+    @block_room = BlockRoom.new( Date.new(2018, 9, 1), Date.new(2018, 9, 2), 150 )
+  end
 
-expect( BlockRoom.new( Date.new(2018, 9, 1), Date.new(2018, 9, 2), [], 150 ) ).kind_of BlockRoom
+  it "can be initialized" do
+    # need a date range/collection of rooms, discounted rate
+    expect(@block_room).kind_of? BlockRoom
+  end
 
-end
+  it "Has a start date/end date" do
+    expect(@block_room).respond_to? :start_date
+    expect(@block_room.start_date).kind_of? Date
+    expect(@block_room).respond_to? :end_date
+    expect(@block_room.end_date).kind_of? Date
+  end
 
-
-
+  it "Has a discounted rate" do
+    expect(@block_room).respond_to? :discounted_rate
+  end
 end
 
 describe "reservations" do

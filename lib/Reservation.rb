@@ -7,6 +7,9 @@ class Reservation
   # Refactor Note: This would have been a lot easier if I had made thsi
     # A hash. Having room_number required became difficult later when
     # I attempted to assign a reservation based on a date range alone
+    # Reservation will need to know whether or not a date range is placed
+      # aside for a block room
+
   attr_reader :room_number, :check_in, :check_out, :cost_per_night, :total
 
   def initialize(room_number, check_in, check_out, cost_per_night=200)

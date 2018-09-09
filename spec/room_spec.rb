@@ -54,19 +54,21 @@ describe "Room" do
 
   describe "BlockRoom" do
     it "Is able to be added to a BlockRoom if available for date range given" do
-      #
+      # Room will check collection of reservations for date range
+        # If the room is available for the date range AND is available as a block room for that date range
+          # Allow room to be reserved at discounted rate
     end
 
     it "Raises an error if attempting to be reserved for a BlockRoom when not available for the given date range" do
+      # Room will check collection of reservations for date range
+        # If all the block rooms for the block collection have been reserved, raise an error
+    end
 
-    end 
-
-  it "Raises an error if reserved for a BlockRoom and someone is attempting a regular reservation" do
+    it "Raises an error if reserved for a BlockRoom and someone is attempting a regular reservation" do
+      # Room will check collection of reservations for date range
+        # If date range is reserved for a block room and it's a non-block reservation, raise an error
+        # Maybe just don't have that date range included as available for regular reservations?
+    end
 
   end
-
-  it "Is able to be reserved for block date range" do
-
-  end
-
 end

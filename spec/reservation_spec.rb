@@ -58,5 +58,10 @@ describe "Reservation" do
     it "Is able to check if a date range is reserved for a BlockRoom" do
       # Would be a helper method of some sort for Room to check Reservation to see if date range has been reserved for a BlockRoom
     end
+
+    it "Uses discounted rate for block room reservations" do
+      # Would need to access discounted rate from BlockRoom class for given date range
+      # Will probably need a helper method 
+    end
   end
 end

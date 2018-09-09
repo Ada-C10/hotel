@@ -7,7 +7,6 @@ class Room
   attr_reader :room_number, :reservations
 
   # Refactor note: Might be better to default reservations to an empty array?
-  # May change to a collection of public_reservations and another collection of block_reservations
   def initialize(room_number, reservations)
     @room_number = room_number.to_i
     if room_number.between?(1,20) == false
