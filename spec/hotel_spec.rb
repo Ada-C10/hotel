@@ -110,8 +110,16 @@ it "reserves an available room for a given date range" do
     @hotel.assigns_a_reservation((@start_date - i), (@end_date - i))
   end
 
+  @start_date = Date.parse("1/9/2018")
+  @end_date = Date.parse("5/9/2018")
+
+  @start_date1 = Date.parse("5/9/2018")
+  @end_date1 = Date.parse("6/9/2018")
+
+  @hotel.assigns_a_reservation(@start_date1, @end_date1)
+
   expect(@hotel).must_be_kind_of Hotel::Hotel
-  expect(@hotel.reservations.length).must_equal 22
+  expect(@hotel.reservations.length).must_equal 23
   expect(@hotel.reservations.class).must_equal Array
 
 
