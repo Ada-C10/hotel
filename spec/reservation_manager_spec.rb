@@ -11,7 +11,7 @@ describe 'ReservationManager' do
       expect(manager.reservations).must_be_kind_of Array
       expect(manager.rooms).must_be_kind_of Array
       expect(manager.room_cost).must_be_kind_of Numeric
-      # expect(manager.room_block_cost).must_be_kind_of Numeric
+      expect(manager.room_block_discount).must_be_kind_of Numeric
     end
 
     it 'will populate 20 instances of room upon initialization' do
@@ -143,7 +143,7 @@ describe 'ReservationManager' do
     end
   end
 
-  describe 'parse_data' do
+  describe 'parse_reservation_data' do
 
     let(:parse_one_reservation) {
       manager = Hotel::ReservationManager.new
@@ -152,7 +152,7 @@ describe 'ReservationManager' do
       checkout_date = "15/09/2018"
       date_range = (Date.parse(checkin_date)..Date.parse(checkout_date)).to_a
       room_object = manager.find_available_room(date_range)
-      manager.parse_data(checkin_date, checkout_date, room_object)
+      manager.parse_reservation_data(checkin_date, checkout_date, room_object)
     }
 
     it 'will parse data into form usable by reservation class' do
@@ -172,16 +172,6 @@ describe 'ReservationManager' do
     manager.make_reservation(checkin_date, checkout_date)
   }
 
-  let(:make_two_reservations) {
-    manager = Hotel::ReservationManager.new
-    checkin_date1 = "10/09/2018"
-    checkout_date1 = "12/09/2018"
-    manager.make_reservation(checkin_date1, checkout_date1)
-    checkin_date2 = "12/09/2018"
-    checkout_date2 = "15/09/2018"
-    manager.make_reservation(checkin_date2, checkout_date2)
-  }
-
   let(:no_reservations_manager){ Hotel::ReservationManager.new }
 
   let(:make_one_reservation_manager) {
@@ -189,6 +179,17 @@ describe 'ReservationManager' do
     checkin_date = "12/09/2018"
     checkout_date = "15/09/2018"
     manager.make_reservation(checkin_date, checkout_date)
+    manager
+  }
+
+  let(:make_two_reservations_manager) {
+    manager = Hotel::ReservationManager.new
+    checkin_date1 = "10/09/2018"
+    checkout_date1 = "12/09/2018"
+    manager.make_reservation(checkin_date1, checkout_date1)
+    checkin_date2 = "12/09/2018"
+    checkout_date2 = "15/09/2018"
+    manager.make_reservation(checkin_date2, checkout_date2)
     manager
   }
 
@@ -207,22 +208,16 @@ describe 'ReservationManager' do
   describe 'make_reservation' do
 
     it 'will create a new instance of reservation object' do
-      expect(make_one_reservation[0]).must_be_instance_of Hotel::Reservation
+      expect(make_one_reservation).must_be_instance_of Hotel::Reservation
     end
 
     #increase count by one
     it 'will increase number of reservations in ReservationManager by 1 each time called' do
-      expect(manager.reservations.length).must_equal 0
-      expect(make_one_reservation.length).must_equal 1
-      expect(make_two_reservations.length).must_equal 2
+      expect(no_reservations_manager.reservations.length).must_equal 0
+      expect(make_one_reservation_manager.reservations.length).must_equal 1
+      expect(make_two_reservations_manager.reservations.length).must_equal 2
     end
 
-    #increase count by one
-    it 'will increase the number of reservations in the first room of rooms in ReservationManager by 1' do
-      expect(no_reservations_manager.rooms[0].reservations.length).must_equal 0
-      expect(make_one_reservation_manager.rooms[0].reservations.length).must_equal 1
-      expect(make_one_reservation_manager.rooms[0].reservations[0]).must_be_instance_of Hotel::Reservation
-    end
 
     it 'will store the reservation in the first room for 2 reservations even if they have an overlapping start and end date' do
       expect(make_three_allowed_overlapping_manager.rooms[0].reservations.length).must_equal 3
@@ -233,11 +228,22 @@ describe 'ReservationManager' do
       expect(make_two_not_allowed_overlapping_manager.rooms[0].reservations.length).must_equal 1
       expect(make_two_not_allowed_overlapping_manager.rooms[1].reservations.length).must_equal 1
     end
+
+    let(:room_block) {
+      manager = Hotel::ReservationManager.new()
+      manager.make_reservation("01/01/2018", "03/01/2018", true, 3)
+    }
+
+    it 'will make a room block if room block is true' do
+
+      expect(room_block).must_be_instance_of Hotel::RoomBlock
+
+    end
   end
 
   let(:get_reservation_cost) {
     manager = Hotel::ReservationManager.new
-    manager.make_reservation("10/09/2018", "12/09/2018")
+    manager.make_reservation("10/05/2018", "12/05/2018")
     manager.get_total_reservation_cost(manager.reservations[0].confirmation_id)
   }
 
