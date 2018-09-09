@@ -1,5 +1,4 @@
 require_relative 'spec_helper'
-require 'pry'
 
 describe 'ReservationManager' do
   let(:manager){ Hotel::ReservationManager.new }

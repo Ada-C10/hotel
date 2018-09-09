@@ -18,6 +18,8 @@ module Hotel
       @room_block_discount = 0.8
       @reservations = []
       @room_blocks = []
+
+      #this method call populates array of @rooms
       generate_room_ids(VALID_ROOM_IDS)
     end
 
@@ -43,7 +45,6 @@ module Hotel
       end
 
       return total_cost.to_i
-      #modified julian number #starts from midnight # .mjd #do I need?
     end
 
     #helper method for storing a reservation / adding it to the list
@@ -182,7 +183,6 @@ module Hotel
       return "No reservations for #{given_date}." if daily_reservations.empty?
       return daily_reservations
     end
-
 
     private
 

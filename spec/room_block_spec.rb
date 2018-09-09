@@ -1,5 +1,4 @@
 require_relative 'spec_helper'
-require 'pry'
 
 describe 'RoomBlock' do
   let(:room_block_two) {

@@ -1,9 +1,17 @@
+Changes I would make...
 
-Usually by the end of a project, we can look back on what we made with a clearer understanding of what we actually needed. In industry, this is a great time to do a refactor of some sort. For this project however, you're off the hook... for the moment. We will be revisiting our hotels later on on the course, and you may want to make some changes at that point.
+I want to rescue if a date is not available and possibly rescue in the case of RoomBlock greater than 5.
 
-Create a new file in the project called refactors.txt
-Make a short list of the changes that you could make, particularly in terms of naming conventions
-These notes will be used by you in a few weeks, so make sure that they are detailed enough that someone else could understand your thinking and follow your directions
-Do not make any further changes to your code at this time
+I'm not sure what to do with RoomBlock greater 5; in this case, I just raised an exception.
 
-I want to rescue the date. If entered incorrectly or if date not available. I'm not sure if Hotel::RoomBlock should b a child of Hotel::Reservation so maybe I'd have to refactor there. I'm not sure what to do with RoomBlock greater 5; in this case, I just raised an exception. Maybe rescue this and also can't find date.
+I'm not sure if Hotel::RoomBlock should be a child of Hotel::Reservation so maybe I'd have to refactor there.
+
+Some of my names are a bit too long, esp. in tests.
+
+My tests are a bit too repetitive.
+
+I would like to consolidate parsing room_block and reservation data, esp. in the case of loading in a csv. I would also change this method to load data instead of parse data.
+
+I probably have a few too many helper methods.
+
+I'm not sure if RoomBlock fits as a child of Reservation esp. as room_number is now an array for RoomBlock and just one single integer for Reservation. If I kept this structure, I'd  instantiate RoomBlock with instance variable room_numbers instead of room_number. I'd change Reservation to SingularBooking and RoomBlock to BlockBooking or something like that, and change ReservationManager to ReservationBooker.
