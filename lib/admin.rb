@@ -3,6 +3,7 @@ require 'date'
 require_relative 'reservation'
 require_relative 'room'
 
+
 class Admin
   attr_reader :reservations, :rooms, :room_unbooked_dates, :room_blocks, :start_date, :end_date
 
@@ -21,7 +22,7 @@ class Admin
       start_d = start_date
 
       while start_d < end_date
-        date_new = start_d
+
         @room_unbooked_dates << {room_n: room_new, unbooked_date: start_d}
         start_d += 1
       end

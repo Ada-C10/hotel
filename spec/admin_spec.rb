@@ -4,7 +4,7 @@ require_relative 'spec_helper'
 describe "Admin class" do
   before do
     list = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]
-    @admin_1 = Admin.new(list, Date.today, Date.today + 365)
+    @admin_1 = Admin.new(list, Date.today, (Date.today + 365))
   end
 
   describe "Initializer" do
