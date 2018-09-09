@@ -2,7 +2,7 @@ require_relative 'spec_helper'
 require 'date'
 require 'pry'
 
-describe "Hotel Manager class" do
+describe "Booking Manager class" do
 
   describe 'Hotel Manager instantiation' do
     before do
@@ -107,7 +107,7 @@ describe "Hotel Manager class" do
     end
   end
 
-  describe 'search_room_availability' do
+  describe 'search_all_rooms_availability' do
 
     before do
       @hotel = Hotel::Booking_Manager.new
@@ -144,32 +144,32 @@ describe "Hotel Manager class" do
     end
 
     it 'given a range of dates, it returns a list of available rooms, if the reservation shares the same dates as a reserved room' do
-      expect(@hotel.search_room_availability(@date1, @date2)).must_equal @available_rooms
+      expect(@hotel.search_all_rooms_availability(@date1, @date2)).must_equal @available_rooms
     end
 
     it 'it returns a list of available rooms, leaving rooms out if the reservation check in date is in the middle dates of a reserved room'do
-      expect(expect(@hotel.search_room_availability(@date3, @date4)).must_equal @available_rooms)
+      expect(expect(@hotel.search_all_rooms_availability(@date3, @date4)).must_equal @available_rooms)
     end
     it 'it returns a list of available rooms, leaving rooms out if the reservation check in date is in the middle dates of a reserved room'do
-      expect(expect(@hotel.search_room_availability(@date3, @date6)).must_equal @available_rooms)
+      expect(expect(@hotel.search_all_rooms_availability(@date3, @date6)).must_equal @available_rooms)
     end
     it 'it returns a list of available rooms, leaving rooms out if the check out date is in the middle dates of a reserved room'do
-      expect(expect(@hotel.search_room_availability(@date5, @date4)).must_equal @available_rooms)
+      expect(expect(@hotel.search_all_rooms_availability(@date5, @date4)).must_equal @available_rooms)
     end
     it 'it returns a list of available rooms, leaving rooms out if the reservation check in date and check out date is in the middle dates of a reserved room'do
-      expect(expect(@hotel.search_room_availability(@date3, @date4)).must_equal @available_rooms)
+      expect(expect(@hotel.search_all_rooms_availability(@date3, @date4)).must_equal @available_rooms)
     end
     it 'it returns a list of available rooms, leaving rooms out if the reservation check in date is in the middle dates of a reserved room'do
-      expect(expect(@hotel.search_room_availability(@date3, @date6)).must_equal @available_rooms)
+      expect(expect(@hotel.search_all_rooms_availability(@date3, @date6)).must_equal @available_rooms)
     end
     it 'it returns a list of available rooms, leaving rooms out if the dates of a reserved room fall within a proposed check in date or check out date'do
-      expect(expect(@hotel.search_room_availability(@date5, @date6)).must_equal @available_rooms)
+      expect(expect(@hotel.search_all_rooms_availability(@date5, @date6)).must_equal @available_rooms)
     end
     it 'it returns a list of available rooms, returning rooms where the  reservation check in date is on the check out day of another reservation'do
-      expect(expect(@hotel.search_room_availability(@date2, @date6)).must_equal @all_rooms_available)
+      expect(expect(@hotel.search_all_rooms_availability(@date2, @date6)).must_equal @all_rooms_available)
     end
     it 'it returns a list of available rooms, returning rooms where the  reservation check out date is on the check in day of another reservation'do
-      expect(expect(@hotel.search_room_availability(@date5, @date1)).must_equal @all_rooms_available)
+      expect(expect(@hotel.search_all_rooms_availability(@date5, @date1)).must_equal @all_rooms_available)
     end
 
     it 'returns an Argument Error if no rooms are vacant'do
@@ -181,7 +181,7 @@ describe "Hotel Manager class" do
       }
       @hotel.reserve_room(@input4)
       end
-      expect{@hotel.search_room_availability(@date1, @date2)}.must_raise Exception
+      expect{@hotel.search_all_rooms_availability(@date1, @date2)}.must_raise Exception
     end
   end
 
@@ -204,6 +204,13 @@ describe "Hotel Manager class" do
         block_discount: 0.08,
         number_of_rooms_to_block: 5
       }
+      @input3 = {
+        check_in_date: @date,
+        check_out_date: @date2,
+        block_name: "Munster - Addams Wedding",
+        block_discount: 0.08,
+        number_of_rooms_to_block: 6
+      }
     end
 
     it 'creates an array of block room reservations and adds it an array of all block room reservations ' do
@@ -212,6 +219,7 @@ describe "Hotel Manager class" do
       @hotel.block_reservations[0].each do |reservation|
         expect(reservation).must_be_kind_of Hotel::Block_Room
         expect(reservation.block_name).must_equal "Munster - Addams Wedding"
+        expect(reservation.check_in_date).must_equal @date
         expect(reservation.nights_of_stay.length).must_equal 3
       end
     end
@@ -222,6 +230,10 @@ describe "Hotel Manager class" do
       @hotel.create_block(@input2)
       @hotel.create_block(@input2)
       expect{@hotel.create_block(@input2)}.must_raise ArgumentError
+    end
+
+    it 'raises an Exception if you try to create a block of more than 5 rooms' do
+      expect{@hotel.create_block(@input3)}.must_raise ArgumentError
     end
 
   end

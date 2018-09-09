@@ -19,7 +19,7 @@ module Hotel
     end
 
     def reserve_room(input)
-      search_room_availability(input[:check_in_date], input[:check_out_date])
+      search_all_rooms_availability(input[:check_in_date], input[:check_out_date])
 
       reserve = { name: input[:name],
         room_number: input[:room_number],
@@ -36,8 +36,11 @@ module Hotel
       check_in_date = input[:check_in_date]
       check_out_date = input[:check_out_date]
       vacant_rooms = []
-      vacant_rooms = search_room_availability(check_in_date, check_out_date)
+      vacant_rooms = search_all_rooms_availability(check_in_date, check_out_date)
       number_of_rooms_to_block = input[:number_of_rooms_to_block]
+      if number_of_rooms_to_block > 5
+        return raise ArgumentError, 'Limit exceeded. Cannot create block larger than 5 rooms.'
+      end
       if vacant_rooms.length < number_of_rooms_to_block
         return raise ArgumentError, 'Not enough available rooms to block.'
       end
@@ -60,7 +63,7 @@ module Hotel
       @block_reservations << blocked_rooms
     end
 
-    def search_room_availability(check_in_date, check_out_date)
+    def search_all_rooms_availability(check_in_date, check_out_date)
       possible_nights_of_stay = Hotel::Helper_Method.generate_nights(check_in_date, check_out_date)
       vacant_rooms = []
       @rooms.each do |room|
