@@ -28,6 +28,11 @@ describe "BookingSystem class" do
     expect(@reservation.calculate_booking_cost).must_equal 600
   end
 
+  it "books a reservation that starts at the checkout date of another reservation" do
+    new_reservation = @booking.make_reservation(check_in_date: 180907, check_out_date: 180908)
+    expect(@booking.reservations.length).must_equal 2
+  end
+
   it "list all bookings of that includes that date" do
     bad_reservation = @booking.make_reservation(check_in_date: 180909, check_out_date: 180910)
     new_reservation = @booking.make_reservation(check_in_date: 180904, check_out_date: 180906)
