@@ -47,10 +47,6 @@ module Hotel
       matching_reservations = []
       date = Date.parse(date)
 
-      if @reservations.length == []
-        return nil
-      end
-
       @reservations.each do |reservation|
         reservation_dates = reservation.date_range.dates_booked
         if reservation_dates.include?(date)

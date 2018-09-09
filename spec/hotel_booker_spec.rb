@@ -46,14 +46,14 @@ describe "HotelBooker class" do
       @booker = Hotel::HotelBooker.new
       @booker.make_reservation(1, '2018-09-05', '2018-09-08')
       @booker.make_reservation(2, '2018-09-06', '2018-09-08')
-      @booker.make_reservation(2, '2018-09-07', '2018-09-09')
+      @booker.make_reservation(3, '2018-09-07', '2018-09-09')
     end
 
     it "Returns an array of reservations" do
       expect(@booker.find_reservations('2018-09-05')).must_be_kind_of Array
       expect(@booker.find_reservations('2018-09-06')[0]).must_be_kind_of Hotel::Reservation
       expect(@booker.find_reservations('2018-09-07').length).must_equal 3
+
     end
   end
-
 end

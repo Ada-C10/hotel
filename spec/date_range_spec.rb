@@ -43,11 +43,31 @@ describe "DateRange Class" do
   end
 
   describe "overlaps? method to check if ranges overlap" do
-    it "returns true if date range passed as argument overlaps with own date range" do
+    it "returns true if date ranges are the same" do
+      expect(@date_range1.overlaps?(@date_range1)).must_equal true
+    end
+
+    it "returns true if date ranges overlaps in the front" do 
       expect(@date_range1.overlaps?(@date_range2)).must_equal true
-      expect(@date_range1.overlaps?(@date_range3)).must_equal false
-      expect(@date_range1.overlaps?(@date_range4)).must_equal false
+    end
+
+    it "returns true if date ranges overlaps in the back" do
+      expect(@date_range2.overlaps?(@date_range1)).must_equal true
+    end
+
+    it "returns true if one range is completely contained in another range" do
       expect(@date_range2.overlaps?(@date_range3)).must_equal true
+    end
+
+    it "returns false if one range is completely after" do
+      expect(@date_range1.overlaps?(@date_range4)).must_equal false
+    end
+
+    it "returns false if one range is completely before" do
+      expect(@date_range4.overlaps?(@date_range1)).must_equal false
+    end
+    it "returns false if a range starts on another's check in date" do
+      expect(@date_range1.overlaps?(@date_range3)).must_equal false
       expect(@date_range2.overlaps?(@date_range4)).must_equal false
     end
   end
