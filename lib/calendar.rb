@@ -9,7 +9,7 @@ class Calendar
 
   def reservations(date)
     date = Date.parse(date)
-    reservations = room_assignments.select { |room, dates|  dates.include? (date) }.keys
+    reservations = room_assignments.select { |room, dates|  dates.flatten.include? (date) }.keys
   end
 
   def available_room?(room, reservation)

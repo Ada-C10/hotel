@@ -58,7 +58,7 @@ describe Calendar do
     end
   end
 
-  describe "#reservation_list" do
+  describe "#reservations" do
     before do
       manager.add_reservation(reservation1)
       manager.add_reservation(reservation1)
@@ -66,11 +66,24 @@ describe Calendar do
       manager.add_reservation(reservation3)
       manager.add_reservation(reservation4)
     end
-    it "returns list of reserved rooms for provided date" do
+    it "returns list of reserved rooms for given date" do
       reservations = calendar.reservations('181203')
       expect(reservations.length).must_equal 3
       expect(reservations[0]).must_equal 1
       expect(reservations[2]).must_equal 3
+    end
+    it "returns accurate list when blocks are on calendar" do
+      manager.add_block(block2)
+      manager.add_block(block3)
+      manager.add_block(block4)
+      # manager.add_block(block5)
+      # binding.pry
+      reservations = calendar.reservations('181130')
+      expect(reservations.length).must_equal 5
+      (1..5).each do |i|
+        expect(reservations[i - 1]).must_equal i
+      end
+      # expect(reservations[2]).must_equal 3
     end
   end
 
@@ -125,8 +138,16 @@ describe Calendar do
       expect(available_rooms.length).must_equal 19
       expect(available_rooms.first).must_equal 2
     end
+    it "returns accurate list when blocks are on calendar" do
+      manager.add_block(block2)
+      manager.add_block(block3)
+      available_rooms = calendar.available_rooms(block5)
+      expect(available_rooms).must_be_kind_of Array
+      expect(available_rooms.length).must_equal 17
+      expect(available_rooms.first).must_equal 4
+    end
   end
 
-  
+
 end
 # end
