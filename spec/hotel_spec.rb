@@ -46,6 +46,12 @@ describe "Hotel Class: Wave One: Tracking Reservations" do
       expect(@hotel.reservations[0].rooms[0]).must_equal @hotel.rooms[0]
     end
 
+    it "adds a reservation to the second available room" do
+      @hotel.reserve_room('2018-02-03', '2018-02-05', 1)
+
+      expect(@hotel.reservations[1].rooms[0]).must_equal @hotel.rooms[1]
+    end
+
     it "the reservation and room are connected" do
       expect(@hotel.reservations[0].rooms[0].room_number).must_be_same_as @hotel.rooms[0].room_number
     end
@@ -164,6 +170,7 @@ describe "Hotel Class: Wave Three: Blocks of Rooms" do
 
     it "can create a block of rooms" do
       expect(@hotel.room_blocks[0]).must_be_instance_of BlockRooms
+      expect(@hotel.room_blocks[0].rooms_blocked[0]).must_be_instance_of Room
     end
 
     it "can check whether a given block has any rooms available" do
@@ -175,7 +182,6 @@ describe "Hotel Class: Wave Three: Blocks of Rooms" do
 
       expect(@hotel.list_available_block_rooms(@id).length).must_equal 4
       expect(@hotel.room_blocks[0].rooms_reserved.length).must_equal 1
-
     end
 
     it "a block can contain a maximum of 5 rooms" do
@@ -192,19 +198,17 @@ describe "Hotel Class: Wave Three: Blocks of Rooms" do
     end
 
     it "if a room is set aside in a block, it is not available for reservation" do
-      @hotel.create_room_block('2018-05-03', '2018-05-08', 5, 150)
-      @hotel.create_room_block('2018-05-03', '2018-05-08', 5, 150)
-      @hotel.create_room_block('2018-05-03', '2018-05-08', 5, 150)
-      @hotel.create_room_block('2018-05-03', '2018-05-08', 5, 150)
+      4.times do
+        @hotel.create_room_block('2018-05-03', '2018-05-08', 5, 150)
+      end
 
       expect{@hotel.reserve_room('2018-05-03', '2018-05-10', 1)}.must_raise ArgumentError
     end
 
     it "if a room is set aside in a block it can't be included in another block" do
-      @hotel.create_room_block('2018-05-03', '2018-05-08', 5, 150)
-      @hotel.create_room_block('2018-05-03', '2018-05-08', 5, 150)
-      @hotel.create_room_block('2018-05-03', '2018-05-08', 5, 150)
-      @hotel.create_room_block('2018-05-03', '2018-05-08', 5, 150)
+      4.times do
+        @hotel.create_room_block('2018-05-03', '2018-05-08', 5, 150)
+      end
 
       expect{@hotel.create_room_block('2018-05-05', '2018-05-08', 7, 150)}.must_raise ArgumentError
     end

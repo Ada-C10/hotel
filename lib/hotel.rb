@@ -94,6 +94,7 @@ class Hotel
   def list_available_rooms(start_d, end_d)
     rooms_without_reservations = []
     available_room_list = []
+
     if rooms_not_available(start_d, end_d).nil?
       return list_rooms
     elsif rooms_not_available(start_d, end_d).length == rooms.length
@@ -113,6 +114,7 @@ class Hotel
   end
 
   def create_room_block(start_d, end_d, number_of_rooms, discounted_rate)
+
     raise ArgumentError, "You can only book up to 5 rooms." if number_of_rooms > 5
 
     new_block = BlockRooms.new(start_d, end_d, number_of_rooms, discounted_rate)
