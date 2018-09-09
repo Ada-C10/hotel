@@ -158,10 +158,6 @@ describe 'BookingSystem class' do
       expect(hotel_booker.make_reservation(Hotel::DateRange.new(today + 1, today + 4), 3)).must_be_instance_of Hotel::Reservation
     end
 
-    it 'raises an error when given invalid dates' do
-      expect{hotel_booker.make_reservation(Hotel::DateRange.new(today + 1, today - 4), 1)}.must_raise ArgumentError
-    end
-
     it 'adds standard reservation to the list of all_reservations' do
       num_of_reservations = hotel_booker.all_reservations.length
       reservation = hotel_booker.make_reservation(Hotel::DateRange.new(today + 1, today + 4), 3)
@@ -175,23 +171,6 @@ describe 'BookingSystem class' do
       expect{
         hotel_booker.make_reservation(today + 1, today + 4, 1)
       }.must_raise StandardError
-
-    end
-
-    it 'raises an exception if no rooms are available for that date range' do
-      [*3..20].each do |room|
-        hotel_booker.make_reservation(Hotel::DateRange.new(today + 1, today + 4), room)
-      end
-
-      expect{room_block}.must_raise StandardError
-
-    end
-    it 'raises an exception if not enough rooms are available for that date range' do
-      [*7..20].each do |room|
-        hotel_booker.make_reservation(Hotel::DateRange.new(today + 1, today + 4), room)
-      end
-
-      expect{room_block}.must_raise StandardError
 
     end
 
@@ -225,26 +204,44 @@ describe 'BookingSystem class' do
   end
 
   describe 'reserve_standard_room method' do
+    it 'returns a reservation of a standard room if rooms available' do
+      expect(hotel_booker.reserve_standard_room(today + 2, today + 7)).must_be_instance_of Hotel::Reservation
+    end
+
+    it 'uses the DateRange class to check for valid Date input' do
+      expect{hotel_booker.reserve_standard_room(today -1 , today)}.must_raise ArgumentError
+      expect{hotel_booker.reserve_standard_room('String of a Date' , today)}.must_raise ArgumentError
+    end
+
+    it 'raises an exception if no rooms are available for that date range' do
+      18.times do
+        hotel_booker.reserve_standard_room(today + 7, today + 8)
+      end
+
+      expect{hotel_booker.reserve_standard_room}.must_raise StandardError
+    end
 
   end
 
-  # TODO
   describe 'reserve_a_room_in_block' do
-    before do
-      @room_block = hotel_booker.create_a_block(today + 2, today + 7, 5, 150)
-    end
 
     it 'returns a reservation of a room within the room block' do
-
+      room_block
       expect(hotel_booker.all_room_blocks[0].block_id).must_equal 1
       expect(hotel_booker.reserve_a_room_in_block(1)).must_be_instance_of Hotel::Reservation
+    end
 
-      # @room_block.
-      # TODO: WRITE MORE TESTS
+    it 'raises an error if the block is not found' do
+      expect{hotel_booker.reserve_a_room_in_block(2)}.must_raise ArgumentError
+    end
 
-      # TODO:
+    it 'raises an error if the given block has no availability' do
+      room_block
+      5.times do
+        hotel_booker.reserve_a_room_in_block(1)
+      end
 
-
+      expect{hotel_booker.reserve_a_room_in_block(1)}.must_raise ArgumentError
     end
   end
 
@@ -286,15 +283,50 @@ describe 'BookingSystem class' do
       expect(hotel_booker.is_room_available(Hotel::DateRange.new(today, today + 2), 1)).must_equal false
       expect(hotel_booker.is_room_available(Hotel::DateRange.new(today + 4, today + 5), 2)).must_equal false
     end
+
+    it 'raises an exception if no rooms are available for that date range' do
+      18.times do
+        hotel_booker.reserve_standard_room(today + 1, today + 4)
+      end
+
+      expect{room_block}.must_raise StandardError
+    end
+
+    it 'raises an exception if not enough rooms are available for that date range' do
+      14.times do
+        hotel_booker.reserve_standard_room(today + 1, today + 4)
+
+      end
+      expect{room_block}.must_raise StandardError
+    end
   end
 
-# TODO
   describe 'check_id method' do
+    it 'raises an error if ID is blank' do
+      expect{hotel_booker.check_id(' ')}.must_raise ArgumentError
+      expect{hotel_booker.check_id(nil)}.must_raise ArgumentError
+    end
 
+    it 'raises an error if ID is less or equal to 0' do
+      expect{hotel_booker.check_id(0)}.must_raise ArgumentError
+      expect{hotel_booker.check_id(-1)}.must_raise ArgumentError
+    end
   end
 
-  #TODO
   describe 'find_block method' do
+    it 'returns an instance of Block if the given id corresponds to a Block instance' do
+      room_block
+      expect(hotel_booker.find_block(1)).must_be_instance_of Hotel::Block
+    end
+
+    it 'returns the corresponding Block object if it corresponds to the given id' do
+      room_block
+      expect(hotel_booker.find_block(1)).must_equal room_block
+    end
+
+    it 'returns nil if block is not found' do
+      expect(hotel_booker.find_block(1)).must_equal nil
+    end
 
   end
 

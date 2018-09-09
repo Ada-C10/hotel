@@ -78,9 +78,9 @@ module Hotel
 
 
     def reserve_standard_room(check_in, check_out)
-      range = Hotel::Date.new(check_in, check_out)
+      range = Hotel::DateRange.new(check_in, check_out)
 
-      open_rooms = list_available_rooms
+      open_rooms = list_available_rooms(range)
 
       if open_rooms.empty?
         raise UnavailableRoomError, "No Rooms available for #{check_in} to #{check_out}"
