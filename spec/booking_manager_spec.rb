@@ -168,8 +168,8 @@ describe "BookingManager class" do
       room5 = Hotel::Room.new(5)
 
       booking4 = Hotel::Reservation.new(@room3, guest_name: "Lady Day", start_date: "June 10, 2018", end_date: "June 11, 2018")
-      booking5 = Hotel::Reservation.new(room4, guest_name: "Horis Who", start_date: "June 8, 2018", end_date: "June 14, 2018")
-      booking6 = Hotel::Reservation.new(room5, guest_name: "Dorian Damian", start_date: "June 6, 2018", end_date: "June 11, 2018")
+      booking5 = Hotel::Reservation.new(room4, guest_name: "Horis Who", start_date: "June 08, 2018", end_date: "June 14, 2018")
+      booking6 = Hotel::Reservation.new(room5, guest_name: "Dorian Damian", start_date: "June 06, 2018", end_date: "June 11, 2018")
 
       @hotel.add_reservation_to_calendar(booking4)
       @hotel.add_reservation_to_calendar(booking5)

@@ -15,7 +15,7 @@ module Hotel
 
     def check_dates(start_date, end_date)
       if start_date > end_date
-        raise ArgumentError.new "Invalid date range. Start date must be before end date."
+        raise ArgumentError.new "Invalid date range. Start date must be before end date, both in format of 'Month dd, yyyy'. "
       end
     end
 
