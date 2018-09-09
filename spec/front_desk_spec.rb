@@ -52,37 +52,52 @@ describe "FrontDesk class" do
     end
     it "raises an error if hotel is totaly booked on a given day" do
       expect{i = 1
-      20.times do @my_front_desk.create_reservation(i,"2013-10-10","2013-10-13",200)
-        i += 1
-      end}.must_raise StandardError
-end
+        20.times do @my_front_desk.create_reservation(i,"2013-10-10","2013-10-13",200)
+          i += 1
+        end}.must_raise StandardError
+      end
+    end
+
+    describe 'find reservations by date' do
+      before do
+        @front_desk = FrontDesk.new
+        @front_desk.create_reservation(3, "2012-4-12", "2012-4-22",200)
+        @front_desk.create_reservation(4, "2012-4-12", "2012-4-22",200)
+        @front_desk.create_reservation(5, "2012-4-23", "2012-4-29",200)
+        @front_desk.create_reservation(6, "2012-4-25", "2012-4-28",200)
+      end
+      it "returns reservations for a specific date date" do
+        expect(@front_desk.find_by_date("2012-4-12").length).must_equal 2
+      end
+    end
+
+    describe "Find a list of all available rooms" do
+      before do
+        @front_desk = FrontDesk.new
+        @front_desk.create_reservation(3, "2012-4-12", "2012-4-14",200)
+        @front_desk.create_reservation(4, "2012-4-12", "2012-4-14",200)
+        @front_desk.create_reservation(5, "2012-4-12", "2012-4-16",200)
+        @front_desk.create_reservation(6, "2012-4-12", "2012-4-16",200)
+      end
+      it "correctly lists all available_rooms" do
+        expect(@front_desk.find_available_rooms(Date.new(2012, 4, 12), Date.new(2012, 4, 14)).length).must_equal (20-4)
+      end
+    end
+
+    describe "correctly creates a block" do
+
+      it "creates an instance of block" do
+        @my_front_desk = FrontDesk.new
+        @block = @my_front_desk.create_block("2012-4-16", "2012-4-20", 150, [3,4,5])
+        expect(@block).must_be_instance_of Block
+      end
+
+      it "raises an error if unavailable rooms are requested in block" do
+        @my_front_desk = FrontDesk.new
+        @separate_res = Reservation.new(3, "2012-4-12", "2012-4-14",200)
+        @block = @my_front_desk.create_block("2012-4-16", "2012-4-20", 150, [3,4,5])
+        expect{@block}.must_raise StandardError
+      
+      end
+    end
   end
-
-  describe 'find reservations by date' do
-    before do
-      @front_desk = FrontDesk.new
-      @front_desk.create_reservation(3, "2012-4-12", "2012-4-22",200)
-      @front_desk.create_reservation(4, "2012-4-12", "2012-4-22",200)
-      @front_desk.create_reservation(5, "2012-4-23", "2012-4-29",200)
-      @front_desk.create_reservation(6, "2012-4-25", "2012-4-28",200)
-    end
-    it "returns reservations for a specific date date" do
-      expect(@front_desk.find_by_date("2012-4-12").length).must_equal 2
-    end
-  end
-
-  describe "Find a list of all available rooms" do
-    before do
-      @front_desk = FrontDesk.new
-      @front_desk.create_reservation(3, "2012-4-12", "2012-4-14",200)
-      @front_desk.create_reservation(4, "2012-4-12", "2012-4-14",200)
-      @front_desk.create_reservation(5, "2012-4-12", "2012-4-16",200)
-      @front_desk.create_reservation(6, "2012-4-12", "2012-4-16",200)
-    end
-    it "correctly lists all available_rooms" do
-      expect(@front_desk.find_available_rooms(Date.new(2012, 4, 12), Date.new(2012, 4, 14)).length).must_equal (20-4)
-    end
-  end
-
-
-end

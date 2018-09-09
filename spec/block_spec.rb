@@ -15,5 +15,4 @@ describe "Block instatiation" do
   it "creates a randomized id matching a regex" do
     expect(@new_block.block_ID).must_match NAME_REGEXP
   end
-
 end

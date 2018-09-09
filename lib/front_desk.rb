@@ -6,11 +6,12 @@ require 'date'
 require 'pry'
 
 class FrontDesk
-  attr_reader :reservations, :rooms
+  attr_reader :reservations, :rooms, :blocks
 
   def initialize
     @rooms = load_rooms
     @reservations = []
+    @blocks = []
 
   end
 
@@ -70,8 +71,30 @@ class FrontDesk
     raise StandardError, 'Room not available' unless available_rooms.include?(room_number)
   end
 
-  def create_block(block_start, block_end, rate, block_rooms)
 
+  def create_block(block_start, block_end, rate, block_rooms)
+    find_available_rooms(block_start, block_end)
+    block_rooms.each do |room_number|
+      check_availability(room_number,block_start,block_end)
+    end
+    converted_rooms = block_room_list_to_room(block_rooms)
+    new_block = Block.new(block_start, block_end, rate, converted_rooms)
+    @blocks << new_block
+    return new_block
+end
+
+  def block_room_list_to_room (block_rooms)
+    converted_rooms = []
+    block_rooms.each do |room_number|
+      converted_rooms << find_room(room_number)
+    end
+    return converted_rooms
+  end
+
+
+
+  def find_block_by_id
+    return @block.find {|block| block.block_ID == block_ID}
   end
 
 
