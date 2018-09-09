@@ -44,19 +44,25 @@ describe "BookingSystem Class" do
   end
 
   describe 'make_reservation method' do
+    it 'Assigns the correct first available room to the reservation' do
+    end
+
+    it '' do
+    end
+
   end
 
-  describe 'list_reservations_by_date method' do
+  describe 'list_reservations method' do
     let (:reservations_list_1) {
-      @reservation.list_reservations_by_date(@date_range_1)
+      @reservation.list_reservations(@date_range_1)
     }
 
     let (:reservations_list_2) {
-      @reservation.list_reservations_by_date(@date_range_2)
+      @reservation.list_reservations(@date_range_2)
     }
 
     let (:reservations_list_3) {
-      @reservation.list_reservations_by_date(@date_range_3)
+      @reservation.list_reservations(@date_range_3)
     }
 
     it 'Returns an array of reservation instances' do
@@ -117,13 +123,13 @@ describe "BookingSystem Class" do
 
   end
 
-  describe 'find_available_room method' do
+  describe 'find_available_rooms method' do
     before do
       @reservation_2 = Hotel::BookingSystem.new()
     end
 
     it 'Returns 1 if the reservations are empty' do
-      expect(@reservation_2.find_available_room(@date_range_2)).must_equal 1
+      expect(@reservation_2.find_available_rooms(@date_range_2).first).must_equal 1
     end
 
     # it 'Returns the first available room' do
