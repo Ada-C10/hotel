@@ -36,12 +36,18 @@ module Hotel
     # Create list of rooms with reserved dates. Change name?
     def make_room_calendar(number) # combine with @rooms?
       @room_calendar = {}
-
-      number.times do |num|
-        dates_reserved = {} #[]
-        @room_calendar[num+1] = dates_reserved
+      #
+      # number.times do |num|
+      #   dates_reserved = {} #[]
+      #   @room_calendar[num+1] = dates_reserved
+      # end
+      #   # binding.pry
+      # return @room_calendar
+      @rooms.each do |room|
+        dates_reserved = {}
+        @room_calendar[room] = dates_reserved
       end
-        # binding.pry
+      binding.pry
       return @room_calendar
     end
 
@@ -166,7 +172,7 @@ module Hotel
       new_reservation = Reservation.new(room_available, guest_name: guest_name, start_date: start_date, end_date: end_date)
       add_reservation(new_reservation)
       add_reservation_to_calendar(new_reservation)
-      binding.pry
+      # binding.pry
       return new_reservation
     end # def reserve_available_room
 
