@@ -144,4 +144,25 @@ describe "BookingManager class" do
     end # of returns all reservations on date it
   end # of find_reservations_on_date method
 
+  describe "find_vacancies_on_date method" do
+    before do
+      @hotel = Hotel::BookingManager.new(5)
+      room1 = Hotel::Room.new(1)
+      room2 = Hotel::Room.new(2)
+      room3 = Hotel::Room.new(3)
+      booking1 = Hotel::Reservation.new(room1, guest_name: "Tony Blaze", start_date: "June 10, 2018", end_date: "June 12, 2018")
+      booking2 = Hotel::Reservation.new(room2, guest_name: "Jane James", start_date: "June 10, 2018", end_date: "June 14, 2018")
+      booking3 = Hotel::Reservation.new(room3, guest_name: "Jessie Jade", start_date: "June 14, 2018", end_date: "June 16, 2018")
+      @hotel.add_reservation_to_calendar(booking1)
+      @hotel.add_reservation_to_calendar(booking2)
+      @hotel.add_reservation_to_calendar(booking3)
+    end
+
+    it "returns array of rooms without reservations on given date" do
+      expect(@hotel.find_vacancies_on_date("June 10, 2018", @hotel.room_calendar).length).must_equal 3
+      expect(@hotel.find_vacancies_on_date("June 17, 2018", @hotel.room_calendar).length).must_equal 5
+    end # of find vacancies it
+
+  end # of find vacancies on date method
+
 end # end of describe BookingManager class
