@@ -16,8 +16,10 @@ I probably have a few too many helper methods.
 
 I'm not sure if RoomBlock fits as a child of Reservation esp. as room_number is now an array for RoomBlock and just one single integer for Reservation. If I kept this structure, I'd  instantiate RoomBlock with instance variable room_numbers instead of room_number. I'd change Reservation to SingularBooking and RoomBlock to BlockBooking or something like that, and change ReservationManager to ReservationBooker.
 
+I've been toying with the possibility of incorporating a Calendar class, which has reservations, room_blocks, possibly rooms, and does the all listing logic while ReservationManager would be responsible for booking.
+
 In the method list_daily_reservations in ReservationManager, I'm not sure if I should include the checkout_date. I guess I'd need to know what the list is used for to determine whether to include it or not.
 
 I'd add an extra conditional if checkin_date == checkout_date in calculate_total_cost in ReservationManager so that only Reservation or RoomBlock are handling date checking logic.
 
-I'd add additional params-checking logic in make_reservation in ReservationManager; for example if "15092018" was entered and checkin_date or checkout_date, I could turn it into a usable form by reservations... else for completely invalid input ie "fluff," I would throw an ArgumentError in make_reservation. I would create a separate method for checking input. 
+I'd add additional params-checking logic in make_reservation in ReservationManager; for example if "15092018" was entered and checkin_date or checkout_date, I could turn it into a usable form by reservations... else for completely invalid input ie "fluff," I would throw an ArgumentError in make_reservation. I would create a separate method for checking input.

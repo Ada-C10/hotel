@@ -75,7 +75,7 @@ module Hotel
       end
 
       range = (Date.parse(checkin_date)..Date.parse(checkout_date)).to_a
-      room = find_available_room(range) 
+      room = find_available_room(range)
 
       input = parse_reservation_data(checkin_date, checkout_date, room.room_number, room_block_discount)
       reservation = Hotel::Reservation.new(input)
@@ -90,7 +90,7 @@ module Hotel
 
       return { checkin_date: checkin_date, checkout_date: checkout_date,
         confirmation_id: "BLOCK#{generate_random_block_id}", num_rooms: num_rooms,
-        room_number: room_numbers, reservations: reservations, total_cost: num_rooms * (calculate_total_cost(checkin_date, checkout_date, @room_cost, @room_block_discount ))
+        room_number: room_numbers, reservations: reservations, total_cost: num_rooms * (calculate_total_cost(checkin_date, checkout_date, @room_cost, @room_block_discount))
       }
     end
 
