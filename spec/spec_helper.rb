@@ -10,11 +10,9 @@ require "awesome_print"
 require "date"
 require "csv"
 
+TEST_RESERVATION_FILENAME = "support/test_reservation_data.csv"
+
 # Add lib files here (require_relative "../")
-require_relative "../lib/block.rb"
-require_relative "../lib/book.rb"
-require_relative "../lib/daterange.rb"
-require_relative "../lib/hotel.rb"
-require_relative "../lib/reservation.rb"
+require_relative "../hotbook.rb"
 
 Minitest::Reporters.use! Minitest::Reporters::SpecReporter.new
