@@ -4,4 +4,7 @@ module HotBook
 
   class RoomIsBlockedError < StandardError
   end
+
+  class BlockConflictError < StandardError
+  end
 end

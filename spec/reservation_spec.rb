@@ -27,7 +27,7 @@ describe "HotBook::Reservation class" do
       range = load_reservations[0].range
       checkout_date = Date.parse("apr_6")
       expect(range).must_be_instance_of Range
-      expect(range.include? checkout_date).must_equal false
+      expect(range.include?(checkout_date)).must_equal false
     end
   end
 
@@ -49,7 +49,7 @@ describe "HotBook::Reservation class" do
 
   describe "csv loading" do
     it "will correctly load lines of the CSV" do
-      blocknote = "This is the fifth reservation"
+      blocknote = "This is a block (private) reservation"
       expect(load_reservations[5].room_number).must_equal "1"
       expect(load_reservations[5].notes).must_equal blocknote
       expect(load_reservations.first.daterange.start_date).must_equal Date.parse("apr_1")

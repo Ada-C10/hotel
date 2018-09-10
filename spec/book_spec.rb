@@ -50,7 +50,6 @@ describe "HotBook::Book class" do
   end
 
   describe "new_block_reservation method" do
-
     it "will remove the room from block's memo array of what's still reservable" do
       expect(current_block.available.size).must_equal 1
       book.new_block_reservation(current_block)

@@ -14,7 +14,7 @@ module HotBook
                           # luckily, it's already in a class of its own, so it's ready
                           # to do that (rather than hotel having methods for loading etc.)
       @hotel = hotel
-      @reservations = Reservation.from_csv(TEST_RESERVATION_FILENAME)
+      @reservations = Reservation.from_csv(RESERVATION_DATA_FILENAME)
       @blocks = [] # a list of Blocks
     end
 

@@ -50,9 +50,15 @@ describe "HotBook::Hotel class" do
   end
 
 # TODO: AFter the CSV load function is added
-  describe "self.find_rate method" do
-    it "Hotel class method can look up the correct room" do
+# write both these tests
+##### THIS ISN'T REALLY TESTING THAT MUCH
+  describe "find_rate method" do
+    it "Hotel object can look up the correct room" do
+      expect(hotel.find_rate("3")).must_equal 200.0
     end
+    #
+    # it "handles edge case @rooms = nil" do
+    # end
   end
 
 end

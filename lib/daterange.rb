@@ -1,12 +1,7 @@
-# Optional - for developer use
-require "pry"
-require "awesome_print"
-
 module HotBook
 # The DateRange class compares and does calculations on other DateRanges
 # Refer to Date gem docu to understand what date format to use (i.e. y-m-d)
   class DateRange
-    require "date"
     attr_reader :start_date, :end_date
 
     def initialize(start_date:, end_date:)
@@ -20,6 +15,7 @@ module HotBook
       return (end_date - start_date).to_i
     end
 
+# Does daterange conflict with another daterange?
     def conflict?(other)
       if start_date >= other.end_date || end_date <= other.start_date
         return false
@@ -28,19 +24,10 @@ module HotBook
       end
     end
 
-# !!!!Range only includes overnights and EXCLUDES checkout day!!!!
+# Range only includes overnights and EXCLUDES checkout day.
     def to_range
       return (@start_date...@end_date)
     end
-
-    # def match?(other)
-    #   if start_date == other.start_date && end_date == other.end_date
-    #     return true
-    #   else
-    #     return false
-    #   end
-    # end
-
   end
 
 end

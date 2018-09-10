@@ -10,8 +10,6 @@ require "awesome_print"
 require "date"
 require "csv"
 
-TEST_RESERVATION_FILENAME = "support/test_reservation_data.csv"
-
 # Add lib files here (require_relative "../")
 require_relative "../hotbook.rb"
 

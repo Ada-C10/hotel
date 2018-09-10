@@ -7,8 +7,9 @@ require "pry"
 require "awesome_print"
 
 # project constants
+ROOM_NUMBERS_FILENAME = "data/room_numbers.csv"
 TEST_RESERVATION_FILENAME = "support/test_reservation_data.csv"
-# RESERVATION_DATA_FILENAME = "data/reservation_data.csv"
+RESERVATION_DATA_FILENAME = TEST_RESERVATION_FILENAME #"data/reservation_data.csv"
 
 # namespace module
 module HotBook;
