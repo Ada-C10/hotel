@@ -40,10 +40,12 @@ describe "ReservationMgr Test" do
       @new_ResMgr.make_reservation(Date.parse("2018-09-05"),Date.parse("2018-09-07"))
       expect{@new_ResMgr.make_reservation(Date.parse("2018-09-05"),Date.parse("2018-09-07"),rooms: 2)}.must_raise ArgumentError
     end
-    it "will take all forms of adding dates to reservations" do
+    it "will not reserve a room on the same day if the dates are inside the date range of a previous reservation" do
+      @new_ResMgr.make_reservation(Date.parse("2018-09-04"),Date.parse("2018-09-08"))
       @new_ResMgr.make_reservation(Date.parse("2018-09-05"),Date.parse("2018-09-07"))
-      @new_ResMgr.make_reservation(Date.parse("2018-09-07"),Date.new(2018,9,9))
       expect(@new_ResMgr.reservations.length).must_equal 2
+      expect(@new_ResMgr.rooms[0].unavailable_dates.length).must_equal 1
+      expect(@new_ResMgr.rooms[1].unavailable_dates.length).must_equal 1
     end
     it "will add two instances of res to one room if they are not on the same date" do
       @new_ResMgr.make_reservation(Date.parse("2018-09-05"),Date.parse("2018-09-07"))
@@ -151,6 +153,5 @@ describe "ReservationMgr Test" do
     end
   end
 
-  #find_available_block_rooms(block_id)
-
+  #create_reservation (check_in,check_out,rooms, block_id)
 end

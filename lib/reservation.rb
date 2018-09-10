@@ -20,7 +20,7 @@ class Reservation
       @check_out = Date.parse(check_out)
     end
     if @check_out < @check_in
-      raise ArgumentError.new('The check-out date is before the check-in')
+      raise StandardError.new('The check-out date is before the check-in')
     end
     if @room_num <= 0 || @room_num > 20
       raise ArgumentError.new('That is not a valid room number')

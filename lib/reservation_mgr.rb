@@ -13,7 +13,7 @@ class ReservationMgr
 
   def available_rooms(check_in,check_out,rooms: 1)
     if check_out < check_in
-      raise ArgumentError.new('The check-out date is before the check-in')
+      raise StandardError.new('The check-out date is before the check-in')
     end
 
     available_rooms = []
@@ -30,7 +30,7 @@ class ReservationMgr
     return available_rooms
   end
 
-  
+
   def make_reservation(check_in,check_out,rooms: 1, block_id: nil)
     if block_id == nil
       new_reservations = create_reservation(check_in,check_out,rooms, block_id)
@@ -109,13 +109,3 @@ class ReservationMgr
   end
 
 end
-
-
-
-# new_ResMgr = ReservationMgr.new(6)
-# new_ResMgr.make_reservation(Date.parse("2018-09-05"),Date.parse("2018-09-07"))
-# block1 = new_ResMgr.reserve_block(Date.parse("2018-09-05"),Date.parse("2018-09-07"),2,"Dysinger")
-# puts block1
-# binding.pry
-# new_ResMgr.make_reservation(Date.parse("2018-09-05"),Date.parse("2018-09-07"))
-# new_ResMgr.reserve_block(Date.parse("2018-09-05"),Date.parse("2018-09-07"),4,"Metzner")
