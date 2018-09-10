@@ -1,6 +1,3 @@
-require 'pry'
-require 'awesome_print'
-require 'date'
 require_relative 'room'
 
 module Hotel
@@ -18,7 +15,7 @@ module Hotel
     def cost
       @cost = calculate_total_cost
     end
-    
+
     def calculate_total_cost
       total_days = @date_range.dates_booked.length
       total_cost = @room.cost * total_days

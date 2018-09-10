@@ -159,11 +159,19 @@ describe "HotelBooker class" do
       expect(@booker.unreserved_block.length).must_equal 0
       expect(@booker.reserved_block.length).must_equal 1
       expect(@booker.reserved_block[0]).must_be_kind_of Hotel::Reservation
-
     end
-
-
-
   end
 
+  describe "unreserved_block_rooms method" do
+    before do
+      @booker = Hotel::HotelBooker.new
+      @booker.make_block(rooms: 5, discount: 150, check_in: '2018-09-05', check_out: '2018-09-10')
+    end
+
+    it "returns an array of available rooms marked for block reservations" do
+      expect(@booker.unreserved_block_rooms).must_be_kind_of Array
+      expect(@booker.unreserved_block_rooms[0]).must_be_kind_of Hotel::Room
+      expect(@booker.unreserved_block_rooms.length).must_equal 5
+    end
+  end
 end

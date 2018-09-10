@@ -1,6 +1,3 @@
-require 'pry'
-require 'awesome_print'
-
 require 'date'
 require_relative 'room'
 require_relative 'reservation'
@@ -99,13 +96,14 @@ module Hotel
       end
 
       unreserved = @rooms - reserved_rooms - unreserved_block_rooms - reserved_block_rooms
+
       return unreserved
     end
 
     def unreserved_block_rooms
       unreserved_block_rooms = []
       @unreserved_block.each do |reservation|
-        unreserved_block_rooms <<  reservation.room
+        unreserved_block_rooms << reservation.room
       end
 
       return unreserved_block_rooms
