@@ -16,8 +16,8 @@ module HotBook
       @notes = notes
     end
 
-    def conflict?(daterange)
-      return (self.daterange).conflict? daterange
+    def conflict?(other)
+      return daterange.conflict? other.daterange
     end
 
     def duration
