@@ -1,5 +1,4 @@
 require_relative "spec_helper"
-TEST_RESERVATION_FILENAME = "support/test_reservation_data.csv"
 
 ## Project Requirement: User can reserve a room for a given date range
 describe "HotBook::Reservation class" do
