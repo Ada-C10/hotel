@@ -152,13 +152,14 @@ describe "#blocks" do
   end
 
   it "create a block of rooms" do
+    # reserve a normal room
     start_date = "2018-08-07 00:00:00 -0700"
     end_date = "2018-08-09 00:00:00 -0700"
     @admin.reserve_room(start_date, end_date)
-    # for range and testing view vacant_rooms
-    # one day less because the last night is not payed and view_vacant_rooms takes care of that
 
+    # reserve a block room
     data = {}
+    data[:block_id] = 1
     data[:start_date] = start_date
     data[:end_date] = end_date
     data[:rooms] = 4
@@ -177,6 +178,7 @@ describe "#blocks" do
     # one day less because the last night is not payed and view_vacant_rooms takes care of that
 
     data = {}
+    data[:block_id] = 1
     data[:start_date] = start_date
     data[:end_date] = end_date
     data[:rooms] = 6
@@ -186,4 +188,33 @@ describe "#blocks" do
     }.must_raise StandardError
   end
 
+  it "updates status of room block" do
+    start_date = "2018-08-07 00:00:00 -0700"
+    end_date = "2018-08-09 00:00:00 -0700"
+    @admin.reserve_room(start_date, end_date)
+    # for range and testing view vacant_rooms
+    # one day less because the last night is not payed and view_vacant_rooms takes care of that
+
+    data = {}
+    data[:block_id] = 1
+    data[:start_date] = start_date
+    data[:end_date] = end_date
+    data[:rooms] = 4
+    data[:discounted_rate] = 100
+    @admin.create_block_rooms(data)
+    info = {}
+
+    start_date = Time.parse("2018-08-07 00:00:00 -0700")
+    end_date = Time.parse("2018-08-09 00:00:00 -0700")
+    e_date = end_date - 1
+    range = (start_date .. e_date)
+    info = {}
+    info[:room_num] = 2
+    info[:range] = range
+    @admin.reserve_room_in_block(info)
+    room = @admin.rooms.select {|room| room.number == 2}.first
+    blocks = room.blocks
+    target_block = blocks.select {|block| block[:range] == range}[0]
+    expect(target_block[:status]).must_equal "booked"
+  end
 end

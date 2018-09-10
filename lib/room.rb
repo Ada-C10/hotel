@@ -19,6 +19,11 @@ class Room
     input_data[:status] = data[:status]
     @blocks << input_data
   end
+
+  def reserve_room_block(range)
+    target_block = blocks.select {|block| block[:range] == range}[0]
+    target_block[:status] = "booked"
+  end
   # def sort_ranges
   #   @ranges.sort_by { |range| object.start_time }
   # end

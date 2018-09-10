@@ -128,7 +128,7 @@ class Admin
     e_date = end_date - 1
     range = (start_date..e_date)
     rooms = data[:rooms]
-    raise StandardError if rooms > 5 #block
+    raise StandardError if rooms > 5 #max block size
     discounted_rate = data[:discounted_rate]
     available_rooms = view_vacant_rooms(start_date, e_date)
 
@@ -147,6 +147,14 @@ class Admin
     end
 
 
+  end
+
+# As an administrator, I can reserve a room from within a block of rooms
+  def reserve_room_in_block(data)
+    room_num = data[:room_num]
+    range = data[:range]
+    room = @rooms.select { |room| room.number == room_num}[0]
+    room.reserve_room_block(range)
   end
 
   #last day not counted
