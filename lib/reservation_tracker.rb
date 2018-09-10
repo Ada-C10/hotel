@@ -161,11 +161,11 @@ def create_block(event_name, start, ending)
     5.times do |iterator|
       rooms_for_block << all_rooms_available[iterator]
     end
-  else
-    raise StandardError.new("There are not enough rooms available for the given date range to create a block")
-  end
 
-  return BlockRoom.new(event_name, start, ending, rooms_for_block)
+    return BlockRoom.new(event_name, start, ending, rooms_for_block)
+  else
+    return false
+  end
 end
 
 end

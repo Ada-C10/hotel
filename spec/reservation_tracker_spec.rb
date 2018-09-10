@@ -135,7 +135,17 @@ describe 'ReservationTracker class' do
     expect(new_block).must_be_kind_of BlockRoom
   end
 
-  it 'will not create a block of 5 rooms to put on hold if not enough rooms are available' do
-
-  end
+  # This is not yet functional
+  # it 'will not create a block of 5 rooms to put on hold if not enough rooms are available' do
+  #   16.times do |i|
+  #     date = Date.new(2018,9,10)
+  #     room = @new_tracker.all_rooms[i]
+  #     room.dates_booked << date
+  #   end
+  #
+  #   check_in = "2018,9,10"
+  #   check_out = "2018,9,12"
+  #   new_block = @new_tracker.create_block("AdaCon", check_in, check_out)
+  #   expect(new_block).must_equal false
+  # end
 end
