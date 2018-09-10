@@ -85,6 +85,20 @@ describe "RoomBlock" do
     end
   end
 
+  describe "#show_status" do
+    it "returns a hash" do
+      expect(block.show_status).must_be_kind_of Hash
+    end
+
+    it "correctly returns first and last values, thanks to Ruby's ordered hashes" do
+      expect(block.show_status.keys[0]).must_equal "1"
+      expect(block.show_status.values[0]).must_equal :available
+
+      expect(block.show_status.keys[-1]).must_equal "5"
+      expect(block.show_status.values[-1]).must_equal :available
+    end
+  end
+
   describe "#total_stay_cost_room" do
     it "accurately calculates the total cost for one room within the block" do
       block_room = Hotel::RoomBlock.new(

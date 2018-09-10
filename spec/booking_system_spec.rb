@@ -196,15 +196,18 @@ describe "BookingSystem class" do
       expect(avail_rooms).must_equal (all_rooms - booked_rooms)
     end
 
-    # it "returns nil if no rooms are available" do
-    # TODO:hoooww?
-    #   booking_system.rooms -= (1..17).to_a
-    #   booking_system.reservations.push(res_1, res_2, res_3)
-    #
-    # avail_rooms = booking_system.list_avail_rooms_for_range(check_in: "2010-6-1", check_out: "2010-9-1")
-    #
-    # expect(avail_rooms).must_be_nil
-    # end
+    it "returns nil if no rooms are available" do
+      20.times do |i|
+        res = Hotel::Reservation.new(id:1, room_num: i+1, check_in: "1999-1-1", check_out: "1999-12-31")
+        booking_system.reservations << res
+      end
+
+      all_rooms = booking_system.rooms
+
+      avail_rooms = booking_system.list_avail_rooms_for_range(check_in: "1999-6-1", check_out: "1999-7-1")
+
+      expect(avail_rooms).must_be_nil
+    end
 
     it "returns all rooms available if there are no reservations" do
       #edge case
@@ -214,6 +217,18 @@ describe "BookingSystem class" do
 
       expect(avail_rooms).must_equal all_rooms
 
+    end
+
+    it "can take rooms in room blocks into account" do
+      block = Hotel::RoomBlock.new(id: 1, check_in: "1970-03-04", check_out: "1970-03-15", rooms: [1,2,3])
+      booking_system.room_blocks << block
+
+      all_rooms = (1..20).to_a
+      booked_rooms = block.rooms
+
+      avail_rooms = booking_system.list_avail_rooms_for_range(check_in: "1970-03-01", check_out: "1970-03-07")
+
+      expect(avail_rooms).must_equal all_rooms - booked_rooms
     end
   end
 
@@ -278,6 +293,14 @@ describe "BookingSystem class" do
       expect(room_block.rooms).must_be_kind_of Array
       expect(room_block.rooms.length).must_equal 2
       expect(room_block.rooms[0]).must_be_kind_of Integer
+    end
+
+    it "accurately adds information to first room block made" do
+
+      expect(room_block.id).must_equal 1
+      expect(room_block.rooms.length).must_equal 2
+      expect(room_block.check_in.strftime('%Y %b %d')).must_equal "1990 Jan 01"
+      expect(room_block.check_out.strftime('%Y %b %d')).must_equal "1990 Jan 15"
     end
   end
 end

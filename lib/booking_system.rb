@@ -48,9 +48,17 @@ module Hotel
     def list_avail_rooms_for_range(check_in:, check_out:)
       date_range = construct_cal_checker(check_in: check_in, check_out: check_out)
 
-      booked_rooms = @reservations.select { |reservation| reservation.overlap?(date_range) }.map { |reservation| reservation.room_num }
+        booked_rooms = @reservations.select { |reservation| reservation.overlap?(date_range) }.map { |reservation| reservation.room_num }
 
-      avail_rooms = @rooms - booked_rooms
+        avail_rooms = @rooms - booked_rooms
+
+        held_rooms = @room_blocks.select { |block| block.overlap?(date_range) }.map {|block| block.rooms}
+
+        if !held_rooms.empty?
+          held_rooms = held_rooms[0]
+        end
+
+        avail_rooms -= held_rooms
 
       return avail_rooms.empty? ? nil : avail_rooms
     end
@@ -64,15 +72,6 @@ module Hotel
       else
         avail_room = avail_rooms[0]
       end
-
-
-
-      # reservation_hash = {
-      #   id: id,
-      #   room: rooms[0],
-      #   check_in: start_date,
-      #   check_out: end_date,
-      # }
 
       new_reservation = Hotel::Reservation.new(
         id: id,
@@ -89,8 +88,10 @@ module Hotel
     def create_room_block(check_in:, check_out:, block_size:)
       avail_rooms = list_avail_rooms_for_range(check_in: check_in, check_out: check_out)
 
-      unless avail_rooms.length > block_size
-        raise StandardError, "Not enough rooms available."
+      if avail_rooms.nil? || avail_rooms.length < block_size
+        raise StandardError, "Not enough rooms are available for the given date range: #{check_in} - #{check_out}."
+      else
+        avail_room = avail_rooms[0]
       end
 
       hold_rooms = avail_rooms[0..block_size-1]
@@ -102,10 +103,6 @@ module Hotel
       return new_room_block
     end
 #
-#
-#
-# # QUESTION: should this method be here or in Reservation?
-# # QUESTION: test nil return if nothing found
 #     def find_room(room_num)
 #       return @rooms.find {|room| room.num == room_num.to_i}
 #     end
@@ -113,22 +110,29 @@ module Hotel
   end
 end
 
-
+#
 # booking = Hotel::BookingSystem.new()
+# #
+# block = Hotel::RoomBlock.new(id: 1, check_in: "1970-03-04", check_out: "1992-12-15", rooms: [1,2,3])
+# booking.room_blocks << block
+#
+# p booking.list_avail_rooms_for_range(check_in: "1970-03-01", check_out: "1970-03-07")
 #
 # p booking.reservations
 #
-# res_1 = booking.create_reservation(check_in: "1992-10-15", check_out: "1992-10-25")
-# res_2 = booking.create_reservation(check_in: "1992-11-15", check_out: "1992-11-25")
-# # res_3 = booking_system.create_reservation(check_in: "1992-10-15", check_out: "1992-10-25")
-#
-# p booking.list_avail_rooms_for_range(check_in: "1992-10-15", check_out: "1992-10-25")
+# res_1 = Hotel::Reservation.new(id: 1, room_num: 1, check_in: "1992-10-15", check_out: "1992-10-25")
+# res_2 = Hotel::Reservation.new(id: 2, room_num:2, check_in: "1992-11-15", check_out: "1992-11-25")
+# res_3 = Hotel::Reservation.new(id: 3, room_num: 3, check_in: "1992-10-15", check_out: "1992-10-25")
 
-  # booking.reservations.push(res_2, res_3)
-  # block = booking.create_room_block(
-  #   check_in: "1990-01-01",
-  #   check_out: "1990-01-15",
-  #   block_size: 2
-  #   )
-  #
-  #   p block
+# booking.reservations.push(res_1, res_2, res_3)
+
+# p booking.list_avail_rooms_for_range(check_in: "1992-10-15", check_out: "1992-10-25")
+# #
+#   booking.reservations.push(res_2, res_3)
+#   block = booking.new(
+#     check_in: "1990-01-01",
+#     check_out: "1990-01-15",
+#     block_size: 2
+#     )
+#
+#     p
