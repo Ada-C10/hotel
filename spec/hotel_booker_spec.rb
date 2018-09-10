@@ -99,12 +99,42 @@ describe "HotelBooker class" do
     before do
       @booker = Hotel::HotelBooker.new
     end
-    
-    it "takes in a hash containing number of rooms, discount rate, check_in, and check_out" do
+
+    it "raises StandardError if user tries to create a block with more than 5 rooms" do
+      expect{ @booker.make_block(rooms: 6, discount: 150, check_in: '2018-09-05', check_out: '2018-09-10') }.must_raise StandardError
     end
 
-    it "creates an array of available rooms with discounted rates" do
+    it "raises StandardError if there are not enough available rooms for a block" do
+      20.times do |i|
+        @booker.make_reservation(i+1, '2018-09-05', '2018-09-10')
+      end
+
+      expect{ @booker.make_block(rooms: 1, discount: 150, check_in: '2018-09-05', check_out: '2018-09-10') }.must_raise StandardError
     end
+
+    it "creates an array of available block reservations" do
+      expect(@booker.make_block(rooms: 5, discount: 150, check_in: '2018-09-05', check_out: '2018-09-10')).must_be_kind_of Array
+    end
+
+    it "creates an array the size of Reservations described by rooms" do
+      expect(@booker.make_block(rooms: 5, discount: 150, check_in: '2018-09-05', check_out: '2018-09-10').length).must_equal 5
+    end
+
+    it "creates an array carrying instances of Reservation  " do
+      expect(@booker.make_block(rooms: 5, discount: 150, check_in: '2018-09-05', check_out: '2018-09-10')[0]).must_be_kind_of Hotel::Reservation
+      expect(@booker.make_block(rooms: 5, discount: 150, check_in: '2018-09-05', check_out: '2018-09-10')[4]).must_be_kind_of Hotel::Reservation
+    end
+
+    it "assigns rooms starting from available rooms" do
+      10.times do |i|
+        @booker.make_reservation(i+1, '2018-09-05', '2018-09-10')
+      end
+
+      expect(@booker.make_block(rooms: 5, discount: 150, check_in: '2018-09-05', check_out: '2018-09-10')[0].room.id).must_equal 11
+    end
+
+
+
 
     it "returns a StandardError if there are not enough rooms to make a block" do
     end
