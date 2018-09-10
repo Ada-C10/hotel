@@ -51,28 +51,9 @@ describe "Reservation" do
     end
   end
 
-  describe "#dates_reserved" do
-    # NOTE: tests in cal??
-    # it "returns an array of Date objects" do
-    #   expect(reservation.dates_reserved).must_be_kind_of Array
-    #   expect(reservation.dates_reserved[0]).must_be_kind_of Date
-    # end
-    #
-    # it "can list all the dates of a reservation" do
-    #   date1_s = reservation.dates_reserved[0].strftime('%Y %b %d')
-    #   date2_s = reservation.dates_reserved[1].strftime('%Y %b %d')
-    #   date3_s = reservation.dates_reserved[2].strftime('%Y %b %d')
-    #
-    #   expect(reservation.dates_reserved.length).must_equal 3
-    #   expect(date1_s).must_equal "2004 Jul 01"
-    #   expect(date2_s).must_equal "2004 Jul 02"
-    #   expect(date3_s).must_equal "2004 Jul 03"
-    # end
-  end
-
   describe "#total_stay_cost" do
     it "correctly calculates total cost for a reservation" do
-      rate = 200
+      rate = reservation.daily_rate
       dates = 3
       correct_cost = rate * dates
 

@@ -1,4 +1,3 @@
-require 'date'
 require_relative 'calendar'
 
 module Hotel
@@ -10,20 +9,12 @@ module Hotel
 
       @id = id.to_i
       @room_num = room_num.to_i
-      #TODO: date_range CAL instantiate here
-      # @check_in = Date.parse(input[:check_in])
-      # @check_out = Date.parse(input[:check_out])
       @daily_rate = daily_rate.to_f
 
     end
 
-    def dates_reserved()
-      # don't include check out date
-      return (@check_in...@check_out).to_a
-    end
-
     def total_stay_cost()
-      length_in_days = dates_reserved().length
+      length_in_days = @check_out - @check_in
       return @daily_rate * length_in_days
     end
   end

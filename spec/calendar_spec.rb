@@ -46,24 +46,6 @@ describe "Calendar" do
     end
   end
 
-  # describe "#create_date_range" do
-  #   it "returns an array of Date objects" do
-  #     cal.create_date_range.each do |date|
-  #       expect(date).must_be_kind_of Date
-  #     end
-  #     expect(cal.create_date_range).must_be_kind_of Array
-  #   end
-  #
-  #   it "can list first and last dates within range" do
-  #     date1_s = cal.create_date_range[0].strftime('%Y %b %d')
-  #     date2_s = cal.create_date_range[-1].strftime('%Y %b %d')
-  #
-  #     expect(cal.create_date_range.length).must_equal 9
-  #     expect(date1_s).must_equal "1986 Jul 20"
-  #     expect(date2_s).must_equal "1986 Jul 29"
-  #   end
-  # end
-
   describe "#has_date?" do
     it "returns true if other date is between check in and check out dates: in the middle" do
       other_date = "1986-07-25"
@@ -104,7 +86,7 @@ describe "Calendar" do
 
       expect(has_date).must_equal false
     end
-    
+
     it "returns false if other date is outside of check in and check out dates: on check out date" do
       # edge case
       other_date = "1986-07-29"
