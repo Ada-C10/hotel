@@ -10,57 +10,93 @@ MAX_BLOCK_NUM = 5
 
 module Hotel
   class ReservationTracker
-    class InvalidDateError < StandardError; end
-    class DatesOrderError < StandardError; end
-    class NoRoomsError < StandardError; end
-    class InvalidAmountRoomsError < StandardError; end
-    class TooManyRoomsError < StandardError; end
-    class NotEnoughError < StandardError; end
+    attr_reader :rooms, :blocked_rooms, :reservations
 
-    attr_reader :rooms, :reservations, :blocked_rooms
+    def initialize(
+      room_file = 'support/rooms.csv',
+      block_file = 'support/blocks.csv',
+      reservation_file = 'support/reservations.csv'
+    )
+    @rooms = load_rooms(room_file)
+    @blocked_rooms = load_blocked_rooms(block_file)
+    @reservations = load_reservations(reservation_file)
+  end
 
-    def initialize(room_file = 'support/rooms.csv', block_file = 'support/blocks.csv')
-      @rooms = load_rooms(room_file)
-      @reservations = []
-      @blocked_rooms = load_blocked_rooms(block_file)
+  def load_rooms(filename)
+    rooms = []
+
+    CSV.read(filename, headers: true).each do |line|
+
+      input_data = {}
+      input_data[:room_num] = line[0].to_i
+      input_data[:rate] = line[1].to_i
+
+      room = Room.new(input_data)
+      rooms << room
     end
+    return rooms
+  end
 
-    def load_rooms(filename)
-      rooms = []
+  def load_blocked_rooms(filename)
+    blocks = []
+    block_data = CSV.open(filename, 'r', headers: true,
+      header_converters: :symbol)
 
-      CSV.read(filename, headers: true).each do |line|
+      block_data.each do |raw_block|
+        start_date = Date.parse(raw_block[:start_date])
+        end_date = Date.parse(raw_block[:end_date])
 
-        input_data = {}
-        input_data[:room_num] = line[0].to_i
-        input_data[:rate] = line[1].to_i
+        requested_qty = raw_block[:party].to_i
+        block_qty_rooms = @rooms.take(requested_qty)
+        requested_dates = DateRange.new(start_date, end_date)
 
-        room = Room.new(input_data)
-        rooms << room
+        parsed_block = {
+          id: raw_block[:id].to_i,
+          party: block_qty_rooms,
+          date_range: requested_dates
+        }
+
+        block = Block.new(parsed_block)
+        blocks << block
       end
-      return rooms
+      return blocks
     end
 
-    def load_blocked_rooms(filename)
-      blocks = []
-      block_data = CSV.open(filename, 'r', headers: true,
+    def load_reservations(filename)
+      reservations = []
+      reservation_data = CSV.open(filename, 'r', headers: true,
         header_converters: :symbol)
 
-        block_data.each do |raw_block|
-          start_date = Date.parse(raw_block[:start_date])
-          end_date = Date.parse(raw_block[:end_date])
+        reservation_data.each do |raw_reservation|
+          block_id = find_block_id(raw_reservation[:block_id].to_i)
+          room = find_room(raw_reservation[:room].to_i)
+
+          start_date = Date.parse(raw_reservation[:start_date])
+          end_date = Date.parse(raw_reservation[:end_date])
 
           range = DateRange.new(start_date, end_date)
 
-          parsed_block = {
-            id: raw_block[:id].to_i,
-            party: raw_block[:party].to_i,
+          parsed_reservation = {
+            id: raw_reservation[:id].to_i,
+            block_id: block_id,
+            room: room,
             date_range: range
           }
 
-          block = Block.new(parsed_block)
-          blocks << block
+          reservation = Reservation.new(parsed_reservation)
+          reservations << reservation
         end
-        return blocks
+        return reservations
+      end
+
+      def find_block_id(id)
+        check_id(id)
+        return @blocked_rooms.find { |blocked_room| blocked_room.id == id }
+      end
+
+      def find_room(room_num)
+        check_room_num(room_num)
+        return @rooms.find { |room| room.room_num == room_num }
       end
 
       def list_reservations_by_date(specified_date)
@@ -90,10 +126,10 @@ module Hotel
       def find_blocked_rooms(requested_dates)
         blocked_rooms_by_date = @blocked_rooms.map do |room|
           if room.date_range.get_range == requested_dates.get_range
-            room.party
+            room
           end
         end
-        return blocked_rooms_by_date.flatten
+        return blocked_rooms_by_date.flatten.compact
       end
 
       def find_unavailable_rooms(requested_dates)
@@ -175,6 +211,22 @@ module Hotel
       end
 
       private
+      class InvalidDateError < StandardError; end
+      class DatesOrderError < StandardError; end
+      class NoRoomsError < StandardError; end
+      class InvalidAmountRoomsError < StandardError; end
+      class TooManyRoomsError < StandardError; end
+      class NotEnoughError < StandardError; end
+
+      def check_id(id)
+        unless id.nil? || id >= 0
+          raise ArgumentError, "ID cannot be less than zero. (got #{id})"
+        end
+      end
+
+      def check_room_num(num)
+        raise ArgumentError, "Room num cannot be less than 1 or greater than #{NUM_OF_ROOMS} (got #{NUM})" if num <= 0 || num > NUM_OF_ROOMS
+      end
 
       def check_dates_validity?(start_date, end_date)
         unless (start_date.is_a?(Date) && end_date.is_a?(Date))
