@@ -2,8 +2,6 @@
 require "pry"
 require "awesome_print"
 
-#TODO: .parse method!
-
 module HotBook
 # The DateRange class compares and does calculations on other DateRanges
 # Refer to Date gem docu to understand what date format to use (i.e. y-m-d)
@@ -23,7 +21,7 @@ module HotBook
     end
 
     def conflict?(other)
-      if self.start_date >= other.end_date || self.end_date <= other.start_date
+      if start_date >= other.end_date || end_date <= other.start_date
         return false
       else
         return true
@@ -31,8 +29,17 @@ module HotBook
     end
 
     def to_range
-      return (@start_date..@end_date)
+      return (@start_date...@end_date)
     end
+
+    # def match?(other)
+    #   if start_date == other.start_date && end_date == other.end_date
+    #     return true
+    #   else
+    #     return false
+    #   end
+    # end
+
   end
 
 end

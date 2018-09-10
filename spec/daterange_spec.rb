@@ -108,10 +108,14 @@ describe "HotBook::DateRange class" do
 
   describe "to_range method" do
     it "will return a Range class object" do
-      daterange = HotBook::DateRange.new(start_date: "apr_1",
-                                         end_date: "apr_2")
       range = daterange.to_range
       expect(range).must_be_instance_of Range
+    end
+
+    it "correctly allows a res end and another res start on the same day" do
+      date = Date.parse("apr_2")
+      range = daterange.to_range
+      expect(range.include? date).must_equal false
     end
   end
 
