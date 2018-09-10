@@ -52,7 +52,12 @@ describe "HotBook::Book class" do
   end
 
   describe "edge case extravaganza: being super sure you can't overbook" do
-    it "new reservation case" do
+    it "new reservation nominal case" do
+      20.times{book.new_reservation(shortrange)}
+      expect(book.reservations.last.room_number).must_equal "20"
+    end
+
+    it "new reservation edge case" do
       expect{ 21.times { book.new_reservation(shortrange) } }.must_raise HotBook::NoRoomsAvailableError
       expect{book.new_reservation(shortrange, room_number: "1")}.must_raise HotBook::RoomIsTakenError
     end
