@@ -1,7 +1,3 @@
-require 'pry'
-require 'awesome_print'
-require 'date'
-
 module Hotel
   class Room
     attr_reader :id

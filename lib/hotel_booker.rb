@@ -10,6 +10,7 @@ module Hotel
   class HotelBooker
     attr_accessor :rooms, :reservations
     NUM_ROOMS = 20
+    BLOCK_MAX = 5
 
     def initialize()
       @reservations = []
@@ -34,6 +35,32 @@ module Hotel
         @reservations << reservation
       end
     end
+
+    def make_block_reservation(id)
+    end
+
+
+    def make_block(info)
+      num_rooms = info[:rooms]
+      if num_rooms > BLOCK_MAX
+        raise StandardError, "Five is the maximum number of rooms in a block."
+      end
+      discount = info[:discount]
+      check_in = Date.parse(info[:check_in])
+      check_out = Date.parse(info[:check_out])
+      date_range = Hotel::DateRange.new(check_in, check_out)
+
+
+
+      available = unreserved_rooms(check_in, check_out)
+      if available == []
+        raise StandardError, "There are no more available rooms for this date range!"
+      else
+        reservation.room = available[0]
+        @reservations << reservation
+      end
+    end
+
 
     # arguments for check_in and check_out are Dates
     def unreserved_rooms(check_in, check_out)

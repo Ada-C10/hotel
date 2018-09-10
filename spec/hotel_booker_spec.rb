@@ -92,7 +92,24 @@ describe "HotelBooker class" do
       expect(@booker.unreserved_rooms(@date3, @date4)).must_be_kind_of Array
       expect(@booker.unreserved_rooms(@date3, @date4).length).must_equal 20
     end
+  end
 
+
+  describe "Make block of rooms " do
+    before do
+      @booker = Hotel::HotelBooker.new
+    end
+    
+    it "takes in a hash containing number of rooms, discount rate, check_in, and check_out" do
+    end
+
+    it "creates an array of available rooms with discounted rates" do
+    end
+
+    it "returns a StandardError if there are not enough rooms to make a block" do
+    end
 
   end
+
+
 end
