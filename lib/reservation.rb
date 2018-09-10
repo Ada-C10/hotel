@@ -1,15 +1,20 @@
-require_relative 'date_logic'
 require_relative 'room_booker'
 
 module BookingLogic
   class Reservation
-    include DateLogic
     attr_reader :room, :check_in, :check_out
 
     def initialize(room, check_in, check_out)
+      check_date_range(check_in, check_out)
       @room = room
       @check_in = check_in
       @check_out = check_out
+    end
+
+    def check_date_range(check_in, check_out)
+      if check_out <= check_in
+        raise StandardError, "Invalid date range provided"
+      end
     end
 
     def reservation_cost
