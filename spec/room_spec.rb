@@ -11,8 +11,13 @@ require_relative '../lib/reservation.rb'
 
 describe "Room" do
   it "returns an instance of Room" do
-    new_room = Room.new
+    new_room = Room.new(13)
     expect(new_room).must_be_kind_of Room
+  end
+
+  it "raises an error if room number is higher than 20" do
+    # new_room = Room.new(21)
+    expect{(Room.new(21))}.must_raise ArgumentError
   end
 
 end

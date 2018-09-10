@@ -1,41 +1,83 @@
+require 'date'
 class Hotel
-  def initialize(reservarions, rooms)
-    reservarions = array of hashes that are instance of reservations
-    rooms =  array of hashes that are instance of room
-    # list of block reservations  - array of hashes that are instance of block reservations
+  attr_reader :reservations, :rooms
+  # attr_accessor
+  def initialize(reservations = [], rooms = [])
+    @reservations = reservations # array of hashes that are instance of reservations
+    @rooms = generate_rooms  # array of hashes that are instance of room
+    # @block_reservations = lock_reservations # array of hashes that are instance of block reservations
   end
 
-  def make_reservation(checkin, checkout)
-     reserve_room
-     reservarions << Reservation.new(checkin, checkout)
+  def make_reservation(check_in = Date.new(check_in), check_out = Date.new(check_out))
+    # reserve_room
+    # check_in = Date.new(check_in)
+    # check_out = Date.new(check_out)
+    room = reserve_room
+
+    reservation = Reservation.new(check_in, check_out, room)
+    @reservations << reservation
+    return reservation
   end
 
-   def rooms
-      rooms << 20.times generate Room
-      returns rooms
+  def generate_rooms
+    rooms = []
+    room_number = 1
+    until room_number == 21
+      rooms << Room.new(room_number)
+      room_number += 1
     end
 
-   def list_reservations
-     returns reservarions
-   end
+    return rooms
+  end
 
-   def list_rooms
-     returns rooms
-   end
+  def list_reservations
+    # returns reservarions
+  end
 
-   def find_reservation(date)
-   end
+  def list_rooms_available(start_date, end_date)
 
-   def reserve_room => helper method?
-     find room with available status
-     changes room status
-     #add current_reservation
-   end
+    @rooms.each do |room|
+      if  room.dates
+       # room.dates.include?(start_date)
+    end
+  end
 
-   # def reserve_block
-   # end
-   #
-   # def cancel_reservations
-   # end
+  def find_reservation(date)
+    @reservations.each do |reservation|
+      if reservation.check_in == date
+        return reservation
+      end
+    end
+  end
+ # compare directly to dates not status of room.
+
+  # def find_available_rooms(check_in_search, check_out_search)
+  #   @reservations.each do |reservation|
+  #     # (reservation.check_in..reservation.check_out) == (check_in..check_out) ||
+  #      if reservation.check_out <= check_in_search
+  #        return reservation.room
+  #      end
+  #   end
+  # end
+
+
+  def reserve_room # helper method
+    @rooms.each do |room|
+      if room.status == :available
+        room.status = :reserved
+        reserved_room = room
+        room.dates << reserved_room
+        return reserved_room
+      end
+    end
+
+    # changes room status with helper method
+  end
+
+  # def reserve_block
+  # end
+
+  # def cancel_reservations
+  # end
 
 end

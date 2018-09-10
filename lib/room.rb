@@ -1,9 +1,14 @@
 class Room
-  def initialize()
-    room_number = integer
-    #raise warning if room has number over 20
-    reservations - [array of reservation hash]
-    status = symbol or string (avaible, unavaible, blocked)
+  attr_reader :room_number, :dates
+  attr_accessor :status
+  def initialize(room_number, status = :available)
+    @room_number = room_number
+    @status = status # valid_status = [:available, :reserved, :blocked]
+    # @reservations = reservations # [array of reservation hash]
+    @dates = []
+
+    raise ArgumentError if room_number > 20
+
   end
 
   # def self.all_available(date)
