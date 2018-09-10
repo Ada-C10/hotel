@@ -10,11 +10,5 @@ describe "Room Class" do
       expect(@room).must_be_kind_of Hotel::Room
     end
 
-    # it "stores an array of reservations" do
-    # expect(@room.resrvations).must_be_kind_of Array
-    # end
-
-
-
   end
 end
