@@ -25,3 +25,6 @@ require_relative 'spec_helper'
 #
 #   end
 # end
+
+# if !(reservation.start_date < start_date) && !(reservation.end_date <= start_date) ||
+#    !(reservation.start_date < end_date) && !(reservation.end_date < end_date)

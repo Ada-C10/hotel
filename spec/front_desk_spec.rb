@@ -43,13 +43,13 @@ describe "Front Desk Class" do
     end
 
     it "returns all reservation within that date" do
-      @admin.block_hold(('2018-02-03'),('2018-02-06'),2)
+      @admin.block_hold(('2018-02-03'),('2018-02-06'),2, "Nelson")
       @admin.reserve_room(5,('2018-02-01'),('2018-02-03'))
       expect(@admin.search_reserved_by_date('2018-02-05').length).must_equal 3
     end
 
     it "returns zero for day of" do
-      @admin.block_hold(('2018-02-03'),('2018-02-06'),2)
+      @admin.block_hold(('2018-02-03'),('2018-02-06'),2, "Martinez")
       expect(@admin.search_reserved_by_date('2018-02-06').length).must_equal 0
     end
 
@@ -77,24 +77,24 @@ describe "Front Desk Class" do
 ######## addd describe block to this methods so it stops using the room to test from top #####
 
     it "makes a block reservation for 1 to 5 rooms" do
-      expect(@admin.block_hold(('2018-02-01'),('2018-02-03'),2).length).must_equal 2
+      expect(@admin.block_hold(('2018-02-01'),('2018-02-03'),2, "Smith").length).must_equal 2
     end
 
     it "raises error if standard reservation conflicts with block reservation" do
-    @admin.block_hold(('2018-02-01'),('2018-02-11'),2)
+    @admin.block_hold(('2018-02-01'),('2018-02-11'),2, "Martinez")
     expect {@admin.reserve_room(1,('2018-02-01'),('2018-02-10'))}.must_raise StandardError
     end
 
     it "raises error if block reservation exceeds maximum(5) block reservation" do
-    expect {@admin.block_hold(('2018-02-01'),('2018-02-11'),6)}.must_raise StandardError
+    expect {@admin.block_hold(('2018-02-01'),('2018-02-11'),6,"Jacobs")}.must_raise StandardError
     end
 
     it "raises error if block reservations conflict" do
-      @admin.block_hold(('2018-02-01'),('2018-02-11'),5)
-      @admin.block_hold(('2018-02-01'),('2018-02-11'),5)
-      @admin.block_hold(('2018-02-01'),('2018-02-11'),5)
-      @admin.block_hold(('2018-02-01'),('2018-02-11'),4)
-      expect {@admin.block_hold(('2018-02-01'),('2018-02-10'),2)}.must_raise StandardError
+      @admin.block_hold(('2018-02-01'),('2018-02-11'),5, "Smith")
+      @admin.block_hold(('2018-02-01'),('2018-02-11'),5, "Nelson")
+      @admin.block_hold(('2018-02-01'),('2018-02-11'),5, "Johnson")
+      @admin.block_hold(('2018-02-01'),('2018-02-11'),4, "Jacobs")
+      expect {@admin.block_hold(('2018-02-01'),('2018-02-10'),2, "Martinez")}.must_raise StandardError
     end
 
   end

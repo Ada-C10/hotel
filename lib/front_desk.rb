@@ -8,7 +8,7 @@ class Front_Desk
 
   def initialize
     @reservations = []
-    @block_hold = []
+    @block_reservations = []
     @rooms = load_rooms
   end
 
@@ -54,9 +54,9 @@ class Front_Desk
       end
     end
 
-    @block_hold.each do |reservation|
+    @block_reservations.each do |reservation|
       if reservation.start_date <= search_date && search_date < reservation.end_date
-        results << @block_hold
+        results << @block_reservations
       end
     end
 
@@ -70,16 +70,13 @@ class Front_Desk
     list_of_rooms = @rooms.dup
 
     @reservations.each do |reservation|
-      # if !(reservation.start_date < start_date) && !(reservation.end_date <= start_date) ||
-      #    !(reservation.start_date < end_date) && !(reservation.end_date < end_date)
-
       if !((start_date < reservation.start_date && end_date <= reservation.start_date) ||
         (end_date > reservation.end_date && start_date >= reservation.end_date))
         list_of_rooms.reject! { |room| room.room_number == reservation.room_number }
       end
     end
 
-    @block_hold.each do |block_room|
+    @block_reservations.each do |block_room|
       if !((start_date < block_room.start_date && end_date <= block_room.start_date) ||
         (end_date > block_room.end_date && start_date >= block_room.end_date))
         list_of_rooms.reject! { |room| room.room_number == block_room.room_number }
@@ -89,7 +86,8 @@ class Front_Desk
     return list_of_rooms
   end
 
-  def block_hold(start_date, end_date, number_of_rooms)
+
+  def block_hold(start_date, end_date, number_of_rooms, party_name)
     available_rooms = available_rooms(start_date,end_date)
 
     if number_of_rooms > 5 && number_of_rooms != 0
@@ -101,13 +99,14 @@ class Front_Desk
       input[:room_number] = available_rooms[index].room_number
       input[:start_date] = start_date
       input[:end_date] = end_date
+      input[:party_name] = party_name
 
       block_hold = Reservation.new(input)
-      @block_hold << block_hold
-    end
-    return @block_hold
-  end
+      @block_reservations << block_hold
 
+    end
+    return @block_reservations
+  end
 
 
 
