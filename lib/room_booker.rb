@@ -122,5 +122,11 @@ module BookingLogic
       return new_reservation(room.id, check_in, check_out)
     end
 
+    def new_room_block(check_in, check_out, number_of_rooms, rate)
+      new_room_block = RoomBlock.new(check_in, check_out, number_of_rooms, rate)
+      @blocks << new_room_block
+      return new_room_block
+    end
+
   end
 end
