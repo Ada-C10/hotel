@@ -127,7 +127,6 @@ describe "HotelBooker class" do
       10.times do |i|
         @booker.make_reservation(i+1, '2018-09-05', '2018-09-10')
       end
-
       expect(@booker.make_block(rooms: 5, discount: 150, check_in: '2018-09-05', check_out: '2018-09-10')[0].room.id).must_equal 11
     end
 
@@ -135,12 +134,20 @@ describe "HotelBooker class" do
       @booker.make_block(rooms: 1, discount: 150, check_in: '2018-09-05', check_out: '2018-09-10')
       dates = @booker.unreserved_block[0].date_range
       same_range = @booker.range(Date.parse('2018-09-05'), Date.parse('2018-09-10'))
-
       expect(dates.check_in).must_equal same_range.check_in
       expect(dates.check_out).must_equal same_range.check_out
     end
+  end
 
+  describe "make_block_reservation method" do
+    before do
+      @booker = Hotel::HotelBooker.new
+    end
 
+    it "raises an error if there are no avaiable block reservations" do
+      expect{ @booker.make_block_reservation(1) }.must_raise StandardError
+    end
 
   end
+
 end

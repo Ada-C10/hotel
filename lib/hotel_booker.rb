@@ -58,11 +58,16 @@ module Hotel
         reservation.room = available[i]
         @unreserved_block << reservation
       end
+
       return @unreserved_block
     end
 
 
     def make_block_reservation(id)
+      if @unreserved_block.length = 0
+        raise StandardError, "There are no available Block reservations."
+      end
+
     end
 
 
