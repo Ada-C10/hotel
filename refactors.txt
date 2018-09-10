@@ -1,26 +1,13 @@
 # hotel/refactors.txt
-Notes:
 
-data file:
-Room hash
-Reservation hash
+1. Create "rooms" CSV and load into hotel class into hash. Unless rooms have a lot more information than just room number and rate, they don't have to become a Rooms class object yet. The Hotel class is named Hotel rather than Rooms so as not to be confusing. There's a tradeoff there.
 
+2. More consistency in terms of when keyword arguments vs positional arguments are used.
 
-Other classes
-DateRange (has behavior and attributes)
+3. Hotel class needs to be able to add and remove rooms.
 
-it was really easy to move my .from_csv loader from Book to Reservation, make
-its a self method, and tests still passed. (which is suspicious, but hey.)
+4. Block class could parse CSV block data (which will have an identical format as CSV reservation data) into Blocks--or, another approach is for CSV block data to be loaded by Reservations, and for Block class to parse an array of Reservations into Blocks.
 
-why "hotel" stores "rooms":
-hotel should be renamed rooms.
-what if the room information changes? what if we add a room?
+5. Learn about how better to structure classes if they load CSVs similarly. Like FarMar?
 
-inheritance seems complicated.
-i wanted to make choices within what I know how to do.
-otherwise, it's a can of worms.
-
-
-### TODO: Make sure you can't book the same reservation twice
-
-# assumption: that there won't be that many blocks
+6. Come up with a more methodical way to do spec tests that more carefully ensures date/reservation/block conflicts are all caught as they should be.
