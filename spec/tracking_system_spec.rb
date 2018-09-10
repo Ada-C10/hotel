@@ -9,7 +9,6 @@ describe 'TrackingSystem class' do
   describe "#initialize" do
     before do
       @tracker = TrackingSystem.new
-      # @tracker.all_rooms.each do |room| room.reserved_dates << {checkin_time: Date.new(2018,8,1), checkout_time: Date.new(2018,8,5)}
     end
 
     it 'is an instance of TrackingSystem' do
@@ -60,11 +59,12 @@ describe 'TrackingSystem class' do
       @reservation1 = @tracker.add_reservation(start_time: Date.new(2018,10,5), end_time: Date.new(2018,10,10), number_of_rooms:1)
       expect(@tracker.view_reservations_on(Date.new(2018,10,5))).must_be_kind_of Array
     end
-    #this one is working 3333,10,5
+
     it "raises an ArgumentError if no reservations are available on given date" do
       expect{@tracker.view_reservations_on(Date.new(3333,10,5))}.must_raise ArgumentError
     end
-    #this one is not working!!!!!!
+
+#
     it "raises an ArgumentError if given date is not an instance of Date class" do
       expect{@tracker.view_reservations_on("some date")}.must_raise ArgumentError
     end
@@ -123,25 +123,12 @@ describe 'TrackingSystem class' do
       end
       expect{@tracker.view_available_rooms_on(start_time: Date.new(2018,1,1),end_time:Date.new(2018,1,2))}.must_raise ArgumentError
     end
-
-    # it "ensures rooms returned aren't in a block" do
-    #   #make a new block for that date, reserve rooms that are in that block,
-    #   # then call view_availa rooms on that date
-    #   @tracker.add_block(start_time: Date.new(2018,1,1), end_time: Date.new(2018,1,29), number_of_rooms: 5, discount: 10)
-    #   block_id = @tracker.blocks[0].block
-    #   @tracker.add_reservation_in_block(start_time: Date.new(2018,1,1), end_time: Date.new(2018,1,29), number_of_rooms: 5, block: block_id)
-    #   available_rooms = @tracker.view_available_rooms_on(start_time: Date.new(2018,1,1), end_time: Date.new(2018,1,29))
-    #   binding.pry
-    # end
-
   end
-
 
 
   describe "#add_reservation" do
     before do
       @tracker = TrackingSystem.new
-      # @room = Room.new({room_num: 1, availability: :available })
     end
 
     it "returns an array of reservations" do
@@ -162,10 +149,7 @@ describe 'TrackingSystem class' do
       updated_num_of_reservations = @tracker.reservations
       expect(updated_num_of_reservations.length).must_equal 2
     end
-  end #end of describe
-
-
-
+  end
 
 
 
@@ -173,16 +157,15 @@ describe 'TrackingSystem class' do
     before do
       @tracker = TrackingSystem.new
     end
+#
+    it "raises ArgumentError if discount-rate is not an Integer" do
+      expect{@tracker.add_block(start_time: Date.new(2018,8,1), end_time: Date.new(2018,8,5), rooms: 1, discount: "hi")}.must_raise ArgumentError
+    end
 
-    #this test is always passing no matter what, its not working
-    # it "raises ArgumentError if discount-rate is not an Integer" do
-    #   expect{@tracker.add_block(start_time: Date.new(2018,8,1), end_time: Date.new(2018,8,5), rooms: 1, discount: "hi")}.must_raise ArgumentError
-    # end
-    #
-    # it "raises ArgumentError if rooms > 5 or <= 1" do
-    #   @tracker = TrackingSystem.new
-    #   expect{@tracker.add_block(start_time: Date.new(2018,8,5),end_time:Date.new(2018,9,5), rooms: 20, discount: 10)}.must_raise ArgumentError
-    # end
+    it "raises ArgumentError if rooms > 5 or <= 1" do
+      @tracker = TrackingSystem.new
+      expect{@tracker.add_block(start_time: Date.new(2018,8,5),end_time:Date.new(2018,9,5), rooms: 20, discount: 10)}.must_raise ArgumentError
+    end
 
     it "returns an array of blocks" do
       @block = @tracker.add_block(start_time: Date.new(2018,8,1), end_time: Date.new(2018,8,25), number_of_rooms:5)
@@ -222,7 +205,6 @@ describe 'TrackingSystem class' do
       expect(@date_range.last).must_equal Date.new(2018,7,9)
     end
 
-    #this isn't working either, can't figure out how to make it fail when it should
     it "raises ArgumentError unless argument is a Symbol" do
       expect{@tracker.retrieve_block_dates("hello")}.must_raise ArgumentError
     end
@@ -256,70 +238,15 @@ describe 'TrackingSystem class' do
       @blockid = @tracker.blocks[0].block
     end
 
-    # it "Adds a reservation to each room's list of reservations" do
-    #
-    # end
 
     it "raises ArgumentError if the number of rooms requested is greater than the number of available rooms " do
       expect{@tracker.add_reservation_in_block(start_time: Date.new(2018,10,5), end_time: Date.new(2018,10,10), number_of_rooms:555, block: @blockid)}.must_raise ArgumentError
     end
 
     it "returns an Array of reservations" do
-      # @block = @tracker.add_block(start_time: Date.new(2018,10,5), end_time: Date.new(2018,10,10), number_of_rooms:5)
       @blockid = @tracker.blocks[0].block
       expect(@tracker.add_reservation_in_block(start_time: Date.new(2018,10,5), end_time: Date.new(2018,10,10), number_of_rooms:2, block: @blockid)).must_be_kind_of Array
     end
   end
 
-
-
-  # def add_reservation_in_block(start_time: Date.today, end_time: Date.today + 1, number_of_rooms: 1, block: :NA) #block(id) defaults to :NA already but just clarifying here
-  #   available_rooms = rooms_available_in_block(block) #<--returns an array of available rooms in this sepcifci block
-  #   raise ArgumentError.new"Not enough rooms available on those dates" if available_rooms.length < number_of_rooms
-  #   #call method taht gets block discount here
-  #   discount = retrieve_block_discount(block)
-  #   number_of_rooms.times do |i|
-  #     @reservations << Reservation.new({room_num: available_rooms[i].room_num, start_time: start_time, end_time: end_time, price: 200.00 -(200.00 * discount)})
-  #     available_rooms[i].reserved_dates << {start_time: start_time, end_time: end_time}
-  #   end
-  #   @reservations
-  # end
-
-
-  describe "#retrieve_block_discount" do
-    it "returns a block's discount rate" do
-
-    end
-
-    it "raises ArgumentError unless argument is a Symbol" do
-    end
-  end
-
-
-
-
-
-end #end of class method
-
-
-# it "adds a hash of start/end time to each room.reserved_dates array" do
-# end
-
-# it "only selects rooms that are available  " do
-#   expect(@reservation.)
-# end
-#
-# it "creates reservations for the number_of_rooms requested " do
-# end
-#
-# it "iterates through @all_rooms to find the first available rooms" do
-# end
-#
-# it "raises ArgumentError if inside @all_rooms no room is available on this date range" do
-# end
-#
-# it "creates a new instance of Reservation" do
-#   @reservation = @tracker.add_reservation(start_time: Date.new(2018,8,1), end_time: Date.new(2018,8,25), rooms: 1) #<---1 is the number of rooms
-#
-#   expect(@reservation).must_be_kind_of Reservation
-# end
+end

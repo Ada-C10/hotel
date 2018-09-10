@@ -1,0 +1,12 @@
+1. name change --> .block method to .block_id in the Block, and Room classes
+2. the program logic surrounding blocks may be wrong, not sure if I understood the requirements correctly for: "If a room is set aside in a block, it is not available for reservation by the general public, nor can it be included in another block"
+   Does this mean if rooms are in a block that they cannot be reserved for that period of time?
+3. possibly create a helper method that returns two dates as a range --> def view_two_dates_as_range()  #<--put params {checkin_time: checkin, checkout_time: checkout}
+4. create a test data file with test data so that I have an visualization of how the information is coming in/should be modified for the program
+5. clean up the unnecessary test variables and combine them into a single "before do" block
+6. write more edge cases for each method in TrackingSystem
+7. for the methods that begin with title "view....", change to "return.." because they're actually returning arrays/values
+8. refactor methods in TrackingSystem that know about the structure of Block, Reservation, Room 's instance variables, a lot of them are going into arrays and hashes
+9. create helper methods for iterating through block lists and reservation lists and dates
+10. create helper methods to lessen the number of loops in methods
+11. use enumerables rather than iterating with .each to avoid lengthy loops 

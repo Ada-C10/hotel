@@ -9,7 +9,7 @@ describe 'Block class' do
       @block = Block.new(attributes)
     end
 
-    it 'is an instance of Reservation' do
+    it 'is an instance of Block' do
       expect(@block).must_be_kind_of Block
     end
 
