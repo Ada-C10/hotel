@@ -30,13 +30,18 @@ module Hotel
 
     def list_res_for_date(check_date)
       matching_res = @reservations.select { |reservation| reservation.has_date?(check_date) } #==false
-        # check for no overlap in dates
-        # if (reservation.date_range & check_date_range).empty?
 
       return matching_res.empty? ? nil : matching_res
 
     end
 
+    def list_avail_rooms_for_range(check_in:, check_out:)
+      date_range = construct_cal_checker(check_in: check_in, check_out: check_out)
+
+      avail_rooms = @reservations.select { |reservation| !reservation.overlap?(date_range) }.map { |reservation| reservation.room_num }
+
+      return avail_rooms.empty? ? nil : avail_rooms
+    end
 
 #     # TODO: maybe use date range instead of start/end?
 #     def create_reservation(start_date, end_date)
@@ -100,16 +105,7 @@ module Hotel
 #
 
 #
-#     def list_avail_rooms_for_range(start_date, end_date)
-#       check_date_range = create_date_range(start_date, end_date)
-#
-#       avail_rooms = @reservations.select { |reservation| reservation.room if !overlap?(reservation.date_range, check_date_range)} #==false
-#
-#       return avail_rooms.empty? ? nil : avail_rooms
-#         # check for no overlap in dates
-#         # if (reservation.date_range & check_date_range).empty?
-#
-#     end
+
 #
 
   end
@@ -117,18 +113,19 @@ end
 
 
 # booking = Hotel::BookingSystem.new()
-# puts booking.reservations.empty?
-# #
-# res_3 = booking.create_reservation({
+#
+# res_3 = Hotel::Reservation.new(
 #   id: "4",
 #   room_num: "15",
-#   start_date: "2010-8-4",
-#   end_date: "2010-8-20",
-#   })
-# res_2 = booking.create_reservation({id: "1",
+#   check_in: "2010-8-4",
+#   check_out: "2010-8-20",
+#   )
+# res_2 = Hotel::Reservation.new(id: "1",
 #   room_num: "20",
-#   start_date: "2010-8-1",
-#   end_date: "2010-8-10",
-#   })
+#   check_in: "2010-8-1",
+#   check_out: "2010-8-10",
+#   )
 #
-# p booking.available_rooms_by_date("2010-8-5")
+# booking.reservations.push(res_2, res_3)
+#
+# p booking.list_avail_rooms_for_range(check_in: "2010-10-15", check_out: "2010-10-26")

@@ -91,6 +91,7 @@ describe "BookingSystem class" do
   # end
 
   describe "#list_res_for_date" do
+    # see Calendar#has_date? for additional tests
     let(:res_1) {Hotel::Reservation.new(
       id: "1",
       room_num: "20",
@@ -134,11 +135,59 @@ describe "BookingSystem class" do
       booking_system.reservations.push(res_1, res_2, res_3)
 
       matching_res = booking_system.list_res_for_date("2010-8-30")
-      expect(matching_res).must_equal nil
+      expect(matching_res).must_be_nil
     end
   end
-#
 
+  describe "#list_avail_rooms_for_range" do
+    # see Calendar#overlap? for additonal tests
+    let(:res_1) {Hotel::Reservation.new(
+      id: "1",
+      room_num: "20",
+      check_in: "2010-8-1",
+      check_out: "2010-8-10"
+      )}
+
+    let(:res_2) {Hotel::Reservation.new(
+      id: "2",
+      room_num: "19",
+      check_in: "2010-8-15",
+      check_out: "2010-8-18"
+      )}
+
+    let(:res_3) {Hotel::Reservation.new(
+      id: "4",
+      room_num: "15",
+      check_in: "2010-8-4",
+      check_out: "2010-8-20"
+      )}
+    it "returns an array of room numbers if rooms are available" do
+      booking_system.reservations.push(res_1, res_2, res_3)
+
+      avail_rooms = booking_system.list_avail_rooms_for_range(check_in: "2010-10-15", check_out: "2010-10-26")
+
+      expect(avail_rooms).must_be_kind_of Array
+      expect(avail_rooms[0]).must_be_kind_of Integer
+    end
+
+    it "accurately returns a list of available rooms by number if rooms are available" do
+      booking_system.reservations.push(res_1, res_2, res_3)
+
+      avail_rooms = booking_system.list_avail_rooms_for_range(check_in: "2010-8-19", check_out: "2010-10-26")
+
+      expect(avail_rooms.length).must_equal 2
+      expect(avail_rooms[0]).must_equal 20
+      expect(avail_rooms[1]).must_equal 19
+    end
+
+    it "returns nil if no rooms are available" do
+    booking_system.reservations.push(res_1, res_2, res_3)
+
+    avail_rooms = booking_system.list_avail_rooms_for_range(check_in: "2010-8-1", check_out: "2010-8-20")
+
+    expect(avail_rooms).must_be_nil
+    end
+  end
 
 # # TODO: add create reservation method + 2nd input as room_num??
 #   describe "#create_reservation" do
@@ -179,25 +228,8 @@ describe "BookingSystem class" do
 #
 
 #
-#   describe "#list_avail_rooms_for_date" do
-#     let(:start_date) {"2010-8-15"}
-#     let(:end_date) {"2010-8-16"}
-#
-#     it "returns an array of room numbers" do
-#       expect(booking_system.available_rooms_by_date(start_date, end_date)).must_be_kind_of Array
-#
-#       expect(booking_system.available_rooms_by_date(start_date, end_date)[0]).must_be_kind_of Integer
-#
-#     end
-#   end
-#
-#   #TODO
-#   describe "#list_avail_rooms_for_range" do
-#   end
-#
-#   # TODO
-#   describe "#create_res_id" do
-#   end
+
+
 #
 
 end
