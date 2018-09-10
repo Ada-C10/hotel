@@ -114,17 +114,15 @@ describe 'Wave 2' do
       check_out3 = Date.new(2018, 4, 3)
       @reservation3 = @hotel.new_reservation(room_id3, check_in3, check_out3)
 
-      @new_reservation = @hotel.reserve_available_room(Date.new(2018, 4, 1), Date.new(2018, 4, 4))
+      @new_reservation = @hotel.new_reservation(5, Date.new(2018, 4, 1), Date.new(2018, 4, 4))
     end
 
     it 'instantiates a new Reservation' do
       expect(@new_reservation).must_be_instance_of BookingLogic::Reservation
     end
 
-    it 'does not attempt to reserve a room that is already reserved for that date range' do
-      expect(@new_reservation.room).wont_equal 1
-      expect(@new_reservation.room).wont_equal 2
-      expect(@new_reservation.room).wont_equal 14
+    it 'throws a RoomNotAvailable error when trying to reserve a room with a pre-existing reservation conflicting with given dates' do
+      expect{ @hotel.new_reservation(14, Date.new(2018, 4, 1), Date.new(2018, 4, 4)) }.must_raise RoomNotAvailable
     end
 
   end
