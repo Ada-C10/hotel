@@ -6,3 +6,4 @@ Possible changes to Hotel:
 - Check more of edge cases
 - Too many variables with 'reservation' in them?
 - Make date handling a method (or two?)
+- Add check that rooms are not overwritten 
