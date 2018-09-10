@@ -27,26 +27,18 @@ describe "ReservationTracker class" do
       expect(first_room.room_num).must_equal 1
       expect(last_room.room_num).must_equal 20
     end
-
-    # it "accurately loads trip info and associates trips with passengers" do
-    #   trip = @dispatcher.trips.first
-    #   passenger = trip.passenger
-    #
-    #   expect(passenger).must_be_instance_of RideShare::User
-    #   expect(passenger.trips).must_include trip
-    # end
   end
 
-  # describe "#load_rooms method" do
-  #   it "loads the rooms" do
-  #     expect(@reservation_tracker.rooms).must_be_kind_of Array
-  #     expect(@reservation_tracker.rooms.length).must_equal NUM_OF_ROOMS
-  #     expect(@reservation_tracker.rooms.first).must_be_kind_of Hotel::Room
-  #     expect(@reservation_tracker.rooms.last).must_be_kind_of Hotel::Room
-  #     expect(@reservation_tracker.rooms.first.room_num).must_equal 1
-  #     expect(@reservation_tracker.rooms.last.room_num).must_equal 20
-  #   end
-  # end
+  describe "#load_rooms method" do
+    it "loads the rooms" do
+      expect(@reservation_tracker.rooms).must_be_kind_of Array
+      expect(@reservation_tracker.rooms.length).must_equal NUM_OF_ROOMS
+      expect(@reservation_tracker.rooms.first).must_be_kind_of Hotel::Room
+      expect(@reservation_tracker.rooms.last).must_be_kind_of Hotel::Room
+      expect(@reservation_tracker.rooms.first.room_num).must_equal 1
+      expect(@reservation_tracker.rooms.last.room_num).must_equal 20
+    end
+  end
 
   describe "#list_reservations_by_date method" do
     it "lists the reservations searched for by date" do
