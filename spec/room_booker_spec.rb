@@ -89,13 +89,22 @@ describe 'Wave 2' do
       expect(@array_of_rooms).wont_include room2
       expect(@array_of_rooms).wont_include room14
       expect(@array_of_rooms).wont_include room15
+
       remaining_rooms.each do |room|
         expect(@array_of_rooms).must_include room
       end
     end
+
+    it 'does not include blocked rooms' do
+      block = @hotel.new_room_block("fdsaj", Date.new(2018, 4, 1), Date.new(2018, 4, 6), 5, 150)
+
+      block.rooms.each do |room|
+        expect(@array_of_rooms).wont_include room
+      end
+    end
   end
 
-  describe 'reserve_available_room method' do
+  describe 'new_reservation method' do
     before do
       @hotel = BookingLogic::RoomBooker.new
 
@@ -109,21 +118,94 @@ describe 'Wave 2' do
       check_out2 = Date.new(2018, 4, 6)
       @reservation2 = @hotel.new_reservation(room_id2, check_in2, check_out2)
 
-      room_id3 = 14
+      room_id3 = 3
       check_in3 = Date.new(2018, 3, 21)
       check_out3 = Date.new(2018, 4, 3)
       @reservation3 = @hotel.new_reservation(room_id3, check_in3, check_out3)
-
-      @new_reservation = @hotel.new_reservation(5, Date.new(2018, 4, 1), Date.new(2018, 4, 4))
     end
 
-    it 'instantiates a new Reservation' do
-      expect(@new_reservation).must_be_instance_of BookingLogic::Reservation
+    it 'instantiates a new Reservation and adds it to master collection' do
+      expect(@reservation1).must_be_instance_of BookingLogic::Reservation
+      expect(@hotel.reservations).must_include @reservation1
+    end
+
+    it 'throws a StandardError when provided with invalid date range' do
+      expect{ @hotel.new_reservation(4, Date.new(2018, 4, 1), Date.new(2015, 5, 1)) }.must_raise StandardError
     end
 
     it 'throws a RoomNotAvailable error when trying to reserve a room with a pre-existing reservation conflicting with given dates' do
-      expect{ @hotel.new_reservation(14, Date.new(2018, 4, 1), Date.new(2018, 4, 4)) }.must_raise RoomNotAvailable
+      expect{ @hotel.new_reservation(3, Date.new(2018, 4, 1), Date.new(2018, 4, 4)) }.must_raise RoomNotAvailable
     end
 
+    it 'throws a RoomNotAvailable error when all rooms in the hotel are booked' do
+      20.times do |i|
+        @hotel.new_reservation((i + 1), Date.new(2019, 5, 1), Date.new(2019, 5, 4))
+      end
+
+      expect{ @hotel.new_reservation(14, Date.new(2019, 5, 1), Date.new(2019, 5, 4)) }.must_raise RoomNotAvailable
+    end
+  end
+end
+
+describe 'Wave 3' do
+  before do
+    @hotel = BookingLogic::RoomBooker.new
+
+    room_id1 = 14
+    @check_in1 = Date.new(2018, 4, 1)
+    check_out1 = Date.new(2018, 4, 2)
+    @reservation1 = @hotel.new_reservation(room_id1, @check_in1, check_out1)
+
+    room_id2 = 15
+    check_in2 = Date.new(2018, 4, 3)
+    @check_out2 = Date.new(2018, 4, 6)
+    @reservation2 = @hotel.new_reservation(room_id2, check_in2, @check_out2)
+
+    @name = "Gay Convention"
+    @room_rate = 160
+    @number_of_rooms = 5
+    @room_block = @hotel.new_room_block(@name, @check_in1, @check_out2, @number_of_rooms, @room_rate)
+  end
+
+  describe 'new_room_block method' do
+    it 'instantiates a new RoomBlock' do
+      expect(@room_block).must_be_instance_of BookingLogic::RoomBlock
+
+      # The following assertions based off of provided arguments in before block
+      expect(@room_block.name).must_equal @name
+      expect(@room_block.check_in).must_equal @check_in1
+      expect(@room_block.check_out).must_equal @check_out2
+      expect(@room_block.rooms.length).must_equal @number_of_rooms
+      expect(@room_block.rate).must_equal @room_rate
+    end
+
+    it 'throws an error when creating a RoomBlock with more than 5 rooms' do
+      expect{ @hotel.new_room_block(@name, @check_in1, @check_out2, 6, @room_rate) }.must_raise StandardError
+    end
+
+    it 'throws an error when there are not enough rooms left to create new RoomBlock' do
+      2.times do |i|
+        @hotel.new_room_block("#{i}", @check_in1, @check_out2, 5, 150)
+      end
+
+      expect{ @hotel.new_room_block("asldkfj", @check_in1, @check_out2, 5, 150) }.must_raise StandardError
+    end
+  end
+
+  describe 'new_block_reservation method' do
+    it 'instantiates a new Reservation and adds it to master collection' do
+      reservation = @hotel.new_block_reservation(@name)
+
+      expect(reservation).must_be_instance_of BookingLogic::Reservation
+      expect(@hotel.reservations).must_include reservation
+    end
+
+    it 'throws a NoRoomsInBlock error when all rooms in that block have already been reserved' do
+      5.times do
+        @hotel.new_block_reservation(@name)
+      end
+
+      expect{ @hotel.new_block_reservation(@name) }.must_raise NoRoomsInBlock
+    end
   end
 end
