@@ -50,14 +50,6 @@ module BookingLogic
       return list_of_reservations
     end
 
-    def find_reservation(room_id, check_in)
-      reservations.each do |reservation|
-        if reservation.room.id == room_id && reservation.check_in == check_in
-          return reservation
-        end
-      end
-    end
-
     def list_available_rooms(check_in, check_out)
       reserved_rooms = []
 
@@ -88,15 +80,6 @@ module BookingLogic
       room = find_room_by_id(room_id)
       room_unavailable?(room, check_in, check_out)
       new_reservation = BookingLogic::Reservation.new(room, check_in, check_out)
-      reservations << new_reservation
-      return new_reservation
-    end
-
-    def new_block_reservation(name)
-      block = find_block(name)
-      room = block.available.first
-      room.block_reserved = true
-      new_reservation = BookingLogic::Reservation.new(room, block.check_in, block.check_out)
       reservations << new_reservation
       return new_reservation
     end
@@ -133,12 +116,24 @@ module BookingLogic
     end
 
     def block_available_rooms(check_in, check_out, number_of_rooms, rate)
+      
       available_rooms = list_available_rooms(check_in, check_out)
-      room_block = available_rooms.take(number_of_rooms)
+
+      room_block = []
+
+      number_of_rooms.times do |i|
+        room_block << available_rooms[i].dup
+      end
+
+      if room_block.length < number_of_rooms
+        raise StandardError, "There are not enough available rooms for the given dates to create this room block"
+      end
+
       return room_block
     end
 
     def new_room_block(name, check_in, check_out, number_of_rooms, rate)
+
       block_of_rooms = block_available_rooms(
         check_in,
         check_out,
@@ -158,6 +153,15 @@ module BookingLogic
 
       @blocks << new_room_block
       return new_room_block
+    end
+
+    def new_block_reservation(name)
+      block = find_block(name)
+      room = block.available.first
+      room.block_reserved = true
+      new_reservation = BookingLogic::Reservation.new(room, block.check_in, block.check_out)
+      reservations << new_reservation
+      return new_reservation
     end
 
     def set_room_rate(room_id, custom_rate)
