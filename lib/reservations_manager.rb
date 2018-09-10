@@ -6,7 +6,9 @@ require_relative 'reservations'
 #reservations manager
 module Hotel
   class ReservationManager
+
     attr_reader :rooms, :reservations
+
     def initialize(number_of_rooms)
       @reservations = []
       @rooms = []
@@ -15,11 +17,6 @@ module Hotel
       end
     end
 
-    # def available_rooms(check_in, check_out)
-    #   available_rooms = @reservations.reject {rooms != date_range}
-    #     #loop through Reservations @match dates on the reservations#reject dates that match
-    #     return available_rooms #array
-
     def find_room(id)
       @rooms.each do |room|
         if room.id == id
@@ -27,10 +24,10 @@ module Hotel
         end
       end
     end
-    # end
-    #
-    # def booked_rooms(date)
-    #   booked_rooms = @reservations.select {rooms == date_range}
+
+    def booked_reservations(date)
+      return reservations = @reservations.select {|reservation| reservations.date_range.include? date}
+    end
     #   return booked_rooms #array
 
     def reserve_room(check_in, check_out)
@@ -42,6 +39,10 @@ module Hotel
     end
 
 
+      # def available_rooms(check_in, check_out)
+      #   available_rooms = @reservations.reject {rooms != date_range}
+      #     #loop through Reservations @match dates on the reservations#reject dates that match
+      #     return available_rooms #array
 
     def @reservations.all
       return @reservations

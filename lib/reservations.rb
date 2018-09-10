@@ -9,7 +9,7 @@ module Hotel
       @id = number
       @check_in = Date.parse(check_in)
       @check_out = Date.parse(check_out)
-      #@date_range = (@check_in..@check_out)
+      @date_range = (@check_in..@check_out)
       @rooms = []#instance of a room
       @total_cost = 0
     end

@@ -50,10 +50,13 @@ describe "ReservationManager" do
       expect(@new_reservation.rooms[0].reservations[0]).must_be_instance_of Hotel:: Reservation
       expect(@new_reservation.rooms[0].reservations[0].id).must_equal 1
     end
+  end
 
-
-
-
+  describe "it can list all reservations for a given date" do
+    it "returns a list of rooms for given date" do
+      expect(@hotel_ada.booked_reservations("2018-09-09")).must_be_kind_of Array
+      expect(@hotel_ada.booked_reservations("2018-09-09")[0]).must_be_instance_of Hotel::Reservation
+    end
   end
 end
 
