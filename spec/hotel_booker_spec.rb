@@ -94,8 +94,7 @@ describe "HotelBooker class" do
     end
   end
 
-
-  describe "Make block of rooms " do
+  describe "Make block of rooms" do
     before do
       @booker = Hotel::HotelBooker.new
     end
@@ -120,8 +119,7 @@ describe "HotelBooker class" do
       expect(@booker.make_block(rooms: 5, discount: 150, check_in: '2018-09-05', check_out: '2018-09-10').length).must_equal 5
     end
 
-    it "creates an array carrying instances of Reservation  " do
-      expect(@booker.make_block(rooms: 5, discount: 150, check_in: '2018-09-05', check_out: '2018-09-10')[0]).must_be_kind_of Hotel::Reservation
+    it "creates an array carrying instances of Reservation" do
       expect(@booker.make_block(rooms: 5, discount: 150, check_in: '2018-09-05', check_out: '2018-09-10')[4]).must_be_kind_of Hotel::Reservation
     end
 
@@ -133,13 +131,16 @@ describe "HotelBooker class" do
       expect(@booker.make_block(rooms: 5, discount: 150, check_in: '2018-09-05', check_out: '2018-09-10')[0].room.id).must_equal 11
     end
 
+    it "reservation dates match the date range of the block" do
+      @booker.make_block(rooms: 1, discount: 150, check_in: '2018-09-05', check_out: '2018-09-10')
+      dates = @booker.unreserved_block[0].date_range
+      same_range = @booker.range(Date.parse('2018-09-05'), Date.parse('2018-09-10'))
 
-
-
-    it "returns a StandardError if there are not enough rooms to make a block" do
+      expect(dates.check_in).must_equal same_range.check_in
+      expect(dates.check_out).must_equal same_range.check_out
     end
 
+
+
   end
-
-
 end

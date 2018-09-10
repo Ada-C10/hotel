@@ -58,7 +58,6 @@ module Hotel
         reservation.room = available[i]
         @unreserved_block << reservation
       end
-
       return @unreserved_block
     end
 
@@ -106,6 +105,14 @@ module Hotel
           matching_reservations << reservation
         end
       end
+
+      @reserved_block.each do |reservation|
+        reservation_dates = reservation.date_range.dates_booked
+        if reservation_dates.include?(date)
+          matching_reservations << reservation
+        end
+      end
+
       return matching_reservations
     end
 
