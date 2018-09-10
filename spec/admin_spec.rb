@@ -238,7 +238,7 @@ describe "Admin class" do
       @discount = 0.1
     end
 
-    it "returns a new object of BlockAdmin " do
+    it "returns a new object of Block " do
       expect(@admin_1.create_room_block("block1",@list_3, @start_3, @end_3, @discount)).must_be_kind_of Block
     end
 
