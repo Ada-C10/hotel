@@ -1,5 +1,6 @@
 require_relative 'spec_helper'
 require 'date'
+require 'pry'
 
 describe "BookingSystem Class" do
   before do
@@ -23,8 +24,8 @@ describe "BookingSystem Class" do
 
   describe "Initializer" do
     it 'Creates an array of room numbers' do
-      expect(@reservation.room).must_be_kind_of Array
-      expect(@reservation.room.length).must_equal 20
+      expect(@reservation.rooms).must_be_kind_of Array
+      expect(@reservation.rooms.length).must_equal 20
     end
 
     it 'Creates an array of reservation instances' do
@@ -34,22 +35,18 @@ describe "BookingSystem Class" do
         expect(r).must_be_kind_of Hotel::Reservation
       end
     end
+
+    # it 'Creates an array of block rooms' do
+    #   #length = 5
+    #   #appropriate room numbers
+    # end
   end
 
   describe "list_rooms method" do
     it 'Returns an array of room numbers' do
       expect(@reservation.list_rooms).must_be_kind_of Array
-      expect(@reservation.room.length).must_equal 20
+      expect(@reservation.rooms.length).must_equal 20
     end
-  end
-
-  describe 'make_reservation method' do
-    it 'Assigns the correct first available room to the reservation' do
-    end
-
-    it '' do
-    end
-
   end
 
   describe 'list_reservations method' do
@@ -119,42 +116,60 @@ describe "BookingSystem Class" do
       expect(last_on_list_3.room_number).must_equal 8
       expect(last_on_list_3.date_range.start_date).must_equal date_3
     end
+  end
 
+  describe 'list_available_rooms method' do
+    let (:reservation_2) { Hotel::BookingSystem.new() }
 
+    it 'Correcly lists the available rooms by date' do
+      expect(@reservation.list_available_rooms(@date_range_1)).must_equal [*9..20]
+    end
+
+    it 'Returns all the rooms if there are no reservations' do
+      expect(reservation_2.list_available_rooms(@date_range_1)).must_equal [*1..20]
+    end
   end
 
   describe 'find_available_rooms method' do
-    let (:reservation_2) { Hotel::BookingSystem.new() }
     let (:reservation_3) { Hotel::BookingSystem.new() }
 
-    it 'Returns an array of available rooms for the date range' do
-
+    it 'Returns 1 if there have been no reservations made' do
+      expect(reservation_3.reservations).must_be_empty
+      expect(reservation_3.find_available_rooms(@date_range_1).first).must_equal 1
     end
 
-    it 'Returns 1 if the reservations are empty' do
-      expect(reservation_2.reservations).must_be_empty
-      expect(reservation_2.find_available_rooms(@date_range_1).first).must_equal 1
+    it 'Correctly returns an array of available rooms for the date range' do
+      expect(@reservation.find_available_rooms(@date_range_1)).must_equal [*9..20]
     end
 
-    # TODO - fix this test
-    # it 'Raises an exception when there are no available rooms' do
-    #   hotel_booked = Hotel::BookingSystem.new()
-    #
-    #   20.times do
-    #     hotel_booked.make_reservation(@date_range_1)
-    #     # binding.pry
-    #   end
-    #
-    #   expect{hotel_booked.find_available_rooms(@date_range_1)}.must_raise StandardError
-    # end
+    it 'Raises an error if there are no available rooms for the date range' do
+        hotel_booked = Hotel::BookingSystem.new()
 
-    # it 'Returns the first available room' do
-    # end
+        20.times do
+          hotel_booked.make_reservation(@date_range_1)
+        end
 
-
+        expect{hotel_booked.find_available_rooms(@date_range_1)}.must_raise StandardError
+    end
   end
 
+  describe 'make_reservation method' do
+    it 'Creates an instance of Reservation' do
+      expect(@reservation.make_reservation(@date_range_1).last).must_be_kind_of Hotel::Reservation
+    end
 
+    it 'Adds the correct available room to the reservation' do
+      # binding.pry
+      expect(@reservation.make_reservation(@date_range_1).last.room_number).must_equal 9
+
+    end
+
+
+    # it 'Assigns the correct first available room to the reservation' do
+    #   reservation =
+    #   expect(@reservation.make_reservation(@date_range_1)).must_equal 9
+    # end
+  end
 
 
 

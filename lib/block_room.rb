@@ -3,45 +3,13 @@ require_relative 'booking_system'
 module Hotel
   class BlockRoom
 
-    attr_reader :block_rooms
+    attr_reader :date_range, :block_rooms, :rate
 
-    def initialize
-      super
-      @block_rooms = nil
+    def initialize(date_range, block_rooms, rate)
+      @date_range = date_range
+      @block_rooms = block_rooms
+      @rate = rate
     end
-
-    def find_available_rooms(date_range)
-      super # do i need this line
-      puts "super before"
-      p super
-      puts
-
-      super == [1] ? rooms = [*1..5] : rooms = super[0..4]
-
-      puts "super after"
-      p super
-      puts
-
-      puts "available rooms"
-      p rooms
-      puts
-
-      @block_rooms = rooms
-
-      return rooms
-    end
-
-     #(is this private?)
-    def make_reservation(date_range)
-      #think...what if there's no available rooms, raise an exception
-      room = find_available_rooms(date_range).first
-
-      reservation = Reservation.new(date_range, room)
-      @reservations << reservation
-    end
-
-
-
 
 
   end

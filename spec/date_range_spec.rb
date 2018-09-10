@@ -26,10 +26,15 @@ describe 'DateRange Class' do
     it 'Creates an instance of DateRange' do
       expect(@date_range_1).must_be_kind_of Hotel::DateRange
     end
+
+    it 'Stores start date and end date as date objects' do
+      expect(@date_range_1.start_date).must_be_kind_of Date
+      expect(@date_range_1.end_date).must_be_kind_of Date
+    end
   end
 
   describe "check_valid_dates method" do
-    it 'Raises an StandardError for invalid date ranges' do
+    it 'Raises a StandardError for invalid date ranges' do
 
       expect{
         @date_range_1.check_valid_dates('2018-09-05', '2018-09-01')
@@ -57,7 +62,6 @@ describe 'DateRange Class' do
     end
 
     it 'overlaps if both date range are the same' do
-      # binding.pry
       expect(date_range_2.dates_overlap?(@date_range)).must_equal true
     end
 
@@ -92,15 +96,6 @@ describe 'DateRange Class' do
     it 'does not overlap if new date ranges starts on check-out date of the booked date range' do
       expect(date_range_10.dates_overlap?(@date_range)).must_equal false
     end
-
-
-
   end
-
-
-
-
-
-
-
+  
 end

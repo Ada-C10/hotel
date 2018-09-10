@@ -3,15 +3,43 @@ require_relative 'date_range'
 
 module Hotel
   class BookingSystem
-    attr_reader :room, :reservations
+
+    attr_reader :rooms, :reservations, :block_rooms
 
     def initialize
-      @room = (1..20).to_a
+      @rooms = (1..20).to_a
       @reservations = []
+      @block_rooms = []
     end
 
+
     def list_rooms
-      return @room
+      return @rooms
+    end
+
+
+    def list_reservations(date_range)
+      return @reservations.select { |res| res.date_range == date_range }
+    end
+
+
+    def list_available_rooms(date_range)
+      return @rooms if @reservations.empty?
+      return find_available_rooms(date_range)
+    end
+
+
+    def find_available_rooms(date_range)
+
+      return @rooms if @reservations.empty?
+
+      unavailable_rooms = @reservations.map { |res| res.room_number if date_range.dates_overlap?(res.date_range) }
+
+      available_rooms = @rooms.reject { |r| unavailable_rooms.include?(r) }
+
+      raise StandardError, "No rooms available for those dates." if available_rooms.empty?
+
+      return available_rooms
     end
 
     def make_reservation(date_range)
@@ -22,33 +50,13 @@ module Hotel
     end
 
 
-    def list_reservations(date_range)
-      return @reservations.select { |res| res.date_range == date_range }
+    def make_block_reservation
     end
 
-
-    def find_available_rooms(date_range)
-
-      return [1] if @reservations.empty?
-
-      unavailable_rooms = []
-      @reservations.each do |res|
-        if date_range.dates_overlap?(res.date_range)
-          unavailable_rooms << res.room_number
-        end
-      end
-
-      available_rooms = @room.reject { |r| unavailable_rooms.include?(r) }
-
-      raise StandardError, "No rooms available for those dates." if available_rooms.empty?
-
-      return available_rooms
+    def block_room_cost
+      return (total_cost - (total_cost * BLOCK_ROOM_DISCOUNT))
     end
 
-    def list_available_rooms(date_range)
-      return @room if @reservations.empty?
-      return find_available_rooms(date_range)
-    end
 
 
   end
