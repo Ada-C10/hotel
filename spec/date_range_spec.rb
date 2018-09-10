@@ -29,23 +29,23 @@ describe 'DateRange Class' do
   end
 
   describe "check_valid_dates method" do
-    it 'Raises an ArgumentError for invalid date ranges' do
+    it 'Raises an StandardError for invalid date ranges' do
 
       expect{
         @date_range_1.check_valid_dates('2018-09-05', '2018-09-01')
-      }.must_raise ArgumentError
+      }.must_raise StandardError
 
       expect{
         @date_range_1.check_valid_dates('', '2018-09-01')
-      }.must_raise ArgumentError
+      }.must_raise StandardError
 
       expect{
         @date_range_1.check_valid_dates('2018-09-01', '')
-      }.must_raise ArgumentError
+      }.must_raise StandardError
 
       expect{
         @date_range_1.check_valid_dates('', '')
-      }.must_raise ArgumentError
+      }.must_raise StandardError
 
     end
   end

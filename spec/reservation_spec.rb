@@ -3,12 +3,21 @@ require 'pry'
 
 describe "Reservation Class" do
   let (:date_range) { Hotel::DateRange.new('2018-09-01', '2018-09-05') }
-  let (:reservation) { Hotel::Reservation.new(date_range, 20)}
+  let (:reservation) { Hotel::Reservation.new(date_range, 1)}
 
-  # describe "initialize" do
-  #   it 'Stores duration as an object' do
-  #     expect(reservation.duration).must_be_kind_of Hotel::Duration
-  #   end
+  describe "Initializer" do
+    it 'Is an instance of Reservation' do
+      expect(reservation).must_be_kind_of Hotel::Reservation
+    end
+
+    it 'Takes date range as an instance of DateRange' do
+      expect(reservation.date_range).must_be_kind_of Hotel::DateRange
+    end
+
+    it 'Takes room number as an integer' do
+
+    end
+  end
 
   describe "total_cost" do
 

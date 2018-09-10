@@ -4,13 +4,12 @@ module Hotel
     # TODO: change duration to start/end dates
 
     PRICE_PER_NIGHT = 200.00
-    attr_reader :date_range, :room_number
+    BLOCK_ROOM_DISCOUNT = 0.15 # 15% discounted rate
 
+    attr_reader :date_range, :room_number
 
     def initialize(date_range, room_number)
       @date_range = date_range
-      # @start_date = Date.parse(start_date)
-      # @end_date = Date.parse(end_date)
       @room_number = room_number
     end
 
@@ -20,6 +19,10 @@ module Hotel
 
     def total_cost
       return ("%.2f" % (number_of_nights * PRICE_PER_NIGHT)).to_f
+    end
+
+    def block_room_cost
+      return (total_cost - (total_cost * BLOCK_ROOM_DISCOUNT))
     end
 
 
