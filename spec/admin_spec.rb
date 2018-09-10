@@ -241,5 +241,28 @@ describe "#blocks" do
     rooms = @admin.find_block(range)
     expect(rooms.length).must_equal 4
   end
-  # needs test for this one: view_vacant_rooms_in_block
+
+  it "view_vacant_rooms_in_block" do
+    start_date = "2018-08-07 00:00:00 -0700"
+    end_date = "2018-08-09 00:00:00 -0700"
+    data = {}
+    data[:block_id] = 1
+    data[:start_date] = start_date
+    data[:end_date] = end_date
+    data[:rooms] = 4
+    data[:discounted_rate] = 100
+    @admin.create_block_rooms(data)
+    info = {}
+
+    start_date = Time.parse("2018-08-07 00:00:00 -0700")
+    end_date = Time.parse("2018-08-09 00:00:00 -0700")
+    e_date = end_date - 1
+    range = (start_date .. e_date)
+    info = {}
+    info[:room_num] = 2
+    info[:range] = range
+    @admin.reserve_room_in_block(info)
+    rooms = @admin.view_vacant_rooms_in_block(range)
+    expect(rooms.length).must_equal 3
+  end
 end

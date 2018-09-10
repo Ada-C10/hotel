@@ -183,10 +183,25 @@ class Admin
   end
 
   # As an administrator, I can check whether a given block has any rooms available
+  def view_vacant_rooms_in_block(range)
+    available_rooms = []
+    block_rooms = find_block(range)
+    block_rooms.each do |room|
+      #blocks variable is an array
+      blocks = room.blocks
+      blocks.each do |block|
+        if block[:status] == "available"
+          available_rooms << room
+        end
+      end
+    end
+    return available_rooms
+  end
+
   def find_block(range)
     #find block
     rooms_with_blocks = @rooms.select { |room| room.blocks.empty? == false}
-    #blocks are an array
+    #blocks variable are an array
     block_set = []
     rooms_with_blocks.each do |room|
       blocks = room.blocks
