@@ -155,20 +155,18 @@ describe "BookingSystem Class" do
 
   describe 'make_reservation method' do
     it 'Creates an instance of Reservation' do
-      expect(@reservation.make_reservation(@date_range_1).last).must_be_kind_of Hotel::Reservation
+      expect(@reservation.make_reservation(@date_range_1)).must_be_kind_of Hotel::Reservation
     end
 
     it 'Adds the correct available room to the reservation' do
-      # binding.pry
-      expect(@reservation.make_reservation(@date_range_1).last.room_number).must_equal 9
-
+      expect(@reservation.make_reservation(@date_range_1).room_number).must_equal 9
     end
 
+    it 'Adds each instance of reservation into the the @reservations instance variable' do
+      new_res = @reservation.make_reservation(@date_range_1)
 
-    # it 'Assigns the correct first available room to the reservation' do
-    #   reservation =
-    #   expect(@reservation.make_reservation(@date_range_1)).must_equal 9
-    # end
+      expect(@reservation.reservations.length).must_equal 11
+    end
   end
 
 
