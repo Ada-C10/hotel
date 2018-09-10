@@ -1,0 +1,12 @@
+
+Refactor changes:
+  ROOM CLASS
+    -add_unavailablity could just be add_reservation. I was trying to keep the two classes completely independent of each other when it probably would have been more simple to add and instance of a reservation to an array in the rooms class
+  RESERVATION CLASS
+    -date? method... what is the date? It should be a little bit more specific about what its checking and in this case its returning true if a reservation includes the date
+    -Couldn't decided if there needed to be a new class for the block reservations. But I allowed the availability to do blocks within my reservation class
+    -Look into the methods are they doing to much? I like that my make_reservation method will also handle if someone were trying to reserve the block room, but maybe that's doing too much?
+    -The make reservation method will always make a reservation in the first room available for a given date range, but lets say someone wants a particular room, or what if a block of rooms wants to be next to each other if those rooms are available? Maybe adding functionality that would offer solutions to these in the reservation manager. 
+  RESERVATION MANAGER CLASS
+    -Maybe it should just be called Reservation_Manager instead of MGr
+    -I like the names in this class they are specific about what they are performing
