@@ -5,12 +5,12 @@ class ReservationTracker
 
   def initialize()
     # @all_rooms is a collection of all room instances
-    @all_rooms = room_factory
+    @all_rooms = room_maker
     # @all_reservations is a collection of all reservation instances
     @all_reservations = []
   end
 
-  def room_factory
+  def room_maker
     all_rooms = []
 
     room_numbers = [*1..20]
