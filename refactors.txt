@@ -1,0 +1,21 @@
+Calendar
+- add separate eror handling method or class
+- spec: add more edge cases: multi month stay?
+- in #overlap? maybe we don't need the object (so remove BookingSystem#construct_cal_checker and change date_range checks back to check_in, check_out
+
+Reservation
+- add hundredths place rounding for money
+- make @daily_rate a constant?
+
+RoomBlock
+- maybe RoomBlock shouldn't inherit from Reservation b/c I don't use the instance var @room_num in RoomBlock -- but got errors when I didn't include it in super() in initialize()
+- like Calendar, this class also has a lot of error handling going on --> split into methods or a class?
+- add more functionality (didn't finish wave 3), like maybe check whether a given room number exists within the block?
+
+BookingSystem
+- spec: #initialize: maybe here see if new reservations and room blocks can be added to @reservations and @room_blocks??? Not sure if this is the right place to test that.
+- spec: check in #initialize that list_all_rooms() worked
+- spec: more testing for #create_reservation?: reject same start-day overlaps, check to see if res are added to @reservations (here?)
+ 
+Overall
+- Finish Wave 3
