@@ -8,6 +8,7 @@ module Hotel
 
     VALID_ROOM_NUMBERS = (1..20)
     ROOM_COST = 200
+    DISCOUNT_ROOM_RATE = 150
 
     def initialize
       @reservations = []
@@ -59,6 +60,21 @@ module Hotel
       end
       # returns the list of available_rooms
       return rooms
+    end
+
+    def create_room_block(number_of_rooms, check_in, check_out)
+
+      date_range = Hotel::DateRange.new(check_in, check_out)
+
+      rooms = self.available_rooms(date_range)
+
+      unless rooms.length >= number_of_rooms
+        raise StandardError
+      end
+
+      
+
+
     end
 
 

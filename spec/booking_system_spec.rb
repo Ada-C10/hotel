@@ -20,7 +20,7 @@ describe "what the hotel booking system does" do
     @booking_system.reservations.length.must_equal 1
   end
 
-  it "returns argument if room_number is outside range" do
+  it "raises argument if room_number is outside range" do
     expect{ @booking_system.book_room(50, @check_in, @check_out) }.must_raise ArgumentError
   end
 
