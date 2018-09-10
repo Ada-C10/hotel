@@ -176,7 +176,8 @@ class Admin
     range = data[:range]
     room = @rooms.select { |room| room.number == room_num}[0]
     room.reserve_room_block(range)
-    # needs to create instance of reservation
+    ### FUTURE WORK: 1. use method view_vacant_rooms_in_block before making a reservation
+    # =>             2. create isntance of reservation
   end
 
   # As an administrator, I can check whether a given block has any rooms available

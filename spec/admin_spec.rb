@@ -21,13 +21,11 @@ describe "#Admin - initializer" do
     expect(first_reservation.end_time).must_equal Time.parse("2018-08-09 00:00:00 -0700")
     expect(first_reservation.nights).must_equal 1
     expect(first_reservation.cost).must_equal 200
-    expect(first_reservation.id).must_equal 1
 
     expect(last_reservation.start_time).must_equal Time.parse("2018-08-07 00:00:00 -0700")
     expect(last_reservation.end_time).must_equal Time.parse("2018-08-09 00:00:00 -0700")
     expect(last_reservation.nights).must_equal 2
     expect(last_reservation.cost).must_equal 400
-    expect(last_reservation.id).must_equal 2
   end
 
   it "accurately create_rooms" do
