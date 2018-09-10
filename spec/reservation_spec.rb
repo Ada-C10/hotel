@@ -18,7 +18,6 @@ describe "HotBook::Reservation class" do
   let(:reservation) { HotBook::Reservation.new(daterange: daterange,
                                                room_number: "one",
                                                room_rate: 1.0) }
-
   describe "initialize method" do
     it "will correctly calculate duration" do
       expect(reservation.duration).must_equal 2
@@ -33,36 +32,16 @@ describe "HotBook::Reservation class" do
     end
   end
 
-### Project Requirement: Code should raise StandardError when an invalid
-### DateRange is provided
-
-##### Project Requirement: User can get the total cost for a given reservation
-#### The last day of a reservation is the checkout day, so the guest should not
-#### be charged for that night
   describe "cost method" do
     it "will return correct cost" do
       expect(reservation.cost).must_equal 2.0
     end
   end
 
-  # describe "save_reservation method" do
-  #   it "will add itself to CSV upon initialization" do
-  #     before_data = CSV.open(TEST_FILENAME).map { |line| line }
-  #     note_string = "This is the test Reservation"
-  #     HotBook::Reservation.new(daterange: daterange,
-  #                              room_number: "one",
-  #                              room_rate: 1.0,
-  #                              notes: note_string)
-  #     after_data = CSV.open(TEST_FILENAME).map { |line| line }
-  #     expect(after_data.size).must_equal (before_data.size + 1)
-  #     expect(after_data.last[4]).must_equal note_string
-  #   end
-  # end
-
-  # describe "self.all" do
-  #   it "will return an array of hashes" do
-  #     p HotBook::Reservation.all(TEST_FILENAME)
-  #   end
-  # end
+  describe "csv loading" do
+    it "will correctly load lines of the CSV" do
+      
+    end
+  end
 
 end

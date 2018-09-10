@@ -10,7 +10,7 @@ module HotBook
 # It includes support methods for determining availability.
 
 TEST_RESERVATION_FILENAME = "support/test_reservation_data.csv"
-# TEST_BLOCK_FILENAME = "support/test_block_data.csv"
+# RESERVATION_DATA_FILENAME = "data/reservation_data.csv"
 
   class Book
     require_relative "hotel.rb"
