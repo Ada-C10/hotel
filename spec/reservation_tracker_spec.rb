@@ -6,18 +6,15 @@ describe 'ReservationTracker class' do
   end
 
   it 'creates a new instance of ReservationTracker' do
-    # new_tracker = ReservationTracker.new()
     expect(@new_tracker).must_be_kind_of ReservationTracker
   end
 
   it 'shows all rooms in the hotel' do
-    # new_tracker = ReservationTracker.new()
     all_rooms = @new_tracker.show_all_hotel_rooms
     expect(all_rooms.length).must_equal 20
   end
 
   it 'shows available rooms for a given date range when there are no existing bookings'do
-    # new_tracker = ReservationTracker.new()
     start_date = "2018,9,10"
     end_date = "2018,9,15"
     rooms_available = @new_tracker.show_available_rooms(start_date, end_date)
@@ -25,7 +22,6 @@ describe 'ReservationTracker class' do
   end
 
   it 'shows available rooms for a given date range when there is single prexisting booking' do
-    # new_tracker = ReservationTracker.new()
     start_date = "2018,9,10"
     end_date = "2018,9,15"
     date_booked = Date.new(2018, 9, 10)
@@ -37,13 +33,11 @@ describe 'ReservationTracker class' do
   end
 
   it 'makes a reservation number' do
-    # new_tracker = ReservationTracker.new()
     new_reservation_number = @new_tracker.make_reservation_number
     expect(new_reservation_number).must_equal 1
   end
 
   it 'will reserve an available room ' do
-    # new_tracker = ReservationTracker.new()
     room_num = 3
     check_in = "2018,9,10"
     check_out = "2018,9,15"
@@ -52,7 +46,6 @@ describe 'ReservationTracker class' do
   end
 
   it 'will not reserve an unavailable room' do
-    # new_tracker = ReservationTracker.new()
     date_booked_1 = Date.new(2018, 9, 10)
     date_booked_2 = Date.new(2018, 9, 11)
     first_room = @new_tracker.all_rooms.first
@@ -66,7 +59,6 @@ describe 'ReservationTracker class' do
   end
 
   it 'will make a reservation that starts on the same day that another reservation for the same room ends' do
-    # new_tracker = ReservationTracker.new()
     room_num_1 = 1
     check_in_1 = "2018,9,1"
     check_out_1 = "2018,9,2"
@@ -81,7 +73,6 @@ describe 'ReservationTracker class' do
   end
 
   it 'shows all reservations' do
-    # new_tracker = ReservationTracker.new()
     room_num_1 = 3
     check_in_1 = "2018,9,10"
     check_out_1 = "2018,9,12"
@@ -96,8 +87,6 @@ describe 'ReservationTracker class' do
   end
 
   it 'returns the total cost of the reservation' do
-    # new_tracker = ReservationTracker.new()
-
     reservation_num = 5555
     room_num = 1
     start_date = Date.new(2018,9,6)
@@ -112,7 +101,6 @@ describe 'ReservationTracker class' do
   end
 
   it 'shows reservations for a specific date' do
-    # new_tracker = ReservationTracker.new()
     room_num_1 = 3
     check_in_1 = "2018,9,10"
     check_out_1 = "2018,9,12"
@@ -134,7 +122,6 @@ describe 'ReservationTracker class' do
   end
 
   it 'raises a StandardError if an invalid date range is entered' do
-    # new_tracker = ReservationTracker.new()
     check_in = Date.new(2018,9,10)
     check_out = Date.new(2018,9,5)
 
