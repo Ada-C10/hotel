@@ -87,22 +87,21 @@ module Hotel
         if checkin_date > checkout_date
           raise ArgumentError, "Check-in date must be before check-out date."
         elsif checkin_date > AVAILABLE_THRU || checkout_date > AVAILABLE_THRU
-          raise ArgumentError, "Hotel only has availability through #{AVAILABLE_THRU}."
+          raise RoomAvailabilityError, "Hotel only has availability through #{AVAILABLE_THRU}."
         else
           return true
         end
       end
 
       def valid_block?(checkin_date, checkout_date, block)
-        found_block = blocks.find do |block_name, existing_block|
-          block == existing_block &&
-          block.checkin_date == existing_block.checkin_date &&
-          block.checkout_date == existing_block.checkout_date
+        raise ArgumentError unless block.respond_to? :block_name
+        found_block = find_block(block.block_name)
+        if (checkin_date == found_block.checkin_date &&
+          checkout_date == found_block.checkout_date)
+          return found_block
+        else
+          raise ArgumentError, "No block with matching dates found."
         end
-        if found_block == nil
-          raise ArgumentError, "Block for #{block} not found."
-        end
-        return found_block
       end
 
       # returns an array of the requested number of available Rooms

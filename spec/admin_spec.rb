@@ -35,12 +35,17 @@ describe "Admin" do
   end
 
   describe "Admin#make_reservation" do
+    before do
+      @checkin_date = Date.parse("2019-01-01")
+      @checkout_date = Date.parse("2019-01-04")
+    end
+
     let (:res1) {
-      @admin.make_reservation(Date.parse("2019-01-01"), Date.parse("2019-01-04"))
+      @admin.make_reservation(@checkin_date, @checkout_date)
     }
 
     let (:res2) {
-      @admin.make_reservation(Date.parse("2019-01-01"), Date.parse("2019-01-02"), 2)
+      @admin.make_reservation(@checkin_date, Date.parse("2019-01-02"), 2)
     }
 
     it "returns a Reservation with correct reservation dates" do
@@ -135,26 +140,46 @@ describe "Admin" do
 
     it "raises an exception if provided end date before start date" do
       expect{
-        @admin.make_reservation(Date.parse("2019-01-04"), Date.parse("2019-01-01"))
+        @admin.make_reservation(@checkout_date, @checkin_date)
       }.must_raise ArgumentError
     end
 
     it "raises an exception if no rooms are available for dates selected" do
       expect{
         21.times do
-          @admin.make_reservation(Date.parse("2019-01-01"), Date.parse("2019-01-04"))
+          @admin.make_reservation(@checkin_date, @checkout_date)
         end
       }.must_raise Hotel::RoomAvailabilityError
     end
 
+    it "raises an exception if not enough rooms are available for dates and quantity selected" do
+      18.times do
+        @admin.make_reservation(@checkin_date, @checkout_date)
+      end
+      expect{@admin.make_reservation(@checkin_date, @checkout_date, 4)}.must_raise Hotel::RoomAvailabilityError
+    end
+
+    it "raises an exception if requested date is beyond date of current inventory" do
+      expect{
+        @admin.make_reservation(Date.parse("2020-01-01"), Date.parse("2020-01-05"))
+      }.must_raise Hotel::RoomAvailabilityError
+    end
+
     it "can reserve a room from within a block of rooms at a discounted rate" do
-      new_block = @admin.make_block("Jackie's Event", Date.parse("2019-02-01"), Date.parse("2019-02-05"), 150.00, 3)
+      new_block = @admin.make_block("Jackie's Event", @checkin_date, @checkout_date, 150.00, 3)
       expect(new_block.num_rooms_available).must_equal 3
-      new_res = @admin.make_reservation(Date.parse("2019-01-01"), Date.parse("2019-01-02"), 2, new_block)
+      new_res = @admin.make_reservation(@checkin_date, @checkout_date, 2, new_block)
       expect(new_block.num_rooms_available).must_equal 1
       expect(new_block.reservations.length).must_equal 1
       expect(new_res.block).must_equal new_block
       expect(new_res.block.discount_rate).must_equal new_block.discount_rate
+    end
+
+    it "raises an exception if given block is not found, or dates do not match existing block" do
+      new_block = @admin.make_block("Jackie's Event", @checkin_date, @checkout_date, 150.00, 3)
+      other_block = "Not a block!"
+      expect{@admin.make_reservation(@checkin_date, @checkout_date, 2, other_block)}.must_raise ArgumentError
+      expect{@admin.make_reservation(Date.parse("2019-03-02"), Date.parse("2019-03-04"), 2, new_block)}.must_raise ArgumentError
     end
   end
 
@@ -246,6 +271,11 @@ describe "Admin" do
         @admin.make_block(@block_name, @checkin_date, @checkout_date, @discount_rate, @room_quantity)
       end
       expect{@admin.make_block(@block_name, @checkin_date, @checkout_date, @discount_rate, @room_quantity)}.must_raise Hotel::RoomAvailabilityError
+    end
+
+    it "raises an exception if there's a request for more than 5 rooms or less than 1 room to be blocked" do
+      expect{@admin.make_block(@block_name, @checkin_date, @checkout_date, @discount_rate, 6)}.must_raise ArgumentError
+      expect{@admin.make_block(@block_name, @checkin_date, @checkout_date, @discount_rate, 0)}.must_raise ArgumentError
     end
   end
 
