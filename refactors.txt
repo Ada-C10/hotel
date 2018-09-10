@@ -1,0 +1,4 @@
+Refactors:
+- consolidate block and block_reservation classes
+- rename block method names to be more descriptive
+- add more tests for edge cases
