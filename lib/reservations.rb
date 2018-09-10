@@ -3,6 +3,7 @@ require 'Date'
 
 module Hotel
   class Reservation
+    attr_reader :id, :check_in, :check_out, :rooms, :total_cost
 
     def initialize(number, check_in: check_in, check_out: check_out)
       @id = number
