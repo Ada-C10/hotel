@@ -14,9 +14,6 @@ module Hotel
     def initialize
       @rooms = build_room_list
       @reservations = []
-      if @reservations.length > 20
-        raise ArgumentError
-      end
       @current_res_id = 1
     end
 
@@ -59,6 +56,9 @@ module Hotel
       reservation = Hotel::Reservation.new(reservation_id: @current_res_id, room: room, check_in: check_in, check_out: check_out)
 
       @reservations << reservation
+      if @reservations.length > 20
+        raise ArgumentError
+      end
 
       @current_res_id += 1
       return reservation

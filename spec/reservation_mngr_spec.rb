@@ -25,10 +25,6 @@ describe 'Reservation_mngr class' do
       expect(@front_desk.rooms).must_be_kind_of Array
       expect(@front_desk.reservations).must_be_kind_of Array
     end
-
-    it "returns an error if number of reservations exceeds 20" do
-      expect{@front_desk.reservations}.must_raise ArgumentError
-    end
   end
 
   describe "build_room_list" do
@@ -108,6 +104,13 @@ describe 'Reservation_mngr class' do
       expect(@front_desk.current_res_id).must_equal 1
       @front_desk.create_reservation("01/10/2018", "01/17/2018")
       expect(@front_desk.current_res_id).must_equal 2
+    end
+
+    it "returns an error if number of reservations exceeds 20" do
+      20.times do
+        @front_desk.create_reservation("01/03/2018", "01/10/2018")
+      end
+      expect{@front_desk.create_reservation("01/03/2018", "01/10/2018")}.must_raise ArgumentError
     end
 
     it "returns a reservation" do
