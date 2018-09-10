@@ -4,7 +4,7 @@ describe 'room class' do
   #to clear CSV file before each test
   before(:each) do
     CSV.open('data/all_hotel_rooms.csv', 'w', headers: true) do |csv|
-      csv << ['room_number','cost','status']
+      csv << ['room_number','cost','status', 'reserved_dates']
     end
 
     CSV.open('data/reservations.csv', 'w', headers: true) do |csv|
@@ -33,14 +33,11 @@ describe 'room class' do
   end
 
   describe 'available room' do
-    # let(:new_room) {
-    #   CSV.read('all_hotel_rooms.csv', headers: true)
-    # }
 
-    it 'returns CSV row of available room' do
+    it 'returns CSV of available room' do
       Lodging.create_rooms(5)
 
-      expect(Lodging::Room.available_room).must_be_instance_of CSV::Row
+      expect(Lodging::Room.available_room).must_be_instance_of CSV
     end
   end
 

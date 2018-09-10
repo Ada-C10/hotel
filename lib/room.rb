@@ -15,7 +15,7 @@ module Lodging
       @cost = cost
       @status = :available
 
-      room = [@room_number, @cost, @status, nil, nil]
+      room = [@room_number, @cost, @status, Array.new]
 
       CSV.open('data/all_hotel_rooms.csv', 'a+') do |row|
           row << room
@@ -24,7 +24,7 @@ module Lodging
 
     def self.available_room #to return one room with status available
       CSV.open('data/all_hotel_rooms.csv', 'r', headers: true) do |row|
-        return row 
+        return row
       end
     end
 

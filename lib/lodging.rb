@@ -12,13 +12,9 @@ module Lodging
     end
   end
 
-  def self.total_owed #totals cost of length of stay
-    puts "sup"
-  end
-
-def self.room_status(input) #check room_status
+def self.room_status(input, check_in) #check room_status
   avail = input.find do |room|
-    room[:status] == "available" #returns first instance it finds of available room
+    room[:reserved_dates].last == Date.parse(check_in) || room[:status] == "available" #returns first instance it finds of available room
   end
 
   raise ArgumentError if avail == false
@@ -26,8 +22,13 @@ def self.room_status(input) #check room_status
   return avail
 end
 
+def self.total_owed(multiplier, price) #date step method to determine day count
+    total = multiplier.to_f * price.to_f
+    return total.round(2)
+end
+
 def self.create_date_range(date1, date2)
-  return (Date.parse(date1)..Date.parse(date2)).to_a 
+  return (Date.parse(date1)..Date.parse(date2)).to_a
 end
 
 

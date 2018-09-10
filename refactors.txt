@@ -1,0 +1,1 @@
+I would refactor mostly the concierge class. It is bigger than I want. I wanted it to be more of an 'viewing' sort of class but it ends up being more of an 'action' class. 
