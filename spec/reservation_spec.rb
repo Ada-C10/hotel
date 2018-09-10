@@ -98,14 +98,4 @@ describe 'Reservation' do
   end
 end
 
-# describe 'it can load csv data' do
-#   it 'can return all current reservation instances as an array' do
-#     expect(Hotel::Reservation.load_reservations).must_be_kind_of Array
-#   end
-#   it 'can parse data from csv correctly' do
-#     expect(Hotel::Reservation.load_reservations[0].id).must_be_kind_of Integer
-#     expect(Hotel::Reservation.load_reservations[0].guest_name).must_be_kind_of String
-#     expect(Hotel::Reservation.load_reservations[0].included_rooms).must_be_kind_of Array
-#     expect(Hotel::Reservation.load_reservations[0].included_rooms[0]).must_be_kind_of Integer
-#   end
-# end
+

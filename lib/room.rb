@@ -7,7 +7,8 @@ require 'csv'
 
 module Hotel
   class Room
-    attr_reader(:id, :cost)
+    attr_reader(:id)
+    attr_accessor(:cost)
     def initialize(input)
       # binding.pry
       @id = input[:id]

@@ -147,43 +147,83 @@ end
     end
 
     it 'increases the reservation id by 1 when a new reservation is added' do
-      initial = admin.reservations.length
-      guest = "Richardina Pardina"
-      check_in = "March 18 2019"
-      check_out = "March 20 2019"
+      guest = 'Richardina Pardina'
+      check_in = 'March 18 2019'
+      check_out = 'March 20 2019'
       admin.make_a_reservation(guest, check_in, check_out)
-      expect(admin.reservations.length).must_equal (initial + 1)
+      # binding.pry
+      expect((admin.reservations.last).id).must_equal 9
     end
 
     it 'raises an argument error when no rooms are available' do
-      guest = "testing"
-      check_in = "September 3 2019"
-      check_out = "September 4 2019"
+      guest = 'testing'
+      check_in = 'September 3 2019'
+      check_out = 'September 4 2019'
       # fill up the 20 room hotel with sept 3-4 bookings
       admin.make_a_reservation(guest, check_in, check_out, 20)
 
       expect{
-        guest = "testing"
-        check_in = "September 3 2019"
-        check_out = "September 4 2019"
+        guest = 'testing'
+        check_in = 'September 3 2019'
+        check_out = 'September 4 2019'
         admin.make_a_reservation(guest, check_in, check_out)}.must_raise StandardError
     end
   end
 
-  # describe 'block bookings' do
+  describe 'block bookings' do
+    let(:admin) do
+      Hotel::BookingSystem.new
+    end
+
+    it 'can create block bookings' do
+      group_name = 'Block Testing'
+      check_in = 'September 3 2019'
+      check_out = 'September 4 2019'
+      room_qty = 4
+      status = :BLOCK
+      @block = admin.make_a_block(group_name, check_in, check_out, room_qty, status)
+      expect(@block).must_be_kind_of Hotel::BlockReservation
+    end
+
+    it 'can hold correct number of rooms' do
+      group_name = 'Block Testing'
+      check_in = 'September 3 2019'
+      check_out = 'September 4 2019'
+      room_qty = 4
+      status = :BLOCK
+      @block = admin.make_a_block(group_name, check_in, check_out, room_qty, status)
+      expect((@block.included_rooms).length).must_equal 4
+    end
+
+    it 'can correctly calculate total cost for a block' do
+      group_name = 'Block Testing'
+      check_in = 'September 3 2019'
+      check_out = 'September 4 2019'
+      room_qty = 4
+      status = :BLOCK
+      @block = admin.make_a_block(group_name, check_in, check_out, room_qty, status)
+      # binding.pry
+      expect(@block.total_cost).must_be_close_to 640.00
+    end
+    it 'only includes available rooms for given date range' do
+      group_name = 'Block Testing'
+      check_in = 'December 1 2019'
+      check_out = 'December 5 2019'
+      room_qty = 4
+      status = :BLOCK
+      @block = admin.make_a_block(group_name, check_in, check_out, room_qty, status)
+      # binding.pry
+      expect(@block.included_rooms).wont_include 3
+    end
+  end
+  # TODO: make tests and methods to reserve a room within a block
+  # describe 'it can make a reservation within a block' do
   #   let(:admin) do
   #     Hotel::BookingSystem.new
   #   end
-  #
-  #   it 'can create block bookings' do
-  #     group_name = "Block Testing"
-  #     check_in = "September 3 2019"
-  #     check_out = "September 4 2019"
-  #     admin.make_a_block(group_name, check_in, check_out, 4, :BLOCK)
-  #   end
+  #   expect(admin.make_a_block_reservation(group_name)).must_be_kind_of Hotel::Reservation
   # end
-  # # it 'can make a reservation' do
-  #   # expect(Hotel::BookingSystem.new_reservation).must_be_kind_of Hotel::BookingSystem
-  # end
-  end
+
+end
+
 
