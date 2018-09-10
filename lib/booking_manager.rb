@@ -1,6 +1,6 @@
 require_relative 'room'
 require_relative 'reservation'
-require 'pry'
+# require 'pry'
 
 module Hotel
   class BookingManager
@@ -10,7 +10,7 @@ module Hotel
       @rooms = populate_room_list(number_rooms) #(20)
       @reservations = make_reservation_list
       @room_calendar = make_room_calendar(number_rooms)
-    end # of def initialize
+    end
 
     # Create list of rooms as list of room Instances
     def populate_room_list(number_rooms)
@@ -19,13 +19,13 @@ module Hotel
 
       number_rooms.times do |room|
         room = Room.new(num)
-        # room = "Room \# #{num}"
+        #
         rooms << room
         num += 1
-      end # of number_rooms loop
+      end
 
       return rooms
-    end # of populate_room_list method
+    end
 
     # Create array to store all of reservations
     def make_reservation_list
@@ -41,27 +41,20 @@ module Hotel
       #   dates_reserved = {} #[]
       #   @room_calendar[num+1] = dates_reserved
       # end
-      #   # binding.pry
+
       # return @room_calendar
       @rooms.each do |room|
         dates_reserved = {}
         @room_calendar[room] = dates_reserved
       end
-      binding.pry
+
       return @room_calendar
     end
 
-    # # Create a new instance of Reservation # should this and add_reservation be one method?
-    #   def reserve(room)
-    #   end
 
     # Method to add a reservation to list of reservations
     def add_reservation(reservation)
       @reservations << reservation
-      # @room_calendar
-      #
-      # reserved_message = "Room successfully reserved"
-      # return reserved_message
     end
 
     # Add reservation date range to hash of room reserved dates
@@ -72,7 +65,7 @@ module Hotel
         @room_calendar[reservation.room][date] = reservation # dependency
         date += 1
       end
-  # binding.pry
+
       return @room_calendar
     end
 
@@ -86,7 +79,7 @@ module Hotel
     def list_reservations
       return @reservations
     end
-    # binding.pry
+
 
     # Method to list all rooms in hotel
     def list_rooms
@@ -99,9 +92,6 @@ module Hotel
       return total_cost
     end
 
-    # Method to check room availability here? Or in room? Or calendar?
-    # when check if something is available
-    # search through reservations for room with nil -> reserve
     def find_reservations_on_date(date, calendar)
       search_date = Date.parse(date)
       found_reservations = []
@@ -117,7 +107,7 @@ module Hotel
        end # end of calendar each
        # Add return message for no reservations found?
        return found_reservations
-    end # of find reservation by date method
+    end
 
     def find_vacancies_on_date(date, calendar)
       search_date = Date.parse(date)
@@ -132,7 +122,7 @@ module Hotel
       end
 
       return found_vacancies.empty? ? no_vacancies_message: found_vacancies
-    end # of find vacancy
+    end
 
     def no_vacancies_message
       return "There are no vacancies for the given date range."
@@ -141,42 +131,68 @@ module Hotel
 
     def reserve_available_room(guest_name, start_date, end_date)
       check_dates(start_date, end_date)
-      room_available = "undefined"
+      @room_available = 0
 
-      start_date = Date.parse(start_date)
-      end_date = Date.parse(end_date)
-      # should instead use find_vacancies_on_date method?
+      res_start_date = Date.parse(start_date)
+      res_end_date = Date.parse(end_date)
+
       @room_calendar.each do |room, reserved_dates|
         if reserved_dates.empty?
-          room_available = room
-        else
-          search_date = start_date
-          while search_date < end_date
-            # search_date.each do |search_date|
-              if reserved_dates.include? search_date
-                next
-              else
-                room_available = room
-                exit
-               #exit? # not next bc shouldn't bother with rest of room
-                # reserved_dates.each do |reserved_dates
-              end
+          @room_available = room
+        end
+
+        unless reserved_dates.empty?
+          date_range = []
+          search_date = res_start_date
+
+          until search_date > res_end_date
+            search_date.each do |search_date|
+              date_range << search_date
               search_date += 1
-            # end
+            end
+          end
+
+          # date_range && reserved_dates
+          day_taken = date_range.map do |date|
+            reserved_dates.include? date
+          end
+
+          if day_taken.all? {|word| word == false}
+            @room_available = room
           end
         end
-        # binding.pry
-        # return room_available
-      end #@room each
+      # should instead use find_vacancies_on_date method?
+      # @room_calendar.each do |room, reserved_dates|
+      #   if reserved_dates.empty?
+      #     room_available = room
+      #   else
+      #     search_date = start_date
+      #     while search_date < end_date
+      #       # search_date.each do |search_date|
+      #         if reserved_dates.include? search_date
+      #           next
+      #         else
+      #           room_available = room
+      #           exit
+      #           # reserved_dates.each do |reserved_dates
+      #         end
+      #         search_date += 1
+      #       # end
+      #
+      #     end
+      #   end
 
-      new_reservation = Reservation.new(room_available, guest_name: guest_name, start_date: start_date, end_date: end_date)
+        # binding.pry
+      #   # return room_available
+      # end #@room each
+      # room_available = undefined
+      end
+      # binding.pry
+      new_reservation = Reservation.new(@room_available, guest_name: guest_name, start_date: start_date, end_date: end_date)
       add_reservation(new_reservation)
       add_reservation_to_calendar(new_reservation)
-      # binding.pry
       return new_reservation
     end # def reserve_available_room
-
-
 
   end # of class BookingManager
 end # of module Hotel
