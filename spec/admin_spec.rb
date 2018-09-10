@@ -138,13 +138,13 @@ describe "Admin" do
       expect{@admin.make_reservation(Date.parse("2019-03-21"), Date.parse("2019-04-19"))}.must_raise Hotel::RoomAvailabilityError
     end
 
-    it "raises an exception if provided end date before start date" do
+    it "raises an error if provided end date before start date" do
       expect{
         @admin.make_reservation(@checkout_date, @checkin_date)
       }.must_raise ArgumentError
     end
 
-    it "raises an exception if no rooms are available for dates selected" do
+    it "raises an error if no rooms are available for dates selected" do
       expect{
         21.times do
           @admin.make_reservation(@checkin_date, @checkout_date)
@@ -152,17 +152,22 @@ describe "Admin" do
       }.must_raise Hotel::RoomAvailabilityError
     end
 
-    it "raises an exception if not enough rooms are available for dates and quantity selected" do
+    it "raises an error if not enough rooms are available for dates and quantity selected" do
       18.times do
         @admin.make_reservation(@checkin_date, @checkout_date)
       end
       expect{@admin.make_reservation(@checkin_date, @checkout_date, 4)}.must_raise Hotel::RoomAvailabilityError
     end
 
-    it "raises an exception if requested date is beyond date of current inventory" do
+    it "raises an error if requested date is beyond date of current inventory" do
       expect{
         @admin.make_reservation(Date.parse("2020-01-01"), Date.parse("2020-01-05"))
       }.must_raise Hotel::RoomAvailabilityError
+    end
+
+    it "raises an error if invalid room quantity" do
+      expect{@admin.make_reservation(@checkin_date, @checkout_date, 30)}.must_raise ArgumentError
+      expect{@admin.make_reservation(@checkin_date, @checkout_date, "hi")}.must_raise ArgumentError
     end
 
     it "can reserve a room from within a block of rooms at a discounted rate" do
@@ -175,7 +180,7 @@ describe "Admin" do
       expect(new_res.block.discount_rate).must_equal new_block.discount_rate
     end
 
-    it "raises an exception if given block is not found, or dates do not match existing block" do
+    it "raises an error if given block is not found, or dates do not match existing block" do
       new_block = @admin.make_block("Jackie's Event", @checkin_date, @checkout_date, 150.00, 3)
       other_block = "Not a block!"
       expect{@admin.make_reservation(@checkin_date, @checkout_date, 2, other_block)}.must_raise ArgumentError
@@ -257,13 +262,13 @@ describe "Admin" do
       end
     end
 
-    it "raises an exception if provided end date before start date" do
+    it "raises an error if provided end date before start date" do
       expect{
         @admin.make_block(@block_name, @checkout_date, @checkin_date, @discount_rate, @room_quantity)
       }.must_raise ArgumentError
     end
 
-    it "raises an exception if no rooms are available for dates selected" do
+    it "raises an error if no rooms are available for dates selected" do
       expect{
         5.times do
           @admin.make_block(@block_name, @checkin_date, @checkout_date, @discount_rate, @room_quantity)
@@ -271,7 +276,7 @@ describe "Admin" do
       }.must_raise Hotel::RoomAvailabilityError
     end
 
-    it "raises an exception if not enough rooms are available for dates and quantity selected" do
+    it "raises an error if not enough rooms are available for dates and quantity selected" do
       8.times do
         @admin.make_reservation(@checkin_date, @checkout_date)
       end
@@ -281,7 +286,7 @@ describe "Admin" do
       expect{@admin.make_block(@block_name, @checkin_date, @checkout_date, @discount_rate, @room_quantity)}.must_raise Hotel::RoomAvailabilityError
     end
 
-    it "raises an exception if there's a request for more than 5 rooms or less than 1 room to be blocked" do
+    it "raises an error if there's a request for more than 5 rooms or less than 1 room to be blocked" do
       expect{@admin.make_block(@block_name, @checkin_date, @checkout_date, @discount_rate, 6)}.must_raise ArgumentError
       expect{@admin.make_block(@block_name, @checkin_date, @checkout_date, @discount_rate, 0)}.must_raise ArgumentError
     end

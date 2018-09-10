@@ -27,6 +27,7 @@ module Hotel
     # if applicable, and 5. returning that new Reservation
     def make_reservation(checkin_date, checkout_date, room_quantity = 1, block = nil)
       valid_dates?(checkin_date, checkout_date) # validate dates
+      raise ArgumentError unless room_quantity.class == Integer && room_quantity > 0 && room_quantity <= rooms.length
       valid_block?(checkin_date, checkout_date, block) unless block == nil
       confirmation_num = reservations.length + 1 # generate confirmation number
       new_res = Reservation.new(checkin_date, checkout_date, confirmation_num, block) # create res
