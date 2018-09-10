@@ -2,22 +2,6 @@
 
 # Block: Blocks off rooms at a certain rate during an event.
 
-
-# User Stories
-#
-# - As an administrator, I can create a block of rooms
-#     - To create a block you need a date range, collection of rooms and a discounted room rate
-#     - The collection of rooms should only include rooms that are available for the given date range
-#     - If a room is set aside in a block, it is not available for reservation by the general public, nor can it be included in another block
-# - As an administrator, I can check whether a given block has any rooms available
-# - As an administrator, I can reserve a room from within a block of rooms
-#
-# ### Constraints
-#
-# - A block can contain a maximum of 5 rooms
-# - When a room is reserved from a block of rooms, the reservation dates will always match the date range of the block
-# - All of the availability checking logic from Wave 2 should now respect room blocks as well as individual reservations
-
 module Hotel
   class Block
     attr_reader :checkin_date, :checkout_date, :block_name, :discount_rate, :blocked_rooms, :reservations
@@ -43,7 +27,8 @@ module Hotel
         room_nums = blocked_rooms.map { |room| room.room_num }
         raise ArgumentError, "Room already in block." if room_nums.include? room.room_num
       end
-      if (blocked_rooms.length + reservations.length) == MAX_BLOCK
+      blocked_rooms_booked = reservations.sum { |reservation| reservation.rooms.length }
+      if (blocked_rooms.length + blocked_rooms_booked) == MAX_BLOCK
         raise ArgumentError, "Maximum number of rooms alredy in block."
       end
       room.change_room_status(checkin_date, :BLOCKED, checkout_date)

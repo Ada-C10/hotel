@@ -75,17 +75,43 @@ describe "Reservation" do
     end
   end
 
-  describe "Resevation#total_cost" do
+  describe "Reservation#total_cost" do
     before do
-      res.add_room(room1)
+      @admin = Hotel::Admin.new
     end
 
+    let (:res1) {
+      @admin.make_reservation(@checkin_date, @checkout_date, 1)
+    }
+
     it "returns a float" do
-      expect(res.total_cost).must_be_instance_of Float
+      expect(res1.total_cost).must_be_instance_of Float
     end
 
     it "correctly calculates cost to two decimal places based on # of nights" do
-      expect(res.total_cost).must_equal 800.00
+      expect(res1.total_cost).must_equal 800.00
+    end
+
+    it "correctly calculates the cost for a discounted room in a block" do
+      block = @admin.make_block("Jackie's Event", Date.parse("2019-02-01"), Date.parse("2019-02-05"), 150.00, 3)
+      res2 = @admin.make_reservation(Date.parse("2019-02-01"), Date.parse("2019-02-05"), 1, block)
+      expect(res2.total_cost).must_equal 600.00
+    end
+
+    it "correctly calculates the cost when some nights in the same reservation have differing rates" do
+      res1.rooms.first.change_nightly_rate(@checkin_date, 100.00)
+      expect(res1.total_cost).must_equal 700.00
+    end
+
+    it "correctly calculates the cost when a reservation has multiple rooms" do
+      res3 = @admin.make_reservation(@checkin_date, @checkout_date, 3)
+      expect(res3.total_cost).must_equal 2400.00
+    end
+
+    it "correctly calculates the cost when different rooms on a reservation have different rates" do
+      res3 = @admin.make_reservation(@checkin_date, @checkout_date, 3)
+      res3.rooms.first.change_nightly_rate(@checkin_date, 100.00, @checkout_date)
+      expect(res3.total_cost).must_equal 2000.00
     end
   end
 end

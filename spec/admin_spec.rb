@@ -152,6 +152,7 @@ describe "Admin" do
       expect(new_block.num_rooms_available).must_equal 3
       new_res = @admin.make_reservation(Date.parse("2019-01-01"), Date.parse("2019-01-02"), 2, new_block)
       expect(new_block.num_rooms_available).must_equal 1
+      expect(new_block.reservations.length).must_equal 1
       expect(new_res.block).must_equal new_block
       expect(new_res.block.discount_rate).must_equal new_block.discount_rate
     end
@@ -283,6 +284,21 @@ describe "Admin" do
     it "returns the room with the corresponding room number if found" do
       expect(@admin.find_room(15)).must_be_instance_of Hotel::Room
       expect(@admin.find_room(15).room_num).must_equal 15
+    end
+  end
+
+  describe "Admin#change_rate" do
+    it "changes the nightly rate for a specific room on a specific date" do
+      expect(@admin.find_room(10).nightly_rate(Date.parse("2019-01-01"))).must_equal 200.00
+      @admin.change_rate(10, Date.parse("2019-01-01"), 180.00)
+      expect(@admin.find_room(10).nightly_rate(Date.parse("2019-01-01"))).must_equal 180.00
+    end
+
+    it "leaves the nightly rate for other nights and other rooms unchanged" do
+      expect(@admin.find_room(10).nightly_rate(Date.parse("2019-01-01"))).must_equal 200.00
+      @admin.change_rate(10, Date.parse("2019-01-01"), 180.00)
+      expect(@admin.find_room(10).nightly_rate(Date.parse("2019-01-02"))).must_equal 200.00
+      expect(@admin.find_room(9).nightly_rate(Date.parse("2019-01-01"))).must_equal 200.00
     end
   end
 end

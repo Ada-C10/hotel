@@ -114,9 +114,7 @@ module Hotel
             room.is_available?(checkin_date, checkout_date)
           }
         else # block != nil
-          selected_rooms = block.blocked_rooms.select { |room|
-            room.is_available?(checkin_date, checkout_date)
-          }
+          selected_rooms = block.blocked_rooms
         end
         if selected_rooms.empty?
           raise RoomAvailabilityError, "No rooms available from #{checkin_date} to #{checkout_date}."
