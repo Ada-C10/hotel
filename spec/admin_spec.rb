@@ -84,9 +84,9 @@ describe "Admin class" do
 
     end
 
-    it "will return a message when no room is available for trip" do
+    it "will raise ArgumentError when no room is available for trip" do
 
-      expect(@admin_1.make_reservation(23,"Jessica lee",Date.new(2018,9,25),Date.new(2018,9,26))).must_equal "No room available at this time."
+      expect{@admin_1.make_reservation(23,"Jessica lee",Date.new(2018,9,25),Date.new(2018,9,26))}.must_raise ArgumentError
     end
 
     it "will not create a reservation if no room is available" do
@@ -202,7 +202,7 @@ describe "Admin class" do
 
     it "returns the right number of rooms " do
       room_book = @admin_1.find_room(3)
-      expect(@admin_1.find_room_available(Date.new(2018,12,4),Date.new(2018,12,5)).length).must_equal 18
+      expect(@admin_1.find_room_available(Date.new(2018,12,4),Date.new(2018,12,5)).length).must_equal 19
       expect(@admin_1.find_room_available(Date.new(2018,12,4),Date.new(2018,12,5))).must_include room_book
 
     end
@@ -229,7 +229,43 @@ describe "Admin class" do
       20.times do |i|
         @admin_1.make_reservation(@count_2 + i + 1, "Lily Xia", Date.new(2018,9,25), Date.new(2018,9,27))
       end
+
+      @name_of_block = "tech_forum"
+      @list_3 = [10,11,12,13,14]
+      @list_6 = [10,11,12,13,14,15]
+      @start_3 = Date.new(2018,12,1)
+      @end_3 = Date.new(2018,12,11)
+      @discount = 0.1
     end
 
+    it "returns a new object of BlockAdmin " do
+      expect(@admin_1.create_room_block("block1",@list_3, @start_3, @end_3, @discount)).must_be_kind_of BlockAdmin
+    end
+
+    it "increase the length of room_blocks array be 1" do
+      @admin_1.create_room_block("block1",@list_3, @start_3, @end_3, @discount)
+      expect(@admin_1.room_blocks.length).must_equal 1
+    end
+
+    it "remove the related rooms from the room_unbooked_dates array in the specified date " do
+      @admin_1.create_room_block("block1",@list_3, @start_3, @end_3, @discount)
+      expect(@admin_1.room_unbooked_dates.length).must_equal 7206
+    end
+
+    it "raise ArgumentError if room_id_list has more than 5 elements" do
+      expect{@admin_1.create_room_block("block1",@list_6, @start_3, @end_3, @discount)}.must_raise ArgumentError
+    end
+
+    it "raise ArgumentError if room specified was not available in that period" do
+      expect{@admin_1.create_room_block("block1",[1,2], Date.new(2018,9,25), Date.new(2018,9,27),@discount)}.must_raise ArgumentError
+    end
+
+    it "raise ArgumentError if the period requested for set up room block is outside of the current working period )" do
+      expect{@admin_1.create_room_block("block1",[1,2], Date.new(2019,10,25), Date.new(2019,10,27),0.1)}.must_raise ArgumentError
+    end
+
+    it "raise ArgumentError if the discount_rate is < 0 or > 1" do
+      expect{@admin_1.create_room_block("block1",[1,2], Date.new(2018,11,2), Date.new(2018,11,5),1.1)}.must_raise ArgumentError
+    end
   end
 end
