@@ -1,0 +1,7 @@
+#complete wave 3 requirements
+#add a block reservation class
+#rethink the room class
+#create more test for all classes
+#add comments to the code
+#create methods for invalid start and end dates
+#look at major dependency from each class
