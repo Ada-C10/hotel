@@ -1,11 +1,15 @@
 require 'date'
 require_relative 'date_logic'
 require_relative 'reservation'
+require_relative 'room_block'
+require_relative 'room_not_available'
 
 require 'pry'
 
 module BookingLogic
   class RoomBooker
+    Room = Struct.new(:id, :cost, :block_reserved)
+
     attr_reader :rooms
     attr_accessor :reservations, :blocks
 
@@ -14,8 +18,6 @@ module BookingLogic
       @reservations = []
       @blocks = []
     end
-
-    Room = Struct.new(:id, :cost)
 
     def populate_rooms
       rooms_array = []
@@ -35,21 +37,6 @@ module BookingLogic
     def find_room_by_id(room_id)
       return rooms.find { |room| room.id == room_id }
     end
-
-    def new_reservation(room_id, check_in, check_out)
-      room = find_room_by_id(room_id)
-      new_reservation = BookingLogic::Reservation.new(room, check_in, check_out)
-      reservations << new_reservation
-      return new_reservation
-    end
-
-    # def date_range_include?(reservation, date)
-    #   if (reservation.check_in..reservation.check_out).cover?(date)
-    #     return true
-    #   else
-    #     return false
-    #   end
-    # end
 
     def list_reservations(date)
       list_of_reservations = []
@@ -71,62 +58,111 @@ module BookingLogic
       end
     end
 
-    # def reservation_cost(room_id, check_in)
-    #   reservation = find_reservation(room_id, check_in)
-    #   days_reserved = reservation.check_out - reservation.check_in
-    #   return days_reserved.to_i * reservation.room.cost
-    # end
-
-    # def create_date_range_array(check_in, check_out)
-    #   date_range_array = check_in...check_out
-    #   return date_range_array.to_a
-    # end
-
-    # def date_ranges_exclusive?(
-    #   existing_reservation,
-    #   new_check_in,
-    #   new_check_out)
-    #
-    #   existing_range_array = existing_reservation.date_range_array
-    #   new_range_array = new_reservation.date_range_array
-    #
-    #   intersecting_dates = existing_range_array & new_range_array
-    #
-    #   if intersecting_dates.empty?
-    #     return true
-    #   else
-    #     return false
-    #   end
-    # end
-
-
-
     def list_available_rooms(check_in, check_out)
       reserved_rooms = []
 
       reservations.each do |reservation|
-        unless DateLogic.date_ranges_exclusive?(reservation, check_in, check_out)
+        unless DateLogic.date_ranges_exclusive?(
+          reservation.check_in,
+          reservation.check_out,
+          check_in,
+          check_out
+        )
+
           reserved_rooms << reservation.room
         end
       end
 
-      available_rooms = rooms - reserved_rooms
+      unavailable_rooms = reserved_rooms + find_blocked_rooms(check_in, check_out)
+
+      available_rooms = rooms.dup
+
+      unavailable_rooms.each do |unavailable_room|
+        available_rooms.delete_if { |room| room.id == unavailable_room.id }
+      end
 
       return available_rooms
     end
 
-    def reserve_available_room(check_in, check_out)
-      available_rooms = list_available_rooms(check_in, check_out)
-      room = available_rooms.first
-
-      return new_reservation(room.id, check_in, check_out)
+    def new_reservation(room_id, check_in, check_out)
+      room = find_room_by_id(room_id)
+      room_unavailable?(room, check_in, check_out)
+      new_reservation = BookingLogic::Reservation.new(room, check_in, check_out)
+      reservations << new_reservation
+      return new_reservation
     end
 
-    def new_room_block(check_in, check_out, number_of_rooms, rate)
-      new_room_block = RoomBlock.new(check_in, check_out, number_of_rooms, rate)
+    def new_block_reservation(name)
+      block = find_block(name)
+      room = block.available.first
+      room.block_reserved = true
+      new_reservation = BookingLogic::Reservation.new(room, block.check_in, block.check_out)
+      reservations << new_reservation
+      return new_reservation
+    end
+
+    def room_unavailable?(room, check_in, check_out)
+      unless list_available_rooms(check_in, check_out).include?(room)
+        raise RoomNotAvailable, "Room not available for the given dates"
+      end
+    end
+
+    def find_block(name)
+      found_block = blocks.find { |block| block.name == name }
+      return found_block
+    end
+
+    def find_blocked_rooms(check_in, check_out)
+      blocked_rooms = []
+
+      blocks.each do |block|
+        unless DateLogic::date_ranges_exclusive?(
+          block.check_in,
+          block.check_out,
+          check_in,
+          check_out
+        )
+
+          block.rooms.each do |room|
+            blocked_rooms << room
+          end
+        end
+      end
+
+      return blocked_rooms
+    end
+
+    def block_available_rooms(check_in, check_out, number_of_rooms, rate)
+      available_rooms = list_available_rooms(check_in, check_out)
+      room_block = available_rooms.take(number_of_rooms)
+      return room_block
+    end
+
+    def new_room_block(name, check_in, check_out, number_of_rooms, rate)
+      block_of_rooms = block_available_rooms(
+        check_in,
+        check_out,
+        number_of_rooms,
+        rate
+      )
+
+      new_room_block = BookingLogic::RoomBlock.new(
+        name,
+        check_in,
+        check_out,
+        block_of_rooms,
+        rate
+      )
+
+      new_room_block.set_blocked_room_rate
+
       @blocks << new_room_block
       return new_room_block
     end
 
+    def set_room_rate(room_id, custom_rate)
+      room = rooms.find { |room| room.id == room_id }
+      room.cost = custom_rate
+    end
   end
 end
