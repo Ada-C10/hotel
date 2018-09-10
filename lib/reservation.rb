@@ -19,7 +19,6 @@ module Hotel
     end
 
 
-    #make sure there are valid start/end dates
     def validate_dates
       raise ArgumentError.new("The end date must be after the start date") if @end_date <= @start_date
 

@@ -44,7 +44,6 @@ describe "Reservation Hub class" do
       @reservation4 = @reservation_hub.add_reservation(2018,06,12,2018,07,01)
     end
 
-
     it "returns an array of reservations" do
       expect(@reservation4).must_be_kind_of Array
     end
@@ -148,7 +147,6 @@ describe "Reservation Hub class" do
       @reservation_hub.add_reservation(2018, 01, 03, 2018, 02, 12)
     end
 
-
     it "returns a list of reservations based on a start date" do
 
       reservations = @reservation_hub.find_reservations(2018, 04, 03)
@@ -180,15 +178,5 @@ describe "Reservation Hub class" do
       end
     end
   end
-
-
-
-
-
-
-
-
-
-
 
 end
