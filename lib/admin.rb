@@ -64,7 +64,6 @@ class Admin
   end
 
   #As an administrator, I can view a list of rooms that are not reserved for a given date range
-  # raise argument error if array is empty
   ## expects dates to be instances of time
   def view_vacant_rooms(start_date, end_date)
     vacant_rooms = @rooms
@@ -79,14 +78,16 @@ class Admin
               break
             end
         end
-        # remove rooms if it has blocks on that date
-        blocks.each do |block|
-            # nil means no intersection
-            if intersection(target_range, blocks[:range]) != nil # there was a overlap
-              vacant_rooms.delete(room)
-              break
-            end
-        end
+    end
+    # remove rooms that have a block in them
+    # must add test for this case
+    vacant_rooms.each do |room|
+      blocks = room.blocks
+      blocks.each do |block|
+        blocks.empty? == false
+        binding.pry
+        vacant_rooms.delete(room)
+      end
     end
     return vacant_rooms
   end
@@ -130,7 +131,8 @@ class Admin
     rooms = data[:rooms]
     raise StandardError if rooms > 5 #max block size
     discounted_rate = data[:discounted_rate]
-    available_rooms = view_vacant_rooms(start_date, e_date)
+    # view vacant_rooms - current method
+    available_rooms = view_vacant_rooms_for_blocks(start_date, e_date)
 
     if available_rooms.length < rooms
       return "no available rooms for block"
@@ -145,8 +147,30 @@ class Admin
         room.add_block(input_data)
       end
     end
+  end
 
-
+  def view_vacant_rooms_for_blocks(start_date, end_date)
+    vacant_rooms = @rooms
+    target_range = create_hotel_range(start_date, end_date)
+    vacant_rooms.each do |room|
+        ranges = room.ranges
+        blocks = room.blocks
+        ranges.each do |range|
+            # nil means no intersection
+            if intersection(target_range, range) != nil # there was a overlap
+              vacant_rooms.delete(room)
+              break
+            end
+        end
+        blocks.each do |block|
+            # nil means no intersection
+            if intersection(target_range, blocks[:range]) != nil # there was a overlap
+              vacant_rooms.delete(room)
+              break
+            end
+        end
+    end
+    return vacant_rooms
   end
 
 # As an administrator, I can reserve a room from within a block of rooms
@@ -156,6 +180,12 @@ class Admin
     room = @rooms.select { |room| room.number == room_num}[0]
     room.reserve_room_block(range)
   end
+
+  # As an administrator, I can check whether a given block has any rooms available
+  def view_vacant_rooms_in_block(range)
+    rooms = @rooms.select { |room| room.blocks[:range] == range}[0]
+  end
+
 
   #last day not counted
   #expect input to be time instances

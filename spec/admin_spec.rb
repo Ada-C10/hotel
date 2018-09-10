@@ -217,4 +217,6 @@ describe "#blocks" do
     target_block = blocks.select {|block| block[:range] == range}[0]
     expect(target_block[:status]).must_equal "booked"
   end
+
+  # needs test for this one: view_vacant_rooms_in_block
 end
