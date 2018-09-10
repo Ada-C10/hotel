@@ -64,10 +64,12 @@ module Hotel
 
 
     def make_block_reservation(id)
-      if @unreserved_block.length = 0
+      if @unreserved_block.length ==  0
         raise StandardError, "There are no available Block reservations."
       end
 
+      @reserved_block << @unreserved_block[0]
+      @unreserved_block.delete_at(0)
     end
 
 
@@ -99,6 +101,16 @@ module Hotel
       unreserved = @rooms - reserved_rooms - unreserved_block_rooms - reserved_block_rooms
       return unreserved
     end
+
+    def unreserved_block_rooms
+      unreserved_block_rooms = []
+      @unreserved_block.each do |reservation|
+        unreserved_block_rooms <<  reservation.room
+      end
+
+      return unreserved_block_rooms
+    end
+
 
     def find_reservations(date)
       matching_reservations = []
