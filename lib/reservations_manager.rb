@@ -32,6 +32,7 @@ module Hotel
   def reserve_room(check_in, check_out)
     new_reservation = Reservation.new(@reservations.length + 1, check_in: check_in, check_out: check_out)
     new_reservation.rooms << @rooms[0]
+
     #find_room(assigned_room.id).reservations << new_reservation
     return new_reservation
   end

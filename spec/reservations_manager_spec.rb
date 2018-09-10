@@ -37,13 +37,18 @@ describe "ReservationManager" do
       expect(@new_reservation).must_be_instance_of Hotel::Reservation
       expect(@new_reservation.id).must_equal 1
       expect(@new_reservation.check_in).must_be_instance_of Date
-      
     end
 
     it "adds an instance of a room to the reservation" do
-      expect(@hotel_ada.reserve_room('2018-08-23', '2018-08-25').rooms).must_be_kind_of Array
-      expect(@hotel_ada.reserve_room('2018-08-23', '2018-08-25').rooms[0]).must_be_instance_of Hotel::Room
+      expect(@new_reservation.rooms).must_be_kind_of Array
+      expect(@new_reservation.rooms[0]).must_be_instance_of Hotel::Room
     end
+
+    it "adds the reservation to the instance of room" do
+      expect(@new_reservation.rooms[0].id).must_equal 1
+    end
+
+
 
 
   end
