@@ -1,0 +1,20 @@
+### REFACTORS 9.9.18 ###
+
+
+>>>BOOKING MANAGER CLASS
+	+check block status > change name to return_available_rooms_in_block
+	+search all rooms availability > change name to which_rooms_available_on_date?
+	+spec tests could be cleaned up for readability and spacing
+
+>>>ROOM CLASS
+	+should this be a class? Maybe turn into Struct in Booking Manager
+
+>>>RESERVATION CLASS
+
+>>>BLOCK ROOM CLASS
+
+>>>HELPER METHOD CLASS
+	+should connect_room_and_sort method be moved to Booking manager class? It is using two helper methods, itself.Maybe is more of a "managing" responsibility.
+
+>>>ADDS
+	+changing rates of rooms
