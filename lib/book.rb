@@ -16,6 +16,7 @@ TEST_RESERVATION_FILENAME = "support/test_reservation_data.csv"
     require_relative "hotel.rb"
     require_relative "reservation.rb"
     require_relative "block.rb"
+    require_relative "errors.rb"
     require "date"
     attr_reader :reservations, :hotel, :blocks
 
@@ -30,16 +31,16 @@ TEST_RESERVATION_FILENAME = "support/test_reservation_data.csv"
     end
 
     def new_reservation(daterange, room_number: suggest_room(daterange))
-      room_number = room_number.upcase
       validate(:daterange, daterange)
       validate(:room_number, room_number)
+      room_number = room_number.upcase
       if room_taken?(daterange, room_number)
-        raise StandardError, "Room already has reservation on this daterange"
+        raise RoomIsTakenError, "Room is already reserved some time within this daterange"
       elsif room_blocked?(daterange, room_number)
-        raise StandardError, "This room has a bock conflict during this daterange"
+        raise RoomIsBlockedError, "This room conflicts with a Block during this daterange"
       end
 
-      room_rate = HotBook::Hotel.find_rate(room_number)
+      room_rate = hotel.find_rate(room_number)
 
       new_reservation = HotBook::Reservation.new(daterange: daterange,
                                                  room_number: room_number,
@@ -48,31 +49,34 @@ TEST_RESERVATION_FILENAME = "support/test_reservation_data.csv"
       return new_reservation
     end
 
-    def new_block(daterange, rooms)
+    def new_block(daterange, rooms, discount_rate: 185.0)
       validate(:daterange, daterange)
       validate(:rooms, rooms)
       if rooms.size > 5
         raise ArgumentError, "A Block cannot have more than 5 rooms"
-      elsif room_taken?(daterange, room_number)
-        raise StandardError, "Room already has reservation on this daterange"
+      end
+      rooms.each do |room_number|
+        if room_taken?(daterange, room_number)
+          raise RoomIsTakenError, "Room already has reservation during this daterange"
+        end
       end
       new_block = HotBook::Block.new(daterange: daterange,
                                      rooms: rooms,
-                                     room_rate: room_rate)
+                                     room_rate: discount_rate) # Default discount
       blocks << new_block
       return new_block
     end
 
     def new_block_reservation(block, room_number: block.available.first)
-      room_number = room_number.upcase
       validate(:room_number, room_number)
       validate(:block, block)
+      room_number = room_number.upcase
       # make sure the room number is part of the block
       unless block.rooms.include? room_number
         raise StandardError, "Room is not part of the given block"
       end
       unless block.available.include? room_number
-        raise StandardError, "Room already resurved during this block"
+        raise RoomIsTakenError, "Room already reserved during this block"
       end
       # Remove this room from its memory array of what's still available:
       block.disable(room_number)
@@ -85,7 +89,7 @@ TEST_RESERVATION_FILENAME = "support/test_reservation_data.csv"
 
     def suggest_room(daterange)
       validate(:daterange, daterange)
-      return public_avail_rooms.first
+      return public_avail_rooms(daterange).first
     end
 
 # Returns an array of reservations (EXCLUDING checkout day)
@@ -124,7 +128,7 @@ TEST_RESERVATION_FILENAME = "support/test_reservation_data.csv"
 # Returns an array of reservations with a daterange conflict
     def conflicting_reservations(daterange)
       validate(:daterange, daterange)
-      return reservations.select { |reservation| reservation.conflict?(daterange) }
+      return reservations.select { |reservation| reservation.daterange.conflict?(daterange) }
     end
 
 # Returns an array of blocks with a daterange conflict
@@ -139,19 +143,19 @@ TEST_RESERVATION_FILENAME = "support/test_reservation_data.csv"
       case type
       when :date
         raise ArgumentError, "Invalid date - use Date.parse (expected Date, " \
-        "not #{var.class})" unless var.is_a? Date
+        "not #{var.class})" unless var.is_a?(Date)
       when :room_number
         raise ArgumentError, "Invalid room number (expected String, " \
-        "not #{var.class})" unless var.is_a? String
+        "not #{var.class})" unless var.is_a?(String)
       when :daterange
         raise ArgumentError, "Invalid daterange (expected HotBook::DateRange, " \
-        "not #{var.class})" unless var.is_a? HotBook::DateRange
+        "not #{var.class})" unless var.is_a?(HotBook::DateRange)
       when :rooms
-        raise ArgumentError, "Invalid rooms (expected Array, " \
-        "not #{var.class})" unless var.is_a? Array
+        raise ArgumentError, "Invalid rooms (expected Array of " \
+        "Strings)" unless var.is_a?(Array) && var.first.is_a?(String)
       when :block
         raise ArgumentError, "Invalid block (expected HotBook::Block, " \
-        "not #{var.class})" unless var.is_a? HotBook::Block
+        "not #{var.class})" unless var.is_a?(HotBook::Block)
       end
     end
 
