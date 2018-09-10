@@ -1,5 +1,3 @@
-require 'pry'
-
 require 'time'
 require 'date'
 
@@ -16,6 +14,9 @@ module Hotel
     def initialize
       @rooms = build_room_list
       @reservations = []
+      if @reservations.length > 20
+        raise ArgumentError
+      end
       @current_res_id = 1
     end
 
@@ -27,27 +28,38 @@ module Hotel
       return rooms
     end
 
-    def find_room(check_in, check_out)
-      return @rooms.first
-      # availability = []
-      # @rooms.length.times do |i|
-      #   if @rooms[i][:check_in] !>= Date.strptime(check_in) && @rooms[i][:check_out] !< Date.strptime(check_out)
-      #     availability << @rooms[i]
-      #   end
-      # end
-      # return availability
-    end
-
-    def create_reservation(check_in, check_out)
+    def check_dates(check_in, check_out)
       raise ArgumentError if check_out == nil
       raise ArgumentError if check_in == nil
       raise ArgumentError if check_out < check_in
       raise ArgumentError if check_in > check_out
+    end
 
+    def find_room(check_in, check_out)
+
+      @rooms.each do |room|
+        rm_avail = true
+        @reservations.each do |reservation|
+          if room.room_number == reservation.room.room_number
+            if Date.strptime(check_in, '%m/%d/%Y') >= reservation.check_in && Date.strptime(check_out, '%m/%d/%Y') < reservation.check_out
+              rm_avail = false
+              break
+            end
+          end
+        end
+        if rm_avail
+          return room
+        end
+      end
+    end
+
+    def create_reservation(check_in, check_out)
+      check_dates(check_in, check_out)
       room = find_room(check_in, check_out)
       reservation = Hotel::Reservation.new(reservation_id: @current_res_id, room: room, check_in: check_in, check_out: check_out)
 
       @reservations << reservation
+
       @current_res_id += 1
       return reservation
     end
@@ -60,7 +72,6 @@ module Hotel
           return reservation.calculate_cost
         end
       end
-      return 1000
     end
 
   end

@@ -25,6 +25,10 @@ describe 'Reservation_mngr class' do
       expect(@front_desk.rooms).must_be_kind_of Array
       expect(@front_desk.reservations).must_be_kind_of Array
     end
+
+    it "returns an error if number of reservations exceeds 20" do
+      expect{@front_desk.reservations}.must_raise ArgumentError
+    end
   end
 
   describe "build_room_list" do
@@ -41,24 +45,32 @@ describe 'Reservation_mngr class' do
   describe "find_room" do
     before do
       @front_desk = Hotel::Reservation_mngr.new()
+      @room_list = @front_desk.build_room_list
+      @front_desk.find_room("01/03/2018", "01/10/2018")
+      @rez = []
     end
 
     it "returns a room that's available" do
-      room = @front_desk.find_room("01/03/1988", "01/10/1988")
-      expect(room.room_number).must_equal 1
+      res_1 = @front_desk.create_reservation("01/03/2018", "01/10/2018")
+      expect(res_1.room.room_number).must_equal 1
     end
 
-    it "omits rooms that aren't available" do
-      skip
-      res_1 = @front_desk.create_reservation("01/03/1988", "01/10/1988")
-      res_2 = @front_desk.create_reservation("01/09/1988", "01/17/1988")
-
-      room = @front_desk.find_room("01/03/1988", "01/14/1988")
-      expect(res_1)
-      expect(res_2)
-      expect(room.room_number).must_equal 3
+    it "returns next available room" do
+      @res_1 = @front_desk.create_reservation("01/03/2018", "01/10/2018")
+      @res_2 = @front_desk.create_reservation("01/03/2018", "01/07/2018")
+      expect(@res_2.room.room_number).must_equal 2
     end
+
+    it "returns length of array when all rooms reserved" do
+      20.times do |i|
+        @front_desk.create_reservation("01/03/2018", "01/10/2018")
+      end
+      rez = @front_desk.reservations
+      expect(rez.length).must_equal 20
+    end
+
   end
+
 
   describe "create_reservation" do
     before do
@@ -106,7 +118,7 @@ describe 'Reservation_mngr class' do
   describe "get_total" do
     before do
       @front_desk = Hotel::Reservation_mngr.new()
-      
+
       @front_desk.create_reservation("01/10/2018", "01/17/2018")
     end
 
