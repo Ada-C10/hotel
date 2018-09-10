@@ -1,9 +1,11 @@
+require_relative 'booking_manager.rb'
+
 
 
 class Reservation
   attr_reader :room
-  attr_reader :check_in
-  attr_reader :check_out
+  attr_accessor :check_in
+  attr_accessor :check_out
   attr_reader :reservation_dates
 
   def initialize(room, check_in, check_out)
@@ -11,7 +13,7 @@ class Reservation
     @check_in = check_in
     @check_out = check_out
     @reservation_dates = (@check_in...@check_out).to_a
-    
+
     if check_out < check_in
       raise StandardError.new("Check out date is before check in date")
     end
