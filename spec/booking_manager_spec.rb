@@ -198,6 +198,17 @@ describe "BookingManager class" do
     it "reserves available room for given date range" do
       expect(@hotel.reservations.length).must_equal @number_prior_reservations + 1
     end
+
+    it "iterates through rooms to find available room" do
+      room2 = @hotel.rooms[1]
+      booking2 = Hotel::Reservation.new(room2, guest_name: "Joe Jeans", start_date: "June 08, 2018", end_date: "June 14, 2018")
+      @hotel.add_reservation(booking2)
+      number_reserved = @hotel.reservations.length
+
+      @hotel.reserve_available_room("Lisel Wallace", "June 08, 2018", "June 13, 2018")
+      # expect(@hotel.reservations).must_include "Lisel Wallace"
+      expect(@hotel.reservations.length).must_equal number_reserved + 1
+    end
   end
 
 end
