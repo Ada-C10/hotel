@@ -5,8 +5,9 @@
 - Some names could be changed/condensed:
 -- list_available_rooms
 -- reservations_by_date_range
--- blocks.rb change to room_blocks?
+-- blocks.rb change to room_block?
 
 
 - Tests could be better organized:
 -- in date_range, most could fit under "date range"
+-- Tests could have more edge chases - If no date is passed in,
