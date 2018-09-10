@@ -1,6 +1,6 @@
 require_relative "spec_helper"
 require "csv"
-# TEST_FILENAME = "support/test_reservation.csv"
+TEST_RESERVATION_FILENAME = "support/test_reservation_data.csv"
 
 # # First, overwrite the test CSV
 # CSV.open(TEST_FILENAME, "w") #["start date", "end date", "room number", "room rate"] }
@@ -40,7 +40,11 @@ describe "HotBook::Reservation class" do
 
   describe "csv loading" do
     it "will correctly load lines of the CSV" do
-      
+      blocknote = "This is a block 1 reservation"
+      reservations = HotBook::Reservation.from_csv(TEST_RESERVATION_FILENAME)
+      expect(reservations[5].room_number).must_equal "1"
+      expect(reservations.last.notes).must_equal blocknote
+      expect(reservations.first.daterange.start_date).must_equal Date.parse("apr_1")
     end
   end
 
