@@ -4,10 +4,12 @@ require 'pry'
 class BookingManager
 
   attr_reader :rooms
-  attr_accessor :reservations
-  attr_accessor :make_reservation
+  attr_accessor :reservations, :start_date, :end_date, :make_reservation
+
 
   def initialize
+    @start_date = start_date
+    @end_date = end_date
     @reservations = []
     @rooms = []
     i = 0
@@ -15,12 +17,11 @@ class BookingManager
       @rooms << i + 1
       i += 1
     end
-    @make_reservation
+
   end
 
   def find_available_room(start_date, end_date)
     requested_dates = (start_date...end_date).to_a
-    # use some boolean logic and intersection to call out errors for conflit
     room = 237
     room_count = 1
     while room_count < 20
@@ -44,14 +45,15 @@ class BookingManager
   end
 end
 
-
 def make_reservation(start_date, end_date)
+  start_date = @start_date
+  end_date = @end_date
 
   room = find_available_room(start_date, end_date)
   if @rooms.include? room
     reservation = Reservation.new(room, start_date, end_date)
     @reservations << reservation
-    # binding.pry
+    binding.pry
     @make_reservation
   end
 end
