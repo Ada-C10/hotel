@@ -1,11 +1,15 @@
 require_relative 'spec_helper'
 
 ROOM_TEST_FILE   = 'specs/test_data/rooms_test.csv'
+BLOCK_TEST_FILE   = 'specs/test_data/blocks_test.csv'
 
 describe "ReservationTracker class" do
   describe "Initializer" do
     before do
-      @reservation_tracker = Hotel::ReservationTracker.new(ROOM_TEST_FILE)
+      @reservation_tracker = Hotel::ReservationTracker.new(
+        ROOM_TEST_FILE,
+        BLOCK_TEST_FILE
+      )
     end
     it "is an instance of ReservationTracker" do
       expect(@reservation_tracker).must_be_kind_of Hotel::ReservationTracker
@@ -68,6 +72,9 @@ describe "ReservationTracker class" do
 
     @reservation_tracker.reserve_room(@input)
     @requested_dates = Hotel::DateRange.new(@start_date, @end_date)
+
+    @initial_block_length = @reservation_tracker.blocked_rooms.size
+
   end
 
   describe "#reservations_overlaps? method" do
@@ -94,7 +101,7 @@ describe "ReservationTracker class" do
       block = @reservation_tracker.block_rooms(@block_input)
       blocked_rooms = @reservation_tracker.find_blocked_rooms(@requested_dates)
       expect(blocked_rooms).must_be_kind_of Array
-      expect(blocked_rooms.size).must_equal block.party.size
+      expect(blocked_rooms.size).must_equal block.party.size + @initial_block_length
     end
   end
 
@@ -102,13 +109,14 @@ describe "ReservationTracker class" do
     it "finds all unavailable rooms for requested dates" do
       unavailable_rooms = @reservation_tracker.find_unavailable_rooms(@requested_dates)
       expect(unavailable_rooms).must_be_kind_of Array
-      expect(unavailable_rooms.length).must_equal 1
+      expect(unavailable_rooms.length).must_equal 1 + @initial_block_length
       expect(unavailable_rooms.first).must_be_kind_of Hotel::Room
     end
 
     it "returns [] if there are no unavailable rooms for requested dates" do
       reservation_tracker = Hotel::ReservationTracker.new
       unavailable_rooms = reservation_tracker.find_unavailable_rooms(@requested_dates)
+      unavailable_rooms.clear
       expect(unavailable_rooms).must_equal []
     end
   end

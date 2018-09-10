@@ -1,4 +1,5 @@
 require_relative 'spec_helper'
+require 'pry'
 
 describe "Block class" do
   before do
@@ -11,7 +12,6 @@ describe "Block class" do
       party: 5,
       date_range: @date_range
     }
-
     @block = Hotel::Block.new(@block_data)
   end
 
