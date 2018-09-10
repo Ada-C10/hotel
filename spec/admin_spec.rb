@@ -56,7 +56,7 @@ describe "Checks availability of room according to dates" do
     guy = Admin.new
     answer = guy.check_availability("2018-09-01", "2018-09-11")
 
-    expect(answer).must_be_kind_of String
+    expect(answer.length).must_be :>, 19
   end
 end
 
@@ -66,15 +66,23 @@ describe "Checks rooms reserved for a certain date" do
     new_guy.reserve(3,"2018-12-03","2018-12-13")
     answer = new_guy.rooms_reserved_by_date("2018-12-04")
 
-    expect(answer).must_be_kind_of String
+    expect(answer.length).must_equal 1
   end
 end
 
 describe "Checks to make sure an error is raised if invalid date range is given" do
   it "raises Error while booking invalid dates" do
-    old_guy = Admin.new
-    mistake = old_guy.reserve(9,"2018-12-24","2018-12-15")
+    sleepy_guy = Admin.new
 
-    expect(mistake).must_raise StandardError
+    expect{sleepy_guy.reserve(9,"2018-12-25","2018-12-15")}.must_raise StandardError
+  end
+end
+
+describe "Checks availability for a single date" do
+  it "Lets admin know available rooms for a particular date" do
+    curious_guy = Admin.new
+    ans = curious_guy.check_availability ("2018-06-01")
+
+    expect(ans.length).must_be :>, 19
   end
 end

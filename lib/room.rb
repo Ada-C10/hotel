@@ -25,7 +25,7 @@ class Room
     end
   end
 
-  def block_room
+  def block_room_in_room
     @@rooms_array.each do |room|
       room.each do |key, value|
         if room.keys[0] == @room_number
@@ -36,7 +36,7 @@ class Room
     end
   end
 
-  def book_blocked_room
+  def book_blocked_room_in_room
     @@rooms_array.each do |room|
       room.each do |key, value|
         if room.keys[0] == @room_number

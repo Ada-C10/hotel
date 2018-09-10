@@ -9,8 +9,6 @@ ROOMS_PRIOR_TO_BOOKING =  [{1=>[]},{2=>[]},{3=>[]},{4=>[]},{5=>[]},{6=>[]},{7=>[
 {18=>[]},{19=>[]},{20=>[]}]
 
 class Admin
-  # @@rooms = ROOMS_PRIOR_TO_BOOKING
-  # @@blocked_rooms = []
   def initialize
     @rooms = ROOMS_PRIOR_TO_BOOKING
     @blocked_rooms = []
@@ -66,82 +64,53 @@ class Admin
   end
 
   def rooms_reserved_by_date(date)
+    reserved = []
     @rooms.each do |hash|
       hash.each do |key, value|
         value.each do |date_range|
           if Date.parse(date) > Date.parse(date_range[0]) &&
             Date.parse(date) < Date.parse(date_range[1])
-            puts "Room number #{key} is booked during this date"
+            reserved << key
+            return reserved
           end
         end
       end
     end
   end
 
-  def print_total_cost_per_reservation(reservation_id)
-    Reservation.reservations.each do |reservation|
-      if reservation[3] == reservation_id
-        puts reservation[4]
+  def print_total_cost_per_reservation(reservation_id = nil)
+    if reservation_id != nil
+      Reservation.reservations.each do |reservation|
+        if reservation[3] == reservation_id
+          return reservation[4]
+        end
       end
+    else
+      last = Reservation.reservations[-1]
+      return last[4]
     end
   end
 
   def check_availability (check_in_date, check_out_date = nil)
+    available_rooms = []
     if check_out_date == nil
-      date = check_in_date
-      @rooms.each do |hash|
-        hash.each do |key,value|
-          value.each do |date_range|
-            if Date.parse(date) < Date.parse(date_range[0]) || Date.parse(date) >= Date.parse(date_range[1])
-             puts "Date is available for room number #{key}"
-            end
-          end
-          if value == []
-            puts "Date is available for room number #{key}"
-          end
-        end
-      end
-   else
+      check_out_date = check_in_date
+    end
     @rooms.each do |hash|
-      hash.each do |key, value|
+      hash.each do |key,value|
         if value != []
           value.each do |date_range|
             if Date.parse(check_in_date) < Date.parse(date_range[0]) && Date.parse(check_out_date) <= Date.parse(date_range[0]) ||
               Date.parse(check_in_date) >= Date.parse(date_range[1]) && Date.parse(check_out_date) > Date.parse(date_range[1])
-              puts "Room #{key} is available"
+              available_rooms << key
             end
           end
         else
-          puts "Room #{key} is available"
+          available_rooms << key
         end
       end
     end
+    return available_rooms
   end
-end
-
-
 
 end
-
-# test = Admin.new
-# test.reserve(7,"2018-08-09","2018-08-11")
-# test.reserve(7,"2018-08-02","2018-08-05")
-# # test.print_total_cost_per_reservation("2018/1")
-# # # #
-# #test.reserve(8,"2018-06-21","2018-07-05")
-# # #print Reservation.reservations
-# # test.print_total_cost_per_reservation("2018/2")
-# #test.view_all_rooms
-#
-# test.reserve(8,"2018-06-23","2018-07-02")
-#test.block_rooms(4, "2018-06-11","2018-07-11")
-#puts r.length
-# print test.view_all_rooms
-# test.rooms_reserved_by_date("2018-08-10")
-# test.check_availability("2018-08-10")
-# test.rooms_reserved_by_date("2018-07-10")
-#test.book_blocked_room
-# test.view_all_rooms
-# Reservation.reservations
-#test.print_total_cost_per_reservation("2018/2")
-# # test.view_reservations_on_a_date("2018-08-24")
