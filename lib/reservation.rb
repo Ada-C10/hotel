@@ -1,7 +1,6 @@
 require 'date'
 require 'pry'
 
-require_relative 'room_booking'
 
 module Hotel
   class Reservation
