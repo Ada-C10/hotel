@@ -42,16 +42,6 @@ describe 'Wave 1' do
       end
     end
   end
-
-  describe 'reservation_cost method' do
-    it 'finds the cost of a given reservation' do
-      reservation = @hotel.reservation_cost(14, Date.new(2018, 4, 1))
-      reservation2 = @hotel.reservation_cost(15, Date.new(2018, 4, 3))
-
-      expect(reservation).must_equal 200
-      expect(reservation2).must_equal 600
-    end
-  end
 end
 
 describe 'Wave 2' do
