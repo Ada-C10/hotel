@@ -48,6 +48,7 @@ module Hotel
     end
 
     def list_reservations(date)
+      raise ArgumentError unless date.respond_to? :next_day
       if reservations.empty?
         return nil
       else
@@ -58,19 +59,23 @@ module Hotel
     end
 
     def list_available_rooms(checkin_date, checkout_date = nil)
+      raise ArgumentError unless checkin_date.respond_to? :next_day
+      raise ArgumentError if checkout_date && !(checkout_date.respond_to? :next_day)
       return rooms.select { |room| room.is_available?(checkin_date, checkout_date) }
     end
 
     def find_reservation(confirmation_num)
+      raise ArgumentError unless confirmation_num.class == Integer
       return reservations[confirmation_num]
     end
 
     def find_block(block_name)
+      raise ArgumentError unless block_name.class == String
       return blocks[block_name]
     end
 
     def find_room(room_num)
-      raise ArgumentError, "No such room exists." if room_num > rooms.length
+      raise ArgumentError unless room_num.class == Integer && room_num > 0 && room_num <= rooms.length
       return rooms[room_num-1]
     end
 

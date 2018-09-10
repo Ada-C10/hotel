@@ -184,6 +184,10 @@ describe "Admin" do
   end
 
   describe "Admin#list_reservations" do
+    it "raises an error if input is not a Date object" do
+      expect{@admin.list_available_rooms("December 10")}.must_raise ArgumentError
+    end
+
     it "returns a list of all reservations on a specific date in hash organized by confirmation code" do
       10.times do
         @admin.make_reservation(Date.parse("2019-01-01"), Date.parse("2019-01-04"))
@@ -197,6 +201,10 @@ describe "Admin" do
   end
 
   describe "Admin#list_available_rooms" do
+    it "raises an error if input is not a Date object" do
+      expect{@admin.list_available_rooms("December 10")}.must_raise ArgumentError
+    end
+
     it "returns a list of available rooms for a given date" do
       @admin.make_reservation(Date.parse("2019-01-01"), Date.parse("2019-01-02"))
       @admin.make_reservation(Date.parse("2019-01-01"), Date.parse("2019-01-04"))
@@ -280,6 +288,10 @@ describe "Admin" do
   end
 
   describe "Admin#find_reservation" do
+    it "raises an error if input is not an integer" do
+      expect{@admin.find_reservation("CD1")}.must_raise ArgumentError
+    end
+
     it "returns nil if no reservation found" do
       expect(@admin.find_reservation(10)).must_be_nil
     end
@@ -294,6 +306,10 @@ describe "Admin" do
   end
 
   describe "Admin#find_block" do
+    it "raises an error if input is not a string of the block name" do
+      expect{@admin.find_block(1234)}.must_raise ArgumentError
+    end
+
     it "returns nil if no block found" do
       expect(@admin.find_block("Johnson Wedding")).must_be_nil
     end
@@ -307,7 +323,7 @@ describe "Admin" do
   end
 
   describe "Admin#find_room" do
-    it "raises an error if no room found" do
+    it "raises an error if invalid room number" do
       expect{@admin.find_room(21)}.must_raise ArgumentError
     end
 
