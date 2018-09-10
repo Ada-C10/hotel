@@ -1,0 +1,10 @@
+Refactors:
+
+- Rename booking manager or possibly split it to two different objects, reservation maker and reservation lister
+- Fix the broken reservation maker method that I broke the night before submission
+- Rewrite tests for:
+  - Completely before
+  - Completely after
+  - Ends on the checkin date
+  - Starts on the checkout date
+- Finish tests and methods for Group reservations
