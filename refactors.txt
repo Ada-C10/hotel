@@ -1,0 +1,3 @@
+Changes to make in the future:
+- Change start_date and end_date to check_in and check_out
+- 
