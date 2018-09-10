@@ -53,6 +53,21 @@ describe "Room class" do
     end
   end
 
+  describe "Room#is_available?" do
+    it "returns true if a room is available" do
+      expect(room.is_available?(Date.parse("2019-10-02"))).must_equal true
+    end
+
+    it "returns false if a room is anything but available (e.g. booked, blocked)" do
+      expect(room.is_available?(Date.parse("2019-01-02"))).must_equal true
+      expect(room.is_available?(Date.parse("2019-02-02"))).must_equal true
+      room.change_room_status(Date.parse("2019-01-02"), :BOOKED)
+      room.change_room_status(Date.parse("2019-02-02"), :BLOCKED)
+      expect(room.is_available?(Date.parse("2019-01-02"))).must_equal false
+      expect(room.is_available?(Date.parse("2019-02-02"))).must_equal false
+    end
+  end
+
   describe "Room#change_room_status" do
     it "changes a room's status" do
       expect(room.is_available?(Date.parse("2019-01-02"))).must_equal true
@@ -68,6 +83,12 @@ describe "Room class" do
     end
   end
 
+  describe "Room#nightly_rate" do
+    it "gets the nightly rate for a room" do
+      expect(room.nightly_rate(AVAILABLE_STARTING)).must_equal 200.00
+    end
+  end
+
   describe "Room#change_nightly_rate" do
     it "changes the nightly rate for a given date" do
       expect(room.nightly_rate(AVAILABLE_STARTING)).must_equal 200.00
@@ -80,6 +101,4 @@ describe "Room class" do
       expect{room.change_nightly_rate(AVAILABLE_THRU, "two hundred")}.must_raise ArgumentError
     end
   end
-
-  # TODO ADD TESTS FOR IS AVAILABLE
 end
