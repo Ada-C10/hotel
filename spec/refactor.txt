@@ -1,0 +1,9 @@
+1. Move ArgumentErrors to check_dates method
+
+2. Refactor find_rooms method - make a new method to minimize nested loops
+
+3. Build rooms before creating reservation_mngr instances
+
+4. Change name of "rez" in reservation_mngr test ln 64
+
+5. Change name of "@rez" in reservation_mngr test ln 46
