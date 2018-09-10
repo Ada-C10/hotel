@@ -23,6 +23,15 @@ describe "HotBook::Reservation class" do
     end
   end
 
+  describe "range method" do
+    it "range only includes overnights and excludes checkout day" do
+      range = load_reservations[0].range
+      checkout_date = Date.parse("apr_6")
+      expect(range).must_be_instance_of Range
+      expect(range.include? checkout_date).must_equal false
+    end
+  end
+
   describe "cost method" do
     it "will return correct cost" do
       expect(reservation.cost).must_equal 2.0
