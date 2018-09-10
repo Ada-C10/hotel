@@ -1,5 +1,3 @@
-require_relative 'room_booker'
-
 module BookingLogic
   class Reservation
     attr_reader :room, :check_in, :check_out
