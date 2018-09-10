@@ -128,6 +128,7 @@ class Admin
     e_date = end_date - 1
     range = (start_date..e_date)
     rooms = data[:rooms]
+    raise StandardError if rooms > 5 #block
     discounted_rate = data[:discounted_rate]
     available_rooms = view_vacant_rooms(start_date, e_date)
 

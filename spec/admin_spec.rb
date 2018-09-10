@@ -80,6 +80,7 @@ describe "#rooms information and reservation" do
   # before and after count of rooms from driver
   # needs to test when reservation is 1 - 2
   # and another one with reservation 1 - 3, should include 2 rooms
+  # needs a test with arrange to have block rooms and to check result
   it "can make a reservation" do
     start_date = "2018-08-07 00:00:00 -0700"
     end_date = "2018-08-09 00:00:00 -0700"
@@ -167,4 +168,22 @@ describe "#blocks" do
       expect(@admin.rooms[i].blocks).wont_be_empty
     end
   end
+
+  it "raises an Standard error for invalid rooms for block" do
+    start_date = "2018-08-07 00:00:00 -0700"
+    end_date = "2018-08-09 00:00:00 -0700"
+    @admin.reserve_room(start_date, end_date)
+    # for range and testing view vacant_rooms
+    # one day less because the last night is not payed and view_vacant_rooms takes care of that
+
+    data = {}
+    data[:start_date] = start_date
+    data[:end_date] = end_date
+    data[:rooms] = 6
+    data[:discounted_rate] = 100
+    expect{
+      @admin.create_block_rooms(data)
+    }.must_raise StandardError
+  end
+
 end
