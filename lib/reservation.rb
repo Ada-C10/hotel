@@ -28,6 +28,7 @@ module HotBook
       return duration * room_rate
     end
 
+# !!!!Range only includes overnights and EXCLUDES checkout day!!!!
     def range
       return daterange.to_range
     end

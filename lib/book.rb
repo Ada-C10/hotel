@@ -88,8 +88,8 @@ TEST_RESERVATION_FILENAME = "support/test_reservation_data.csv"
       return public_avail_rooms.first
     end
 
-# Returns an array of reservations
-    def list_reservations(date)
+# Returns an array of reservations (EXCLUDING checkout day)
+    def list_by_nights(date)
       validate(:date, date)
       return reservations.select {|reservation| reservation.range.include? date}
     end

@@ -28,6 +28,7 @@ module HotBook
       end
     end
 
+# !!!!Range only includes overnights and EXCLUDES checkout day!!!!
     def to_range
       return (@start_date...@end_date)
     end
