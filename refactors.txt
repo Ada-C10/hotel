@@ -1,1 +1,5 @@
-I would refactor mostly the concierge class. It is bigger than I want. I wanted it to be more of an 'viewing' sort of class but it ends up being more of an 'action' class. 
+I would refactor mostly the concierge class. It is bigger than I want. I wanted it to be more of an 'viewing' sort of class but it ends up being more of an 'action' class. I want to move a lot of methods out from there.
+
+I tried to use CSV for my data, but none of the data was appending to my reservations file. I think if that worked, my concierge class would have been more the way I wanted it to be. It would rely more on the module methods than its own methods.
+
+I want to move around a lot of stuff and make it much more organized. 
