@@ -10,11 +10,8 @@ module Hotel
     def initialize(start_date, end_date, room_id)
 
       @start_date = start_date
-
       @end_date = end_date
-
       @room_id = room_id
-
       @total_cost = reservation_cost(@start_date, @end_date)
 
       validate_dates
