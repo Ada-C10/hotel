@@ -1,0 +1,5 @@
+The booking system needs more for how to handle block room reservations.
+
+Make sure that naming conventions used make sense and are readable. I tried to be as specific as possible with some of my variables. For example, not everything is named as room. Things are represented as room_number, room_cost, number_of_rooms, etc.
+
+Consider creating specific errors that tells the programmer what information is not accepted for a method. 
