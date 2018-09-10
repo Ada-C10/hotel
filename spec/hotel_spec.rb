@@ -60,5 +60,4 @@ describe "HotBook::Hotel class" do
     # it "handles edge case @rooms = nil" do
     # end
   end
-
 end
