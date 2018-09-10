@@ -107,12 +107,7 @@ class Admin
       raise ArgumentError, "rooms are not available in given period"
     else
       start_d = start_date
-      # room_entered.each do |room|
-      #   while start_d < end_date
-      #     @room_unbooked_dates.reject! {|item| item == {room_n: room, unbooked_date: start_d}}
-      #     start_d += 1
-      #   end
-      # end
+
       date_list = []
       while start_d < end_date
         date_list << start_d
@@ -128,8 +123,6 @@ class Admin
 
       @room_unbooked_dates = @room_unbooked_dates - room_date_list
     end
-
-
 
     new_block = create_block_admin(name_of_block,room_collection, start_date, end_date, discount_rate)
     room_blocks << new_block
@@ -186,6 +179,6 @@ class Admin
 
    # create new room_block admin object
     def create_block_admin(name, room_id_list, start_date, end_date, discount_rate)
-      return BlockAdmin.new(name, room_id_list, start_date, end_date, discount_rate)
+      return Block.new(name, room_id_list, start_date, end_date, discount_rate)
     end
 end

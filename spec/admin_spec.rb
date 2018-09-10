@@ -239,7 +239,7 @@ describe "Admin class" do
     end
 
     it "returns a new object of BlockAdmin " do
-      expect(@admin_1.create_room_block("block1",@list_3, @start_3, @end_3, @discount)).must_be_kind_of BlockAdmin
+      expect(@admin_1.create_room_block("block1",@list_3, @start_3, @end_3, @discount)).must_be_kind_of Block
     end
 
     it "increase the length of room_blocks array be 1" do

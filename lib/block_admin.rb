@@ -4,7 +4,7 @@ require_relative 'reservation'
 require_relative 'room'
 require_relative 'admin'
 
-class BlockAdmin < Admin
+class Block < Admin
   attr_reader :discount, :block_name
 
   def initialize(name, room_id_list, start_date, end_date, discounted_rate)

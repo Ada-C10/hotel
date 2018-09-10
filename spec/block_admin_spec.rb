@@ -5,13 +5,13 @@ describe "Block Admin class" do
 
   before do
     list = [6,7,8,9]
-    @admin_b = BlockAdmin.new("block1",list, Date.new(2018,10,5), Date.new(2018,10,10),0.10)
+    @admin_b = Block.new("block1",list, Date.new(2018,10,5), Date.new(2018,10,10),0.10)
 
   end
 
   describe "Initializer" do
     it "is an instance of BlockAdmin" do
-      expect(@admin_b).must_be_kind_of BlockAdmin
+      expect(@admin_b).must_be_kind_of Block
     end
 
     it "establishes the base data structures when instantiated" do
