@@ -141,10 +141,10 @@ module Hotel
           search_date = res_start_date
 
           until search_date > res_end_date
-            search_date.each do |search_date|
+            # search_date.each do |search_date|
               date_range << search_date
               search_date += 1
-            end
+            # end
           end
 
           # date_range && reserved_dates
@@ -190,4 +190,4 @@ module Hotel
     end
 
   end
-end 
+end
