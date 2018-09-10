@@ -151,7 +151,7 @@ class ReservationTracker
     end
   end
 
-# Wave 3 not complete. Need to change show_available_rooms to search through each room instances @dates_booked AND @dates_held_for_block. Currently, show_available_rooms is only searching @date_booked. Modify update_dates_booked_for_room to move date instance from @dates_held_for_block to @dates_booked. 
+# Wave 3 not complete. Need to change show_available_rooms to search through each room instances @dates_booked AND @dates_held_for_block. Currently, show_available_rooms is only searching @date_booked. Modify update_dates_booked_for_room to move date instance from @dates_held_for_block to @dates_booked.
 def create_block(event_name, start, ending)
   rooms_for_block = []
 
@@ -165,7 +165,7 @@ def create_block(event_name, start, ending)
     raise StandardError.new("There are not enough rooms available for the given date range to create a block")
   end
 
-  BlockRoom.new(event_name, start, ending, rooms_for_block)
+  return BlockRoom.new(event_name, start, ending, rooms_for_block)
 end
 
 end
