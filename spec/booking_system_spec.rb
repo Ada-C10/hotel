@@ -76,6 +76,32 @@ describe "BookingSystem class" do
     end
   end
 
+  describe "#generate_block_id" do
+    # NOTE: here and in roomblock, i got tired and didn't do res but instead ints in array
+    let(:block_1) {Hotel::RoomBlock.new(id: 2, reservations: [1,2,3], check_in: "1996-09-09", check_out: "1996-08-13")}
+    let(:block_2) {Hotel::RoomBlock.new(id: 3, reservations: [1,2,3], check_in: "1996-10-01-", check_out: "1996-10-10")}
+
+    it "can create ID for first room block ID instance" do
+      new_id = booking_system.generate_block_id()
+      new_block = Hotel::RoomBlock.new(id: new_id, reservations: [1,2,3], check_in: "1996-08-01", check_out: "1996-08-03")
+
+      booking_system.room_blocks << new_block
+
+      expect(booking_system.room_blocks[0].id).must_equal 1
+    end
+
+    it "can generate accurate IDs when new reservations are added to reservations list" do
+      first_block = Hotel::RoomBlock.new(id: 10, reservations: [1,2,3], check_in: "1996-09-09", check_out: "1996-09-13")
+      booking_system.room_blocks << first_block
+
+      new_id = booking_system.generate_block_id()
+      second_block= Hotel::RoomBlock.new(id: new_id, reservations: [1,2,3], check_in: "1996-10-01", check_out: "1996-10-10")
+      booking_system.room_blocks << second_block
+
+      expect(booking_system.room_blocks[1].id).must_equal 11
+    end
+  end
+
   # describe "#find_room" do
   # skip
   #   let(:room_num) {4}
@@ -258,5 +284,10 @@ describe "BookingSystem class" do
     end
   end
 
+  describe "#create_room_block" do
+    it "creates a block of rooms" do
 
+      expect()
+    end
+  end
 end

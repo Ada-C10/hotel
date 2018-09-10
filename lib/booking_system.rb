@@ -5,11 +5,12 @@ require_relative 'reservation'
 
 module Hotel
   class BookingSystem
-    attr_reader :rooms, :reservations
+    attr_reader :rooms, :reservations, :room_blocks
 
     def initialize()
       @rooms = list_all_rooms() #<-- array of all room numbeers
       @reservations = []
+      @room_blocks = []
     end
 
     def list_all_rooms()
@@ -25,6 +26,14 @@ module Hotel
         return 1
       else
         return @reservations.max_by { |reservation| reservation.id}.id + 1
+      end
+    end
+
+    def generate_block_id()
+      if @room_blocks.empty?
+        return 1
+      else
+        return @room_blocks.max_by { |block| block.id}.id + 1
       end
     end
 
@@ -75,11 +84,28 @@ module Hotel
 
       return new_reservation
     end
-#
-#     # QUESTION: NOT NEEDED-- JUST IN RESERVATION?
-#     # def add_reservation(new_reservation)
-#     #   @reservations << create_reservation(new_reservation)
-#     # end
+
+    # def create_room_block(check_in:, check_out:, :block_size)
+    #   date_range = construct_cal_checker(check_in: check_in, check_out: check_out)
+    #
+    #   avail_rooms = list_avail_rooms_for_range(date_range)
+    #
+    #   if avail_rooms.length > block_size
+    #     raise StandardError, "Not enough rooms available."
+    #   end
+    #
+    #   block_size.times do
+    #     room_block = Hotel::Reservation.new(check_in: check_in, check_out: check_out).map { |res| res }
+    #   end
+    #
+    #   id = generate_block_id()
+    #
+    #   new_room_block = Hotel::RoomBlock(id: id, check_in: check_in, check_out: check_out, reservations: room_block)
+    #
+    #   @room_blocks << new_room_block
+    #
+    #   end
+    # end
 #
 #
 #
