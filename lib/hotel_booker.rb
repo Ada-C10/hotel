@@ -8,21 +8,18 @@ require_relative 'date_range'
 
 module Hotel
   class HotelBooker
-    attr_reader :rooms, :reservations, :booked_dates
-    attr_accessor
-
+    attr_accessor :rooms, :reservations
     NUM_ROOMS = 20
 
     def initialize()
       @reservations = []
-      @booked_dates = []
       @rooms = []
       NUM_ROOMS.times do |i|
         @rooms << Hotel::Room.new(i+1)
       end
     end
 
-    # arguments for dates are strings
+    # arguments for check_in and check_out are Strings
     def make_reservation(id, check_in, check_out)
       check_in = Date.parse(check_in)
       check_out = Date.parse(check_out)
@@ -34,31 +31,23 @@ module Hotel
         raise StandardError, "There are no more available rooms for this date range!"
       else
         reservation.room = available[0]
+        @reservations << reservation
       end
-
-
-      @reservations << reservation
-      @booked_dates << date_range.dates_booked
     end
 
-    # arguments must be Dates, not strings
+    # arguments for check_in and check_out are Dates
     def unreserved_rooms(check_in, check_out)
       reserved_rooms = []
       new_range = Hotel::DateRange.new(check_in, check_out)
 
       @reservations.each do |reservation|
-        reservation_range =
         if reservation.date_range.overlaps?(new_range)
           reserved_rooms << reservation.room
         end
       end
 
       unreserved = @rooms - reserved_rooms
-
-
-
       return unreserved
-
     end
 
     def find_reservations(date)
@@ -74,10 +63,6 @@ module Hotel
       return matching_reservations
     end
 
-
-
-    def all_booked_dates()
-    end
 
   end
 end

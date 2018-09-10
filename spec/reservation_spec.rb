@@ -26,7 +26,6 @@ describe "Reservation Class" do
       reservation_1 = Hotel::Reservation.new(1, date_range)
       reservation_2 = Hotel::Reservation.new(2, date_range2)
 
-
       expect(reservation_1.cost).must_equal 400
       expect(reservation_2.cost).must_equal 18200
     end

@@ -9,12 +9,11 @@ describe "HotelBooker class" do
     end
 
     it "Establishes the base data structures when instantiated" do
-      [:rooms, :reservations, :booked_dates].each do |prop|
+      [:rooms, :reservations].each do |prop|
         expect(booker).must_respond_to prop
       end
       expect(booker.rooms).must_be_kind_of Array
       expect(booker.reservations).must_be_kind_of Array
-      expect(booker.booked_dates).must_be_kind_of Array
     end
 
     it "Loads 20 Rooms" do
@@ -28,16 +27,25 @@ describe "HotelBooker class" do
   describe "Make a reservation method" do
     before do
       @booker = Hotel::HotelBooker.new
-      @booker.make_reservation(1, '2018-09-05', '2018-09-07')
     end
 
-    it "Adds a Reservation to the list of reservations" do
+    it "adds a Reservation to the list of reservations" do
+      @booker.make_reservation(1, '2018-09-05', '2018-09-07')
       expect(@booker.reservations.length).must_equal 1
       expect(@booker.reservations[0]).must_be_kind_of Hotel::Reservation
     end
 
-    it "Adds a Reservation which contains an instance of Room" do
+    it "adds a Reservation which contains an instance of Room" do
+      @booker.make_reservation(1, '2018-09-05', '2018-09-07')
       expect(@booker.reservations[0].room).must_be_kind_of Hotel::Room
+    end
+
+    it "raises a StandardError if there are no available rooms for the date range" do
+      20.times do |i|
+        @booker.make_reservation(i+1, '2018-09-05', '2018-09-07')
+      end
+
+      expect{ @booker.make_reservation(21, '2018-09-05', '2018-09-07') }.must_raise StandardError
     end
   end
 
@@ -62,33 +70,29 @@ describe "HotelBooker class" do
 
   describe "unreserved_rooms method" do
     before do
-
       @date1 = Date.parse('2018-09-05')
       @date2 = Date.parse('2018-09-09')
       @date3 = Date.parse('2018-09-10')
       @date4 = Date.parse('2018-09-11')
 
-      @date_range1 = Hotel::DateRange.new(@date1, @date2)
-      @date_range2 = Hotel::DateRange.new(@date1, @date3)
-      @date_range3 = Hotel::DateRange.new(@date2, @date3)
-      @date_range4 = Hotel::DateRange.new(@date3, @date4)
-
-
       @booker = Hotel::HotelBooker.new
       @booker.make_reservation(1, '2018-09-05', '2018-09-08')
       @booker.make_reservation(2, '2018-09-06', '2018-09-08')
       @booker.make_reservation(3, '2018-09-07', '2018-09-09')
-      @date
     end
 
     it "returns an array of unreserved rooms for date range given unreserved rooms exist" do
       expect(@booker.unreserved_rooms(@date1, @date2)).must_be_kind_of Array
+      expect(@booker.unreserved_rooms(@date1, @date2).length).must_equal 17
       expect(@booker.unreserved_rooms(@date1, @date2)[0]).must_be_kind_of Hotel::Room
+      expect(@booker.unreserved_rooms(@date1, @date2)[0].id).must_equal 4
     end
 
-    # it "returns an empty array if there are no unavailable rooms for that date" do
-    #   expect(@booker.unreserved_rooms('2018-09-05', '2018-09-08')).must_equal []
-    # end
-  end
+    it "returns array of 20 rooms given if there no reservations for the date" do
+      expect(@booker.unreserved_rooms(@date3, @date4)).must_be_kind_of Array
+      expect(@booker.unreserved_rooms(@date3, @date4).length).must_equal 20
+    end
 
+
+  end
 end
