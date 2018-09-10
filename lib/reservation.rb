@@ -19,6 +19,10 @@ module HotBook
       # @csv_headers = ["start date", "end date", "room number", "room rate", "notes"]
     end
 
+    def conflict?(daterange)
+      return (self.daterange).conflict? daterange
+    end
+
     def duration
       return daterange.duration
     end
@@ -29,6 +33,22 @@ module HotBook
 
     def range
       return daterange.to_range
+    end
+
+    def self.from_csv(filename)
+      reservations = CSV.open(filename).map { |row|
+        start_date = row[0]
+        end_date = row[1]
+        room_number = row[2]
+        room_rate = row[3].to_f
+        notes = row[4]
+
+        HotBook::Reservation.new(
+          daterange: HotBook::DateRange.new(start_date: start_date,
+                                            end_date: end_date),
+          room_number: room_number, room_rate: room_rate, notes: notes)
+      }
+      return reservations
     end
 
 # Returns an array of hashes of all reservations

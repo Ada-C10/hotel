@@ -3,13 +3,6 @@ require "pry"
 require "awesome_print"
 
 module HotBook
-
-# a block holds:
-  # a list of blocked room numbers (need to be able to add a room to a block later!)
-  # available room numbers array (is updated by book.rb code)
-  # daterange
-  # room rate
-
   class Block
     require_relative "daterange"
     attr_reader :available, :rooms, :daterange, :room_rate

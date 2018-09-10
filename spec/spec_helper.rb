@@ -11,6 +11,7 @@ require "date"
 require "csv"
 
 # Add lib files here (require_relative "../")
+require_relative "../lib/block.rb"
 require_relative "../lib/book.rb"
 require_relative "../lib/daterange.rb"
 require_relative "../lib/hotel.rb"
