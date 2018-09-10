@@ -1,4 +1,5 @@
 require 'pry'
+require 'Date'
 
 require_relative 'room'
 require_relative 'reservations'
@@ -7,11 +8,11 @@ module Hotel
   class ReservationManager
     attr_reader :rooms, :reservations
     def initialize(number_of_rooms)
+      @reservations = []
       @rooms = []
       (1..number_of_rooms).each do |number|
         @rooms << Room.new(number)
       end
-      @reservations =[]
     end
 
     # def available_rooms(check_in, check_out)
@@ -29,11 +30,9 @@ module Hotel
     #   return booked_rooms #array
 
   def reserve_room(check_in, check_out)
-    #number = @reservations.length + 1
     new_reservation = Reservation.new(@reservations.length + 1, check_in: check_in, check_out: check_out)
-    # assigned_room = available_rooms(check_in, check_out).first
-    new_reservation.rooms << assigned_room
-    find_room(assigned_room.id).reservations << new_reservation
+    #new_reservation.rooms << assigned_room
+    #find_room(assigned_room.id).reservations << new_reservation
     return new_reservation
   end
 

@@ -10,14 +10,9 @@ describe "Room Class" do
       expect(hotel_room.reservations).must_be_kind_of Array
     end
   end
-
-  # describe "create_rooms" do
-  #   it "creates specified number of hotel rooms" do
-  #     hotel_ada = Hotel::Room.create_rooms(20)
-  #     expect(hotel_ada).must_be_instance_of Hotel::Room
-  #     expect(hotel_ada.rooms.count).must_equal 20
-  #     expect(hotel_ada.rooms[0]).must_be_instance_of Hotel::Room
-  #     expect(hotel_ada.rooms).must_be_kind_of Array
-
-
+  # wave 2 describe "is_available method" do
+  #   it "checks to see which rooms are available for a given date range" do
+  #     expect(hotel_room.is_available(check_in: '08-23-2018', check_out: '08-25-2018')).must_be_kind_of Array
+  #
+  #   end
 end

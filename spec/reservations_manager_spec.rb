@@ -31,7 +31,7 @@ describe "ReservationManager" do
 
   describe "reserve_room ReservationManager" do
     it "can reserve a room for a given date range" do
-      expect(@hotel_ada.reserve_room(check_in:"08-23-2018", check_out:"08-25-2018")).must_be_instance_of Hotel::Reservation
+      expect(@hotel_ada.reserve_room('2018-08-23', '2018-08-25')).must_be_instance_of Hotel::Reservation
     end
   end
 end
