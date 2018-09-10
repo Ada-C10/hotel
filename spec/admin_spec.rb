@@ -117,6 +117,7 @@ describe "#rooms information and reservation" do
     e_date = e_date - 1
     vacant_rooms_result = @admin.view_vacant_rooms(s_date, e_date)
     expect(vacant_rooms_result.length).must_equal 19
+    # do I delete rooms from rooms? check for that
   end
 end
 
@@ -141,5 +142,29 @@ xdescribe "#range tests" do
     end_date = Time.parse("2018-08-10 00:00:00 -0700")
     result = @admin.create_array_of_dates(start_date, end_date)
     expect(result.length).must_equal 3
+  end
+end
+
+describe "#blocks" do
+  before do
+    @admin = Admin.new
+  end
+
+  it "create a block of rooms" do
+    start_date = "2018-08-07 00:00:00 -0700"
+    end_date = "2018-08-09 00:00:00 -0700"
+    @admin.reserve_room(start_date, end_date)
+    # for range and testing view vacant_rooms
+    # one day less because the last night is not payed and view_vacant_rooms takes care of that
+
+    data = {}
+    data[:start_date] = start_date
+    data[:end_date] = end_date
+    data[:rooms] = 4
+    data[:discounted_rate] = 100
+    @admin.create_block_rooms(data)
+    (0..3).each do |i|
+      expect(@admin.rooms[i].blocks).wont_be_empty
+    end
   end
 end

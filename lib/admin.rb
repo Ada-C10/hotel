@@ -10,8 +10,6 @@ class Admin
     @reservations = load_reservations('spec/test_data/test_reservation.csv')
     @rooms = create_rooms(20)
     sort_reservations
-    #@vacant_rooms = []
-    @booked_rooms = []
   end
 
   def create_rooms(number)
@@ -51,7 +49,7 @@ class Admin
     vacant_rooms = view_vacant_rooms(start_date, e_date)
     if vacant_rooms.nil?
       # REFACTOR idea: begin rescue block, exception handleing
-      raise ArgumentError, "no rooms are available"
+      raise StandardError, "no rooms are available"
     else
       room = vacant_rooms.first
       rooms.first.add_range(range)
@@ -73,9 +71,18 @@ class Admin
     target_range = create_hotel_range(start_date, end_date)
     vacant_rooms.each do |room|
         ranges = room.ranges
+        blocks = room.blocks
         ranges.each do |range|
             # nil means no intersection
             if intersection(target_range, range) != nil # there was a overlap
+              vacant_rooms.delete(room)
+              break
+            end
+        end
+        # remove rooms if it has blocks on that date
+        blocks.each do |block|
+            # nil means no intersection
+            if intersection(target_range, blocks[:range]) != nil # there was a overlap
               vacant_rooms.delete(room)
               break
             end
@@ -115,17 +122,28 @@ class Admin
   end
 
   #As an administrator, I can create a block of rooms
-  def create_block_rooms(start_date, end_date, discounted_rate)
-    start_date = Time.parse(start_date)
-    end_date = Time.parse(end_date)
-    range = (start_date..end_date)
-    collection_rooms_options = view_vacant_rooms(range)
-    # create blocks of five every time?
-    # collections_rooms # it's an array
-    # collections_rooms.each do |room|
-    #   room
-    # end
+  def create_block_rooms(data)
+    start_date = Time.parse(data[:start_date])
+    end_date = Time.parse(data[:end_date])
+    e_date = end_date - 1
+    range = (start_date..e_date)
+    rooms = data[:rooms]
+    discounted_rate = data[:discounted_rate]
+    available_rooms = view_vacant_rooms(start_date, e_date)
 
+    if available_rooms.length < rooms
+      return "no available rooms for block"
+    else
+      max = rooms - 1 # because of the 0 index
+      block_rooms = available_rooms[0 .. max]
+      input_data = {}
+      input_data[:discounted_rate] = discounted_rate
+      input_data[:range] = range
+      input_data[:status] = "available"
+      block_rooms.each do |room|
+        room.add_block(input_data)
+      end
+    end
 
 
   end
