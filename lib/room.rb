@@ -7,6 +7,5 @@ module Hotel
       @id = id
       @cost = 200
     end
-
   end
 end

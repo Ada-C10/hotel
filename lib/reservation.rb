@@ -21,7 +21,5 @@ module Hotel
       total_cost = @room.cost * total_days
       return total_cost
     end
-
-
   end
 end

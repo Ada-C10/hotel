@@ -1,6 +1,6 @@
 require_relative 'spec_helper'
 
-describe "HotelBooker class" do
+describe "HotelBooker Class" do
   describe "HotelBooker initation" do
     let(:booker) {Hotel::HotelBooker.new}
 
