@@ -76,7 +76,7 @@ describe "BookingSystem class" do
     it "lists reservations for a specific date range" do
       res1 = @booking.make_reservation(200, "2018-02-03", "2018-02-06")
       res2 = @booking.make_reservation(200, "2018-02-06", "2018-04-10")
-      # puts res1.total_cost
+      puts res1.total_cost
       check_day = @booking.reservations_by_date_range(Hotel::DateRange.new("2018-02-05","2018-02-10"))
       expect(check_day.length).must_equal 2
       # binding.pry

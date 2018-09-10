@@ -19,20 +19,6 @@ module Hotel
 
       ]
 
-      # @availibility = availibility
-
-      #get reservations by date
-
-      # keep track of reservations - make sure # of reservations have increased by 1
-
-      #method to find an availible room:
-      # input:start, end. output:availible room
-      #edge case - what if there are no available rooms?
-
-      # methods
-      # - Check availibility of room
-      # - generate a list of availible rooms?
-      # - generate a list of booked rooms?
     end
 
     # method to make_reservation
@@ -75,7 +61,6 @@ module Hotel
           res.room_number == room[:room_number]
         end
       end
-      #puts "#{available_rooms}"
       return available_rooms
     end
 

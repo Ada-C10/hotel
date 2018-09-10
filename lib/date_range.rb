@@ -28,18 +28,6 @@ module Hotel
     end
 
     # overlap? method
-  # Two date ranges *do* overlap if range A compared to range B:
-    # - Same dates
-    # - Overlaps in the front
-    # - Overlaps in the back
-    # - Completely contained
-    # - Completely containing
-    #
-    # Two date ranges are *not* overlapping if range A compared to range B:
-    # - Completely before
-    # - Completely after
-    # - Ends on the checkin date
-    # - Starts on the checkout date
 
     def overlaps?(date_range)
       overlap = @check_in < date_range.check_out && date_range.check_in < @check_out
