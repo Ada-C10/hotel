@@ -1,0 +1,12 @@
+- Finish the blocks class.
+-- The collection of rooms should only include rooms that are available for the given date range
+-- If a room is set aside in a block, it is not available for reservation by the general public, nor can it be included in another block
+
+- Some names could be changed/condensed:
+-- list_available_rooms
+-- reservations_by_date_range
+-- blocks.rb change to room_blocks?
+
+
+- Tests could be better organized:
+-- in date_range, most could fit under "date range"
