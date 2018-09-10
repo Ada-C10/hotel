@@ -28,3 +28,8 @@ of creating a CLI.
 Reservation and Block have a few of the same instance variable and at least one
 method in common. It may make the system more flexible if they inherit from a
 super class called something like Booking.
+
+7.
+Creating a CLI exposed many unhandled potential errors that could arise from
+bad user input. A future refactoring should handle these scenarios rather than
+crash the program.
