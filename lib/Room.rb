@@ -1,6 +1,4 @@
 require 'pry'
-require_relative 'Reservation'
-require_relative 'DateRange'
 
 class Room
 

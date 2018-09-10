@@ -9,10 +9,10 @@ require 'pry'
 class NoRoomsAvailableError < StandardError
 end
 
-class RoomUnavailableError < StandardError
+class NoReservationExistsError < StandardError
 end
 
-class NoReservationExistsError < StandardError
+class RoomUnavailableError < StandardError
 end
 
 class Booking
@@ -50,7 +50,7 @@ class Booking
     return list_rooms_available_for_date_range(start_date, end_date).first.room_number
   end
 
-  # Maybe have room_number default to first available room for date range?
+# Struggled with this code. May have been easier if collections were hashes rather than arrays. 
   def add_reservation(check_in, check_out, room_number = nil)
     # If not given a room, choose the first available room for the date range
     room_number ||= first_available_room(check_in, check_out)
