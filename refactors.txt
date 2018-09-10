@@ -1,0 +1,12 @@
+
+
+Refactors to do:
+
+-Build logic and testing for reserving rooms that are set aside block, even after we make them look
+unavailable when we create the block. Where should the block reservation logic go? What else will
+need to be changed to make this work? Block reservations might need to added to the room initialize
+method.
+
+-In the reservation.rb, is the nights_in_reservation method needed?
+
+-Is the front desk class doing too much work? should some of that be pushed on to other classes?

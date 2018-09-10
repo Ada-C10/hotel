@@ -1,6 +1,6 @@
 require_relative 'room'
 require_relative 'reservation'
-
+require_relative 'block'
 
 require 'date'
 require 'pry'
@@ -30,7 +30,7 @@ class FrontDesk
   end
 
   def create_reservation(room_number, start_day, end_day, nightly_cost)
-     check_availability(room_number, start_day, end_day)
+    check_availability(room_number, start_day, end_day)
     new_reservation = Reservation.new(room_number, start_day, end_day,nightly_cost)
     reservations << new_reservation
     room = find_room(room_number)
@@ -43,10 +43,10 @@ class FrontDesk
   end
 
   def find_by_date(date)
-      res = []
-      @reservations.each do |reservation|
-        if reservation.start_day == Date.parse(date)
-          res << reservation
+    res = []
+    @reservations.each do |reservation|
+      if reservation.start_day == Date.parse(date)
+        res << reservation
       end
     end
     return res
@@ -84,7 +84,7 @@ class FrontDesk
       room.add_reservation_to_room(new_block)
     end
     return new_block
-end
+  end
 
   def block_room_list_to_room (block_rooms)
     converted_rooms = []
@@ -99,16 +99,15 @@ end
     return @blocks.find {|block| block.block_ID == block_ID}
   end
 
+
   def find_available_rooms_in_block(block_ID)
     available_rooms = []
     block = find_block_by_id(block_ID)
-    rooms = block.converted_rooms
-    @block_rooms.each do |room|
-      room_is_available = true
-      (block_start...block_end).each do |date|
-        if !room.is_available?(date)
-          room_is_available = false
-        end
+    rooms = block.block_rooms
+    rooms.each do |room|
+      room_is_available = false
+      if !block.is_available_block?(room)
+        room_is_available = true
       end
       available_rooms << room.room_number if room_is_available
     end

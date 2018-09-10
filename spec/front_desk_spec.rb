@@ -114,6 +114,17 @@ describe "FrontDesk class" do
         id = @block.block_ID
         expect(@my_front_desk.find_block_by_id(id)).must_be_instance_of Block
       end
+
+
+
+      it "can find available rooms in a block" do
+        @my_front_desk = FrontDesk.new
+        @block = @my_front_desk.create_block("2012-4-16", "2012-4-20", 150, [3,4,5])
+        expect(@my_front_desk.find_available_rooms_in_block(@block.block_ID)).must_include 3
+        expect(@my_front_desk.find_available_rooms_in_block(@block.block_ID)).must_include 4
+        expect(@my_front_desk.find_available_rooms_in_block(@block.block_ID)).must_include 5
+        expect(@my_front_desk.find_available_rooms_in_block(@block.block_ID).length).must_equal 3
+      end
     end
 
   end
