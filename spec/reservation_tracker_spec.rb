@@ -21,6 +21,16 @@ describe 'ReservationTracker class' do
     it 'has an array of all the reservations in the hotel' do
       expect(@reservation_tracker.reservations).must_be_kind_of Array
     end
+
+    it 'has an array of all the unreserved rooms in the hotel' do
+      expect(@reservation_tracker.unreserved_rooms).must_be_kind_of Array
+    end
+
+    # it 'should be able to access the list of rooms' do
+    #   binding.pry
+    #   expect(@reservation_tracker.rooms[0]).must_equal 1
+    #   expect(@reservation_tracker.rooms[20]).must_equal 20
+    # end
   end
 
   describe 'create reservation method' do
@@ -36,7 +46,19 @@ describe 'ReservationTracker class' do
       expect(@reservation_tracker.create_reservation(date, date + 5, room)).must_be_kind_of Array
     end
 
+    it "should be able to add a reservation" do
+      reservation = Reservation.new(Date.new(2018,9,5), Date.new(2018,9,10), 15)
+      @reservation_tracker.reservations << reservation
+      @reservation_tracker.reservations.must_equal [reservation]
+    end
 
+    # it "creates a reservation with a specific date range" do
+    #   check_in_date = Date.new(2018,9,5)
+    #   check_out_date = Date.new(2018,9,10)
+    #   reservation = Reservation.new(check_in_date, check_out_date, 15)
+    #   @reservation_tracker.reservations[check_in_date].must_equal Date.new(2018,9,5)
+    #   @reservation_tracker.reservations[check_out_date].must_equal Date.new(2018,9,10)
+    # end
   end
 
   # don't think I need this since I check this in the reserve_room method.
