@@ -1,0 +1,7 @@
+BookingManager methods need to be refactored. A lot of logic is repeated, but I had trouble writing the methods so that both blocks and reservations can use them.
+
+Wrap classes in Hotel module.
+
+Change Calendar#get_all_dates to #all_dates.
+
+Find a better way to organize test data.

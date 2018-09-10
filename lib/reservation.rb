@@ -1,5 +1,5 @@
-# require_relative 'block'
 require 'date'
+
 class Reservation
 
   PRICE = 200
@@ -21,7 +21,6 @@ class Reservation
     else
       Date.parse(date)
     end
-    # pattern.match(date).nil? ? raise(ArgumentError, "Date format: YYMMDD") : Date.parse(date)
   end
 
   def number_of_nights
@@ -45,7 +44,4 @@ class Reservation
 
     return all_dates
   end
-
-
-
 end

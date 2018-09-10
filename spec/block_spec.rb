@@ -19,6 +19,7 @@ describe Block do
   let(:block1) {
     Block.new('181202', '181206', 1)
   }
+  
   describe "#initalize" do
     it "can be instantiated" do
       expect(block2).must_be_kind_of Block
@@ -43,8 +44,5 @@ describe Block do
       expect(block2.rooms).must_be_kind_of Hash
       expect(block2.rooms).must_be_empty
     end
-  end
-  describe "#number_of_rooms" do
-
   end
 end

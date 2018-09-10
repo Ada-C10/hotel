@@ -1,5 +1,4 @@
 require_relative 'spec_helper'
-require 'pry'
 
 describe Calendar do
   let(:calendar) {
@@ -51,6 +50,7 @@ describe Calendar do
     it "creates accurate room_assignments hash" do
       expect(calendar.room_assignments).must_be_kind_of Hash
       expect(calendar.room_assignments.keys).must_equal calendar.rooms
+
       calendar.room_assignments.values.each do |v|
         expect(v).must_be_kind_of Array
         expect(v).must_be_empty
@@ -68,6 +68,7 @@ describe Calendar do
     end
     it "returns list of reserved rooms for given date" do
       reservations = calendar.reservations('181203')
+
       expect(reservations.length).must_equal 3
       expect(reservations[0]).must_equal 1
       expect(reservations[2]).must_equal 3
@@ -76,14 +77,13 @@ describe Calendar do
       manager.add_block(block2)
       manager.add_block(block3)
       manager.add_block(block4)
-      # manager.add_block(block5)
-      # binding.pry
+
       reservations = calendar.reservations('181130')
+      
       expect(reservations.length).must_equal 5
       (1..5).each do |i|
         expect(reservations[i - 1]).must_equal i
       end
-      # expect(reservations[2]).must_equal 3
     end
   end
 
@@ -91,10 +91,6 @@ describe Calendar do
     before do
       manager.add_reservation(reservation1)
       manager.add_block(block2)
-      # manager.add_block(block3)
-      # manager.add_block(block4)
-      # manager.add_block(block5)
-      # binding.pry
     end
     it "returns false if room is reserved for all given dates" do
       expect(calendar.available_room?(1, reservation1)).must_equal false
@@ -147,7 +143,4 @@ describe Calendar do
       expect(available_rooms.first).must_equal 4
     end
   end
-
-
 end
-# end

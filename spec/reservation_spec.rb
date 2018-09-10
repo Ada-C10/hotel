@@ -25,6 +25,7 @@ describe Reservation do
   let (:date_error3) {
     Reservation.new('18-12-02', '1812045')
   }
+
   describe "#initialize" do
     it "can be instantiated" do
       expect(reservation).must_be_kind_of Reservation
@@ -38,14 +39,13 @@ describe Reservation do
   end
 
   describe "#date_format" do
-    it "converts check_in and check_out to Date objects" do
+    it "converts check_in and check_out strings to Date objects" do
       expect(reservation.check_in).must_be_kind_of Date
       expect(reservation.check_out).must_be_kind_of Date
     end
-    it "raises ArgumentError if date is longer than 6 digits" do
+    it "raises ArgumentError if date is not 6 digits" do
       expect{Reservation.new('181202', '1812045')}.must_raise ArgumentError, "Date format: YYMMDD."
-    end
-    it "raises ArgumentError if date is shorter than 6 digits" do
+
       expect{Reservation.new('18120', '181204')}.must_raise ArgumentError, "Date format: YYMMDD."
     end
     it "raises ArgumentError if date contains non-numeric characters" do
@@ -70,10 +70,11 @@ describe Reservation do
     it "returns Array" do
       expect(reservation.get_all_dates).must_be_kind_of Array
     end
-    it "contains all dates for reservation in 1 month" do
+    it "contains all dates for reservation in same month" do
       reservation.get_all_dates.each do |date|
         expect(date).must_be_kind_of Date
       end
+
       expect(reservation.get_all_dates.length).must_equal 2
       expect(reservation.get_all_dates[0]).must_equal reservation.check_in
       expect(reservation.get_all_dates[-1]).must_equal reservation.check_out - 1
@@ -82,6 +83,7 @@ describe Reservation do
       months_reservation.get_all_dates.each do |date|
         expect(date).must_be_kind_of Date
       end
+
       expect(months_reservation.get_all_dates.length).must_equal 4
       expect(months_reservation.get_all_dates[0]).must_equal months_reservation.check_in
       expect(months_reservation.get_all_dates[-1]).must_equal months_reservation.check_out - 1
@@ -90,10 +92,10 @@ describe Reservation do
       years_reservation.get_all_dates.each do |date|
         expect(date).must_be_kind_of Date
       end
+
       expect(years_reservation.get_all_dates.length).must_equal 4
       expect(years_reservation.get_all_dates[0]).must_equal years_reservation.check_in
       expect(years_reservation.get_all_dates[-1]).must_equal years_reservation.check_out - 1
     end
   end
-
 end
