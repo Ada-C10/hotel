@@ -1,3 +1,5 @@
+require 'csv'
+
 require_relative 'date_range'
 require_relative 'reservation'
 require_relative 'room'
@@ -16,18 +18,25 @@ module Hotel
 
     attr_reader :rooms, :reservations, :blocked_rooms
 
-    def initialize
-      @rooms = load_rooms
+    def initialize(room_file = 'support/rooms.csv')
+      @rooms = load_rooms(room_file)
       @reservations = []
       @blocked_rooms = []
     end
 
-    def load_rooms
-      all_rooms = []
-      NUM_OF_ROOMS.times do |i|
-        all_rooms << Hotel::Room.new(room_num: i + 1)
+    def load_rooms(filename)
+      rooms = []
+
+      CSV.read(filename, headers: true).each do |line|
+
+        input_data = {}
+        input_data[:room_num] = line[0].to_i
+        input_data[:rate] = line[1].to_i
+
+        room = Room.new(input_data)
+        rooms << room
       end
-      return all_rooms
+      return rooms
     end
 
     def list_reservations_by_date(specified_date)
@@ -142,7 +151,7 @@ module Hotel
     end
 
     private
-    
+
     def check_dates_validity?(start_date, end_date)
       unless (start_date.is_a?(Date) && end_date.is_a?(Date))
         raise InvalidDateError.new("That is not a Date type")
