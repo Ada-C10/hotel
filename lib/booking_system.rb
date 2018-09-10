@@ -1,5 +1,6 @@
 require_relative 'date_range'
 require_relative 'reservation'
+require 'pry'
 
 module Hotel
   class BookingSystem
@@ -24,24 +25,15 @@ module Hotel
       end
 
       date_range = Hotel::DateRange.new(check_in, check_out)
+
+      unless available_rooms(date_range).include?(room_number)
+        raise ArgumentError
+      end
+
       new_reservation = Hotel::Reservation.new(room_number, ROOM_COST, date_range)
 
       @reservations << new_reservation
-
       return new_reservation
-    end
-
-
-    def list_available_rooms
-      available_room = []
-      reservation_list.include?(available_room)
-
-      return available_room
-
-      # to find available room: check if dates overlap - two dates to compare
-      # output boolean
-      #
-      # reservation_attempt, has start and end date, comparing existing reservations start and end date
     end
 
     def reservations_on_date(date)
@@ -53,7 +45,22 @@ module Hotel
       end
       return reservations
     end
-    
+
+    def available_rooms(date_range)
+      # made a copy of the rooms array
+      rooms = @rooms.to_a
+
+      # iterating through date ranges, at each reservation, removing the room
+      # that is reserved by that reservation
+      (date_range.start_date...date_range.end_date).each do |date|
+        self.reservations_on_date(date).each do |reservation|
+          rooms.delete(reservation.room_number)
+        end
+      end
+      # returns the list of available_rooms
+      return rooms
+    end
+
 
   end
 end
