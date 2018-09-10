@@ -4,12 +4,12 @@ require 'date'
 
 # module Hotel
 class Reservation
-  attr_reader :check_in_date, :check_out_date, :room, :nights_stayed
+  attr_reader :check_in_date, :check_out_date, :room_number, :nights_stayed
 
-  def initialize(check_in_date, check_out_date, room)
+  def initialize(check_in_date, check_out_date, room_number)
     @check_in_date = check_in_date
     @check_out_date = check_out_date
-    @room = room
+    @room_number = room_number
     raise StandardError, 'The end date cannot be before the start date.' if check_out_date <= check_in_date
   end
 

@@ -22,19 +22,28 @@ class ReservationTracker
   def create_rooms
     rooms = []
     (1..20).each do |room|
-      room = Room.new(room)
-      rooms << room
+      room_number = Room.new(room)
+      rooms << room_number
     end
     return rooms
   end
 
-  # reserves a room for a given date range and adds the reservation to the list of reservations
-  def reserve_a_room(check_in_date, check_out_date, room)
-    reservation = Reservation.new(check_in_date, check_out_date, room)
+  # creates reservation and adds the reservation to the list of reservations
+  def create_reservation(check_in_date, check_out_date, room_number)
+    reservation = Reservation.new(check_in_date, check_out_date, room_number)
     @reservations << reservation
     # @reserved_rooms << room
     # return reservation
   end
+
+  # don't think i need this anymore
+  # def is_a_room_available?(date)
+  #   @reservations.each do |reservation|
+  #     return false if reservation.check_in_date >= date && reservation.check_out_date > date
+  #   end
+  #   # binding.pry
+  #   return true
+  # end
 
   # accesses the list of reservations for a specific date
   def list_of_reservations(date)
@@ -47,28 +56,32 @@ class ReservationTracker
     return total_cost
   end
 
-  def is_room_available?(date)
-    @reservations.each do |reservation|
-      return false if reservation.check_in_date <= date && reservation.check_out_date > date
+  # checks to see if a room is available and reserves the first available room for a given date range. Uses the rooms_not reserved method.
+  def reserve_room(check_in_date, check_out_date)
+     # set the rooms_not_reserved method and arguments to a local variable.
+     unreserved_rooms = rooms_not_reserved(check_in_date, check_out_date)
+     if unreserved_rooms.length == 0
+      raise ArgumentError, 'No Available Rooms for Given Dates'
+    else
+      # uses the create reservation method if there are available rooms
+      create_reservation(check_in_date, check_out_date, unreserved_rooms[0])
+      # binding.pry
     end
-    # binding.pry
-    return true
   end
 
   # accesses a list of rooms that are not reserved for a given date range
   def rooms_not_reserved(check_in_date, check_out_date)
-    return @rooms if @rooms.map { |room| room.room_number } if reservations.empty?
-
+    # if the reservations array is empty, this returns an array of available room numbers. If there are no reservations, all rooms can be reserved.
+    return @rooms.map { |room| room.room_number } if @reservations.empty?
     unreserved_rooms = @rooms.map { |room| room.room_number }
-
+    # if @reservation.empty? is not empty
     @reservations.each { |reservation|
-      if
-        reservation.check_in_date >= check_in_date && reservation.check_in_date <= check_out_date ||
-        (reservation.check_out_date >= check_in_date && reservation.check_out_date <= check_out_date)
-        unreserved_rooms.delete(reseration.room_number)
+      if (reservation.check_in_date >= check_in_date && reservation.check_in_date <= check_out_date) || (reservation.check_out_date >= check_in_date && reservation.check_out_date <= check_out_date)
+        unreserved_rooms.delete(reservation.room_number)
       end
     }
-
+    # unreserved_rooms returns an empty array if  nothing is availible in the given date range or it will return an array of available room numbers in date range given.
+    # for use in the reserve_room method
     return unreserved_rooms
   end
 

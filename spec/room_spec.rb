@@ -11,4 +11,5 @@ describe 'Initialize' do
     expect(room).must_respond_to :room_number
     expect(room.room_number).must_equal room_number
   end
+
 end
