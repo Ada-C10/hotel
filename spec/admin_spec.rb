@@ -4,7 +4,7 @@ require_relative 'spec_helper'
 #
 
 # runs from project directory
-describe "#Admin - initializer" do
+xdescribe "#Admin - initializer" do
   before do
     @admin = Admin.new
   end
@@ -38,7 +38,7 @@ describe "#Admin - initializer" do
   end
 end
 
-describe "#reservation information" do
+xdescribe "#reservation information" do
   before do
     @admin = Admin.new
   end
@@ -66,7 +66,7 @@ describe "#reservation information" do
 
 end
 
-describe "#rooms information" do
+describe "#rooms information and reservation" do
   before do
     @admin = Admin.new
   end
@@ -76,8 +76,8 @@ describe "#rooms information" do
     expect(rooms).must_be_kind_of Array
   end
 
-  # needs to update this test
-  # before and after from driver
+  # REFACTOR idea:
+  # before and after count of rooms from driver
   # needs to test when reservation is 1 - 2
   # and another one with reservation 1 - 3, should include 2 rooms
   it "can make a reservation" do
@@ -85,7 +85,7 @@ describe "#rooms information" do
     end_date = "2018-08-09 00:00:00 -0700"
     @admin.reserve_room(start_date, end_date)
 
-    # reserve room removes last day because it is not counted as a paying night
+    # reserve room removes last day because it is not counted as a paying night for my reservation class
     start_date = "2018-08-07 00:00:00 -0700"
     end_date = "2018-08-09 00:00:00 -0700"
     start_date = Time.parse(start_date)
@@ -93,8 +93,16 @@ describe "#rooms information" do
     end_date = end_date - 1
     range = [(start_date..end_date)]
     expect(@admin.rooms.first.ranges). must_equal range
-    #expect(@admin.booked_rooms.length).must_equal 1
+  end
 
+  it "no rooms available for 20 reservations" do
+    start_date = Time.parse("2018-08-07 00:00:00 -0700")
+    end_date = Time.parse("2018-08-09 00:00:00 -0700")
+    expect {
+    20.times do
+      @admin.make_reservation(start_date, end_date)
+    end
+    }.must_raise StandardError
   end
 
   it "view vacant rooms" do
@@ -112,7 +120,7 @@ describe "#rooms information" do
   end
 end
 
-describe "#range tests" do
+xdescribe "#range tests" do
   before do
     @admin = Admin.new
   end

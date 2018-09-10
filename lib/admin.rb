@@ -34,6 +34,7 @@ class Admin
       input_data[:id] = data["id"].to_i
       input_data[:start_time] = Time.parse(data["start_time"])
       input_data[:end_time] = Time.parse(data["end_time"]) # no need to subtract last day because reservation class only calculates cost
+      # REFACTOR idea: make the reservation instance a separate method - isolating dependencies
       reservations << Reservation.new(input_data)
     end
 
@@ -45,11 +46,22 @@ class Admin
   def reserve_room(start_date, end_date)
     start_date = Time.parse(start_date)
     end_date = Time.parse(end_date)
-    range = create_hotel_range(start_date, end_date)
-    @rooms.first.add_range(range) # temporary - must be updated once view_vacant_rooms is fixed
-    # vacant_rooms = view_vacant_rooms(range) # needs to be updated
-    # vacant_rooms.first.add_range(range)
-    # room = vacant_rooms.first
+    range = create_hotel_range(start_date, end_date) # for hotel
+    e_date = end_date - 1 # rooms do not keep track of last night
+    vacant_rooms = view_vacant_rooms(start_date, e_date)
+    if vacant_rooms.nil?
+      # REFACTOR idea: begin rescue block, exception handleing
+      raise ArgumentError, "no rooms are available"
+    else
+      room = vacant_rooms.first
+      rooms.first.add_range(range)
+      input_data = {}
+      input_data[:start_time] = start_date
+      input_data[:end_time] = end_date
+      input_data[:room_num] = room.number
+      reservations << Reservation.new(input_data)
+    end
+
     # must create instance of reservation for this room using one more day
   end
 
