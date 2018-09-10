@@ -12,35 +12,30 @@ module Hotel
   class ReservationTracker
     attr_reader :rooms, :blocked_rooms, :reservations
 
-    def initialize(
-      room_file = 'support/rooms.csv',
-      block_file = 'support/blocks.csv',
-      reservation_file = 'support/reservations.csv'
-    )
-    @rooms = load_rooms(room_file)
-    @blocked_rooms = load_blocked_rooms(block_file)
-    @reservations = load_reservations(reservation_file)
-  end
-
-  def load_rooms(filename)
-    rooms = []
-
-    CSV.read(filename, headers: true).each do |line|
-
-      input_data = {}
-      input_data[:room_num] = line[0].to_i
-      input_data[:rate] = line[1].to_i
-
-      room = Room.new(input_data)
-      rooms << room
+    def initialize(room_file = 'support/rooms.csv', block_file = 'support/blocks.csv', reservation_file = 'support/reservations.csv')
+      @rooms = load_rooms(room_file)
+      @blocked_rooms = load_blocked_rooms(block_file)
+      @reservations = load_reservations(reservation_file)
     end
-    return rooms
-  end
 
-  def load_blocked_rooms(filename)
-    blocks = []
-    block_data = CSV.open(filename, 'r', headers: true,
-      header_converters: :symbol)
+    def load_rooms(filename)
+      rooms = []
+
+      CSV.read(filename, headers: true).each do |line|
+
+        input_data = {}
+        input_data[:room_num] = line[0].to_i
+        input_data[:rate] = line[1].to_i
+
+        room = Room.new(input_data)
+        rooms << room
+      end
+      return rooms
+    end
+
+    def load_blocked_rooms(filename)
+      blocks = []
+      block_data = CSV.open(filename, 'r', headers: true, header_converters: :symbol)
 
       block_data.each do |raw_block|
         start_date = Date.parse(raw_block[:start_date])
@@ -64,202 +59,199 @@ module Hotel
 
     def load_reservations(filename)
       reservations = []
-      reservation_data = CSV.open(filename, 'r', headers: true,
-        header_converters: :symbol)
+      reservation_data = CSV.open(filename, 'r', headers: true, header_converters: :symbol)
 
-        reservation_data.each do |raw_reservation|
-          block_id = find_block_id(raw_reservation[:block_id].to_i)
-          room = find_room(raw_reservation[:room].to_i)
+      reservation_data.each do |raw_reservation|
+        block_id = find_block_id(raw_reservation[:block_id].to_i)
+        room = find_room(raw_reservation[:room].to_i)
 
-          start_date = Date.parse(raw_reservation[:start_date])
-          end_date = Date.parse(raw_reservation[:end_date])
+        start_date = Date.parse(raw_reservation[:start_date])
+        end_date = Date.parse(raw_reservation[:end_date])
 
-          range = DateRange.new(start_date, end_date)
+        range = DateRange.new(start_date, end_date)
 
-          parsed_reservation = {
-            id: raw_reservation[:id].to_i,
-            block_id: block_id,
-            room: room,
-            date_range: range
-          }
-
-          reservation = Reservation.new(parsed_reservation)
-          reservations << reservation
-        end
-        return reservations
-      end
-
-      def find_block_id(id)
-        check_id(id)
-        return @blocked_rooms.find { |blocked_room| blocked_room.id == id }
-      end
-
-      def find_room(room_num)
-        check_room_num(room_num)
-        return @rooms.find { |room| room.room_num == room_num }
-      end
-
-      def list_reservations_by_date(specified_date)
-        reservations_by_date = @reservations.find_all do |reservation|
-          range = reservation.date_range.get_range
-          range.include?(specified_date)
-        end
-        return reservations_by_date
-      end
-
-      def reservations_overlaps?(requested_dates)
-        matching_reservations = @reservations.find_all do |reservation|
-          range = reservation.date_range
-          range.overlaps?(requested_dates)
-          reservation
-        end
-      end
-
-      def find_reserved_rooms(requested_dates)
-        matching_reservations = reservations_overlaps?(requested_dates)
-        reserved_rooms = matching_reservations.map do |reservation|
-          reservation.room
-        end
-        return reserved_rooms
-      end
-
-      def find_blocked_rooms(requested_dates)
-        blocked_rooms_by_date = @blocked_rooms.map do |room|
-          if room.date_range.get_range == requested_dates.get_range
-            room
-          end
-        end
-        return blocked_rooms_by_date.flatten.compact
-      end
-
-      def find_unavailable_rooms(requested_dates)
-        reserved_rooms = find_reserved_rooms(requested_dates)
-        blocked_rooms = find_blocked_rooms(requested_dates)
-        unavailable_rooms = reserved_rooms + blocked_rooms
-        return unavailable_rooms
-      end
-
-      def find_available_rooms(requested_dates)
-        unavailable_rooms = find_unavailable_rooms(requested_dates)
-        available_rooms = @rooms.reject { |room| unavailable_rooms.include?(room) }
-        check_availablity?(available_rooms)
-        return available_rooms
-      end
-
-      def get_first_available_room(requested_dates)
-        all_available_rooms = find_available_rooms(requested_dates)
-        first_available_room = all_available_rooms.first
-        return first_available_room
-      end
-
-      def confirm_valid_dates?(input)
-        check_dates_validity?(input[:start_date], input[:end_date])
-        check_dates_order?(input[:start_date], input[:end_date])
-      end
-
-      def get_requested_dates(input)
-        confirm_valid_dates?(input)
-        return DateRange.new(input[:start_date], input[:end_date])
-      end
-
-      def reserve_room(input)
-        requested_dates = get_requested_dates(input)
-
-        reservation_id = @reservations.length + 1
-        block_id = input[:block_id]
-        room = get_first_available_room(requested_dates)
-
-        reservation_data = {
-          id: reservation_id,
+        parsed_reservation = {
+          id: raw_reservation[:id].to_i,
           block_id: block_id,
           room: room,
-          date_range: requested_dates
+          date_range: range
         }
 
-        new_reservation = Reservation.new(reservation_data)
-        @reservations << new_reservation
-        return new_reservation
+        reservation = Reservation.new(parsed_reservation)
+        reservations << reservation
       end
+      return reservations
+    end
 
-      def confirm_valid_qty?(requested_qty)
-        check_valid_num?(requested_qty)
-        check_num_requested?(requested_qty)
+    def find_block_id(id)
+      check_id(id)
+      return @blocked_rooms.find { |blocked_room| blocked_room.id == id }
+    end
+
+    def find_room(room_num)
+      check_room_num(room_num)
+      return @rooms.find { |room| room.room_num == room_num }
+    end
+
+    def list_reservations_by_date(specified_date)
+      reservations_by_date = @reservations.find_all do |reservation|
+        range = reservation.date_range.get_range
+        range.include?(specified_date)
       end
+      return reservations_by_date
+    end
 
-      def get_blocked_rooms(requested_qty, requested_dates)
-        confirm_valid_qty?(requested_qty)
-        available_rooms = find_available_rooms(requested_dates)
-        check_enough_rooms?(available_rooms, requested_qty)
-        block = available_rooms.take(requested_qty)
-        return block
-      end
-
-      def block_rooms(input)
-        requested_dates = get_requested_dates(input)
-        block_id = @blocked_rooms.length + 1
-        blocked_qty_rooms = get_blocked_rooms(input[:party], requested_dates)
-
-        block_data = {
-          id: block_id,
-          party: blocked_qty_rooms,
-          date_range: requested_dates
-        }
-
-        new_block = Block.new(block_data)
-        @blocked_rooms << new_block
-        return new_block
-      end
-
-      private
-      class InvalidDateError < StandardError; end
-      class DatesOrderError < StandardError; end
-      class NoRoomsError < StandardError; end
-      class InvalidAmountRoomsError < StandardError; end
-      class TooManyRoomsError < StandardError; end
-      class NotEnoughError < StandardError; end
-
-      def check_id(id)
-        unless id.nil? || id >= 0
-          raise ArgumentError, "ID cannot be less than zero. (got #{id})"
-        end
-      end
-
-      def check_room_num(num)
-        raise ArgumentError, "Room num cannot be less than 1 or greater than #{NUM_OF_ROOMS} (got #{NUM})" if num <= 0 || num > NUM_OF_ROOMS
-      end
-
-      def check_dates_validity?(start_date, end_date)
-        unless (start_date.is_a?(Date) && end_date.is_a?(Date))
-          raise InvalidDateError.new("That is not a Date type")
-        end
-      end
-
-      def check_dates_order?(start_date, end_date)
-        unless start_date < end_date
-          raise DatesOrderError.new("Start date must be before end date")
-        end
-      end
-
-      def check_enough_rooms?(available_rooms, qty)
-        if available_rooms.length < qty
-          raise NotEnoughError.new("There are not enough rooms to block")
-        end
-      end
-
-      def check_valid_num?(num)
-        if !num.is_a?(Integer) || num <= 0
-          raise InvalidAmountRoomsError.new("That is not a valid amount to request to block")
-        end
-      end
-
-      def check_num_requested?(num)
-        if num > MAX_BLOCK_NUM
-          raise TooManyRoomsError.new("Cannot block more than 5 rooms")
-        end
-      end
-
-      def check_availablity?(available_rooms)
-        raise NoRoomsError.new("NO ROOMS AVAILABLE!!!") if available_rooms.empty?
+    def reservations_overlaps?(requested_dates)
+      matching_reservations = @reservations.find_all do |reservation|
+        range = reservation.date_range
+        range.overlaps?(requested_dates)
+        reservation
       end
     end
+
+    def find_reserved_rooms(requested_dates)
+      matching_reservations = reservations_overlaps?(requested_dates)
+      reserved_rooms = matching_reservations.map do |reservation|
+        reservation.room
+      end
+      return reserved_rooms
+    end
+
+    def find_blocked_rooms(requested_dates)
+      blocked_rooms_by_date = @blocked_rooms.map do |room|
+        room if room.date_range.get_range == requested_dates.get_range
+      end
+      return blocked_rooms_by_date.flatten.compact
+    end
+
+    def find_unavailable_rooms(requested_dates)
+      reserved_rooms = find_reserved_rooms(requested_dates)
+      blocked_rooms = find_blocked_rooms(requested_dates)
+      unavailable_rooms = reserved_rooms + blocked_rooms
+      return unavailable_rooms
+    end
+
+    def find_available_rooms(requested_dates)
+      unavailable_rooms = find_unavailable_rooms(requested_dates)
+      available_rooms = @rooms.reject { |room| unavailable_rooms.include?(room) }
+      check_availablity?(available_rooms)
+      return available_rooms
+    end
+
+    def get_first_available_room(requested_dates)
+      all_available_rooms = find_available_rooms(requested_dates)
+      first_available_room = all_available_rooms.first
+      return first_available_room
+    end
+
+    def confirm_valid_dates?(start_date, end_date)
+      check_dates_validity?(start_date, end_date)
+      check_dates_order?(start_date, end_date)
+    end
+
+    def get_requested_dates(start_date, end_date)
+      confirm_valid_dates?(start_date, end_date)
+      return DateRange.new(start_date, end_date)
+    end
+
+    def reserve_room(input)
+      requested_dates = get_requested_dates(input[:start_date], input[:end_date])
+
+      reservation_id = @reservations.length + 1
+      block_id = input[:block_id]
+      room = get_first_available_room(requested_dates)
+
+      reservation_data = {
+        id: reservation_id,
+        block_id: block_id,
+        room: room,
+        date_range: requested_dates
+      }
+
+      new_reservation = Reservation.new(reservation_data)
+      @reservations << new_reservation
+      return new_reservation
+    end
+
+    def confirm_valid_qty?(requested_qty)
+      check_valid_num?(requested_qty)
+      check_num_requested?(requested_qty)
+    end
+
+    def get_blocked_rooms(requested_qty, requested_dates)
+      confirm_valid_qty?(requested_qty)
+      available_rooms = find_available_rooms(requested_dates)
+      check_enough_rooms?(available_rooms, requested_qty)
+      block = available_rooms.take(requested_qty)
+      return block
+    end
+
+    def block_rooms(input)
+      requested_dates = get_requested_dates(input[:start_date], input[:end_date])
+      block_id = @blocked_rooms.length + 1
+      blocked_qty_rooms = get_blocked_rooms(input[:party], requested_dates)
+
+      block_data = {
+        id: block_id,
+        party: blocked_qty_rooms,
+        date_range: requested_dates
+      }
+
+      new_block = Block.new(block_data)
+      @blocked_rooms << new_block
+      return new_block
+    end
+
+    private
+    class InvalidDateError < StandardError; end
+    class DatesOrderError < StandardError; end
+    class NoRoomsError < StandardError; end
+    class InvalidAmountRoomsError < StandardError; end
+    class TooManyRoomsError < StandardError; end
+    class NotEnoughError < StandardError; end
+
+    def check_id(id)
+      unless id.nil? || id >= 0
+        raise ArgumentError, "ID cannot be less than zero. (got #{id})"
+      end
+    end
+
+    def check_room_num(num)
+      raise ArgumentError, "Room num cannot be less than 1 or greater than #{NUM_OF_ROOMS} (got #{NUM})" if num <= 0 || num > NUM_OF_ROOMS
+    end
+
+    def check_dates_validity?(start_date, end_date)
+      unless (start_date.is_a?(Date) && end_date.is_a?(Date))
+        raise InvalidDateError.new("That is not a Date type")
+      end
+    end
+
+    def check_dates_order?(start_date, end_date)
+      unless start_date < end_date
+        raise DatesOrderError.new("Start date must be before end date")
+      end
+    end
+
+    def check_enough_rooms?(available_rooms, qty)
+      if available_rooms.length < qty
+        raise NotEnoughError.new("There are not enough rooms to block")
+      end
+    end
+
+    def check_valid_num?(num)
+      if !num.is_a?(Integer) || num <= 0
+        raise InvalidAmountRoomsError.new("That is not a valid amount to request to block")
+      end
+    end
+
+    def check_num_requested?(num)
+      if num > MAX_BLOCK_NUM
+        raise TooManyRoomsError.new("Cannot block more than 5 rooms")
+      end
+    end
+
+    def check_availablity?(available_rooms)
+      raise NoRoomsError.new("NO ROOMS AVAILABLE!!!") if available_rooms.empty?
+    end
   end
+end

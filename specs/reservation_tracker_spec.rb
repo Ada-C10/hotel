@@ -157,54 +157,34 @@ describe "ReservationTracker class" do
       start_date = 'Date.today'
       end_date = 'start_date - 5'
 
-      input = {
-        start_date: start_date,
-        end_date: end_date
-      }
-
-      expect { @reservation_tracker.confirm_valid_dates?(input) }.must_raise Hotel::ReservationTracker::InvalidDateError
+      expect { @reservation_tracker.confirm_valid_dates?(start_date, end_date) }.must_raise Hotel::ReservationTracker::InvalidDateError
     end
 
     it "raises an error if start_date is a Date and but end_date is not" do
       start_date = Date.today
       end_date = "Date.today + 5"
 
-      input = {
-        start_date: start_date,
-        end_date: end_date
-      }
-
-      expect { @reservation_tracker.confirm_valid_dates?(input) }.must_raise Hotel::ReservationTracker::InvalidDateError
+      expect { @reservation_tracker.confirm_valid_dates?(start_date,end_date) }.must_raise Hotel::ReservationTracker::InvalidDateError
     end
 
     it "raises an error if start_date not a Date and but end_date is" do
       start_date = "Date.today"
       end_date = Date.today + 5
 
-      input = {
-        start_date: start_date,
-        end_date: end_date
-      }
-
-      expect { @reservation_tracker.confirm_valid_dates?(input) }.must_raise Hotel::ReservationTracker::InvalidDateError
+      expect { @reservation_tracker.confirm_valid_dates?(start_date, end_date) }.must_raise Hotel::ReservationTracker::InvalidDateError
     end
 
     it "raises an error if end date precedes start date" do
       start_date = Date.today
       end_date = start_date - 5
 
-      input = {
-        start_date: start_date,
-        end_date: end_date
-      }
-
-      expect { @reservation_tracker.confirm_valid_dates?(input) }.must_raise Hotel::ReservationTracker::DatesOrderError
+      expect { @reservation_tracker.confirm_valid_dates?(start_date, end_date) }.must_raise Hotel::ReservationTracker::DatesOrderError
     end
   end
 
   describe "#get_requested_dates method" do
     it "creates an instance of DateRange with the start_date and end_date inputs" do
-      date_range = @reservation_tracker.get_requested_dates(@input)
+      date_range = @reservation_tracker.get_requested_dates(@start_date, @end_date)
       expect(date_range).must_be_kind_of Hotel::DateRange
     end
   end
