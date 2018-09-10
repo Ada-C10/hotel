@@ -3,7 +3,7 @@ module HotBook
 # holding all reservations and blocks,
 # searching through them, and
 # making new reservations and blocks.
-# It includes support methods for determining availability.
+# It includes support methods for determining availability/conflicts.
 
   class Book
     attr_reader :reservations, :hotel, :blocks
@@ -19,9 +19,11 @@ module HotBook
       validate(:room_number, room_number)
       room_number = room_number.upcase
       if room_taken?(daterange, room_number)
-        raise RoomIsTakenError, "Room is already reserved some time within this daterange"
+        raise RoomIsTakenError, "Room is already reserved some time within "\
+                                "this daterange"
       elsif room_blocked?(daterange, room_number)
-        raise RoomIsBlockedError, "Room is blocked some time within this daterange"
+        raise RoomIsBlockedError, "Room is blocked some time within this "\
+                                  "daterange"
       end
 
       room_rate = hotel.find_rate(room_number)
@@ -42,14 +44,16 @@ module HotBook
       # Cannot overlap or conflict with existing reservation
       rooms.each do |room_number|
         if room_taken?(daterange, room_number)
-          raise RoomIsTakenError, "Room already has reservation during this daterange"
+          raise RoomIsTakenError, "Room already has reservation during "\
+                                  "this daterange"
         elsif room_blocked?(daterange, room_number)
-          raise BlockConflictError, "A block already exists on a room during this daterange"
+          raise BlockConflictError, "A block already exists on a room during " \
+                                    "this daterange"
         end
       end
       new_block = HotBook::Block.new(daterange: daterange,
                                      rooms: rooms,
-                                     room_rate: discount_rate) # Default discount
+                                     room_rate: discount_rate) # Default
       blocks << new_block
       return new_block
     end
@@ -79,11 +83,13 @@ module HotBook
       return new_reservation
     end
 
+# Returns the first room in the array of available rooms
     def suggest_room(daterange)
       validate(:daterange, daterange)
       available = public_avail_rooms(daterange)
       if available == nil || available == []
-        raise HotBook::NoRoomsAvailableError, "All rooms are booked during this daterange"
+        raise HotBook::NoRoomsAvailableError, "All rooms are booked " \
+          "during this daterange"
       end
       return available.first
     end
@@ -91,13 +97,15 @@ module HotBook
 # Returns an array of reservations (EXCLUDING checkout day)
     def list_by_nights(date)
       validate(:date, date)
-      return reservations.select {|reservation| reservation.range.include?(date) }
+      return reservations.select {|reservation|
+                                   reservation.range.include?(date) }
     end
 
-# Returns an array of room numbers that are publicly available during a daterange
+# Returns array of room numbers that are publicly available during a daterange
     def public_avail_rooms(daterange)
       validate(:daterange, daterange)
-      a = conflicting_reservations(daterange).map { |reservation| reservation.room_number }
+      a = conflicting_reservations(daterange).map { |reservation|
+                                                     reservation.room_number }
       b = conflicting_blocks(daterange).flat_map { |block| block.rooms }
       available_rooms = hotel.room_numbers - a - b
       return available_rooms
@@ -108,7 +116,8 @@ module HotBook
     def room_taken?(daterange, room_number)
       validate(:daterange, daterange)
       validate(:room_number, room_number)
-      a = conflicting_reservations(daterange).map { |reservation| reservation.room_number }
+      a = conflicting_reservations(daterange).map { |reservation|
+                                                     reservation.room_number }
       return a.include?(room_number)
     end
 
@@ -124,7 +133,8 @@ module HotBook
 # Returns an array of reservations with a daterange conflict
     def conflicting_reservations(daterange)
       validate(:daterange, daterange)
-      return reservations.select { |reservation| reservation.daterange.conflict?(daterange) }
+      return reservations.select { |reservation|
+        reservation.daterange.conflict?(daterange) }
     end
 
 # Returns an array of blocks with a daterange conflict
@@ -144,8 +154,8 @@ module HotBook
         raise ArgumentError, "Invalid room number (expected String, " \
         "not #{var.class})" unless var.is_a?(String)
       when :daterange
-        raise ArgumentError, "Invalid daterange (expected HotBook::DateRange, " \
-        "not #{var.class})" unless var.is_a?(HotBook::DateRange)
+        raise ArgumentError, "Invalid daterange (expected HotBook::DateRange," \
+        " not #{var.class})" unless var.is_a?(HotBook::DateRange)
       when :rooms
         raise ArgumentError, "Invalid rooms (expected Array of " \
         "Strings)" unless var.is_a?(Array) && var.first.is_a?(String)
