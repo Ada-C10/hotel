@@ -4,7 +4,7 @@ require_relative 'spec_helper'
 #
 
 # runs from project directory
-xdescribe "#Admin - initializer" do
+describe "#Admin - initializer" do
   before do
     @admin = Admin.new
   end
@@ -38,13 +38,13 @@ xdescribe "#Admin - initializer" do
   end
 end
 
-xdescribe "#reservation information" do
+describe "#reservation information" do
   before do
     @admin = Admin.new
   end
   it "return the reservations that have a specific date, not including the last day" do
     #arrange
-    # reservations are:
+    # reservations are from test file
     # 2,2018-08-07,2018-08-09
     # 1,2018-08-08,2018-08-09
 
@@ -78,9 +78,12 @@ describe "#rooms information and reservation" do
 
   # REFACTOR idea:
   # before and after count of rooms from driver
-  # needs to test when reservation is 1 - 2
-  # and another one with reservation 1 - 3, should include 2 rooms
+  ## FUTURE WORK:  needs a test for this case
+  #   reservation is 1 - 2
+  #   and another one is 1 - 3, should include 2 rooms
   # needs a test with arrange to have block rooms and to check result
+
+  ## FUTURE WORK: needs a test that reservation was made # checked in binding.pry, but needs the test
   it "can make a reservation" do
     start_date = "2018-08-07 00:00:00 -0700"
     end_date = "2018-08-09 00:00:00 -0700"
@@ -122,7 +125,7 @@ describe "#rooms information and reservation" do
   end
 end
 
-xdescribe "#range tests" do
+describe "#range tests" do
   before do
     @admin = Admin.new
   end
@@ -264,5 +267,31 @@ describe "#blocks" do
     @admin.reserve_room_in_block(info)
     rooms = @admin.view_vacant_rooms_in_block(range)
     expect(rooms.length).must_equal 3
+  end
+
+  it "an outsider of a party can't reserve a room in a block" do
+    start_date = "2018-08-07 00:00:00 -0700"
+    end_date = "2018-08-09 00:00:00 -0700"
+    data = {}
+    data[:block_id] = 1
+    data[:start_date] = start_date
+    data[:end_date] = end_date
+    data[:rooms] = 4
+    data[:discounted_rate] = 100
+    # it creates 4 blocks
+    @admin.create_block_rooms(data)
+
+    start_date = "2018-08-07 00:00:00 -0700"
+    end_date = "2018-08-09 00:00:00 -0700"
+    @admin.reserve_room(start_date, end_date)
+    # FUTURE WORK: a binding.pry at this point shows that it didn't reserve a room, it removed rooms one and three??
+
+    # to test the expected result
+    start_date = "2018-08-07 00:00:00 -0700"
+    end_date = "2018-08-09 00:00:00 -0700"
+    start_date = Time.parse(start_date)
+    end_date = Time.parse(end_date)
+    end_date = end_date - 1
+    range = [(start_date..end_date)]
   end
 end

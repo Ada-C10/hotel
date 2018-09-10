@@ -59,8 +59,6 @@ class Admin
       input_data[:room_num] = room.number
       reservations << Reservation.new(input_data)
     end
-
-    # must create instance of reservation for this room using one more day
   end
 
   #As an administrator, I can view a list of rooms that are not reserved for a given date range
@@ -85,7 +83,6 @@ class Admin
       blocks = room.blocks
       blocks.each do |block|
         blocks.empty? == false
-        binding.pry
         vacant_rooms.delete(room)
       end
     end
