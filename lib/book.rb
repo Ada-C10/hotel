@@ -64,8 +64,9 @@ module HotBook
       room_number = room_number.upcase
       # make sure the room number is part of the block
       unless block.rooms.include?(room_number)
-        raise StandardError, "Room is not part of the given block"
+        raise ArgumentError, "Room is not part of the given block"
       end
+      # make sure the room is available
       unless block.available.include?(room_number)
         raise RoomIsTakenError, "Room already reserved during this block"
       end

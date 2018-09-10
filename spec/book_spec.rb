@@ -13,6 +13,7 @@ describe "HotBook::Book class" do
   let(:date) {Date.parse("apr_15")}
   let(:overlaprange) { HotBook::DateRange.new( start_date: "apr_08",
                                                end_date: "apr_16") }
+  let(:current_block){book.blocks[0]}
 
   before do
     # Test reservation data is loaded into @reservations:
@@ -50,6 +51,25 @@ describe "HotBook::Book class" do
 
   describe "new_block_reservation method" do
 
+    it "will remove the room from block's memo array of what's still reservable" do
+      expect(current_block.available.size).must_equal 1
+      book.new_block_reservation(current_block)
+      expect(current_block.available.size).must_equal 0
+    end
+
+    it "will raise an error if the room number given is not in the given block" do
+      expect{book.new_block_reservation(current_block, room_number: "20")}.must_raise ArgumentError
+    end
+
+    it "will raise an error if the room is in the block, but already booked" do
+      expect{book.new_block_reservation(current_block, room_number: "1")}.must_raise HotBook::RoomIsTakenError
+    end
+
+    it "will add the new reservation to the @reservations array" do
+      expect(book.reservations.last.room_number).must_equal "6"
+      book.new_block_reservation(current_block)
+      expect(book.reservations.last.room_number).must_equal "5"
+    end
   end
 
   describe "new_block method" do
