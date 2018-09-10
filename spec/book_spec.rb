@@ -15,11 +15,16 @@ describe "HotBook::Book class" do
                                                end_date: "apr_16") }
 
   before do
-    book # test reservation data is loaded into @reservations
-    block = load_block # a single block, rooms 1-5, 4/15-4/30, is loaded into @blocks
-    block.disable("1") # This manually mimics what would happen if test reservations
-    block.disable("2") # with note "This is a block (private) reservation"
-    block.disable("3") # were created as block reservations
+    # Test reservation data is loaded into @reservations:
+    book
+    # A single block, rooms 1-5, 4/15-4/30, is loaded into @blocks:
+    block = load_block
+
+    # This mimics what would happen if test reservations 6-9 were actually
+    # created as block reservations:
+    block.disable("1")
+    block.disable("2")
+    block.disable("3")
     block.disable("4")
   end
 
@@ -40,6 +45,26 @@ describe "HotBook::Book class" do
   describe "suggest_room method" do
     it "returns the first publicly available room number that isn't booked or blocked" do
       expect(book.suggest_room(daterange)).must_equal "7"
+    end
+  end
+
+  describe "new_block_reservation method" do
+
+  end
+
+  describe "new_block method" do
+    it "cannot overlap or conflict with an existing block" do
+      expect{book.new_block(daterange, rooms)}.must_raise HotBook::BlockConflictError
+    end
+
+    it "cannot overlap or conflict with an existing reservation" do
+      expect{book.new_block(overlaprange, rooms)}.must_raise HotBook::RoomIsTakenError
+      expect{book.new_block(daterange, ["6"])}.must_raise HotBook::RoomIsTakenError
+    end
+
+    it "cannot contain more than 5 rooms" do
+      bad_rooms = %w(1 2 3 4 5 6)
+      expect{book.new_block(daterange, bad_rooms)}.must_raise ArgumentError
     end
   end
 

@@ -1,7 +1,3 @@
-# Optional - for developer use
-require "pry"
-require "awesome_print"
-
 module HotBook
 # The Book class is responsible for:
 # holding all reservations and blocks,
@@ -9,15 +5,7 @@ module HotBook
 # making new reservations and blocks.
 # It includes support methods for determining availability.
 
-TEST_RESERVATION_FILENAME = "support/test_reservation_data.csv"
-# RESERVATION_DATA_FILENAME = "data/reservation_data.csv"
-
   class Book
-    require_relative "hotel.rb"
-    require_relative "reservation.rb"
-    require_relative "block.rb"
-    require_relative "errors.rb"
-    require "date"
     attr_reader :reservations, :hotel, :blocks
 
     def initialize(hotel) # expects a dependency injection (HotBook::Hotel.new)
@@ -37,7 +25,7 @@ TEST_RESERVATION_FILENAME = "support/test_reservation_data.csv"
       if room_taken?(daterange, room_number)
         raise RoomIsTakenError, "Room is already reserved some time within this daterange"
       elsif room_blocked?(daterange, room_number)
-        raise RoomIsBlockedError, "This room conflicts with a Block during this daterange"
+        raise RoomIsBlockedError, "Room is blocked some time within this daterange"
       end
 
       room_rate = hotel.find_rate(room_number)
@@ -55,9 +43,12 @@ TEST_RESERVATION_FILENAME = "support/test_reservation_data.csv"
       if rooms.size > 5
         raise ArgumentError, "A Block cannot have more than 5 rooms"
       end
+      # Cannot overlap or conflict with existing reservation
       rooms.each do |room_number|
         if room_taken?(daterange, room_number)
           raise RoomIsTakenError, "Room already has reservation during this daterange"
+        elsif room_blocked?(daterange, room_number)
+          raise BlockConflictError, "A block already exists on a room during this daterange"
         end
       end
       new_block = HotBook::Block.new(daterange: daterange,
@@ -72,10 +63,10 @@ TEST_RESERVATION_FILENAME = "support/test_reservation_data.csv"
       validate(:block, block)
       room_number = room_number.upcase
       # make sure the room number is part of the block
-      unless block.rooms.include? room_number
+      unless block.rooms.include?(room_number)
         raise StandardError, "Room is not part of the given block"
       end
-      unless block.available.include? room_number
+      unless block.available.include?(room_number)
         raise RoomIsTakenError, "Room already reserved during this block"
       end
       # Remove this room from its memory array of what's still available:
@@ -95,7 +86,7 @@ TEST_RESERVATION_FILENAME = "support/test_reservation_data.csv"
 # Returns an array of reservations (EXCLUDING checkout day)
     def list_by_nights(date)
       validate(:date, date)
-      return reservations.select {|reservation| reservation.range.include? date}
+      return reservations.select {|reservation| reservation.range.include?(date) }
     end
 
 # Returns an array of room numbers that are publicly available during a daterange
@@ -113,7 +104,7 @@ TEST_RESERVATION_FILENAME = "support/test_reservation_data.csv"
       validate(:daterange, daterange)
       validate(:room_number, room_number)
       a = conflicting_reservations(daterange).map { |reservation| reservation.room_number }
-      return a.include? room_number
+      return a.include?(room_number)
     end
 
 # Searches all block dateranges for any conflict with given daterange,
@@ -122,7 +113,7 @@ TEST_RESERVATION_FILENAME = "support/test_reservation_data.csv"
       validate(:daterange, daterange)
       validate(:room_number, room_number)
       b = conflicting_blocks(daterange).flat_map { |block| block.rooms }
-      return b.include? room_number
+      return b.include?(room_number)
     end
 
 # Returns an array of reservations with a daterange conflict
@@ -161,24 +152,3 @@ TEST_RESERVATION_FILENAME = "support/test_reservation_data.csv"
 
   end
 end
-
-
-
-    # def load_reservations(filename)
-    #   reservations = CSV.open(filename).map { |row|
-    #     start_date = row[0]
-    #     end_date = row[1]
-    #     room_number = row[2]
-    #     room_rate = row[3].to_f
-    #     notes = row[4]
-    #
-    #     HotBook::Reservation.new(
-    #       daterange: HotBook::DateRange.new(start_date: start_date,
-    #                                         end_date: end_date),
-    #       room_number: room_number, room_rate: room_rate, notes: notes)
-    #   }
-    #   return reservations
-    # end
-
-    # def save_reservations(filename)
-    # end
