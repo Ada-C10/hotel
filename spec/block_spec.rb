@@ -3,7 +3,7 @@ require_relative '../lib/block'
 
 
 describe "block of rooms" do
-
+skip
   it "create a method" do
   end
 
