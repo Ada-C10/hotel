@@ -1,5 +1,6 @@
 require_relative 'spec_helper'
 
+
 describe "Reservation class" do
   before do
     @room = Hotel::Room.new(room_num: 1)
