@@ -64,8 +64,9 @@ module Hotel
       reservation.number_nights.times do
         @room_calendar[reservation.room][date] = reservation # dependency
         date += 1
-      end
 
+      end
+# binding.pry
       return @room_calendar
     end
 

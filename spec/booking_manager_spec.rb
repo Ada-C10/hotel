@@ -5,7 +5,7 @@ describe "BookingManager class" do
     it "creates an instance of BookingManager" do
       manager = Hotel::BookingManager.new(10)
       expect(manager).must_be_kind_of Hotel::BookingManager
-    end # of it instance bookingmanager
+    end
 
     it "creates the proper structures for instance variables instantiated" do
       hotel_rooms = Hotel::BookingManager.new(20)
@@ -13,14 +13,7 @@ describe "BookingManager class" do
       expect(hotel_rooms.rooms).must_be_kind_of Array
       expect(hotel_rooms.reservations).must_be_kind_of Array
     end
-
-    # it "assigns instance variables to values returned from class methods" do
-    #   hotel_rooms = Hotel::BookingManager.new(5)
-    #
-    #   expect(hotel_rooms.rooms).must_equal hotel_rooms.populate_room_list(5)
-    #   expect(hotel_rooms.reservations).must_equal hotel_rooms.make_reservation_list
-    # end
-  end # of initializer describe
+  end
 
 
   describe "populate_room_list method" do
@@ -29,7 +22,7 @@ describe "BookingManager class" do
       expect(new_rooms.populate_room_list(10)).must_be_kind_of Array
       expect(new_rooms.populate_room_list(10).first).must_be_instance_of Hotel::Room
       expect(new_rooms.populate_room_list(10).last).must_be_instance_of Hotel::Room
-    end # of array Room instance it
+    end
 
     it "assigns numbers to rooms consecutively as instantiated" do
       x = 15
@@ -46,7 +39,7 @@ describe "BookingManager class" do
       hotel_rooms = Hotel::BookingManager.new(x)
       expect(hotel_rooms.populate_room_list(x).length).must_equal x
     end
-  end # of room load methods
+  end
 
 
   describe "make_reservation_list method" do
@@ -59,7 +52,7 @@ describe "BookingManager class" do
       hotel_rooms = Hotel::BookingManager.new(5)
       expect(hotel_rooms.make_reservation_list).must_be_empty
     end
-  end # of reservation list test do
+  end
 
   describe "list_reservations method" do
     it "returns an array" do
@@ -96,7 +89,7 @@ describe "BookingManager class" do
     end
 
     it "adds new instance of Reservation to reservations array" do
-      room = Hotel::Room.new(1)
+      room = @hotel_rooms.rooms[1]
       another_booking = Hotel::Reservation.new(room, guest_name: "Polly Pocket", start_date: "May 10, 2018", end_date: "May 12, 2018")
       @hotel_rooms.add_reservation(another_booking)
 
@@ -104,53 +97,56 @@ describe "BookingManager class" do
       expect(@hotel_rooms.reservations.last.guest_name).must_equal "Polly Pocket"
     end
 
-  end # of add_reservation method
+  end
 
   describe "add_reservation_to_calendar method" do
-    it "creates a hash with room number as key and dates as hash" do
+    it "creates a hash with room instance as key and dates as hash" do
       hotel = Hotel::BookingManager.new(3)
-      room = Hotel::Room.new(3)
+      # room = Hotel::Room.new(3)
+      room = hotel.rooms.first
       another_booking = Hotel::Reservation.new(room, guest_name: "Kim Possible", start_date: "June 11, 2018", end_date: "June 14, 2018")
+
+      hotel.add_reservation_to_calendar(another_booking)
       expect(hotel.add_reservation_to_calendar(another_booking)).must_be_kind_of Hash
-      expect(hotel.room_calendar[3]).must_include Date.parse("June 11, 2018")
-      expect(hotel.room_calendar[3].length).must_equal another_booking.number_nights
-    end # end of add reservation to calendar method hash room key it
-  end # of add reservation to calendar method
+      expect(hotel.room_calendar[room]).must_include (Date.parse("June 11, 2018"))
+      expect(hotel.room_calendar[room].length).must_equal another_booking.number_nights
+    end
+  end
 
   describe "get_reservation_cost method" do
     it "returns the total cost of the reservation" do
       hotel = Hotel::BookingManager.new(3)
-      room = Hotel::Room.new(3)
+      room = hotel.rooms[3]
       booking = Hotel::Reservation.new(room, guest_name: "Tony Tonson", start_date: "June 10, 2018", end_date: "June 12, 2018")
 
       expect(hotel.get_reservation_cost(booking.cost_per_night, booking.number_nights)).must_be_close_to 400
-    end # returns product it
-  end # of get_reservation_cost method"
+    end
+  end
 
   describe "find_reservations_on_date method" do
     it "returns all reservations on the desired date" do
       hotel = Hotel::BookingManager.new(5)
-      room1 = Hotel::Room.new(1)
-      room2 = Hotel::Room.new(2)
-      room3 = Hotel::Room.new(3)
-      booking1 = Hotel::Reservation.new(room1, guest_name: "Tony Blaze", start_date: "June 10, 2018", end_date: "June 12, 2018")
+      room1 = hotel.rooms[0]
+      room2 = hotel.rooms[1]
+      room3 = hotel.rooms[2]
+      booking1 = Hotel::Reservation.new(room1, guest_name: "Marsha Daze", start_date: "June 10, 2018", end_date: "June 12, 2018")
       booking2 = Hotel::Reservation.new(room2, guest_name: "Jessie Jade", start_date: "June 10, 2018", end_date: "June 14, 2018")
-      booking3 = Hotel::Reservation.new(room3, guest_name: "Jessie Jade", start_date: "June 14, 2018", end_date: "June 16, 2018")
+      booking3 = Hotel::Reservation.new(room3, guest_name: "Daria Jade", start_date: "June 14, 2018", end_date: "June 16, 2018")
       hotel.add_reservation_to_calendar(booking1)
       hotel.add_reservation_to_calendar(booking2)
       hotel.add_reservation_to_calendar(booking3)
 
       expect(hotel.find_reservations_on_date("June 11, 2018", hotel.room_calendar).length).must_equal 2
-    end # of returns all reservations on date it
-  end # of find_reservations_on_date method
+    end
+  end
 
   describe "find_vacancies_on_date method" do
     before do
       @hotel = Hotel::BookingManager.new(5)
-      room1 = Hotel::Room.new(1)
-      room2 = Hotel::Room.new(2)
-      @room3 = Hotel::Room.new(3)
-      booking1 = Hotel::Reservation.new(room1, guest_name: "Tony Blaze", start_date: "June 10, 2018", end_date: "June 12, 2018")
+      room1 = @hotel.rooms[0]
+      room2 = @hotel.rooms[1]
+      @room3 = @hotel.rooms[2]
+      booking1 = Hotel::Reservation.new(room1, guest_name: "Tonya Blaze", start_date: "June 10, 2018", end_date: "June 12, 2018")
       booking2 = Hotel::Reservation.new(room2, guest_name: "Jane James", start_date: "June 10, 2018", end_date: "June 14, 2018")
       booking3 = Hotel::Reservation.new(@room3, guest_name: "Jessie Jade", start_date: "June 14, 2018", end_date: "June 16, 2018")
       @hotel.add_reservation_to_calendar(booking1)
@@ -161,11 +157,11 @@ describe "BookingManager class" do
     it "returns array of rooms without reservations on given date" do
       expect(@hotel.find_vacancies_on_date("June 10, 2018", @hotel.room_calendar).length).must_equal 3
       expect(@hotel.find_vacancies_on_date("June 17, 2018", @hotel.room_calendar).length).must_equal 5
-    end # of find vacancies it
+    end
 
     it "returns message of no vacancies when all rooms are reserved" do
-      room4 = Hotel::Room.new(4)
-      room5 = Hotel::Room.new(5)
+      room4 = @hotel.rooms[3]
+      room5 = @hotel.rooms[4]
 
       booking4 = Hotel::Reservation.new(@room3, guest_name: "Lady Day", start_date: "June 10, 2018", end_date: "June 11, 2018")
       booking5 = Hotel::Reservation.new(room4, guest_name: "Horis Who", start_date: "June 08, 2018", end_date: "June 14, 2018")
@@ -176,32 +172,32 @@ describe "BookingManager class" do
       @hotel.add_reservation_to_calendar(booking6)
 
       expect(@hotel.find_vacancies_on_date("June 10, 2018", @hotel.room_calendar)).must_be_kind_of String
-    end # no find_vacancies no vacancy it
-  end # of find vacancies on date method
+    end
+  end
 
   describe "reserve_available_room method" do
     before do
       @hotel = Hotel::BookingManager.new(5)
-      room4 = Hotel::Room.new(4)
-      room5 = Hotel::Room.new(5)
+      room4 = @hotel.rooms[3]
+      room5 = @hotel.rooms[4]
 
       booking5 = Hotel::Reservation.new(room4, guest_name: "Horis Who", start_date: "June 08, 2018", end_date: "June 14, 2018")
       booking6 = Hotel::Reservation.new(room5, guest_name: "Dorian Damian", start_date: "June 06, 2018", end_date: "June 11, 2018")
 
       @hotel.add_reservation(booking5)
       @hotel.add_reservation(booking6)
-      #
+
       @number_prior_reservations = @hotel.reservations.length
       @hotel.reserve_available_room("Donna Foster", "January 02, 2019", "January 08, 2019")
     end
 
-    it "only allows reservations for rooms/dates not already reserved" do
-
-    end
+    # it "only allows reservations for rooms/dates not already reserved" do
+    #
+    # end
 
     it "reserves available room for given date range" do
       expect(@hotel.reservations.length).must_equal @number_prior_reservations + 1
     end
-  end # of reserve available room method
+  end
 
-end # end of describe BookingManager class
+end
