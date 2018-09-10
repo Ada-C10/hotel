@@ -57,17 +57,29 @@ module Hotel
       end
     end
 
+    def list_available_rooms(checkin_date, checkout_date = nil)
+      return rooms.select { |room| room.is_available?(checkin_date, checkout_date) }
+    end
+
     def find_reservation(confirmation_num)
       return reservations[confirmation_num]
     end
 
-    def find_block(block)
-      return blocks[block]
+    def find_block(block_name)
+      return blocks[block_name]
     end
 
-    def list_available_rooms(checkin_date, checkout_date = nil)
-      return rooms.select { |room| !room.is_available?(checkin_date, checkout_date) }
+    def find_room(room_num)
+      raise ArgumentError, "No such room exists." if room_num > rooms.length
+      return rooms[room_num-1]
     end
+
+    # allows user to change the price for a specific date of a specific room
+    # if successful, returns the new rate for the specified room and day
+    def change_rate(room_num, date, new_rate)
+      return find_room(room_num).change_nightly_rate(date, new_rate)
+    end
+
 
     private # helper methods
       # raises ArgumentError if dates invalid
