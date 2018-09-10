@@ -59,8 +59,12 @@ module HotBook
     end
 
     def new_block_reservation(block, room_number: block.available.first)
-      validate(:room_number, room_number)
       validate(:block, block)
+      # raise error if the block has no available reservations
+      if block.available == [] || nil
+        raise NoRoomsAvailableError, "This block is fully booked"
+      end
+      validate(:room_number, room_number)
       room_number = room_number.upcase
       # make sure the room number is part of the block
       unless block.rooms.include?(room_number)
@@ -81,7 +85,11 @@ module HotBook
 
     def suggest_room(daterange)
       validate(:daterange, daterange)
-      return public_avail_rooms(daterange).first
+      available = public_avail_rooms(daterange)
+      if available == nil || available == []
+        raise HotBook::NoRoomsAvailableError, "All rooms are booked during this daterange"
+      end
+      return available.first
     end
 
 # Returns an array of reservations (EXCLUDING checkout day)

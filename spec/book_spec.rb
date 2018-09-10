@@ -13,6 +13,8 @@ describe "HotBook::Book class" do
   let(:date) {Date.parse("apr_15")}
   let(:overlaprange) { HotBook::DateRange.new( start_date: "apr_08",
                                                end_date: "apr_16") }
+  let(:shortrange) { HotBook::DateRange.new( start_date: "may_01",
+                                               end_date: "may_02") }
   let(:current_block){book.blocks[0]}
 
   before do
@@ -46,6 +48,22 @@ describe "HotBook::Book class" do
   describe "suggest_room method" do
     it "returns the first publicly available room number that isn't booked or blocked" do
       expect(book.suggest_room(daterange)).must_equal "7"
+    end
+  end
+
+  describe "edge case extravaganza: being super sure you can't overbook" do
+    it "new reservation case" do
+      expect{ 21.times { book.new_reservation(shortrange) } }.must_raise HotBook::NoRoomsAvailableError
+      expect{book.new_reservation(shortrange, room_number: "1")}.must_raise HotBook::RoomIsTakenError
+    end
+
+    it "new block case" do
+      expect{2.times { book.new_block(shortrange, rooms)} }.must_raise HotBook::BlockConflictError
+    end
+
+    it "new_block_reservation case" do
+      new_block = book.new_block(shortrange, rooms)
+      expect{ 6.times{ book.new_block_reservation(new_block) } }.must_raise HotBook::NoRoomsAvailableError
     end
   end
 

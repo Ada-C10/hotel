@@ -7,4 +7,7 @@ module HotBook
 
   class BlockConflictError < StandardError
   end
+
+  class NoRoomsAvailableError < StandardError
+  end
 end
