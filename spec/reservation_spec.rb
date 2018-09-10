@@ -7,7 +7,6 @@ describe "Reservation Class" do
   let (:reservation) { Hotel::Reservation.new(1, date_range) }
 
   describe "Reservation initiation" do
-
     it "is an instance of Reservation" do
       expect(reservation).must_be_kind_of Hotel::Reservation
     end
@@ -16,7 +15,6 @@ describe "Reservation Class" do
       expect(reservation.date_range).must_be_kind_of Hotel::DateRange
       expect(reservation.date_range.check_in).must_be_kind_of Date
       expect(reservation.date_range.check_out).must_be_kind_of Date
-
     end
   end
 
@@ -27,24 +25,11 @@ describe "Reservation Class" do
       date_range2 = Hotel::DateRange.new(date3, date4)
       reservation_1 = Hotel::Reservation.new(1, date_range)
       reservation_2 = Hotel::Reservation.new(2, date_range2)
+
+
       expect(reservation_1.cost).must_equal 400
-      expect(reservation_2.cost ).must_equal 18200
+      expect(reservation_2.cost).must_equal 18200
     end
   end
-
-  # describe "assign_room method" do
-  #   it "assigns Room to reservation from array of Rooms" do
-  #     reservation = Hotel::Reservation.new(1, date_range)
-  #     rooms = [Hotel::Room.new(1), Hotel::Room.new(2), Hotel::Room.new(3)]
-  #
-  #     reservation.assign_room(rooms)
-  #     expect(reservation.room).must_be_kind_of Hotel::Room
-  #   end
-  #
-  #   # it "assigns " do
-  #   #   reservation.assign_room(rooms)
-  #   #   expect(reservation.room).must_be_kind_of Hotel::Room
-  #   # end
-  # end
 
 end

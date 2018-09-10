@@ -6,6 +6,7 @@ module Hotel
   class Reservation
     attr_reader :id, :date_range
     attr_accessor :cost, :room
+    COST = 200
 
     def initialize(id, date_range)
       @id = id
@@ -13,15 +14,10 @@ module Hotel
       @cost = calculate_total_cost
     end
 
-
-    def is_booked?(date)
-      # iterates through reservations, returns true if reservation date includes date argument
-      # return true
-    end
-
     def calculate_total_cost
       total_days = @date_range.dates_booked.length
-      total_cost = 200 * total_days
+      total_cost = COST * total_days
+      return total_cost
     end
 
   end
