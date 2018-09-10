@@ -14,7 +14,10 @@ module Hotel
         @rooms << room
       end
       @reservations = []
+      @reservation_blocks = []
+
     end
+
 
     #wave 2 copy of list of room, iterate though list of reservation---care
 
@@ -29,12 +32,7 @@ module Hotel
 
     #assings room from the available room's array
     def get_available_room(start_date, end_date)
-      # TODO: wave 2, add some logic to figure out which rooms are available
-      # @reservations.each do |reservation|
-      #   if reservation.start_date == start_date
-      # end
       avail_rooms = nonreserved_rooms_fordates(start_date, end_date)
-
       return avail_rooms.first
     end
 
@@ -44,7 +42,7 @@ module Hotel
       room_num = get_available_room(start_date, end_date)
 
       if room_num == nil
-          raise ArgumentError.new("There are no more rooms available at this time, you are not allowed to reserve a room that is not available")
+        raise ArgumentError.new("There are no more rooms available at this time for this date range #{start_date} - #{end_date}, you are not allowed to reserve a room that is not available")
       end
 
       reservation = Reservation.new(start_date, end_date, room_num)
@@ -63,6 +61,7 @@ module Hotel
         return matches
       end
     end
+
 
 
     def reserved_rooms_for_dates(start_date, end_date)
@@ -85,6 +84,23 @@ module Hotel
       all_room_numbers = get_all_numbers
       avail_rooms = all_room_numbers - matched_rooms_range
       return avail_rooms
+    end
+
+
+
+    def reserve_block_rooms(start_date, end_date, num_of_rooms)
+
+      if num_of_rooms > 5
+        raise ArgumentError.new("can't be more than 5")
+      end
+
+      num_of_rooms.times do
+      reservation = assigns_a_reservation(start_date, end_date)
+        @reservation_blocks << reservation
+      end
+
+      return @reservation_blocks
+
     end
 
 

@@ -133,6 +133,22 @@ it "Raises an ArgumentError when all the rooms have been reserved out and there 
   }.must_raise ArgumentError
 
 end
+end
 
 
+describe 'Module Hotel' do
+  before do
+    @hotel = Hotel::Hotel.new
+    @start_date = Date.parse("1/9/2018")
+    @end_date = Date.parse("5/9/2018")
+  end
+
+  it "creates a a Block" do
+    rand_num = rand(1..5)
+    reservation = @hotel.reserve_block_rooms(@start_date, @end_date, rand_num)
+
+    expect(reservation).must_be_kind_of Array
+    expect(reservation.length).must_equal rand_num
+
+  end
 end
