@@ -22,6 +22,13 @@ module HotBook
       CSV.open(filename).flat_map{ |line| line.map { |row| row.upcase }}
     end
 
+# refactor with load CSV of rooms in order to test
+    def self.find_rate(room_number)
+      room_number = room_number.upcase
+      room = rooms.select{|room| room[:room_number] == room_number}
+      return room[:room_rate]
+    end
+
     def load_rooms
       new_rooms = []
       room_numbers.each do |room_number|
@@ -32,17 +39,6 @@ module HotBook
       end
       return new_rooms
     end
-
-    # def has_this_room?(query)
-    #   raise ArgumentError, "Your query (room number) must be a String, not " \
-    #                        "a #{query.class}" unless query.is_a? String
-    #   query = query.upcase
-    #   if room_numbers.include?(query)
-    #     return true
-    #   else
-    #     raise StandardError, "No room by that number"
-    #   end
-    # end
   end
 
 end

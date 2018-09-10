@@ -49,4 +49,10 @@ describe "HotBook::Hotel class" do
     end
   end
 
+# TODO: AFter the CSV load function is added
+  describe "self.find_rate method" do
+    it "Hotel class method can look up the correct room" do
+    end
+  end
+
 end
