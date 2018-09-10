@@ -78,43 +78,29 @@ describe "BookingSystem class" do
 
   describe "#generate_block_id" do
     # NOTE: here and in roomblock, i got tired and didn't do res but instead ints in array
-    let(:block_1) {Hotel::RoomBlock.new(id: 2, reservations: [1,2,3], check_in: "1996-09-09", check_out: "1996-08-13")}
-    let(:block_2) {Hotel::RoomBlock.new(id: 3, reservations: [1,2,3], check_in: "1996-10-01-", check_out: "1996-10-10")}
+    let(:block_1) {Hotel::RoomBlock.new(id: 2, rooms: [1,2,3], check_in: "1996-09-09", check_out: "1996-08-13")}
+    let(:block_2) {Hotel::RoomBlock.new(id: 3, rooms: [1,2,3], check_in: "1996-10-01-", check_out: "1996-10-10")}
 
     it "can create ID for first room block ID instance" do
       new_id = booking_system.generate_block_id()
-      new_block = Hotel::RoomBlock.new(id: new_id, reservations: [1,2,3], check_in: "1996-08-01", check_out: "1996-08-03")
+      new_block = Hotel::RoomBlock.new(id: new_id, rooms: [1,2,3], check_in: "1996-08-01", check_out: "1996-08-03")
 
       booking_system.room_blocks << new_block
 
       expect(booking_system.room_blocks[0].id).must_equal 1
     end
 
-    it "can generate accurate IDs when new reservations are added to reservations list" do
-      first_block = Hotel::RoomBlock.new(id: 10, reservations: [1,2,3], check_in: "1996-09-09", check_out: "1996-09-13")
+    it "can generate accurate IDs when new rooms are added to rooms list" do
+      first_block = Hotel::RoomBlock.new(id: 10, rooms: [1,2,3], check_in: "1996-09-09", check_out: "1996-09-13")
       booking_system.room_blocks << first_block
 
       new_id = booking_system.generate_block_id()
-      second_block= Hotel::RoomBlock.new(id: new_id, reservations: [1,2,3], check_in: "1996-10-01", check_out: "1996-10-10")
+      second_block= Hotel::RoomBlock.new(id: new_id, rooms: [1,2,3], check_in: "1996-10-01", check_out: "1996-10-10")
       booking_system.room_blocks << second_block
 
       expect(booking_system.room_blocks[1].id).must_equal 11
     end
   end
-
-  # describe "#find_room" do
-  # skip
-  #   let(:room_num) {4}
-  #   let(:room_obj) {booking_system.find_room(room_num)}
-  #
-  #   it "finds room object by room number" do
-  #     # num = 4
-  #     # room_obj = booking_system.find_room(num)
-  #
-  #     expect(room_obj).must_be_kind_of Hotel::Room
-  #     expect(room_obj.num).must_equal room_num
-  #   end
-  # end
 
   describe "#list_res_for_date" do
     # see Calendar#has_date? for additional tests
@@ -272,10 +258,6 @@ describe "BookingSystem class" do
       res_1 = booking_system.create_reservation(check_in: "1992-10-15", check_out: "1992-10-25")
       res_2 = booking_system.create_reservation(check_in: "1992-11-15", check_out: "1992-11-25")
       res_3 = booking_system.create_reservation(check_in: "1992-10-15", check_out: "1992-10-25")
-      p res_1
-      p res_2
-      p res_3
-      p booking_system.reservations
 
       expect(res_3.id).must_equal 3
       expect(res_3.room_num).must_equal 2
@@ -285,9 +267,17 @@ describe "BookingSystem class" do
   end
 
   describe "#create_room_block" do
-    it "creates a block of rooms" do
+    let(:room_block) {booking_system.create_room_block(
+      check_in: "1990-01-01",
+      check_out: "1990-01-15",
+      block_size: 2
+      )}
 
-      expect()
+    it "creates a block using room numbers" do
+      expect(room_block).must_be_kind_of Hotel::RoomBlock
+      expect(room_block.rooms).must_be_kind_of Array
+      expect(room_block.rooms.length).must_equal 2
+      expect(room_block.rooms[0]).must_be_kind_of Integer
     end
   end
 end

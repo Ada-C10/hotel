@@ -4,7 +4,7 @@ describe "RoomBlock" do
 
   let(:block) {Hotel::RoomBlock.new(
     id: "2",
-    reservations: [1,2,3,4,5],
+    rooms: [1,2,3,4,5],
     check_in: "2004-7-1",
     check_out: "2004-7-4")}
 
@@ -18,7 +18,7 @@ describe "RoomBlock" do
     expect {
       Hotel::RoomBlock.new(
         id: "2",
-        reservations: [],
+        rooms: [],
         check_in: "2004-7-1",
         check_out: "2004-7-4")}.must_raise StandardError
     end
@@ -27,7 +27,7 @@ describe "RoomBlock" do
     expect {
       Hotel::RoomBlock.new(
         id: "2",
-        reservations: [1],
+        rooms: [1],
         check_in: "2004-7-1",
         check_out: "2004-7-4")}.must_raise StandardError
     end
@@ -36,7 +36,7 @@ describe "RoomBlock" do
     expect {
       Hotel::RoomBlock.new(
         id: "2",
-        reservations: [1,2,3,4,5,6],
+        rooms: [1,2,3,4,5,6],
         check_in: "2004-7-1",
         check_out: "2004-7-4")}.must_raise StandardError
     end
@@ -45,7 +45,7 @@ describe "RoomBlock" do
       # edge case
       one_night_stay = Hotel::RoomBlock.new(
         id: "66",
-        reservations: [1,2,3],
+        rooms: [1,2,3],
         check_in:"2009-7-29",
         check_out: "2009-7-30")
       expect(one_night_stay).must_be_kind_of Hotel::RoomBlock
@@ -63,7 +63,7 @@ describe "RoomBlock" do
     it "can override daily rate's default value" do
       expensive_stay = Hotel::RoomBlock.new(
         id: "66",
-        reservations: [1,2,3],
+        rooms: [1,2,3],
         check_in:"2009-5-15",
         check_out: "2009-7-30",
         daily_rate: 500)
@@ -76,7 +76,7 @@ describe "RoomBlock" do
     it "accurately calculates discounted rate" do
         block_room = Hotel::RoomBlock.new(
         id: "66",
-        reservations: [1,2,3],
+        rooms: [1,2,3],
         check_in:"2009-7-29",
         check_out: "2009-7-30",
         discount: 20)
@@ -89,7 +89,7 @@ describe "RoomBlock" do
     it "accurately calculates the total cost for one room within the block" do
       block_room = Hotel::RoomBlock.new(
       id: "66",
-      reservations: [1,2,3],
+      rooms: [1,2,3],
       check_in:"2009-7-29",
       check_out: "2009-7-30")
 
@@ -101,7 +101,7 @@ describe "RoomBlock" do
       it "accurately calculates the total cost for one room within the block" do
         entire_block = Hotel::RoomBlock.new(
         id: "66",
-        reservations: [1,2,3],
+        rooms: [1,2,3],
         check_in:"2009-7-29",
         check_out: "2009-7-30")
 

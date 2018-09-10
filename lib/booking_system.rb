@@ -2,6 +2,7 @@ require "date"
 
 require_relative 'calendar'
 require_relative 'reservation'
+require_relative 'room_block'
 
 module Hotel
   class BookingSystem
@@ -85,27 +86,21 @@ module Hotel
       return new_reservation
     end
 
-    # def create_room_block(check_in:, check_out:, :block_size)
-    #   date_range = construct_cal_checker(check_in: check_in, check_out: check_out)
-    #
-    #   avail_rooms = list_avail_rooms_for_range(date_range)
-    #
-    #   if avail_rooms.length > block_size
-    #     raise StandardError, "Not enough rooms available."
-    #   end
-    #
-    #   block_size.times do
-    #     room_block = Hotel::Reservation.new(check_in: check_in, check_out: check_out).map { |res| res }
-    #   end
-    #
-    #   id = generate_block_id()
-    #
-    #   new_room_block = Hotel::RoomBlock(id: id, check_in: check_in, check_out: check_out, reservations: room_block)
-    #
-    #   @room_blocks << new_room_block
-    #
-    #   end
-    # end
+    def create_room_block(check_in:, check_out:, block_size:)
+      avail_rooms = list_avail_rooms_for_range(check_in: check_in, check_out: check_out)
+
+      unless avail_rooms.length > block_size
+        raise StandardError, "Not enough rooms available."
+      end
+
+      hold_rooms = avail_rooms[0..block_size-1]
+      id = generate_block_id()
+
+      new_room_block = Hotel::RoomBlock.new(id: id, check_in: check_in, check_out: check_out, rooms: hold_rooms)
+
+      @room_blocks << new_room_block
+      return new_room_block
+    end
 #
 #
 #
@@ -130,3 +125,10 @@ end
 # p booking.list_avail_rooms_for_range(check_in: "1992-10-15", check_out: "1992-10-25")
 
   # booking.reservations.push(res_2, res_3)
+  # block = booking.create_room_block(
+  #   check_in: "1990-01-01",
+  #   check_out: "1990-01-15",
+  #   block_size: 2
+  #   )
+  #
+  #   p block
