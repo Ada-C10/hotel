@@ -1,0 +1,8 @@
+Possible changes to Hotel:
+- Reduce dependency of method for making Reservation on reserve instance variables?
+- Split some of Hotel into smaller methods (like reserve_available_room)
+- Do some of the methods have overlapping but contradictory options? Combine or link. (ex: @reservations & @room_calendar)
+- Change name for BookingManager instance(s) in tests? Sometimes listed as "hotel", other times "manager", etc.
+- Check more of edge cases
+- Too many variables with 'reservation' in them?
+- Make date handling a method (or two?)

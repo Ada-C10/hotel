@@ -33,16 +33,10 @@ module Hotel
       return reservations
     end
 
-    # Create list of rooms with reserved dates. Change name?
-    def make_room_calendar(number) # combine with @rooms?
+    # Create list of rooms with reserved dates.
+    def make_room_calendar(number)
       @room_calendar = {}
-      #
-      # number.times do |num|
-      #   dates_reserved = {} #[]
-      #   @room_calendar[num+1] = dates_reserved
-      # end
 
-      # return @room_calendar
       @rooms.each do |room|
         dates_reserved = {}
         @room_calendar[room] = dates_reserved
@@ -104,8 +98,8 @@ module Hotel
            else
             next
           end
-        end # of info each
-       end # end of calendar each
+        end
+       end
        # Add return message for no reservations found?
        return found_reservations
     end
@@ -193,7 +187,7 @@ module Hotel
       add_reservation(new_reservation)
       add_reservation_to_calendar(new_reservation)
       return new_reservation
-    end # def reserve_available_room
+    end
 
-  end # of class BookingManager
-end # of module Hotel
+  end
+end 
