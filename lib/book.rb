@@ -9,10 +9,6 @@ module HotBook
     attr_reader :reservations, :hotel, :blocks
 
     def initialize(hotel) # expects a dependency injection (HotBook::Hotel.new)
-                          # but what if hotel changes? it only updates @ initialize time...
-                          # then it needs to change to be treated like Reservation class
-                          # luckily, it's already in a class of its own, so it's ready
-                          # to do that (rather than hotel having methods for loading etc.)
       @hotel = hotel
       @reservations = Reservation.from_csv(RESERVATION_DATA_FILENAME)
       @blocks = [] # a list of Blocks
