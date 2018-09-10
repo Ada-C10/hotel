@@ -59,6 +59,9 @@ module Hotel
       end
       all_rooms = load_rooms
       available_rooms = all_rooms - booked_rooms
+      if available_rooms[0] == nil
+        raise ArgumentError, "No rooms available"
+      end
       return available_rooms[0]
     end
 
@@ -109,7 +112,7 @@ module Hotel
       reservation = find_reservation(reservation_id)
       nights = reservation.end_date - reservation.start_date
       total_cost = nights * reservation.price_per_night
-      return total_cost
+      return total_cost.to_f.round(2)
     end
   end
 end

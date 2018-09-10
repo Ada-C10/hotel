@@ -43,6 +43,18 @@ describe "BookingSystem class" do
       @system.reservations << reservation3
       expect(reservation3.room).must_equal 2
     end
+
+    it "raises argument error if no rooms are available" do
+
+      20.times do
+        reservation = Hotel::Reservation.new(reservation_id: 1, room: @system.assign_available_room((Date.new(2018, 1, 1)), (Date.new(2018, 1, 8))), start_date: Date.new(2018, 1, 1), end_date: Date.new(2018, 1, 8), price_per_night: 200)
+        @system.reservations << reservation
+
+        # @booking_system.make_reservation((Date.new(2018, 1, 6)), (Date.new(2018, 1, 6)))
+      end
+      # binding.pry
+      expect {@system.make_reservation((Date.new(2018, 1, 1)), (Date.new(2018, 1, 8)))}.must_raise ArgumentError
+    end
   end
 
   describe "search reservation dates" do
@@ -176,10 +188,15 @@ describe "BookingSystem class" do
       end
     end
 
-    # describe "find_block" do
-    #   it "finds all rooms in a block in an array" do
-    #     @system.make_block((Date.new(2018,1,1)), (Date.new(2018,1,5)), 5)
+    describe "total cost of reservation" do
+      it "accounts for the discounted price when calculating total cost" do
 
+        @system.make_block((Date.new(2018,1,1)), (Date.new(2018,1,5)), 1)
+        id = @system.reservations[0].reservation_id
+
+        expect(@system.total_cost(id)).must_equal 600
+      end
+    end
   end
 end
 
