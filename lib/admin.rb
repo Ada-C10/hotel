@@ -179,13 +179,24 @@ class Admin
     range = data[:range]
     room = @rooms.select { |room| room.number == room_num}[0]
     room.reserve_room_block(range)
+    # needs to create instance of reservation
   end
 
   # As an administrator, I can check whether a given block has any rooms available
-  def view_vacant_rooms_in_block(range)
-    rooms = @rooms.select { |room| room.blocks[:range] == range}[0]
+  def find_block(range)
+    #find block
+    rooms_with_blocks = @rooms.select { |room| room.blocks.empty? == false}
+    #blocks are an array
+    block_set = []
+    rooms_with_blocks.each do |room|
+      blocks = room.blocks
+      blocks.each do |block|
+        if block[:range] == range
+          block_set << room
+        end
+      end
+    end
   end
-
 
   #last day not counted
   #expect input to be time instances
