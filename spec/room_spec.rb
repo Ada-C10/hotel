@@ -13,7 +13,13 @@ describe 'Room class' do
 
     it "throws an argument error with a invalid room_number" do
       expect{
-        Hotel::Room.new({room_number: 0, price: 200})
+        Hotel::Room.new({room_number: 1, price: 200})
+      }.must_raise ArgumentError
+    end
+
+    it "throws an argument error if price is not 200" do
+      expect{
+        Hotel::Room.new({room_number: 0, price: 400})
       }.must_raise ArgumentError
     end
 
