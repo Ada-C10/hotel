@@ -49,9 +49,9 @@ describe "HotBook::Reservation class" do
 
   describe "csv loading" do
     it "will correctly load lines of the CSV" do
-      blocknote = "This is a block 1 reservation"
+      blocknote = "This is the fifth reservation"
       expect(load_reservations[5].room_number).must_equal "1"
-      expect(load_reservations.last.notes).must_equal blocknote
+      expect(load_reservations[5].notes).must_equal blocknote
       expect(load_reservations.first.daterange.start_date).must_equal Date.parse("apr_1")
     end
   end
