@@ -1,7 +1,6 @@
 require_relative 'spec_helper'
 
 describe "RoomBlock" do
-
   let(:block) {Hotel::RoomBlock.new(
     id: "2",
     rooms: [1,2,3,4,5],
@@ -72,19 +71,6 @@ describe "RoomBlock" do
     end
   end
 
-  describe "#discounted_rate" do
-    it "accurately calculates discounted rate" do
-        block_room = Hotel::RoomBlock.new(
-        id: "66",
-        rooms: [1,2,3],
-        check_in:"2009-7-29",
-        check_out: "2009-7-30",
-        discount: 20)
-
-      expect(block_room.discounted_rate).must_equal 160
-    end
-  end
-
   describe "#show_status" do
     it "returns a hash" do
       expect(block.show_status).must_be_kind_of Hash
@@ -96,6 +82,19 @@ describe "RoomBlock" do
 
       expect(block.show_status.keys[-1]).must_equal "5"
       expect(block.show_status.values[-1]).must_equal :available
+    end
+  end
+
+  describe "#discounted_rate" do
+    it "accurately calculates discounted rate" do
+        block_room = Hotel::RoomBlock.new(
+        id: "66",
+        rooms: [1,2,3],
+        check_in:"2009-7-29",
+        check_out: "2009-7-30",
+        discount: 20)
+
+      expect(block_room.discounted_rate).must_equal 160
     end
   end
 
@@ -111,39 +110,15 @@ describe "RoomBlock" do
     end
   end
 
-    describe "#total_stay_cost_block" do
-      it "accurately calculates the total cost for one room within the block" do
-        entire_block = Hotel::RoomBlock.new(
-        id: "66",
-        rooms: [1,2,3],
-        check_in:"2009-7-29",
-        check_out: "2009-7-30")
+  describe "#total_stay_cost_block" do
+    it "accurately calculates the total cost for one entire block" do
+      entire_block = Hotel::RoomBlock.new(
+      id: "66",
+      rooms: [1,2,3],
+      check_in:"2009-7-29",
+      check_out: "2009-7-30")
 
-        expect(entire_block.total_stay_cost_block).must_equal 600
-      end
+      expect(entire_block.total_stay_cost_block).must_equal 600
     end
-  # end
-
-  #   # QUESTION: do we need error handling for numeric value for daily_rate?
-  #   it "can override default value for daily rate" do
-  #   rare_room = Hotel::RoomBlock.new(
-  #     id: "66",
-  #     room_num: "19",
-  #     check_in:"2009-7-29",
-  #     check_out: "2009-7-30",
-  #     daily_rate: 500)
-  #
-  #     expect(rare_room.daily_rate).must_equal 500
-  #   end
-  # end
-
-  # describe "#total_stay_cost" do
-  #   it "correctly calculates total cost for a reservation" do
-  #     rate = reservation.daily_rate
-  #     dates = 3
-  #     correct_cost = rate * dates
-  #
-  #     expect(reservation.total_stay_cost).must_equal 600
-  #   end
-  # end
+  end
 end

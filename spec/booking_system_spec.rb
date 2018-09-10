@@ -1,7 +1,5 @@
 require_relative 'spec_helper'
 
-# TODO: fix the order of these methods!
-# QUESTION: wave 2 -- Your code should raise an exception when asked to reserve a room that is not available -- huhhh? i thought they book with a date range!
 describe "BookingSystem class" do
   let(:booking_system) {Hotel::BookingSystem.new()}
 
@@ -14,8 +12,6 @@ describe "BookingSystem class" do
       expect(booking_system.rooms).must_be_kind_of Array
       expect(booking_system.reservations).must_be_kind_of Array
     end
-
-    #TODO: can add new reservations successfully? or elsewhere do this??
   end
 
   describe "#list_all_rooms" do
@@ -46,12 +42,10 @@ describe "BookingSystem class" do
     # see additional constructor tests in Calendar
     it "creates a new instance of Calendar" do
       booking_system.construct_cal_checker(check_in: "1990-10-01", check_out: "1990-10-15").must_be_kind_of Hotel::Calendar
-      #TODO: check for endd_date as nil?
     end
   end
 
   describe "#generate_res_id" do
-
     let(:second_res) {Hotel::Reservation.new(id: 2, room_num: 19, check_in: "1996-09-09", check_out: "1996-08-13")}
     let(:third_res) {Hotel::Reservation.new(id: 3, room_num: 20, check_in: "1996-10-01-", check_out: "1996-10-10")}
 
@@ -77,7 +71,6 @@ describe "BookingSystem class" do
   end
 
   describe "#generate_block_id" do
-    # NOTE: here and in roomblock, i got tired and didn't do res but instead ints in array
     let(:block_1) {Hotel::RoomBlock.new(id: 2, rooms: [1,2,3], check_in: "1996-09-09", check_out: "1996-08-13")}
     let(:block_2) {Hotel::RoomBlock.new(id: 3, rooms: [1,2,3], check_in: "1996-10-01-", check_out: "1996-10-10")}
 
@@ -90,7 +83,7 @@ describe "BookingSystem class" do
       expect(booking_system.room_blocks[0].id).must_equal 1
     end
 
-    it "can generate accurate IDs when new rooms are added to rooms list" do
+    it "can generate accurate IDs when new blocks are added to block list" do
       first_block = Hotel::RoomBlock.new(id: 10, rooms: [1,2,3], check_in: "1996-09-09", check_out: "1996-09-13")
       booking_system.room_blocks << first_block
 
@@ -128,7 +121,6 @@ describe "BookingSystem class" do
     let(:matching_res) {booking_system.list_res_for_date("2010-8-5")}
 
     it "should return an array of Reservation objects" do
-
       booking_system.reservations.push(res_1, res_2, res_3)
 
       expect(matching_res).must_be_kind_of Array
@@ -216,7 +208,6 @@ describe "BookingSystem class" do
       all_rooms = (1..20).to_a
 
       expect(avail_rooms).must_equal all_rooms
-
     end
 
     it "can take rooms in room blocks into account" do
@@ -232,13 +223,18 @@ describe "BookingSystem class" do
     end
   end
 
-# TODO: add create reservation method + 2nd input as room_num??
   describe "#create_reservation" do
-    # TODO: A reservation is allowed start on the same day that another reservation for the same room ends
-    # TODO test that it's added to Room
-    # TODO test that it's added to reservations
-    # let(:room_num) {4}
-    # let(:room_obj) {booking_system.find_room(room_num)}
+    it "throws an error when no rooms are available for a given date range" do
+      20.times do |i|
+        res = Hotel::Reservation.new(id:1, room_num: i+1, check_in: "1999-1-1", check_out: "1999-12-31")
+        booking_system.reservations << res
+      end
+
+      expect {
+        booking_system.create_reservation(
+          check_in: "1999-7-1",
+          check_out: "1999-7-4")}.must_raise StandardError
+    end
 
     it "creates a new reservation successfully with correct data types" do
       res_1 = booking_system.create_reservation(check_in: "1992-10-15", check_out: "1992-10-25")
@@ -288,6 +284,19 @@ describe "BookingSystem class" do
       block_size: 2
       )}
 
+    it "throws an error when no rooms are available for a given date range" do
+      20.times do |i|
+        res = Hotel::Reservation.new(id:1, room_num: i+1, check_in: "1999-1-1", check_out: "1999-12-31")
+        booking_system.reservations << res
+      end
+
+      expect {
+        booking_system.create_room_block(
+          block_size: 4,
+          check_in: "1999-7-1",
+          check_out: "1999-7-4")}.must_raise StandardError
+    end
+
     it "creates a block using room numbers" do
       expect(room_block).must_be_kind_of Hotel::RoomBlock
       expect(room_block.rooms).must_be_kind_of Array
@@ -296,7 +305,6 @@ describe "BookingSystem class" do
     end
 
     it "accurately adds information to first room block made" do
-
       expect(room_block.id).must_equal 1
       expect(room_block.rooms.length).must_equal 2
       expect(room_block.check_in.strftime('%Y %b %d')).must_equal "1990 Jan 01"

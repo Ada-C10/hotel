@@ -1,7 +1,5 @@
 require_relative 'spec_helper'
-# require_relative 'calendar'
 
-# TODO: edge case --> multimonth stay??
 describe "Calendar" do
     let(:cal) {Hotel::Calendar.new(check_in: "1986-07-20", check_out: "1986-07-29")}
 
@@ -9,6 +7,7 @@ describe "Calendar" do
     it "can create a new instance of Calendar" do
       expect(cal).must_be_kind_of Hotel::Calendar
     end
+
     it "correctly loads date attributes" do
       expect(cal.check_in).must_be_kind_of Date
       expect(cal.check_in.strftime('%Y %b %d')).must_equal "1986 Jul 20"
@@ -163,13 +162,5 @@ describe "Calendar" do
 
       expect(dates_overlap).must_equal true
     end
-
-
-
-
   end
-
-
-
-
 end

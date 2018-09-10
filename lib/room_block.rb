@@ -5,7 +5,7 @@ module Hotel
     attr_reader :block_size, :discount, :rooms, :status
 
     def initialize(id:, daily_rate: 200, check_in:, check_out:, discount:0, rooms:[], status: :available)
-      super(id: id, daily_rate: daily_rate, check_in: check_in, check_out: check_out, room_num: room_num) # QUESTION: do i need to specify daily_rate???
+      super(id: id, daily_rate: daily_rate, check_in: check_in, check_out: check_out, room_num: room_num)
 
       unless !rooms.empty?
         raise StandardError, "Room blocks cannot be empty!"
@@ -23,7 +23,7 @@ module Hotel
 
     def show_status()
       rooms_hash = {}
-      rooms.each do |room|
+      @rooms.each do |room|
         rooms_hash[room.to_s] = @status
       end
       return rooms_hash
@@ -43,12 +43,3 @@ module Hotel
     end
   end
 end
-
-
-# block = Hotel::RoomBlock.new(
-#   id: "2",
-#   rooms: [1,2,3],
-#   check_in: "2004-7-1",
-#   check_out: "2004-7-4")
-#
-#   p block.daily_rate

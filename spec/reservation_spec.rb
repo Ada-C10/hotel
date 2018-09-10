@@ -2,9 +2,6 @@ require_relative 'spec_helper'
 
 describe "Reservation" do
 
-  # TODO: test id as any pos int?
-  # TODO: test room_num as 1-20?
-
   let(:reservation) {Hotel::Reservation.new(
     id: "2",
     room_num: "3",
@@ -14,7 +11,12 @@ describe "Reservation" do
   describe "#initialize" do
     it "can create a new instance of reservation" do
       expect(reservation).must_be_kind_of Hotel::Reservation
-      expect(reservation.id).must_equal 2
+    end
+
+    it "correctly loads the initialized datatypes" do
+      expect(reservation.id).must_be_kind_of Integer
+      expect(reservation.room_num).must_be_kind_of Integer
+      expect(reservation.daily_rate).must_be_kind_of Float
     end
 
     it "can create a reservation with a one-night stay" do
@@ -38,7 +40,6 @@ describe "Reservation" do
       expect(typical_room.daily_rate).must_equal 200
     end
 
-    # QUESTION: do we need error handling for numeric value for daily_rate?
     it "can override default value for daily rate" do
     rare_room = Hotel::Reservation.new(
       id: "66",

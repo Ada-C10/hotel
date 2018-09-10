@@ -39,10 +39,9 @@ module Hotel
     end
 
     def list_res_for_date(check_date)
-      matching_res = @reservations.select { |reservation| reservation.has_date?(check_date) } #==false
+      matching_res = @reservations.select { |reservation| reservation.has_date?(check_date) }
 
       return matching_res.empty? ? nil : matching_res
-
     end
 
     def list_avail_rooms_for_range(check_in:, check_out:)
@@ -55,7 +54,7 @@ module Hotel
         held_rooms = @room_blocks.select { |block| block.overlap?(date_range) }.map {|block| block.rooms}
 
         if !held_rooms.empty?
-          held_rooms = held_rooms[0]
+          held_rooms = held_rooms[0] # list within a list
         end
 
         avail_rooms -= held_rooms
@@ -79,7 +78,6 @@ module Hotel
         check_in: check_in,
         check_out: check_out)
 
-      # QUESTION: do i realy need to make dates an obj??
       @reservations << new_reservation
 
       return new_reservation
@@ -102,37 +100,5 @@ module Hotel
       @room_blocks << new_room_block
       return new_room_block
     end
-#
-#     def find_room(room_num)
-#       return @rooms.find {|room| room.num == room_num.to_i}
-#     end
-
   end
 end
-
-#
-# booking = Hotel::BookingSystem.new()
-# #
-# block = Hotel::RoomBlock.new(id: 1, check_in: "1970-03-04", check_out: "1992-12-15", rooms: [1,2,3])
-# booking.room_blocks << block
-#
-# p booking.list_avail_rooms_for_range(check_in: "1970-03-01", check_out: "1970-03-07")
-#
-# p booking.reservations
-#
-# res_1 = Hotel::Reservation.new(id: 1, room_num: 1, check_in: "1992-10-15", check_out: "1992-10-25")
-# res_2 = Hotel::Reservation.new(id: 2, room_num:2, check_in: "1992-11-15", check_out: "1992-11-25")
-# res_3 = Hotel::Reservation.new(id: 3, room_num: 3, check_in: "1992-10-15", check_out: "1992-10-25")
-
-# booking.reservations.push(res_1, res_2, res_3)
-
-# p booking.list_avail_rooms_for_range(check_in: "1992-10-15", check_out: "1992-10-25")
-# #
-#   booking.reservations.push(res_2, res_3)
-#   block = booking.new(
-#     check_in: "1990-01-01",
-#     check_out: "1990-01-15",
-#     block_size: 2
-#     )
-#
-#     p
