@@ -143,24 +143,25 @@ describe "BookingSystem class" do
     # see Calendar#overlap? for additonal tests
     let(:res_1) {Hotel::Reservation.new(
       id: "1",
-      room_num: "20",
-      check_in: "2010-8-1",
-      check_out: "2010-8-10"
+      room_num: "18",
+      check_in: "2010-6-15",
+      check_out: "2010-6-20"
       )}
 
     let(:res_2) {Hotel::Reservation.new(
       id: "2",
       room_num: "19",
-      check_in: "2010-8-15",
-      check_out: "2010-8-18"
+      check_in: "2010-7-15",
+      check_out: "2010-7-20"
       )}
 
     let(:res_3) {Hotel::Reservation.new(
-      id: "4",
-      room_num: "15",
-      check_in: "2010-8-4",
+      id: "3",
+      room_num: "20",
+      check_in: "2010-8-15",
       check_out: "2010-8-20"
       )}
+
     it "returns an array of room numbers if rooms are available" do
       booking_system.reservations.push(res_1, res_2, res_3)
 
@@ -173,63 +174,89 @@ describe "BookingSystem class" do
     it "accurately returns a list of available rooms by number if rooms are available" do
       booking_system.reservations.push(res_1, res_2, res_3)
 
-      avail_rooms = booking_system.list_avail_rooms_for_range(check_in: "2010-8-19", check_out: "2010-10-26")
+      all_rooms = booking_system.rooms
 
-      expect(avail_rooms.length).must_equal 2
-      expect(avail_rooms[0]).must_equal 20
-      expect(avail_rooms[1]).must_equal 19
+      booked_rooms = [19, 20]
+
+      avail_rooms = booking_system.list_avail_rooms_for_range(check_in: "2010-7-1", check_out: "2010-8-30")
+
+      expect(avail_rooms.length).must_equal 18
+      expect(avail_rooms).must_equal (all_rooms - booked_rooms)
     end
 
-    it "returns nil if no rooms are available" do
-    booking_system.reservations.push(res_1, res_2, res_3)
+    # it "returns nil if no rooms are available" do
+    # TODO:hoooww?
+    #   booking_system.rooms -= (1..17).to_a
+    #   booking_system.reservations.push(res_1, res_2, res_3)
+    #
+    # avail_rooms = booking_system.list_avail_rooms_for_range(check_in: "2010-6-1", check_out: "2010-9-1")
+    #
+    # expect(avail_rooms).must_be_nil
+    # end
 
-    avail_rooms = booking_system.list_avail_rooms_for_range(check_in: "2010-8-1", check_out: "2010-8-20")
+    it "returns all rooms available if there are no reservations" do
+      #edge case
+      avail_rooms = booking_system.list_avail_rooms_for_range(check_in: "2010-8-1", check_out: "2010-8-20")
 
-    expect(avail_rooms).must_be_nil
+      all_rooms = (1..20).to_a
+
+      expect(avail_rooms).must_equal all_rooms
+
     end
   end
 
-# # TODO: add create reservation method + 2nd input as room_num??
-#   describe "#create_reservation" do
-#     # TODO: A reservation is allowed start on the same day that another reservation for the same room ends
-#     # TODO test that it's added to Room
-#     # TODO test that it's added to reservations
-#     # let(:room_num) {4}
-#     # let(:room_obj) {booking_system.find_room(room_num)}
-#     let(:reservation_hash) {{
-#       id: "5",
-#       room_num: "10",
-#       start_date: "2010-8-6",
-#       end_date: "2010-8-10",
-#       }}
-#     let(:new_reservation) {booking_system.create_reservation(reservation_hash)}
-#
-#     it "creates a new reservation successfully" do
-#       expect(new_reservation).must_be_kind_of Hotel::Reservation
-#     end
-#
-#     it "loads reservation details properly" do
-#       # QUESTION: should i test values or types? in rideshare, seems like mostly type was tested....
-#       expect(new_reservation.id).must_equal 5
-#       expect(new_reservation.room.num).must_equal 10
-#       expect(new_reservation.start_date).must_be_kind_of Date
-#       expect(new_reservation.end_date).must_be_kind_of Date
-#       expect(new_reservation.daily_rate).must_equal 200
-#
-#     end
-#   end
-#
-#   # describe "#add_reservation" do
-#   #   updated_reservations = booking_system.add_reservation(new_reservation)
-#   # end
-#
-#   # describe "#load_reservations" do
-#   # end
-#
+# TODO: add create reservation method + 2nd input as room_num??
+  describe "#create_reservation" do
+    # TODO: A reservation is allowed start on the same day that another reservation for the same room ends
+    # TODO test that it's added to Room
+    # TODO test that it's added to reservations
+    # let(:room_num) {4}
+    # let(:room_obj) {booking_system.find_room(room_num)}
 
-#
+    it "creates a new reservation successfully with correct data types" do
+      res_1 = booking_system.create_reservation(check_in: "1992-10-15", check_out: "1992-10-25")
 
+      expect(res_1).must_be_kind_of Hotel::Reservation
+      expect(res_1.id).must_be_kind_of Integer
+      expect(res_1.room_num).must_be_kind_of Integer
+      expect(res_1.check_in).must_be_kind_of Date
+      expect(res_1.check_out).must_be_kind_of Date
+    end
 
-#
+    it "accurately adds information to first reservation made" do
+      res_1 = booking_system.create_reservation(check_in: "1992-10-15", check_out: "1992-10-25")
+
+      expect(res_1.id).must_equal 1
+      expect(res_1.room_num).must_equal 1
+      expect(res_1.check_in.strftime('%Y %b %d')).must_equal "1992 Oct 15"
+      expect(res_1.check_out.strftime('%Y %b %d')).must_equal "1992 Oct 25"
+    end
+
+    it "ignores reservations for the same room room but on other dates" do
+      res_1 = booking_system.create_reservation(check_in: "1992-10-15", check_out: "1992-10-25")
+      res_2 = booking_system.create_reservation(check_in: "1992-11-15", check_out: "1992-11-25")
+
+      expect(res_2.id).must_equal 2
+      expect(res_2.room_num).must_equal 1
+      expect(res_2.check_in.strftime('%Y %b %d')).must_equal "1992 Nov 15"
+      expect(res_2.check_out.strftime('%Y %b %d')).must_equal "1992 Nov 25"
+    end
+
+    it "selects the next available room if reservation dates conflict with other reservations" do
+      res_1 = booking_system.create_reservation(check_in: "1992-10-15", check_out: "1992-10-25")
+      res_2 = booking_system.create_reservation(check_in: "1992-11-15", check_out: "1992-11-25")
+      res_3 = booking_system.create_reservation(check_in: "1992-10-15", check_out: "1992-10-25")
+      p res_1
+      p res_2
+      p res_3
+      p booking_system.reservations
+
+      expect(res_3.id).must_equal 3
+      expect(res_3.room_num).must_equal 2
+      expect(res_3.check_in.strftime('%Y %b %d')).must_equal "1992 Oct 15"
+      expect(res_3.check_out.strftime('%Y %b %d')).must_equal "1992 Oct 25"
+    end
+  end
+
 
 end

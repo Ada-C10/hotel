@@ -38,63 +38,49 @@ module Hotel
     def list_avail_rooms_for_range(check_in:, check_out:)
       date_range = construct_cal_checker(check_in: check_in, check_out: check_out)
 
-      avail_rooms = @reservations.select { |reservation| !reservation.overlap?(date_range) }.map { |reservation| reservation.room_num }
+      booked_rooms = @reservations.select { |reservation| reservation.overlap?(date_range) }.map { |reservation| reservation.room_num }
+
+      avail_rooms = @rooms - booked_rooms
 
       return avail_rooms.empty? ? nil : avail_rooms
     end
 
-#     # TODO: maybe use date range instead of start/end?
-#     def create_reservation(start_date, end_date)
-#       id = create_res_id()
-#       rooms = list_avail_rooms_for_range(start_date, end_date)
-#
-#       # QUESTION: AM I DOING THIS RIGHT?
-#       unless rooms != nil
-#         raise StandardError, "No rooms are available for the given date range: #{start_date} - #{end_date}."
-#       end
-#
-#       reservation_hash = {
-#         id: id,
-#         room: rooms[0],
-#         check_in: start_date,
-#         check_out: end_date,
-#       }
-#
-#       new_reservation = Reservation.new(reservation_hash)
-#       #NOTE: add room.change_status??? should this part go in Res???
-#       # or should this be split up????
-#       room.add_reservation(new_reservation)
-#       @reservations << new_reservation
-#
-#       return new_reservation
-#     end
+    def create_reservation(check_in:, check_out:)
+      id = generate_res_id() #<-- create new reservation id
+      avail_rooms = list_avail_rooms_for_range(check_in: check_in, check_out: check_out) #<-- grab first available room
+
+      if avail_rooms.nil?
+        raise StandardError, "No rooms are available for the given date range: #{check_in} - #{check_out}."
+      else
+        avail_room = avail_rooms[0]
+      end
+
+
+
+      # reservation_hash = {
+      #   id: id,
+      #   room: rooms[0],
+      #   check_in: start_date,
+      #   check_out: end_date,
+      # }
+
+      new_reservation = Hotel::Reservation.new(
+        id: id,
+        room_num: avail_room,
+        check_in: check_in,
+        check_out: check_out)
+
+      # QUESTION: do i realy need to make dates an obj??
+      @reservations << new_reservation
+
+      return new_reservation
+    end
 #
 #     # QUESTION: NOT NEEDED-- JUST IN RESERVATION?
 #     # def add_reservation(new_reservation)
 #     #   @reservations << create_reservation(new_reservation)
 #     # end
 #
-#     # QUESTION: add loading class or hold off? should be blank list at top?
-#     # def load_reservations(input)
-#     #   new_reservation = create_reservation()
-#     #   add_reservation(new_reservation)
-#     #   return @reservations
-#     # end
-#
-#
-# # QUESTION: should i be accessing this
-# # QUESTION: add a pretty to_s for listing reserved dates?
-#     def list_reservations_for_date(check_date)
-#       date = Date.parse(check_date)
-#       #TODO error handling for date as Date object??
-#       #TODO what if no dates match? should return nil?
-#       # QUESTION: maybe add one to display by id?
-#       # QUESTION: should room own this???
-#       matching_res = @reservations.select { |reservation| reservation.dates_reserved.include? date }
-#
-#       # TODO: combine enumerable with ternary???? --> do in one line???
-#       return matching_res.empty? ? nil : matching_res
-#     end
 #
 #
 # # QUESTION: should this method be here or in Reservation?
@@ -102,11 +88,6 @@ module Hotel
 #     def find_room(room_num)
 #       return @rooms.find {|room| room.num == room_num.to_i}
 #     end
-#
-
-#
-
-#
 
   end
 end
@@ -114,18 +95,12 @@ end
 
 # booking = Hotel::BookingSystem.new()
 #
-# res_3 = Hotel::Reservation.new(
-#   id: "4",
-#   room_num: "15",
-#   check_in: "2010-8-4",
-#   check_out: "2010-8-20",
-#   )
-# res_2 = Hotel::Reservation.new(id: "1",
-#   room_num: "20",
-#   check_in: "2010-8-1",
-#   check_out: "2010-8-10",
-#   )
+# p booking.reservations
 #
-# booking.reservations.push(res_2, res_3)
+# res_1 = booking.create_reservation(check_in: "1992-10-15", check_out: "1992-10-25")
+# res_2 = booking.create_reservation(check_in: "1992-11-15", check_out: "1992-11-25")
+# # res_3 = booking_system.create_reservation(check_in: "1992-10-15", check_out: "1992-10-25")
 #
-# p booking.list_avail_rooms_for_range(check_in: "2010-10-15", check_out: "2010-10-26")
+# p booking.list_avail_rooms_for_range(check_in: "1992-10-15", check_out: "1992-10-25")
+
+  # booking.reservations.push(res_2, res_3)
