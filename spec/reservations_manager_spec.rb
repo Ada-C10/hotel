@@ -46,6 +46,9 @@ describe "ReservationManager" do
 
     it "adds the reservation to the instance of room" do
       expect(@new_reservation.rooms[0].id).must_equal 1
+      expect(@new_reservation.rooms[0].reservations).must_be_kind_of Array
+      expect(@new_reservation.rooms[0].reservations[0]).must_be_instance_of Hotel:: Reservation
+      expect(@new_reservation.rooms[0].reservations[0].id).must_equal 1
     end
 
 
