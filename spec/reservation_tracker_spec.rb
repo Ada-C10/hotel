@@ -128,4 +128,14 @@ describe 'ReservationTracker class' do
     expect{@new_tracker.is_date_range_valid(check_in, check_out)}.must_raise StandardError
   end
 
+  it 'creates a block of 5 rooms to put on hold' do
+    check_in = "2018,5,10"
+    check_out = "2018,5,12"
+    new_block = @new_tracker.create_block("AdaCon", check_in, check_out)
+    expect(new_block).must_be_kind_of BlockRoom
+  end
+
+  it 'will not create a block of 5 rooms to put on hold if not enough rooms are available' do
+
+  end
 end
