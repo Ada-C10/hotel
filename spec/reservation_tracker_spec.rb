@@ -29,10 +29,34 @@ describe 'ReservationTracker class' do
     end
 
     it 'reserves a room in a given date range' do
-      check_in_date = Date.new(2018, 9, 7)
-      check_out_date = Date.new(2018, 9, 10)
-      expect(@reservation_tracker.reserve_a_room(check_in_date, check_out_date)).must_be_kind_of Reservation
+      # check_in_date = Date.today
+      # check_out_date = Date.today + 5
+      date = Date.today
+      room = Room.new(15)
+      expect(@reservation_tracker.reserve_a_room(date, date + 5, room)).must_be_kind_of Array
+    end
 
+
+  end
+
+  describe 'is room available method' do
+    before do
+      @reservation_tracker = ReservationTracker.new
+      @date = Date.today
+      # @room = Room.new(15)
+    end
+
+    it 'can check its availability on a specific date' do
+      # reservation = Reservation.new(@date, @date + 5,
+      #   @room)
+      expect(@reservation_tracker.is_room_available?(@date)).must_equal false
+      expect(@reservation_tracker.is_room_available?(@date + 6)).must_equal true
+    end
+
+    it 'has a room to be available on the last day of a reservation' do
+      # reservation = Reservation.new(@date, @date + 5,
+      #   @room)
+      expect(@reservation_tracker.is_room_available?(@date + 5)).must_equal true
     end
   end
 
@@ -57,8 +81,8 @@ describe 'ReservationTracker class' do
       check_in_date = Date.new(2018, 9, 6)
       check_out_date = Date.new(2018, 9, 10)
       room = 15
-
       reservation = Reservation.new(check_in_date, check_out_date, room)
+
       expect(@reservation_tracker.cost_for_given_reservation(reservation)).must_be_kind_of Integer
       expect(@reservation_tracker.cost_for_given_reservation(reservation)).must_equal 800
     end
@@ -71,8 +95,17 @@ describe 'ReservationTracker class' do
 
     it 'returns a list of rooms that are not reserved for a given date range' do
       check_in_date = Date.new(2018, 9, 7)
+      # check_in_date = Date.today (5 days from today)
+      # Date + 5
       check_out_date = Date.new(2018, 9, 10)
       expect(@reservation_tracker.rooms_not_reserved(check_in_date, check_out_date)).must_be_kind_of Array
     end
+
+    # it 'returns a list of rooms if there are no given reservations' do
+    #   check_in_date = Date.now
+    #   check_out_date = Date.now
+    #
+    #   expect(@reservation_tracker.rooms_not_reserved(check_in_date, check_out_date)).must_be_kind_of Array
+    # end
   end
 end
