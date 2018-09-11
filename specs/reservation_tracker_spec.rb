@@ -180,6 +180,13 @@ describe "ReservationTracker class" do
 
       expect { @reservation_tracker.confirm_valid_dates?(start_date, end_date) }.must_raise Hotel::ReservationTracker::DatesOrderError
     end
+
+    it "raises an error if start_date and end_date are the same" do
+      start_date = Date.today
+      end_date = start_date
+
+      expect { @reservation_tracker.confirm_valid_dates?(start_date, end_date) }.must_raise Hotel::ReservationTracker::DatesOrderError
+    end
   end
 
   describe "#get_requested_dates method" do
