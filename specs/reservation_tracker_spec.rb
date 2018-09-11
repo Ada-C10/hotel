@@ -45,6 +45,22 @@ describe "ReservationTracker class" do
     end
   end
 
+  describe "#load_blocked_rooms method" do
+    it "loads the blocked rooms" do
+      expect(@reservation_tracker.blocked_rooms).must_be_kind_of Array
+      expect(@reservation_tracker.blocked_rooms.first).must_be_kind_of Hotel::Block
+      expect(@reservation_tracker.blocked_rooms.last).must_be_kind_of Hotel::Block
+    end
+  end
+
+  describe "#load_reservations method" do
+    it "loads the reservations" do
+      expect(@reservation_tracker.reservations).must_be_kind_of Array
+      expect(@reservation_tracker.reservations.first).must_be_kind_of Hotel::Reservation
+      expect(@reservation_tracker.reservations.last).must_be_kind_of Hotel::Reservation
+    end
+  end
+
   describe "#list_reservations_by_date method" do
     it "lists the reservations searched for by date" do
       reservations = @reservation_tracker.list_reservations_by_date(Date.today)
@@ -70,10 +86,8 @@ describe "ReservationTracker class" do
       end_date: @end_date,
       party: 5
     }
-    # binding.pry
-    @requested_dates = Hotel::DateRange.new(@start_date, @end_date)
 
-    @initial_unavailable_length = @reservation_tracker.find_unavailable_rooms(@requested_dates).length
+    @requested_dates = Hotel::DateRange.new(@start_date, @end_date)
     @reservation_tracker.reserve_room(@input)
     @initial_block_length = @reservation_tracker.find_blocked_rooms(@requested_dates).length
     @initial_reservations_length = @reservation_tracker.find_reserved_rooms(@requested_dates).length
@@ -83,7 +97,7 @@ describe "ReservationTracker class" do
     it "checks if the requested dates overlap with all existing reservations" do
       matching_reservations = @reservation_tracker.reservations_overlaps?(@requested_dates)
       expect(matching_reservations).must_be_kind_of Array
-      expect(matching_reservations.length).must_equal @initial_unavailable_length
+      expect(matching_reservations.length).must_equal @initial_reservations_length
       expect(matching_reservations.first).must_be_kind_of Hotel::Reservation
     end
   end
@@ -127,7 +141,7 @@ describe "ReservationTracker class" do
     it "finds all available rooms for requested dates" do
       available_rooms = @reservation_tracker.find_available_rooms(@requested_dates)
       expect(available_rooms).must_be_kind_of Array
-      expect(available_rooms.length).must_equal NUM_OF_ROOMS - @initial_unavailable_length
+      expect(available_rooms.length).must_equal NUM_OF_ROOMS - @initial_reservations_length
       expect(available_rooms.first).must_be_kind_of Hotel::Room
 
     end

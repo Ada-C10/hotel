@@ -20,11 +20,5 @@ describe "Room class" do
       expect(@room.room_num).must_be_kind_of Integer
       expect(@room.rate).must_be_kind_of Numeric
     end
-
-    it "checks if the Rate entered is valid" do
-      expect(@room.check_rate_validity?(9)).must_equal nil
-      expect{ @room.check_rate_validity?('9') }.must_raise Hotel::Room::InvalidRateError
-
-    end
   end
 end

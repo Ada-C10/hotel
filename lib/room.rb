@@ -14,6 +14,8 @@ module Hotel
       @rate = input[:rate].nil? ? REG_RATE : input[:rate]
     end
 
+    private
+
     def check_rate_validity?(rate)
       valid_types = /^(10|\d)(\.\d{1,2})?$/
       if valid_types.match(rate.to_s) && !(rate.is_a?(Float) || rate.is_a?(Integer))

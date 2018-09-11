@@ -95,16 +95,16 @@ module Hotel
 
     def list_reservations_by_date(specified_date)
       reservations_by_date = @reservations.find_all do |reservation|
-        range = reservation.date_range.get_range
-        range.include?(specified_date)
+        date_range = reservation.date_range.get_range
+        date_range.include?(specified_date)
       end
       return reservations_by_date
     end
 
     def reservations_overlaps?(requested_dates)
       matching_reservations = @reservations.find_all do |reservation|
-        range = reservation.date_range
-        range.overlaps?(requested_dates)
+        date_range = reservation.date_range
+        date_range.overlaps?(requested_dates)
         reservation
       end
     end
@@ -119,9 +119,10 @@ module Hotel
 
     def find_blocked_rooms(requested_dates)
       blocked_rooms_by_date = @blocked_rooms.map do |room|
-        room if room.date_range.get_range == requested_dates.get_range
+        date_range = room.date_range
+        room if date_range.overlaps?(requested_dates)
       end
-      return blocked_rooms_by_date.flatten.compact
+      return blocked_rooms_by_date.compact
     end
 
     def find_unavailable_rooms(requested_dates)
@@ -203,6 +204,7 @@ module Hotel
     end
 
     private
+    
     class InvalidDateError < StandardError; end
     class DatesOrderError < StandardError; end
     class NoRoomsError < StandardError; end

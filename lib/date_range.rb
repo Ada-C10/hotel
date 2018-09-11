@@ -10,7 +10,7 @@ module Hotel
     def overlaps?(other)
       other_range = other.get_range
       my_range = self.get_range
-      return (other_range & my_range).empty?
+      return (other_range & my_range).empty? ? false : true
     end
 
     def get_range
