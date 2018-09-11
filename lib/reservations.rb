@@ -1,22 +1,28 @@
 COST_OF_ROOM = 200
-require 'Date'
+# require 'Date'
 
 module Hotel
   class Reservation
     attr_reader :id, :check_in, :check_out, :rooms, :total_cost
 
-    def initialize(number, check_in: check_in, check_out: check_out)
+    def initialize(number, check_in: , check_out: )
       @id = number
       @check_in = Date.parse(check_in)
       @check_out = Date.parse(check_out)
       @date_range = (@check_in..@check_out)
-      @rooms = []#instance of a room
+      @rooms = []#instance of a room # reconsider- might not need but maybe
       @total_cost = 0
     end
 
     def find_reservation(date)
-      #loop through reser ations and match by date
-      return reservations #array
+      reservation.date_range.include? date#loop through reser ations and match by date
+      return reservation
+    end
+
+    #check overlap
+    #reservations_manager.reservations
+    def do_conflict?(dates)
+      reservation.date_range.include? date
     end
 
     def calculate_reservation_cost(rooms)
