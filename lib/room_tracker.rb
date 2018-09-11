@@ -25,8 +25,8 @@ require_relative 'room'
 class Room_Tracker
 
   def initialize
-    @valid_reservation = {}
-    @valid_reservation[:room] = @@request_array
+    # @valid_reservation = {}
+    # @valid_reservation[:room] = @@request_array
     @rooms = get_rooms(20)
     @bookings = []
     #@valid_reservation[:booking] = @@request_array
@@ -66,17 +66,18 @@ class Room_Tracker
     return reservation.total_cost
   end
 
-
-binding.pry
-def assign_request_array_to_hash
-  @valid_reservation = {}
-@@request_array.each do |booking|
-
-values = @valid_reservation[:room]
-values.zip(request_array).to_h
-  return values
 end
-end
+#
+# binding.pry
+# def assign_request_array_to_hash
+#   @valid_reservation = {}
+# @@request_array.each do |booking|
+#
+# values = @valid_reservation[:room]
+# values.zip(request_array).to_h
+#   return values
+# end
+# end
 #ap @valid_reservation
 # users = User.all.each_with_object({}) do |user, hash|
 #   hash[user.id] = user
@@ -93,6 +94,3 @@ end
   #     room = @room[:room]
   #   end
   # end
-
-
-  end

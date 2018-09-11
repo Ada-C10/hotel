@@ -3,7 +3,7 @@
 
 require_relative 'spec_helper'
 
-describe Roomtracker do
+describe Room_Tracker do
 
   describe "Reservation instantiation" do
     describe "#initialize" do
@@ -19,4 +19,4 @@ describe Roomtracker do
       end
     end
   end
-end 
+end
