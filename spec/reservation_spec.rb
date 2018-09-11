@@ -30,9 +30,5 @@ describe "Reservation Class" do
       expect(reservation.total_cost).must_equal 800.00
     end
 
-    # it 'Correctly formats the cost to two decimal places' do
-    #   expect(reservation.total_cost).myst
-    # end
-
   end
 end

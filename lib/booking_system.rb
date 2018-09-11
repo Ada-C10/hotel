@@ -27,20 +27,30 @@ module Hotel
     end
 
     def find_available_rooms(date_range)
-
       return @rooms if @reservations.empty?
-
       unavailable_rooms = @reservations.map { |res| res.room_number if date_range.dates_overlap?(res.date_range) }
 
-      available_rooms = @rooms.reject { |r| unavailable_rooms.include?(r) }
+      unavailable_rooms_block = @block_rooms.map { |res| res.block_rooms if date_range.dates_overlap?(res.date_range)}.flatten
 
+      all_unavailable_rooms = unavailable_rooms + unavailable_rooms_block
+
+      available_rooms = @rooms.reject { |r| all_unavailable_rooms.include?(r) }
       raise StandardError, "No rooms available for those dates." if available_rooms.empty?
-
       return available_rooms
     end
 
-    def make_reservation(date_range)
+    #combine the two methods above?
+    # def find_available_block_rooms(date_range)
+    #   return @rooms.first(5) if @block_rooms.empty?
+    #
+    #
+    #   available_block_rooms = @rooms.reject { |r| unavailable_rooms_block.include?(r) }
+    #
+    #   raise StandardError, "No rooms available for those dates." if available_block_rooms.empty?
+    #   return available_block_rooms
+    # end
 
+    def make_reservation(date_range)
       room = find_available_rooms(date_range).first
       reservation = Reservation.new(date_range, room)
       @reservations << reservation
@@ -48,8 +58,7 @@ module Hotel
     end
 
     def reserve_block_rooms(date_range)
-
-      rooms = find_available_rooms(date_range)
+      rooms = find_available_rooms(date_range).first(5)
       block_reservation = BlockRoom.new(date_range, rooms)
       @block_rooms << block_reservation
       return block_reservation
@@ -57,23 +66,18 @@ module Hotel
 
     def find_block(date_range)
       raise StandardError, "No block rooms found for those dates" if @block_rooms.empty?
-
       return @block_rooms.select { |block| block.date_range == date_range }
     end
 
     def find_room_in_block(date_range)
       found_block = find_block(date_range)
       room_block_rooms = found_block.first.block_rooms
-
       available_rooms = find_available_rooms(date_range)
-
       room = available_rooms.select { |room| room if room_block_rooms.include? available_rooms }
-
       return room
     end
 
     def make_reservation_from_block(date_range)
-
       room = find_room_in_block(date_range).first
       reservation = Reservation.new(date_range, room)
       @reservations << reservation
@@ -96,8 +100,8 @@ reservation = Hotel::BookingSystem.new()
   reservation.make_reservation(date_range_1)
 end
 
-3.times do
-  reservation.reserve_block_rooms(date_range_3)
+2.times do
+  reservation.reserve_block_rooms(date_range_1)
 end
 #
 #
@@ -107,7 +111,7 @@ end
 #   block_room.make_reservation_from_block(date_range_3)
 # end
 #
-puts reservation.block_rooms.first.room_number
+p reservation
 # puts reservation.find_available_rooms(date_range_1).class
 # puts "#{reservation.list_available_rooms(date_range_1)}"
 # puts "#{reservation_1.list_available_rooms(date_range_1)}"

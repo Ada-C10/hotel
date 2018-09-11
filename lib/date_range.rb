@@ -21,6 +21,8 @@ module Hotel
       booked_dates = [*date_range.start_date..date_range.end_date]
       new_dates = [*@start_date..@end_date]
 
+      #TODO: refactor 
+
       # completely containing
       if new_dates.first < booked_dates.first && new_dates.last > booked_dates.last
         return true
