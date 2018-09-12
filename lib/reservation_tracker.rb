@@ -221,7 +221,7 @@ module Hotel
     end
 
     def check_room_num(num)
-      raise ArgumentError, "Room num cannot be less than 1 or greater than #{NUM_OF_ROOMS} (got #{NUM})" if num <= 0 || num > NUM_OF_ROOMS
+      raise ArgumentError, "Room num cannot be less than 1 or greater than #{NUM_OF_ROOMS} (got #{num})" if num <= 0 || num > NUM_OF_ROOMS
     end
 
     def check_prior_today?(start_date)

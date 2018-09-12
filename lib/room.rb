@@ -4,8 +4,6 @@ REG_RATE = 200
 
 module Hotel
   class Room
-    class InvalidRateError < StandardError; end
-
     attr_reader :room_num, :rate
 
     def initialize(input)
@@ -15,6 +13,8 @@ module Hotel
     end
 
     private
+
+    class InvalidRateError < StandardError; end
 
     def check_rate_validity?(rate)
       valid_types = /^(10|\d)(\.\d{1,2})?$/

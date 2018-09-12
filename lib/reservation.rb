@@ -15,9 +15,11 @@ module Hotel
     def calculate_cost
       num_of_nights = @date_range.find_num_nights
       rate = @room.rate
-      reg_cost = (rate * num_of_nights).round(2)
-      blocked_cost = (reg_cost * BLOCK_DISCOUNT).round(2)
-      @block_id.nil? ? reg_cost : blocked_cost
+
+      room_cost = (rate * num_of_nights).round(2)
+      blocked_cost = (room_cost * BLOCK_DISCOUNT).round(2)
+      
+      @block_id.nil? ? room_cost : blocked_cost
     end
   end
 end
