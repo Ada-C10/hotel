@@ -48,7 +48,7 @@ describe "ReservationManager" do
     it "adds room id to the reservation" do
       expect(@new_reservation1.rooms).must_be_kind_of Array
       expect(@new_reservation1.rooms[0]).must_equal 20
-      expect(@new_reservation4.rooms[0]).must_equal 19 # llook for room with availability conflict
+      expect(@new_reservation5.rooms[0]).must_equal 17 # llook for room with availability conflict
     end
 
     it "adds the reservation to the instance of room" do
@@ -70,10 +70,10 @@ describe "ReservationManager" do
 
   describe "Wave 2 - Return list of available rooms for given date range" do
     it "returns a list of availble rooms for given date" do
-      expect(@hotel_ada.available_rooms('2018-08-23', '2018-08-25')).must_be_kind_of Array
-  #  binding.pry
-      expect(@hotel_ada.available_rooms('2018-08-18', '2018-08-20').length).must_equal 17
-      expect(@hotel_ada.available_rooms('2018-08-18', '2018-08-20')[0]).must_be_kind_of Hotel::Room
+      expect(@hotel_ada.available_rooms('2018-08-20', '2018-08-23')).must_be_kind_of Array
+  #binding.pry
+      expect(@hotel_ada.available_rooms('2018-08-20', '2018-08-23').length).must_equal 16
+      expect(@hotel_ada.available_rooms('2018-08-20', '2018-08-23')[0]).must_be_kind_of Hotel::Room
       #expect(@hotel_ada.available_rooms("08.23.2018", "08.25.2018")[0].id).must_equal #rooom ID
     end
   end

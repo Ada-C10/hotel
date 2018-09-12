@@ -25,9 +25,10 @@ module Hotel
     def overlaps?(check_in, check_out)
       existing_check_in = self.check_in
       existing_check_out = self.check_out
-      if existing_check_in < check_out && existing_check_in > check_in
+      if existing_check_in <= check_out && existing_check_in >= check_in
         return true
-      elsif check_in < existing_check_out && existing_check_out < check_out
+      elsif check_in <= existing_check_out && existing_check_out <= check_out
+        return true
       else
         return false
       end

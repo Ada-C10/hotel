@@ -33,6 +33,7 @@ module Hotel
         if reservation.date_range.cover?(check_dates)
           return true
         elsif reservation.overlaps?(check_in, check_out)
+          return true
         end
       end
       return false
