@@ -35,13 +35,22 @@ describe "Reservation Hub class" do
 
   describe "add reservation" do
     before do
-      @reservation1 = @reservation_hub.add_reservation(2018,06,12,2018,07,01)
+      start_date1 = Date.new(2018,01,03)
+      end_date1 = Date.new(2018,01,06)
+      start_date2 = Date.new(2018,02,05)
+      end_date2 = Date.new(2018,02,15)
+      start_date3 = Date.new(2018,01,05)
+      end_date3 = Date.new(2018,01,21)
+      start_date4 = Date.new(2018,03,05)
+      end_date4 = Date.new(2018,03,11)
+      @reservation1 = @reservation_hub.add_reservation(start_date1, end_date1)
 
-      @reservation2 = @reservation_hub.add_reservation(2017,01,02,2017,01,06)
+      @reservation2 = @reservation_hub.add_reservation(start_date2, end_date2)
 
-      @reservation3 = @reservation_hub.add_reservation(2018,06,12,2018,06,15)
+      @reservation3 = @reservation_hub.add_reservation(start_date3, end_date3)
 
-      @reservation4 = @reservation_hub.add_reservation(2018,06,12,2018,07,01)
+      @reservation4 = @reservation_hub.add_reservation(start_date4, end_date4)
+      binding.pry
     end
 
     it "returns an array of reservations" do
@@ -53,13 +62,13 @@ describe "Reservation Hub class" do
     end
   end
 
-
-  describe "Generate date" do
-    it "is a kind of date" do
-      date = Date.new(2018,1,3)
-      expect(date).must_be_kind_of Date
-    end
-  end
+  #
+  # describe "Generate date" do
+  #   it "is a kind of date" do
+  #     date = Date.new(2018,1,3)
+  #     expect(date).must_be_kind_of Date
+  #   end
+  # end
 
 
   describe "create date array" do
@@ -81,22 +90,22 @@ describe "Reservation Hub class" do
 
     it "returns an array of all available rooms for a given date range" do
 
-      @start_date = Date.new(2018,01,06)
-      @end_date = Date.new(2018,01,18)
+      start_date = Date.new(2018,01,06)
+      end_date = Date.new(2018,01,18)
 
-      available_rooms = @reservation_hub.check_available_rooms(@start_date, @end_date)
+      available_rooms = @reservation_hub.check_available_rooms(start_date, end_date)
 
       expect(available_rooms.length).must_equal 20
       expect(available_rooms).must_be_kind_of Array
     end
 
     it "doesn't include rooms that are not available" do
-      @start_date = Date.new(2018,01,06)
-      @end_date = Date.new(2018,01,18)
+      start_date = Date.new(2018,01,06)
+      end_date = Date.new(2018,01,18)
 
-      @reservation1 = @reservation_hub.add_reservation(@start_date.year, @start_date.month, @start_date.day, @end_date.year, @end_date.month, @end_date.day)
+      @reservation1 = @reservation_hub.add_reservation(start_date, end_date)
 
-      available_rooms = @reservation_hub.check_available_rooms(@start_date, @end_date)
+      available_rooms = @reservation_hub.check_available_rooms(start_date, end_date)
       expect(available_rooms.length).must_equal 19
     end
   end
@@ -128,11 +137,15 @@ describe "Reservation Hub class" do
 
 
     it "raises an error if the hotel is fully booked" do
+      start_date = Date.new(2018,01,03)
+      end_date = Date.new(2018,01,05)
+
+
       20.times do
-        @reservation_hub.add_reservation(2018,01,06,2018,01,18)
+        @reservation_hub.add_reservation(start_date, end_date)
       end
 
-      expect{@reservation_hub.add_reservation(2018,01,06,2018,01,18)}.must_raise StandardError
+      expect{@reservation_hub.add_reservation(start_date, end_date)}.must_raise StandardError
     end
   end
 
@@ -140,20 +153,31 @@ describe "Reservation Hub class" do
   describe "find reservation" do
 
     before do
-      @reservation_hub = Hotel::ReservationHub.new
+      start_date1 = Date.new(2018,01,03)
+      end_date1 = Date.new(2018,01,06)
+      start_date2 = Date.new(2018,02,05)
+      end_date2 = Date.new(2018,02,15)
+      start_date3 = Date.new(2018,01,11)
+      end_date3 = Date.new(2018,01,21)
+      start_date4 = Date.new(2018,01,03)
+      end_date4 = Date.new(2018,01,05)
 
-      @reservation_hub.add_reservation(2018, 01, 03, 2018, 01, 07)
-      @reservation_hub.add_reservation(2018, 04, 03, 2018, 04, 06)
-      @reservation_hub.add_reservation(2018, 01, 03, 2018, 02, 12)
+      @reservation_hub = Hotel::ReservationHub.new
+      @reservation_hub.add_reservation(start_date1, end_date1)
+      @reservation_hub.add_reservation(start_date2, end_date2)
+      @reservation_hub.add_reservation(start_date3, end_date3)
+      @reservation_hub.add_reservation(start_date4, end_date4)
     end
 
     it "returns a list of reservations based on a start date" do
 
-      reservations = @reservation_hub.find_reservations(2018, 04, 03)
+      start_date = Date.new(2018,01,03)
+
+      reservations = @reservation_hub.find_reservations(start_date)
 
       expect(reservations).must_be_kind_of Array
 
-      expect(reservations.length).must_equal 1
+      expect(reservations.length).must_equal 2
     end
   end
 
@@ -163,9 +187,16 @@ describe "Reservation Hub class" do
     before do
       @reservation_hub = Hotel::ReservationHub.new
 
-      @reservation_hub.add_reservation(2018, 01, 03, 2018, 01, 07)
-      @reservation_hub.add_reservation(2018, 04, 03, 2018, 04, 06)
-      @reservation_hub.add_reservation(2018, 01, 03, 2018, 02, 12)
+      start_date1 = Date.new(2018,01,03)
+      end_date1 = Date.new(2018,01,06)
+      start_date2 = Date.new(2018,02,05)
+      end_date2 = Date.new(2018,02,15)
+      start_date3 = Date.new(2018,01,11)
+      end_date3 = Date.new(2018,01,21)
+
+      @reservation_hub.add_reservation(start_date1, end_date1)
+      @reservation_hub.add_reservation(start_date2, end_date2)
+      @reservation_hub.add_reservation(start_date3, end_date3)
     end
 
     it "returns an array of all reservations" do

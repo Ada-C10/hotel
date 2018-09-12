@@ -16,23 +16,21 @@ module Hotel
     end
 
 
-    def add_reservation(start_year, start_month, start_day, end_year, end_month, end_day)
-
-      start_date = generate_date(start_year, start_month, start_day)
-
-      end_date = generate_date(end_year, end_month, end_day)
+    def add_reservation(start_date, end_date)
 
       room_id = assign_room(start_date, end_date)
 
       reservation = Reservation.new(start_date, end_date, room_id)
 
       @reservations << reservation
+
+      return reservation
     end
 
-
-    def generate_date(year, month, day)
-      return Date.new(year, month, day)
-    end
+    #
+    # def generate_date(year, month, day)
+    #   return Date.new(year, month, day)
+    # end
 
 
     def create_date_array(start_date, end_date)
@@ -81,14 +79,14 @@ module Hotel
     end
 
 
-    def find_reservations(year, month, day)
+    def find_reservations(date)
 
-      start_date = generate_date(year, month, day)
       reservations_by_date = []
       index = 0
 
       all_reservations.each do
-        if all_reservations[index].start_date == start_date
+        # if all_reservation[index].dates.include?(date)
+        if all_reservations[index].start_date == date
 
           reservations_by_date << all_reservations[index]
         end
