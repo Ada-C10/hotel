@@ -1,7 +1,7 @@
 1. Room number variable same across all classes
-2. Create helper method that subtracts once day from date range because we don't keep track of that anywhere.
-2.2 Update reservation class to calculate the correct cost for the reservation when one day is subtracted everywhere
 3. Test spec file: use let when possible to make it faster
 3.2 used nested describes (check if it works first) to create an instance of admin only once
-4.1 In the room class, rename the add_range method to add_block
-4.2 explore difference of creating a hash or a key word argument, and apply it when you only have two key-word pairs like 
+4.In the room class, rename the add_range method to add_block
+4.2 explore difference of creating a hash or a key word argument, and apply it when you only have two key-word pairs like
+5. for range use ... to not include the last day (this way you don't have to keep subtracting)
+6. move all helper methods into it's own class and keep admin tasks in its class
