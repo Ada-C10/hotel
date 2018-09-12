@@ -85,7 +85,7 @@ module Hotel
 
     def find_block_id(id)
       check_id(id)
-      return @blocks.find { |blocked_room| blocked_room.id == id }
+      return @blocks.find { |block| block.id == id }
     end
 
     def find_room(room_num)
