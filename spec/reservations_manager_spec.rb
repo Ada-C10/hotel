@@ -27,12 +27,12 @@ describe "ReservationManager" do
     end
 
     it "raise an argumenterror for invalid date range" do
-        expect {
-          @hotel_ada.reserve_room(@dateD, @dateC)
-          }.must_raise ArgumentError
-        expect {
-          @hotel_ada.reserve_room(@dateD, @dateD)
-            }.must_raise ArgumentError
+      expect {
+        @hotel_ada.reserve_room(@dateD, @dateC)
+      }.must_raise ArgumentError
+      expect {
+        @hotel_ada.reserve_room(@dateD, @dateD)
+      }.must_raise ArgumentError
     end
   end
 
@@ -48,7 +48,7 @@ describe "ReservationManager" do
   describe "reserve_room ReservationManager" do
     it "can reserve a room for a given date range" do
       expect(@new_reservation1).must_be_instance_of Hotel::Reservation
-#binding.pry
+      #binding.pry
       expect(@new_reservation1.id).must_equal 1
       expect(@new_reservation5.id).must_equal 5
       expect(@new_reservation1.check_in).must_be_instance_of Date
@@ -70,7 +70,7 @@ describe "ReservationManager" do
   describe "it can list all reservations for a given date" do
 
     it "returns a list of rooms for given date" do
-       expect(@hotel_ada.booked_reservations(@test_date)).must_be_kind_of Array
+      expect(@hotel_ada.booked_reservations(@test_date)).must_be_kind_of Array
       #binding.pry
       expect(@hotel_ada.booked_reservations(@test_date)[0]).must_be_instance_of Hotel::Reservation
       expect(@hotel_ada.booked_reservations(@test_date).length).must_equal 3
@@ -80,7 +80,7 @@ describe "ReservationManager" do
   describe "Wave 2 - Return list of available rooms for given date range" do
     it "returns a list of availble rooms for given date" do
       expect(@hotel_ada.available_rooms('2018-08-20', '2018-08-23')).must_be_kind_of Array
-  #binding.pry
+      #binding.pry
       expect(@hotel_ada.available_rooms('2018-08-20', '2018-08-23').length).must_equal 16
       expect(@hotel_ada.available_rooms('2018-08-20', '2018-08-23')[0]).must_be_kind_of Hotel::Room
       #expect(@hotel_ada.available_rooms("08.23.2018", "08.25.2018")[0].id).must_equal #rooom ID
@@ -90,8 +90,10 @@ describe "ReservationManager" do
   describe "Wave 3 - Reserve Block rooms" do
     before do
       @many_rooms_test = @hotel_ada.reserve_room('2018-08-20', '2018-08-23', number_of_rooms: 3)
-      @block = @hotel_ada.create_block('2018-08-20', '2018-08-23', number_of_rooms: 10, discount_rate: 0.8 )
+      @block = @hotel_ada.create_block('2018-08-20', '2018-08-23', number_of_rooms: 10, discount_rate: 0.8)
+      @block_reservation = @hotel_ada.reserve_room_in_block('2018-08-20', '2018-08-23', number_of_rooms: 2) #:block_id
     end
+
     it "allows you to reserve multiple rooms on one reservation" do
       expect(@many_rooms_test).must_be_instance_of Hotel::Reservation
       expect(@many_rooms_test.id).must_equal 6
@@ -99,16 +101,23 @@ describe "ReservationManager" do
       expect(@many_rooms_test.total_cost).must_equal 1800
     end
 
-    it "allows you to make multiple reservation in a block of rooms" do
+    it "can block a given amount of rooms over a date range" do
       expect(@block).must_be_instance_of Hotel::Block
       expect(@block.reservations).must_be_kind_of Array
-      expect(@block.reservations[0]).must_be_instance_of Hotel::Reservation
-      expect(@block.rooms).must_be_kind_of Array
-      expect(@block.rooms[0]).must_be_instance_of Hotel::Room
+      expect(@block.block_rooms).must_be_kind_of Array
+      expect(@block.block_rooms[0]).must_be_kind_of Integer
+      expect(@block.block_rooms.length).must_equal 10
+      expect(@block.date_range.count).must_equal 3
     end
 
+    it "allows you to make multiple reservation in a block of rooms" do
 
+    expect(@block.reservations[0]).must_be_instance_of Hotel::Reservation
+    end
   end
+
 end
 
-  # describe "List all rooms "
+
+
+# describe "List all rooms "

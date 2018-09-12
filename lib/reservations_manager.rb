@@ -3,6 +3,7 @@ require 'pry'
 
 require_relative 'room'
 require_relative 'reservations'
+require_relative 'block'
 #reservations manager
 module Hotel
   class ReservationManager
@@ -48,14 +49,17 @@ module Hotel
     end
 
     def create_block(check_in, check_out, number_of_rooms: , discount_rate: 0.8)
-      block = Block.new(@blocks.length + 1, check_in: check_in, check_out: check_out)
-      block_rooms = available_rooms(check_in, check_out).first(number_of_rooms)
-      block.rooms << block_rooms
-      block_rooms.each do |room|
+      block = Block.new(@blocks.length + 1, check_in: check_in, check_out: check_out, number_of_rooms: number_of_rooms, discount_rate: discount_rate)
+      rooms_to_hold = available_rooms(check_in, check_out).first(number_of_rooms)
+      rooms_to_hold.each do |room|
+        block.block_rooms << room.id
         find_room(room.id).reservations << block
       end
       @blocks << block
       return block
+    end
+
+    def reserve_block(check_in, check_out, number_of_rooms: , block_id: @blocks.last.id)
     end
 
       #how to account for multiple rooms for a rservation within a block_reservation

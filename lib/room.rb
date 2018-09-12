@@ -8,7 +8,7 @@ module Hotel
 
     def initialize(number)
       @id = number
-      @reservations = []
+      @reservations = [] #bookings - both res/block
       #define room as physical space
     end
     #create helper methods that return boolean values - in reservmgr - create loop methods that take helper method booleans and creates an array
