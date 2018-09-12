@@ -237,9 +237,13 @@ describe "BookingManager class" do
       @found_vacancies = @bookingsystem.find_vacancies_in_date_range("June 10, 2018", "June 12, 2018")
     end
 
-    it "returns array of Room instances" do
+    it "returns the correct number of vacant rooms" do
       expect(@found_vacancies.length).must_equal 4
-      
+    end
+
+    it "returns an array of Room instances" do
+      expect(@found_vacancies.first).must_be_instance_of Hotel::Room
+      expect(@found_vacancies.last).must_be_instance_of Hotel::Room
     end
 
   end
