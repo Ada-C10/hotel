@@ -23,11 +23,12 @@ module Hotel
     #   return self.date_range.include? date
     # end
 
+
     def is_booked?(check_in, check_out)
       check_dates = Date.parse(check_in)...Date.parse(check_out)
       return false if self.reservations.length == 0
       self.reservations.each do |reservation|
-        if reservation.date_range.include? check_dates || Date.parse(check_in)
+        if reservation.find_reservation(check_in) || reservation.find_reservation(check_out)
           return true
         end
       end

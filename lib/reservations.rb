@@ -24,9 +24,9 @@ module Hotel
 
       #check overlap
     #reservations_manager.reservations
-    def do_conflict?(dates)
-      reservation.date_range.include? date
-    end
+    # def do_conflict?(dates)
+    #   reservation.date_range.include? date
+    # end
 
     # def self.calculate_reservation_cost
     #   total_cost = @rooms.length * @date_range.count * COST_OF_ROOM
