@@ -6,7 +6,7 @@ module Hotel
   class Reservation
     attr_reader :id, :check_in, :check_out, :rooms, :total_cost, :date_range
 
-    attr_accessor :total_cost
+
 
     def initialize(number, check_in:, check_out:)
       @id = number
@@ -21,6 +21,18 @@ module Hotel
       date = Date.parse(date)
       return self.date_range.include? date
     end
+
+    def overlaps?(check_in, check_out)
+      existing_check_in = self.check_in
+      existing_check_out = self.check_out
+      if existing_check_in < check_out && existing_check_in > check_in
+        return true
+      elsif check_in < existing_check_out && existing_check_out < check_out
+      else
+        return false
+      end
+    end
+
 
       #check overlap
     #reservations_manager.reservations

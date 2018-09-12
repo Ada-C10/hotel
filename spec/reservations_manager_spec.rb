@@ -71,7 +71,7 @@ describe "ReservationManager" do
   describe "Wave 2 - Return list of available rooms for given date range" do
     it "returns a list of availble rooms for given date" do
       expect(@hotel_ada.available_rooms('2018-08-23', '2018-08-25')).must_be_kind_of Array
-    # binding.pry
+  #  binding.pry
       expect(@hotel_ada.available_rooms('2018-08-18', '2018-08-20').length).must_equal 17
       expect(@hotel_ada.available_rooms('2018-08-18', '2018-08-20')[0]).must_be_kind_of Hotel::Room
       #expect(@hotel_ada.available_rooms("08.23.2018", "08.25.2018")[0].id).must_equal #rooom ID

@@ -25,11 +25,14 @@ module Hotel
 
 
     def is_booked?(check_in, check_out)
-      check_dates = Date.parse(check_in)...Date.parse(check_out)
+      check_in = Date.parse(check_in)
+      check_out = Date.parse(check_out)
+      check_dates = check_in...check_out
       return false if self.reservations.length == 0
       self.reservations.each do |reservation|
-        if reservation.find_reservation(check_in) || reservation.find_reservation(check_out)
+        if reservation.date_range.cover?(check_dates)
           return true
+        elsif reservation.overlaps?(check_in, check_out)
         end
       end
       return false
