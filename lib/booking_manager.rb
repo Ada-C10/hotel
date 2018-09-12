@@ -144,32 +144,26 @@ module Hotel
     end
 
 
-
-
-
     def find_vacancies_in_date_range(start_date, end_date)
       check_dates(start_date, end_date)
       rooms_available_in_date_range = []
 
-      ## FINISH & TEST TEST TEST
       @room_calendar.each do |room, reserved_dates|
         if reserved_dates.empty?
           rooms_available_in_date_range << room
         else
-          # iterate through each room. if none match, add room to list of vacancies
           date_range = determine_date_range(start_date, end_date)
-
           if (reserved_dates.keys && date_range).length > 0
             next
           else
            rooms_available_in_date_range << room
           end
-
         end
       end
 
       return rooms_available_in_date_range
     end
+
 
     def no_vacancies_message
       return "There are no vacancies for the given date range."
@@ -178,50 +172,12 @@ module Hotel
 
     def reserve_available_room(guest_name, start_date, end_date)
       check_dates(start_date, end_date)
-      @room_available = 0
+      available_rooms = find_vacancies_in_date_range(start_date, end_date)
 
-      @room_calendar.each do |room, reserved_dates|
-        if reserved_dates.empty?
-          @room_available = room
-        end
-
-        date_range = determine_date_range(start_date, end_date)
-
-        day_taken = date_range.map do |date|
-          reserved_dates.include? date
-        end
-
-        if day_taken.all? {|word| word == false}
-          @room_available = room
-        end
-        # end
-        # should instead use find_vacancies_on_date method?
-        # @room_calendar.each do |room, reserved_dates|
-        #   if reserved_dates.empty?
-        #     room_available = room
-        #   else
-        #     search_date = start_date
-        #     while search_date < end_date
-        #       # search_date.each do |search_date|
-        #         if reserved_dates.include? search_date
-        #           next
-        #         else
-        #           room_available = room
-        #           exit
-        #           # reserved_dates.each do |reserved_dates
-        #         end
-        #         search_date += 1
-        #       # end
-        #
-        #     end
-        #   end
-
-      end
-      # binding.pry
-      new_reservation = Reservation.new(@room_available, guest_name: guest_name, start_date: start_date, end_date: end_date)
+      new_reservation = Reservation.new(available_rooms.first, guest_name: guest_name, start_date: start_date, end_date: end_date)
       add_reservation(new_reservation)
       add_reservation_to_calendar(new_reservation)
-      return new_reservation
+      return new_reservation #unneeded?
     end
 
   end
