@@ -11,7 +11,7 @@ module Hotel
       @end_date = Date.parse(end_date)
       @cost_per_night = cost_per_night
       @number_nights = (@end_date - @start_date).to_i
-    end # of initialize method
+    end 
 
     def check_dates(start_date, end_date)
       if start_date > end_date
@@ -19,5 +19,5 @@ module Hotel
       end
     end
 
-  end# of class Reservation
-end #of Hotel module
+  end
+end
