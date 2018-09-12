@@ -28,10 +28,10 @@ describe "ReservationManager" do
 
     it "raise an argumenterror for invalid date range" do
         expect {
-          new_reservation6 = @hotel_ada.reserve_room(@dateD, @dateC)
+          @hotel_ada.reserve_room(@dateD, @dateC)
           }.must_raise ArgumentError
         expect {
-            new_reservation7 = @hotel_ada.reserve_room(@dateD, @dateD)
+          @hotel_ada.reserve_room(@dateD, @dateD)
             }.must_raise ArgumentError
     end
   end
@@ -84,6 +84,17 @@ describe "ReservationManager" do
       expect(@hotel_ada.available_rooms('2018-08-20', '2018-08-23').length).must_equal 16
       expect(@hotel_ada.available_rooms('2018-08-20', '2018-08-23')[0]).must_be_kind_of Hotel::Room
       #expect(@hotel_ada.available_rooms("08.23.2018", "08.25.2018")[0].id).must_equal #rooom ID
+    end
+  end
+
+  describe "Wave 3 - Reserve Block rooms" do
+    before do
+      @block_test = @hotel_ada.reserve_block(3, '2018-08-20', '2018-08-23')
+    end
+    it "allows you to reserve multiple rooms" do
+      expect(@block_test).must_be_instance_of Hotel::Reservation
+      expect(@block_test.id).must_equal 6
+      expect(@block_test.rooms.length).must_equal 3
     end
   end
 end

@@ -16,6 +16,7 @@ module Hotel
       @rooms = []#instance of a room # reconsider- might not need but maybe
       @total_cost = @date_range.count * COST_OF_ROOM #wanted it to be @rooms.length *
 
+      #change this to standard error / rescue
       if @check_out != nil
         if @check_out <= @check_in
         raise ArgumentError, "Invalid date range"

@@ -26,7 +26,7 @@ module Hotel
     end
 
     def booked_reservations(date)
-      return reservations = @reservations.select {|reservation| reservation.find_reservation(date) == true}
+      return @reservations.select {|reservation| reservation.find_reservation(date) == true}
     end
     #   return booked_rooms #array
     #use same find_reservation method for rooms select for available, reject for booked
@@ -46,6 +46,21 @@ module Hotel
       #loop through Reservations @match dates on the reservations#reject dates that match
       return available_rooms #array
     end
+
+    def reserve_block(number_of_rooms, check_in, check_out)
+      while available_rooms(check_in, check_out).length > number_of_rooms
+        block_reservation =  Reservation.new(@reservations.length + 1, check_in: check_in, check_out: check_out)
+        assigned_rooms = available_rooms(check_in, check_out).first(number_of_rooms)
+        assigned_rooms.each do |room|
+          block_reservation.rooms << room.id
+          find_room(room.id).reservations << block_reservation
+        end
+      end
+      @reservations << block_reservation
+      return block_reservation
+    end
+
+
 
     # def @reservations.all
     #   return @reservations
