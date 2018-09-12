@@ -14,7 +14,7 @@ module Hotel
       @check_out = Date.parse(check_out)
       @date_range = (@check_in...@check_out)
       @rooms = []#instance of a room # reconsider- might not need but maybe
-      @total_cost = @date_range.count * COST_OF_ROOM #wanted it to be @rooms.length *
+      @total_cost = self.calculate_reservation_cost #wanted it to be @rooms.length *
 
       #change this to standard error / rescue
       if @check_out != nil
@@ -48,9 +48,14 @@ module Hotel
     #   reservation.date_range.include? date
     # end
 
-    # def self.calculate_reservation_cost
-    #   total_cost = @rooms.length * @date_range.count * COST_OF_ROOM
-    #   return total_cost
-    # end
+    def self.calculate_reservation_cost
+      if @rooms.length > 1
+        total_cost =  @date_range.count * @rooms.length * COST_OF_ROOM * discount_rate
+      else
+      total_cost = @date_range.count * COST_OF_ROOM
+      end
+      @total_cost = total_cost
+      return total_cost
+    end
   end
 end

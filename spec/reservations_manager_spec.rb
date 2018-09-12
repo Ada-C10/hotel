@@ -95,6 +95,7 @@ describe "ReservationManager" do
       expect(@block_test).must_be_instance_of Hotel::Reservation
       expect(@block_test.id).must_equal 6
       expect(@block_test.rooms.length).must_equal 3
+      expect(@block_test.total_cost).must_equal 1440
     end
   end
 end
