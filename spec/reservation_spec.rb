@@ -14,13 +14,12 @@ require_relative '../lib/hotel.rb'
 describe "Reservation Class" do
   describe "initializer" do
     before do
-      @hotel = Hotel.new
       room = Room.new(2)
-      @new_reservation = Reservation.new(2018923, 2018926, room)
+      @reservation = Reservation.new(2018923, 2018926, room)
     end
 
     it "returns an instance of Reservation" do
-      expect(@new_reservation).must_be_kind_of Reservation
+      expect(@reservation).must_be_kind_of Reservation
     end
 
     it "raises error when given invalid dates" do
@@ -29,7 +28,7 @@ describe "Reservation Class" do
     end
 
     it "calculates the reservation cost correctly" do
-      expect(@new_reservation.cost).must_equal 600
+      expect(@reservation.cost).must_equal 600
     end
 
   end
