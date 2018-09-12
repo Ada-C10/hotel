@@ -211,4 +211,36 @@ describe "BookingManager class" do
     end
   end
 
+  describe "determine_date_range method" do
+    before do
+      @bookingsystem = Hotel::BookingManager.new(5)
+      @range = @bookingsystem.determine_date_range("July 10, 2000", "July 15, 2000")
+    end
+
+    it "creates array of Date instances" do
+      expect(@range.length).must_equal 6
+      expect(@range.first).must_be_instance_of Date
+    end
+
+    it "includes the correct dates" do
+      expect(@range.first.to_s).must_match /2000-07-10/
+      expect(@range.last.to_s).must_match /2000-07-15/
+    end
+  end
+
+  describe "find_vacancies_in_date_range method" do
+    before do
+      @bookingsystem = Hotel::BookingManager.new(5)
+      room = @bookingsystem.rooms[0]
+      booking = Hotel::Reservation.new(room, guest_name: "Mary Poppins", start_date: "June 08, 2018", end_date: "June 14, 2018")
+      @bookingsystem.add_reservation_to_calendar(booking)
+      @found_vacancies = @bookingsystem.find_vacancies_in_date_range("June 10, 2018", "June 12, 2018")
+    end
+
+    it "returns array of Room instances" do
+      expect(@found_vacancies.length).must_equal 4
+      
+    end
+
+  end
 end
