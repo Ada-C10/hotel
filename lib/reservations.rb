@@ -3,7 +3,7 @@ COST_OF_ROOM = 200
 
 module Hotel
   class Reservation
-    attr_reader :id, :check_in, :check_out, :rooms, :total_cost, :date_range
+    attr_reader :id, :check_in, :check_out, :rooms, :total_cost, :date_range, :rooms
 
     def initialize(number, check_in: , check_out: )
       @id = number

@@ -29,6 +29,7 @@ module Hotel
       return reservations = @reservations.select {|reservation| reservation.find_reservation == true}
     end
     #   return booked_rooms #array
+    #use same find_reservation method for rooms select for available, reject for booked
 
     def reserve_room(check_in, check_out)
       new_reservation = Reservation.new(@reservations.length + 1, check_in: check_in, check_out: check_out)
