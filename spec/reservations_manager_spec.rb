@@ -25,6 +25,15 @@ describe "ReservationManager" do
       expect(@hotel_ada).must_be_instance_of Hotel::ReservationManager
       expect(@hotel_ada.reservations).must_be_kind_of Array
     end
+
+    it "raise an argumenterror for invalid date range" do
+        expect {
+          new_reservation6 = @hotel_ada.reserve_room(@dateD, @dateC)
+          }.must_raise ArgumentError
+        expect {
+            new_reservation7 = @hotel_ada.reserve_room(@dateD, @dateD)
+            }.must_raise ArgumentError
+    end
   end
 
   describe "Access all rooms" do
