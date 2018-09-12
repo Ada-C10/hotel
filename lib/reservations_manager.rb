@@ -49,7 +49,7 @@ module Hotel
 
     def reserve_block(number_of_rooms, check_in, check_out, discount_rate: 0.80)
       while available_rooms(check_in, check_out).length > number_of_rooms
-        block_reservation =  Reservation.new(@reservations.length + 1, check_in: check_in, check_out: check_out)
+        block_reservation =  Reservation.new(@reservations.length + 1, check_in: check_in, check_out: check_out, discount_rate: discount_rate)
         assigned_rooms = available_rooms(check_in, check_out).first(number_of_rooms)
         assigned_rooms.each do |room|
           block_reservation.rooms << room.id
