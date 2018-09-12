@@ -1,32 +1,36 @@
-Refactor Notes 
-I would like to refactor this project in a few ways. 
-In general I would like to redo my initialization/methods so the argument order does not matter (as hashes). I would also like to have defaults set for the check_in/check_out dates. 
-I'm also considering changing my collection of rooms/reservations into hash containers rather than arrays. It may make finding information easier later as I would end up with a hash of hashes. 
+Refactor Notes
+I would like to refactor this project in a few ways.
+In general I would like to redo my initialization/methods so the argument order does not matter (as hashes). I would also like to have defaults set for the check_in/check_out dates.
+I'm also considering changing my collection of rooms/reservations into hash containers rather than arrays. It may make finding information easier later as I would end up with a hash of hashes.
 
-Room class - 
-One thing I would like to do is rename reservation public_reservation and to create a block_reservation collection. This way I could check if a public booking attempt is within a block reservation date range. It also might be better to have room reservations default to an empty array. 
-I'm a little puzzled as to why I need the bang in front of the is_available enumerable method. It works but I think it's messy and i'd like to find a different way to do this. 
+Room class -
+One thing I would like to do is rename reservation public_reservation and to create a block_reservation collection. This way I could check if a public booking attempt is within a block reservation date range. It also might be better to have room reservations default to an empty array.
+I'm a little puzzled as to why I need the bang in front of the is_available enumerable method. It works but I think it's messy and i'd like to find a different way to do this.
 
 Reservation class -
-I realized it became difficult to change my code later on when I attempted to assign a reservation based on date range alone. I would like to redo the initialization so it initializes as a hash/order does not matter and so there is a default check_in/check_out. 
-I wanted to use my DateRange class method to return the number of days of the reservation but was unsuccessful. I would like to try this again in a refactor. 
+I realized it became difficult to change my code later on when I attempted to assign a reservation based on date range alone. I would like to redo the initialization so it initializes as a hash/order does not matter and so there is a default check_in/check_out.
+I wanted to use my DateRange class method to return the number of days of the reservation but was unsuccessful. I would like to try this again in a refactor.
 
-Booking class - 
-I'm not sure if Booking is the best title. Perhaps Booking Manager would have made more sense as this class manages the rooms/reservations. My goal was for Booking to have access to the rooms/reservations and for room/reservation to not require each other. 
-It would have been useful if the argument order was flexible for my methods/there were default values for check_in/check_out. 
-The method add_reservation was difficult. I think it would have been easier if argument order was flexible/if the list_rooms_available_for_date_range returned a hash rather than an array. Even with helper methods this method seems too long/awkward. 
-The end of my total_cost_for_reservation method has a lot going on. Would be better with another helper method. 
+Booking class -
+I'm not sure if Booking is the best title. Perhaps Booking Manager would have made more sense as this class manages the rooms/reservations. My goal was for Booking to have access to the rooms/reservations and for room/reservation to not require each other.
+It would have been useful if the argument order was flexible for my methods/there were default values for check_in/check_out.
+The method add_reservation was difficult. I think it would have been easier if argument order was flexible/if the list_rooms_available_for_date_range returned a hash rather than an array. Even with helper methods this method seems too long/awkward.
+The end of my total_cost_for_reservation method has a lot going on. Would be better with another helper method.
 
-BlockRoom class 
-I had considered making a class for BlockRooms but i'm not sure if that would make sense given my current design. I was thinking that if a room has a collection of public reservations and a collection of block reservations it might be easier to check if a date range is reserved for a block room by just checking if the reservation attempting to be made was already included in the room's block reservations collections. Perhaps BlockRoom would be better as a method where the user passes the date range, number of rooms needed, and discounted rate. The method could check if there are enough rooms available for the given date range and if so, create the reservations for each room in the room's block_reservation collection. This way Booking would continue to make reservations/the room/reservations would not need to interact with one another and another class would not be necessary as the methods for checking room availability/reserving a room would still be in Booking. 
+BlockRoom class
+I had considered making a class for BlockRooms but i'm not sure if that would make sense given my current design. I was thinking that if a room has a collection of public reservations and a collection of block reservations it might be easier to check if a date range is reserved for a block room by just checking if the reservation attempting to be made was already included in the room's block reservations collections. Perhaps BlockRoom would be better as a method where the user passes the date range, number of rooms needed, and discounted rate. The method could check if there are enough rooms available for the given date range and if so, create the reservations for each room in the room's block_reservation collection. This way Booking would continue to make reservations/the room/reservations would not need to interact with one another and another class would not be necessary as the methods for checking room availability/reserving a room would still be in Booking.
 
-Design Notes 
-Booking = Controls making reservations/listing rooms/creating reservations (main parent). Has a collection of rooms. Room is able to find a reservation/check if it's available for a date. 
+Design Notes
+Booking = Controls making reservations/listing rooms/creating reservations (main parent). Has a collection of rooms. Room is able to find a reservation/check if it's available for a date.
 
 Room - Each room has a room number, a collection (hash?) of public_reservations, and a collection of block_reservations.
-	Consider having a calendar year array assigned to each room. When reservations are made in either collection of reservations, remove those dates from the calendar of availability. Would probably be useful when checking if room is available. Not sure how 		this would work with constraint of a room being reserved for a block room but not actually being reserved for the block. 
+	Consider having a calendar year array assigned to each room. When reservations are made in either collection of reservations, remove those dates from the calendar of availability. Would probably be useful when checking if room is available. Not sure how 		this would work with constraint of a room being reserved for a block room but not actually being reserved for the block.
 
-Reservation - Would like to switch to public_reservations and block_reservations. Is able to check the number of days reserved/the cost of the reservation.  
-Would probably be better if this was contained in a hash in Room. 
+Reservation - Would like to switch to public_reservations and block_reservations. Is able to check the number of days reserved/the cost of the reservation.
+Would probably be better if this was contained in a hash in Room.
 
-Also considered having BlockRoom be a class with access to a collection (hash?) of rooms/each room has usual access to reservations. If a room does have reservations, would need to verify that the reservation being made is a block reservation/that the reservation is using the same date range as what's available for the block. 
+Also considered having BlockRoom be a class with access to a collection (hash?) of rooms/each room has usual access to reservations. If a room does have reservations, would need to verify that the reservation being made is a block reservation/that the reservation is using the same date range as what's available for the block.
+
+Note to self - Maybe have Booking make block rooms in a method. If a room is in a block room, it's not available for normal reservation.
+If Booking tries to make a block reservation for date range, it can override the reserved status if the room is a block room for the date range.
+Maybe it could just be a method rather than its own class as it's using functionality from Room/Reservation. 
