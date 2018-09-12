@@ -4,11 +4,11 @@
 module Hotel
   COST_OF_ROOM = 200
   class Reservation
-    attr_reader :id, :check_in, :check_out, :rooms, :total_cost, :date_range
+    attr_reader :id, :check_in, :check_out, :rooms, :total_cost, :date_range, :discount_rate
 
 
 
-    def initialize(number, check_in:, check_out:, discount_rate: 1)
+    def initialize(number, number_of_rooms:1, check_in:, check_out:, discount_rate: 1)
       @id = number
       @check_in = Date.parse(check_in)
       @check_out = Date.parse(check_out)
@@ -41,11 +41,7 @@ module Hotel
     end
 
     def total_cost
-      if self.rooms.length > 1
-        total_cost =  @date_range.count * @rooms.length * COST_OF_ROOM * @discount_rate
-      else @rooms.length == 1
-        total_cost = @date_range.count * COST_OF_ROOM
-      end
+      total_cost =  self.date_range.count * self.rooms.length * COST_OF_ROOM * self.discount_rate
       return total_cost
     end
 

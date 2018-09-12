@@ -40,7 +40,6 @@ module Hotel
       return new_reservation
     end
 
-
     def available_rooms(check_in, check_out)
       available_rooms = self.rooms.select {|room| room.is_booked?(check_in, check_out) == false}
       #loop through Reservations @match dates on the reservations#reject dates that match
