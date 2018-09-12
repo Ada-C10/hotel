@@ -10,11 +10,11 @@ MAX_BLOCK_NUM = 5
 
 module Hotel
   class ReservationTracker
-    attr_reader :rooms, :blocked_rooms, :reservations
+    attr_reader :rooms, :blocks, :reservations
 
     def initialize(room_file = 'support/rooms.csv', block_file = 'support/blocks.csv', reservation_file = 'support/reservations.csv')
       @rooms = load_rooms(room_file)
-      @blocked_rooms = load_blocked_rooms(block_file)
+      @blocks = load_blocks(block_file)
       @reservations = load_reservations(reservation_file)
     end
 
@@ -33,7 +33,7 @@ module Hotel
       return rooms
     end
 
-    def load_blocked_rooms(filename)
+    def load_blocks(filename)
       blocks = []
       block_data = CSV.open(filename, 'r', headers: true, header_converters: :symbol)
 
@@ -85,7 +85,7 @@ module Hotel
 
     def find_block_id(id)
       check_id(id)
-      return @blocked_rooms.find { |blocked_room| blocked_room.id == id }
+      return @blocks.find { |blocked_room| blocked_room.id == id }
     end
 
     def find_room(room_num)
@@ -117,18 +117,18 @@ module Hotel
       return reserved_rooms
     end
 
-    def find_blocked_rooms(requested_dates)
-      blocked_rooms_by_date = @blocked_rooms.map do |room|
+    def find_blocks(requested_dates)
+      blocks_by_date = @blocks.map do |room|
         date_range = room.date_range
         room if date_range.overlaps?(requested_dates)
       end
-      return blocked_rooms_by_date.compact
+      return blocks_by_date.compact
     end
 
     def find_unavailable_rooms(requested_dates)
       reserved_rooms = find_reserved_rooms(requested_dates)
-      blocked_rooms = find_blocked_rooms(requested_dates)
-      unavailable_rooms = reserved_rooms + blocked_rooms
+      blocks = find_blocks(requested_dates)
+      unavailable_rooms = reserved_rooms + blocks
       return unavailable_rooms
     end
 
@@ -180,7 +180,7 @@ module Hotel
       check_num_requested?(requested_qty)
     end
 
-    def get_blocked_rooms(requested_qty, requested_dates)
+    def get_blocks(requested_qty, requested_dates)
       confirm_valid_qty?(requested_qty)
       available_rooms = find_available_rooms(requested_dates)
       check_enough_rooms?(available_rooms, requested_qty)
@@ -190,8 +190,8 @@ module Hotel
 
     def block_rooms(input)
       requested_dates = get_requested_dates(input[:start_date], input[:end_date])
-      block_id = @blocked_rooms.length + 1
-      blocked_qty_rooms = get_blocked_rooms(input[:party], requested_dates)
+      block_id = @blocks.length + 1
+      blocked_qty_rooms = get_blocks(input[:party], requested_dates)
 
       block_data = {
         id: block_id,
@@ -200,7 +200,7 @@ module Hotel
       }
 
       new_block = Block.new(block_data)
-      @blocked_rooms << new_block
+      @blocks << new_block
       return new_block
     end
 

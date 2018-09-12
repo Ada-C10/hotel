@@ -80,7 +80,7 @@ def create_block(reservation_tracker)
     end_date: Date.parse(end_date)
   }
   reservation_tracker.block_rooms(input)
-  new_block = reservation_tracker.blocked_rooms.last
+  new_block = reservation_tracker.blocks.last
 
   print "\n**********************************************".red
   puts"\nBlock Created!".red

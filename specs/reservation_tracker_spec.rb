@@ -45,11 +45,11 @@ describe "ReservationTracker class" do
     end
   end
 
-  describe "#load_blocked_rooms method" do
+  describe "#load_blocks method" do
     it "loads the blocked rooms" do
-      expect(@reservation_tracker.blocked_rooms).must_be_kind_of Array
-      expect(@reservation_tracker.blocked_rooms.first).must_be_kind_of Hotel::Block
-      expect(@reservation_tracker.blocked_rooms.last).must_be_kind_of Hotel::Block
+      expect(@reservation_tracker.blocks).must_be_kind_of Array
+      expect(@reservation_tracker.blocks.first).must_be_kind_of Hotel::Block
+      expect(@reservation_tracker.blocks.last).must_be_kind_of Hotel::Block
     end
   end
 
@@ -89,7 +89,7 @@ describe "ReservationTracker class" do
 
     @requested_dates = Hotel::DateRange.new(@start_date, @end_date)
     @reservation_tracker.reserve_room(@input)
-    @initial_block_length = @reservation_tracker.find_blocked_rooms(@requested_dates).length
+    @initial_block_length = @reservation_tracker.find_blocks(@requested_dates).length
     @initial_reservations_length = @reservation_tracker.find_reserved_rooms(@requested_dates).length
   end
 
@@ -112,12 +112,12 @@ describe "ReservationTracker class" do
 
   end
 
-  describe "#find_blocked_rooms method" do
+  describe "#find_blocks method" do
     it "finds all the blocked rooms by requested_dates" do
       block = @reservation_tracker.block_rooms(@block_input)
-      blocked_rooms = @reservation_tracker.find_blocked_rooms(@requested_dates)
-      expect(blocked_rooms).must_be_kind_of Array
-      expect(blocked_rooms.last.party.size).must_equal block.party.size
+      blocks = @reservation_tracker.find_blocks(@requested_dates)
+      expect(blocks).must_be_kind_of Array
+      expect(blocks.last.party.size).must_equal block.party.size
     end
   end
 
@@ -236,10 +236,10 @@ describe "ReservationTracker class" do
     end
   end
 
-  describe "#get_blocked_rooms method" do
+  describe "#get_blocks method" do
     it "gets blocked rooms if there are available rooms" do
       requested_amt = 5
-      block = @reservation_tracker.get_blocked_rooms( requested_amt, @requested_dates)
+      block = @reservation_tracker.get_blocks( requested_amt, @requested_dates)
 
       expect(block).must_be_kind_of Array
       expect(block.length).must_equal requested_amt
@@ -253,7 +253,7 @@ describe "ReservationTracker class" do
       end
 
       requested_amt = 5
-      expect{ reservation_tracker.get_blocked_rooms(requested_amt, @requested_dates) }.must_raise Hotel::ReservationTracker::NotEnoughError
+      expect{ reservation_tracker.get_blocks(requested_amt, @requested_dates) }.must_raise Hotel::ReservationTracker::NotEnoughError
     end
   end
 
@@ -272,10 +272,10 @@ describe "ReservationTracker class" do
     end
 
     it "blocks rooms if available" do
-      initial_length = @reservation_tracker.blocked_rooms.length
+      initial_length = @reservation_tracker.blocks.length
 
       new_block = @reservation_tracker.block_rooms(@input)
-      new_length = @reservation_tracker.blocked_rooms.length
+      new_length = @reservation_tracker.blocks.length
 
       expect(new_block).must_be_kind_of Hotel::Block
       expect(new_length).must_equal initial_length + 1
@@ -308,9 +308,9 @@ describe "ReservationTracker class" do
     end
 
     it "adds new block to blocks array" do
-      initial_length = @reservation_tracker.blocked_rooms.length
+      initial_length = @reservation_tracker.blocks.length
       @reservation_tracker.block_rooms(@block_input)
-      new_length = @reservation_tracker.blocked_rooms.length
+      new_length = @reservation_tracker.blocks.length
       new_length.must_equal initial_length + 1
     end
 
