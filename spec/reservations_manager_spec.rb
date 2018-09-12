@@ -55,29 +55,21 @@ describe "ReservationManager" do
       expect(@new_reservation1.check_in).must_be_instance_of Date
     end
 
-    it "adds an instance of a room to the reservation" do
+    it "adds room id to the reservation" do
       expect(@new_reservation1.rooms).must_be_kind_of Array
-      expect(@new_reservation1.rooms[0]).must_be_instance_of Hotel::Room
+      expect(@new_reservation1.rooms[0]).must_equal 1
     end
 
     it "adds the reservation to the instance of room" do
-      expect(@new_reservation1.rooms[0].id).must_equal 1
-      expect(@new_reservation1.rooms[0].reservations).must_be_kind_of Array
-      expect(@new_reservation1.rooms[0].reservations[0]).must_be_instance_of Hotel:: Reservation
-      expect(@new_reservation1.rooms[0].reservations[0].id).must_equal 1
+      expect(@hotel_ada.rooms[0].reservations).must_be_kind_of Array
+      expect(@hotel_ada.rooms[0].reservations[0]).must_be_instance_of Hotel:: Reservation
+      expect(@hotel_ada.rooms[0].reservations[0].id).must_equal 1
     end
   end
 
   describe "it can list all reservations for a given date" do
     before do
       @hotel_ada = Hotel::ReservationManager.new(20)
-      # @dateA = Date.parse('2018-08-09')
-      # @dateB = Date.parse('2018-08-15')
-      # @dateC = Date.parse('2018-08-20')
-      # @dateD = Date.parse('2018-08-23')
-      # @dateE = Date.parse('2018-08-25')
-      # @dateF = Date.parse('2018-08-27')
-      # @test_date = Date.parse('2018-08-20')
       @dateA = '2018-08-09'
       @dateB = '2018-08-15'
       @dateC = '2018-08-20'

@@ -2,14 +2,11 @@ require_relative 'spec_helper'
 require 'pry'
 
 describe "Reservation" do
-  before do
-    @hotel_ada = Hotel::ReservationManager.new(20)
-    @new_reservation = @hotel_ada.reserve_room("2018-08-23", "2018-08-25")
-  end
-
   describe "Initializes an instance of reservation and its instance methods" do
     before do
-      @test_reservation = Hotel::Reservation.new(1, check_in: "2018-09-18", check_out: "2018-09-20")
+    @hotel_ada = Hotel::ReservationManager.new(20)
+    @new_reservation = @hotel_ada.reserve_room("2018-08-23", "2018-08-25")
+    @test_reservation = @hotel_ada.reserve_room("2018-09-18", "2018-09-20")
     end
 
     it "creates an instance of Reservation" do
@@ -21,8 +18,12 @@ describe "Reservation" do
     end
 
     it "checks to see if there are any reservations for a given date" do
-#binding.pry
       expect(@test_reservation.find_reservation("2018-09-19")).must_equal true
+    end
+
+    it "calulates total cost for a reservation" do
+#binding.pry
+      expect(@test_reservation.total_cost).must_equal 400
     end
   end
 end
