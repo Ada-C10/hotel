@@ -1,6 +1,6 @@
 require_relative 'reservation'
 
-REG_RATE = 200
+RATE = 200
 
 module Hotel
   class Room
@@ -9,7 +9,7 @@ module Hotel
     def initialize(input)
       check_rate_validity?(input[:rate])
       @room_num = input[:room_num]
-      @rate = input[:rate].nil? ? REG_RATE : input[:rate]
+      @rate = input[:rate].nil? ? RATE : input[:rate]
     end
 
     private

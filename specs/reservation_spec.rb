@@ -28,7 +28,7 @@ describe "Reservation class" do
     it "calculates the total with the rate per nights stayed if there is no block_id" do
       total_nights_stayed = @date_range.find_num_nights
       expect(@reservation.calculate_cost).must_be_kind_of Numeric
-      expect(@reservation.calculate_cost).must_equal REG_RATE * total_nights_stayed
+      expect(@reservation.calculate_cost).must_equal RATE * total_nights_stayed
     end
 
     it "calculates the cost with a unique rate assigned to the room" do
@@ -75,7 +75,7 @@ describe "Reservation class" do
 
       total_nights_stayed = @date_range.find_num_nights
       expect(reservation.calculate_cost).must_be_kind_of Numeric
-      expect(reservation.calculate_cost).must_equal REG_RATE * BLOCK_DISCOUNT * total_nights_stayed
+      expect(reservation.calculate_cost).must_equal RATE * BLOCK_DISCOUNT * total_nights_stayed
     end
   end
 end
