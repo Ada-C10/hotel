@@ -1,22 +1,39 @@
-#room_tracker
-
-
 require_relative 'spec_helper'
 
 describe Room_Tracker do
 
-  describe "Reservation instantiation" do
+  describe "Room_Tracker instantiation" do
     describe "#initialize" do
-      it "Takes start and end dates" do
+      it "can create new instance of room_tracker" do
 
-        start_date = Date.parse('2012-02-01')
-        end_date = Date.parse('2012-02-03')
-        reservation = Reservation.new(start_date,end_date)
+        room_tracker = Room_Tracker.new()
 
-        expect(reservation).must_respond_to :start_date
-        expect(reservation.start_date).must_equal start_date
+        expect(room_tracker).must_be_instance_of Room_Tracker
 
       end
     end
   end
+
+  describe "Reservation instantiation with room" do
+    let (:start_date) { Date.parse('2012-02-01') }
+    let (:end_date) { Date.parse('2012-02-03') }
+    let (:room) { 12 }
+    bookings = []
+    describe "#initialize" do
+      it "make_reservation puts room in @bookings array" do
+        new_bookings = Reservation.new(start_date,end_date, room)
+        bookings << new_bookings
+        expect(new_bookings.room).must_equal 12
+      end
+    end
+    describe "#make_reservation" do
+             it "assigns available room" do
+               Room_Tracker.new()
+    
+               expect (Room_Tracker.make_reservation.room).must_equal 14
+        end
+        end
+  end
+
+
 end

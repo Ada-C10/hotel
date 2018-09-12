@@ -7,6 +7,7 @@ describe Reservation do
     let (:start_date) { Date.parse('2012-02-01') }
     let (:end_date) { Date.parse('2012-02-03') }
     let (:room) { 12 }
+    let (:bookings) {[12, 14]}
     describe "#initialize" do
       it "Takes start and end dates" do
 
@@ -21,15 +22,16 @@ describe Reservation do
     end
 
 
-  describe "#calculate_total_cost" do
+    describe "#calculate_total_cost" do
     it "Takes start and end dates and calculates total cost of room" do
-      #
-      # start_date = "2012-02-01"
-      #  end_date = "2012-02-03"
+
        reservation_test = Reservation.new(start_date, end_date, room)
 
-        expect(reservation_test.calculate_total_cost).must_equal 400
-      end
-    end
+
+         expect(reservation_test.calculate_total_cost).must_equal 400
+end
+end
+
+
 end
 end
