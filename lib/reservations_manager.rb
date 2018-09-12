@@ -26,7 +26,7 @@ module Hotel
     end
 
     def booked_reservations(date)
-      return reservations = @reservations.select {|reservation| reservation.find_reservation == true}
+      return reservations = @reservations.select {|reservation| reservation.find_reservation(date) == true}
     end
     #   return booked_rooms #array
     #use same find_reservation method for rooms select for available, reject for booked
@@ -36,6 +36,7 @@ module Hotel
       assigned_room = @rooms[0]#available_rooms
       new_reservation.rooms << assigned_room
       find_room(assigned_room.id).reservations << new_reservation
+      @reservations << new_reservation
       return new_reservation
     end
 
