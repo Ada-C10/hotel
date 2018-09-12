@@ -89,14 +89,25 @@ describe "ReservationManager" do
 
   describe "Wave 3 - Reserve Block rooms" do
     before do
-      @block_test = @hotel_ada.reserve_block(3, '2018-08-20', '2018-08-23')
+      @many_rooms_test = @hotel_ada.reserve_room('2018-08-20', '2018-08-23', number_of_rooms: 3)
+      @block = @hotel_ada.create_block('2018-08-20', '2018-08-23', number_of_rooms: 10, discount_rate: 0.8 )
     end
-    it "allows you to reserve multiple rooms" do
-      expect(@block_test).must_be_instance_of Hotel::Reservation
-      expect(@block_test.id).must_equal 6
-      expect(@block_test.rooms.length).must_equal 3
-      expect(@block_test.total_cost).must_equal 1440
+    it "allows you to reserve multiple rooms on one reservation" do
+      expect(@many_rooms_test).must_be_instance_of Hotel::Reservation
+      expect(@many_rooms_test.id).must_equal 6
+      expect(@many_rooms_test.rooms.length).must_equal 3
+      expect(@many_rooms_test.total_cost).must_equal 1800
     end
+
+    it "allows you to make multiple reservation in a block of rooms" do
+      expect(@block).must_be_instance_of Hotel::Block
+      expect(@block.reservations).must_be_kind_of Array
+      expect(@block.reservations[0]).must_be_instance_of Hotel::Reservation
+      expect(@block.rooms).must_be_kind_of Array
+      expect(@block.rooms[0]).must_be_instance_of Hotel::Room
+    end
+
+
   end
 end
 

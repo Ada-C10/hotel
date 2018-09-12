@@ -11,6 +11,7 @@ module Hotel
 
     def initialize(number_of_rooms)
       @reservations = []
+      @blocks = []
       @rooms = []
       (1..number_of_rooms).each do |number|
         @rooms << Room.new(number)
@@ -28,14 +29,14 @@ module Hotel
     def booked_reservations(date)
       return @reservations.select {|reservation| reservation.find_reservation(date) == true}
     end
-    #   return booked_rooms #array
-    #use same find_reservation method for rooms select for available, reject for booked
 
-    def reserve_room(check_in, check_out)
+    def reserve_room(check_in, check_out, number_of_rooms: 1 )
       new_reservation = Reservation.new(@reservations.length + 1, check_in: check_in, check_out: check_out)
-      assigned_room = available_rooms(check_in, check_out).last #available_rooms
-      new_reservation.rooms << assigned_room.id
-      find_room(assigned_room.id).reservations << new_reservation
+      assigned_rooms = available_rooms(check_in, check_out).last(number_of_rooms)
+      assigned_rooms.each do |room|
+        new_reservation.rooms << room.id
+        find_room(room.id).reservations << new_reservation
+      end
       @reservations << new_reservation
       return new_reservation
     end
@@ -46,18 +47,33 @@ module Hotel
       return available_rooms #array
     end
 
-    def reserve_block(number_of_rooms, check_in, check_out, discount_rate: 0.80)
-      while available_rooms(check_in, check_out).length > number_of_rooms
-        block_reservation =  Reservation.new(@reservations.length + 1, check_in: check_in, check_out: check_out, discount_rate: discount_rate)
-        assigned_rooms = available_rooms(check_in, check_out).first(number_of_rooms)
-        assigned_rooms.each do |room|
-          block_reservation.rooms << room.id
-          find_room(room.id).reservations << block_reservation
-        end
+    def create_block(check_in, check_out, number_of_rooms: , discount_rate: 0.8)
+      block = Block.new(@blocks.length + 1, check_in: check_in, check_out: check_out)
+      block_rooms = available_rooms(check_in, check_out).first(number_of_rooms)
+      block.rooms << block_rooms
+      block_rooms.each do |room|
+        find_room(room.id).reservations << block
       end
-      @reservations << block_reservation
-      return block_reservation
+      @blocks << block
+      return block
     end
+
+      #how to account for multiple rooms for a rservation within a block_reservation
+
+      # add additional room to reservation
+
+    # def reserve_block(number_of_rooms, check_in, check_out, discount_rate: 0.80)
+    #   while available_rooms(check_in, check_out).length > number_of_rooms
+    #     block_reservation =  Reservation.new(@reservations.length + 1, check_in: check_in, check_out: check_out, discount_rate: discount_rate)
+    #     assigned_rooms = available_rooms(check_in, check_out).first(number_of_rooms)
+    #     assigned_rooms.each do |room|
+    #       block_reservation.rooms << room.id
+    #       find_room(room.id).reservations << block_reservation
+    #     end
+    #   end
+    #   @reservations << block_reservation
+    #   return block_reservation
+    # end
 
 
 
