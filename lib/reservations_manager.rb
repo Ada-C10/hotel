@@ -41,10 +41,11 @@ module Hotel
     end
 
 
-      # def available_rooms(check_in, check_out)
-      #   available_rooms = @reservations.reject {rooms != date_range}
-      #     #loop through Reservations @match dates on the reservations#reject dates that match
-      #     return available_rooms #array
+    def available_rooms(check_in, check_out)
+      available_rooms = self.rooms.select {|room| room.is_booked?(check_in, check_out) == false}
+      #loop through Reservations @match dates on the reservations#reject dates that match
+      return available_rooms #array
+    end
 
     # def @reservations.all
     #   return @reservations

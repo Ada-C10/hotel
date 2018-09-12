@@ -11,19 +11,28 @@ module Hotel
       @reservations = []
       #define room as physical space
     end
- #create helper methods that return boolean values - in reservmgr - create loop methods that take helper method booleans and creates an array
-   #  def self.find_room(id)
-   #    if room.id == id
-   #      return room
-   #    end
-   # end
-
-    #wave 2 def is_available(check_in:, check_out:)
-    #   date_range = Date.parse(check_in)..Date.parse(check_out)
-    #   #loop through room reservations, reject rooms with reservations that conflict with
-    #   #requested date range
-    #   self.reservations.reject {@reservations} date_range
-    #   # end
+    #create helper methods that return boolean values - in reservmgr - create loop methods that take helper method booleans and creates an array
+    #  def self.find_room(id)
+    #    if room.id == id
+    #      return room
+    #    end
     # end
+    #
+    # def find_reservation(date)
+    #   date = Date.parse(date)
+    #   return self.date_range.include? date
+    # end
+
+    def is_booked?(check_in, check_out)
+      check_dates = Date.parse(check_in)...Date.parse(check_out)
+      return false if self.reservations.length == 0
+      self.reservations.each do |reservation|
+        if reservation.date_range.include? check_dates || Date.parse(check_in)
+          return true
+        end
+      end
+      return false
+    end
+
   end
 end
