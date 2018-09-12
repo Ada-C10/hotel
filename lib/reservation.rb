@@ -15,15 +15,12 @@ class Reservation
     @start_date = start_date
     @end_date = end_date
     @room = room
-    @total_cost = calculate_total_cost(start_date, end_date)
+    @total_cost = calculate_total_cost
   end
 
-  def calculate_total_cost(start_date, end_date)
-    start_date = Date.parse(start_date)
-    end_date = Date.parse(end_date)
+  def calculate_total_cost()
     total_cost = 0
-      number_of_days = (end_date-start_date).to_i -1
-        binding.pry
+    number_of_days = ((end_date - start_date).to_i) - 1
     if number_of_days < 1
       number_of_days = 1
     end

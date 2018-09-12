@@ -4,11 +4,12 @@ require_relative 'spec_helper'
 describe Reservation do
 
   describe "Reservation instantiation" do
+    let (:start_date) { Date.parse('2012-02-01') }
+    let (:end_date) { Date.parse('2012-02-03') }
+    let (:room) { 12 }
     describe "#initialize" do
       it "Takes start and end dates" do
 
-        start_date = Date.parse('2012-02-01')
-        end_date = Date.parse('2012-02-03')
         reservation = Reservation.new(start_date,end_date, room)
 
         expect(reservation).must_respond_to :start_date
@@ -23,12 +24,10 @@ describe Reservation do
   describe "#calculate_total_cost" do
     it "Takes start and end dates and calculates total cost of room" do
       #
-        #start_date = '2012-02-01'
-       #end_date = '2012-02-03'
-       room = 1
-       reservation_test = Reservation.new("2012-02-01", "2012-02-03", room)
+      # start_date = "2012-02-01"
+      #  end_date = "2012-02-03"
+       reservation_test = Reservation.new(start_date, end_date, room)
 
-        reservation_test.calculate_total_cost("2012-02-01","2012-02-03")
         expect(reservation_test.calculate_total_cost).must_equal 400
       end
     end
