@@ -11,7 +11,7 @@ module Hotel
       @reservations = []
       #define room as physical space
     end
-
+ #create helper methods that return boolean values - in reservmgr - create loop methods that take helper method booleans and creates an array
    #  def self.find_room(id)
    #    if room.id == id
    #      return room

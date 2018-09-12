@@ -26,7 +26,7 @@ module Hotel
     end
 
     def booked_reservations(date)
-      return reservations = @reservations.select {|reservation| reservations.find_reservation == true}
+      return reservations = @reservations.select {|reservation| reservation.find_reservation == true}
     end
     #   return booked_rooms #array
 

@@ -31,7 +31,19 @@ describe "ReservationManager" do
 
   describe "reserve_room ReservationManager" do
     before do
-      @new_reservation = @hotel_ada.reserve_room('2018-08-23', '2018-08-25')
+      @dateA = '2018-08-23'
+      @dateB = '2018-08-25'
+      @dateC = '2018-08-09'
+      @dateD = '2018-08-27'
+      @dateE = '2018-08-15'
+      @dateF = '2018-08-20'
+
+      @new_reservation1 = @hotel_ada.reserve_room('2018-08-23', '2018-08-25')
+      @new_reservation2 = @hotel_ada.reserve_room('2018-08-19', '2018-08-22')
+      @new_reservation3 = @hotel_ada.reserve_room('2018-08-09', '2018-08-15')
+      @new_reservation4 = @hotel_ada.reserve_room('2018-08-23', '2018-08-27')
+      @new_reservation5 = @hotel_ada.reserve_room('2018-08-20', '2018-08-25')
+
     end
     it "can reserve a room for a given date range" do
       expect(@new_reservation).must_be_instance_of Hotel::Reservation
