@@ -60,7 +60,6 @@ describe "Hotel Class" do ####### big describe opening
   describe "Hotel#find_reservation(date)" do
     it "find a reservation using the date" do
       hotel = Hotel.new
-      room = Room.new(2)
       hotel.make_reservation(2018923, 2018926)
       reservation_2 = hotel.make_reservation(20181023, 20181028)
 
@@ -70,7 +69,6 @@ describe "Hotel Class" do ####### big describe opening
 
     it "finds the correct reservation using the date" do
       hotel = Hotel.new
-      room = Room.new(2)
       hotel.make_reservation(2018923, 2018926)
       reservation_2 = hotel.make_reservation(20181023, 20181028)
 
