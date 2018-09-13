@@ -1,6 +1,6 @@
 class Reservation
-  attr_reader :check_in, :check_out, :cost, :date_range
-  def initialize(check_in, check_out)# room
+  attr_reader :check_in, :check_out, :cost, :date_range, :room
+  def initialize(check_in, check_out, room)# room
     @check_in = check_in
     @check_out = check_out
     @date_range = check_out..check_in

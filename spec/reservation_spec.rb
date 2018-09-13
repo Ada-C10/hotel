@@ -15,7 +15,7 @@ describe "Reservation Class" do
   describe "initializer" do
     before do
       room = Room.new(2)
-      @reservation = Reservation.new(2018923, 2018926)
+      @reservation = Reservation.new(2018923, 2018926, room)
     end
 
     it "returns an instance of Reservation" do
@@ -24,7 +24,7 @@ describe "Reservation Class" do
 
     it "raises error when given invalid dates" do
       room = Room.new(2)
-      expect {(Reservation.new(2018926, 2018923))}.must_raise ArgumentError
+      expect {(Reservation.new(2018926, 2018923, room))}.must_raise ArgumentError
     end
 
     it "calculates the reservation cost correctly" do

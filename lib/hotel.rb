@@ -9,13 +9,13 @@ class Hotel
   end
 
   def make_reservation(check_in = Date.new(check_in), check_out = Date.new(check_out))
-    # room = @rooms.select do
-    #   |room| room.available?(check_in, check_out)
-    #  end
-    # room = room.first # find correct syntax to merge wit above
-    reservation = Reservation.new(check_in, check_out)
-    @reservations << reservation
+    room = @rooms.select do
+      |room| room.available?(check_in, check_out)
+     end
+    room = room.first
 
+    reservation = Reservation.new(check_in, check_out, room)
+    @reservations << reservation
     room.reserve(reservation)
     return reservation
   end

@@ -37,7 +37,7 @@ describe "Hotel Class" do ####### big describe opening
     before do
       @hotel = Hotel.new
       room = Room.new(2)
-      @reservation = @hotel.make_reservation(2018923, 2018926, room)
+      @reservation = @hotel.make_reservation(2018923, 2018926)
     end
 
     it "creates a reservation object" do
