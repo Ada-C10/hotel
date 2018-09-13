@@ -21,7 +21,7 @@ describe Reservation do
       end
     end
 
-
+describe "I can get the total cost for a given reservation" do
     describe "#calculate_total_cost" do
     it "Takes start and end dates and calculates total cost of room" do
 
