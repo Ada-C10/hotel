@@ -9,6 +9,7 @@ describe "BookingSystem Class" do
     @date_range_3 = Hotel::DateRange.new('2018-08-29', '2018-09-02')
     @reservation = Hotel::BookingSystem.new()
 
+
     5.times do
       @reservation.make_reservation(@date_range_1)
     end
@@ -20,6 +21,8 @@ describe "BookingSystem Class" do
     3.times do
       @reservation.make_reservation(@date_range_3)
     end
+
+    @reservation.reserve_block_rooms(@date_range_1)
   end
 
   describe "Initializer" do
@@ -36,10 +39,11 @@ describe "BookingSystem Class" do
       end
     end
 
-    # it 'Creates an array of block rooms' do
-    #   #length = 5
-    #   #appropriate room numbers
-    # end
+    it 'Creates an array of block room instances' do
+      expect(@reservation.block_rooms).must_be_kind_of Array
+      expect(@reservation.block_rooms.first).must_be_kind_of Hotel::BlockRoom
+      expect(@reservation.block_rooms.first.block_rooms).must_equal [*9..13]
+    end
   end
 
   describe "list_rooms method" do
@@ -122,7 +126,7 @@ describe "BookingSystem Class" do
     let (:reservation_2) { Hotel::BookingSystem.new() }
 
     it 'Correcly lists the available rooms by date' do
-      expect(@reservation.list_available_rooms(@date_range_1)).must_equal [*9..20]
+      expect(@reservation.list_available_rooms(@date_range_1)).must_equal [*14..20]
     end
 
     it 'Returns all the rooms if there are no reservations' do
@@ -139,7 +143,7 @@ describe "BookingSystem Class" do
     end
 
     it 'Correctly returns an array of available rooms for the date range' do
-      expect(@reservation.find_available_rooms(@date_range_1)).must_equal [*9..20]
+      expect(@reservation.find_available_rooms(@date_range_1)).must_equal [*14..20]
     end
 
     it 'Raises an error if there are no available rooms for the date range' do
@@ -159,7 +163,7 @@ describe "BookingSystem Class" do
     end
 
     it 'Adds the correct available room to the reservation' do
-      expect(@reservation.make_reservation(@date_range_1).room_number).must_equal 9
+      expect(@reservation.make_reservation(@date_range_1).room_number).must_equal 14
     end
 
     it 'Adds each instance of reservation into the the @reservations instance variable' do

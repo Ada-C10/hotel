@@ -39,17 +39,6 @@ module Hotel
       return available_rooms
     end
 
-    #combine the two methods above?
-    # def find_available_block_rooms(date_range)
-    #   return @rooms.first(5) if @block_rooms.empty?
-    #
-    #
-    #   available_block_rooms = @rooms.reject { |r| unavailable_rooms_block.include?(r) }
-    #
-    #   raise StandardError, "No rooms available for those dates." if available_block_rooms.empty?
-    #   return available_block_rooms
-    # end
-
     def make_reservation(date_range)
       room = find_available_rooms(date_range).first
       reservation = Reservation.new(date_range, room)
@@ -73,8 +62,8 @@ module Hotel
       found_block = find_block(date_range)
       room_block_rooms = found_block.first.block_rooms
       available_rooms = find_available_rooms(date_range)
-      room = available_rooms.select { |room| room if room_block_rooms.include? available_rooms }
-      return room
+      rooms = available_rooms.select { |room| room if room_block_rooms.include? available_rooms }
+      return rooms
     end
 
     def make_reservation_from_block(date_range)
@@ -88,55 +77,55 @@ module Hotel
   end
 end
 
-date_range_1 = Hotel::DateRange.new('2018-09-01', '2018-09-05')
-# date_range_2 = Hotel::DateRange.new('2018-09-15', '2018-09-20')
-date_range_3 = Hotel::DateRange.new('2018-08-29', '2018-09-02')
-# date_range_4 = Hotel::DateRange.new('2018-10-01', '2018-10-20')
-reservation = Hotel::BookingSystem.new()
-
-# reservation_1 = Hotel::BookingSystem.new()
-#
-10.times do
-  reservation.make_reservation(date_range_1)
-end
-
-2.times do
-  reservation.reserve_block_rooms(date_range_1)
-end
-#
-#
-# reservation.reserve_block_rooms(date_range_3)
-#
-# 3.times do
-#   block_room.make_reservation_from_block(date_range_3)
+# date_range_1 = Hotel::DateRange.new('2018-09-01', '2018-09-05')
+# # # date_range_2 = Hotel::DateRange.new('2018-09-15', '2018-09-20')
+# # date_range_3 = Hotel::DateRange.new('2018-08-29', '2018-09-02')
+# # # date_range_4 = Hotel::DateRange.new('2018-10-01', '2018-10-20')
+# reservation = Hotel::BookingSystem.new()
+# #
+# # # reservation_1 = Hotel::BookingSystem.new()
+# # #
+# 10.times do
+#   reservation.make_reservation(date_range_1)
 # end
 #
-p reservation
-# puts reservation.find_available_rooms(date_range_1).class
-# puts "#{reservation.list_available_rooms(date_range_1)}"
-# puts "#{reservation_1.list_available_rooms(date_range_1)}"
-# puts "#{reservation.list_available_rooms(date_range_4)}"
-
-
-#
-# puts reservation.list_reservations(date_range_1).first.room_number
-# puts reservation.list_reservations(date_range_1).last.room_number
-
-# reservation.list_reservations(date_range_1).each_with_index do |res, i|
-#   puts "#{i}. Room ##{res.room_number}, Start Date: #{res.date_range.start_date}"
+# 2.times do
+#   reservation.reserve_block_rooms(date_range_1)
 # end
 # #
 #
-# reservation.list_reservations(date_range_2).each_with_index do |res, i|
-#   puts "#{i}. Room ##{res.room_number}, Start Date: #{res.date_range.start_date}"
-# end
+# # reservation.reserve_block_rooms(date_range_1)
 #
-# reservation.list_reservations(date_range_3).each_with_index do |res, i|
-#   puts "#{i}. Room ##{res.room_number}, Start Date: #{res.date_range.start_date}"
-# end
-# array = reservation.reservations
-# array.each_with_index do |res, i|
-#   puts "#{i}. Room ##{res.room_number}, Start Date: #{res.date_range.start_date}"
-# end
+# # 3.times do
+# #   block_room.make_reservation_from_block(date_range_1)
+# # end
+# # #
+# p reservation
+# # puts reservation.find_available_rooms(date_range_1).class
+# # puts "#{reservation.list_available_rooms(date_range_1)}"
+# # puts "#{reservation_1.list_available_rooms(date_range_1)}"
+# # puts "#{reservation.list_available_rooms(date_range_4)}"
 #
-# puts "#{Hotel::BookingSystem.available_rooms}"
+#
+# #
+# # puts reservation.list_reservations(date_range_1).first.room_number
+# # puts reservation.list_reservations(date_range_1).last.room_number
+#
+# # reservation.list_reservations(date_range_1).each_with_index do |res, i|
+# #   puts "#{i}. Room ##{res.room_number}, Start Date: #{res.date_range.start_date}"
+# # end
+# # #
+# #
+# # reservation.list_reservations(date_range_2).each_with_index do |res, i|
+# #   puts "#{i}. Room ##{res.room_number}, Start Date: #{res.date_range.start_date}"
+# # end
+# #
+# # reservation.list_reservations(date_range_3).each_with_index do |res, i|
+# #   puts "#{i}. Room ##{res.room_number}, Start Date: #{res.date_range.start_date}"
+# # end
+# # array = reservation.reservations
+# # array.each_with_index do |res, i|
+# #   puts "#{i}. Room ##{res.room_number}, Start Date: #{res.date_range.start_date}"
+# # end
+# #
+# # puts "#{Hotel::BookingSystem.available_rooms}"
