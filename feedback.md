@@ -26,14 +26,14 @@ Check if a block has rooms |
 Reserve a room from a block |
 Test coverage |
 **Fundamentals** | 
-Names variables, classes and modules appropriately
-Understanding of variable scope - local vs instance
-Can create complex logical structures utilizing variables
-Appropriately uses methods to break down tasks into smaller simpler tasks
-Understands the differences between class and instance methods
-Appropriately uses iterators and enumerables
-Appropriately writes and utilizes classes
-Appropriately utilizes modules as a mechanism to encapsulate functionality
+Names variables, classes and modules appropriately |
+Understanding of variable scope - local vs instance |
+Can create complex logical structures utilizing variables |
+Appropriately uses methods to break down tasks into smaller simpler tasks |
+Understands the differences between class and instance methods |
+Appropriately uses iterators and enumerables |
+Appropriately writes and utilizes classes |
+Appropriately utilizes modules as a mechanism to encapsulate functionality |
 **Wrap Up** |
 There is a refactors.txt file |
 The file provides a roadmap to future changes |
