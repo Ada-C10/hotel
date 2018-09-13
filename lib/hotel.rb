@@ -9,10 +9,8 @@ class Hotel
   end
 
   def make_reservation(check_in = Date.new(check_in), check_out = Date.new(check_out))
-    room = @rooms.select do
-      |room| room.available?(check_in, check_out)
-     end
-    room = room.first
+
+    room = rooms_available(check_in, check_out).first
 
     reservation = Reservation.new(check_in, check_out, room)
     @reservations << reservation
@@ -28,7 +26,7 @@ class Hotel
   end
 
   def rooms_available(check_in, check_out)
-    @rooms.each do |room|
+   free_rooms = @rooms.select do |room|
       room.available?(check_in, check_out)
     end
   end

@@ -11,7 +11,7 @@ require_relative '../lib/hotel.rb'
 require_relative '../lib/room.rb'
 require_relative '../lib/reservation.rb'
 
-describe "Hotel Class" do ####### big describe opening
+describe "Hotel Class" do
 
   describe "Initializer" do
     before do
@@ -30,52 +30,52 @@ describe "Hotel Class" do ####### big describe opening
 
     it "creates 20 rooms on initiation" do
       expect(@hotel.rooms.length).must_equal 20
+      binding.pry
     end
   end
 
-  describe "Hotel#make_reservation" do
-    before do
-      @hotel = Hotel.new
-      room = Room.new(2)
-      @reservation = @hotel.make_reservation(2018923, 2018926)
-    end
-
-    it "creates a reservation object" do
-      binding.pry
-      expect(@reservation).must_be_kind_of Reservation
-    end
-
-    it "adds reservation to list of reservarions made" do
-      expect(@hotel.reservations).must_be_nil
-      @hotel.make_reservation(2018923, 2018926)
-      expect(@hotel.reservations.length).must_equal 1
-    end
+  # describe "Hotel#make_reservation" do
+  #   before do
+  #     @hotel = Hotel.new
+  #   end
+  #
+  #   it "creates a reservation object" do
+  #     reservation = @hotel.make_reservation(2018923, 2018926)
+  #     expect(reservation).must_be_kind_of Reservation
+  #   end
+  #
+  #   it "adds reservation to list of reservarions made" do
+  #     # expect(@hotel.reservations).must_be_nil
+  #     @hotel.make_reservation(2018923, 2018926)
+  #     binding.pry
+  #     expect(@hotel.reservations.length).must_equal 1
+  #   end
 
     # TODO:
     # it "reserves a room on reservation" do
     #
     # end
-  end
+  # end
 
-  describe "Hotel#find_reservation(date)" do
-    it "find a reservation using the date" do
-      hotel = Hotel.new
-      hotel.make_reservation(2018923, 2018926)
-      reservation_2 = hotel.make_reservation(20181023, 20181028)
-
-      expect(hotel.find_reservation(2018923)).must_be_kind_of Reservation
-      expect(hotel.find_reservation(20181023)).must_equal reservation_2
-    end
-
-    it "finds the correct reservation using the date" do
-      hotel = Hotel.new
-      hotel.make_reservation(2018923, 2018926)
-      reservation_2 = hotel.make_reservation(20181023, 20181028)
-
-      expect(hotel.find_reservation(2018923)).must_be_kind_of Reservation
-      expect(hotel.find_reservation(20181023)).must_equal reservation_2
-    end
-  end
+  # describe "Hotel#find_reservation(date)" do
+  #   it "find a reservation using the date" do
+  #     hotel = Hotel.new
+  #     hotel.make_reservation(2018923, 2018926)
+  #     reservation_2 = hotel.make_reservation(20181023, 20181028)
+  #
+  #     expect(hotel.find_reservation(2018923)).must_be_kind_of Reservation
+  #     expect(hotel.find_reservation(20181023)).must_equal reservation_2
+  #   end
+  #
+  #   it "finds the correct reservation using the date" do
+  #     hotel = Hotel.new
+  #     hotel.make_reservation(2018923, 2018926)
+  #     reservation_2 = hotel.make_reservation(20181023, 20181028)
+  #
+  #     expect(hotel.find_reservation(2018923)).must_be_kind_of Reservation
+  #     expect(hotel.find_reservation(20181023)).must_equal reservation_2
+  #   end
+  # end
 
   # describe "Hotel#list_rooms_available(start_date, end_date)" do
   #   before do
@@ -106,4 +106,4 @@ describe "Hotel Class" do ####### big describe opening
   # end
 
 
-end #######big describe closing
+end

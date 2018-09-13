@@ -16,7 +16,6 @@ describe "Room" do
   end
 
   it "raises an error if room number is higher than 20" do
-    # new_room = Room.new(21)
     expect{(Room.new(21))}.must_raise ArgumentError
   end
 
