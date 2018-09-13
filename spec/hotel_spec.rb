@@ -36,15 +36,17 @@ describe "Hotel Class" do ####### big describe opening
   describe "Hotel#make_reservation" do
     before do
       @hotel = Hotel.new
-      reservation = @hotel.make_reservation(2018923, 2018926)
+      room = Room.new(2)
+      @reservation = @hotel.make_reservation(2018923, 2018926, room)
     end
 
     it "creates a reservation object" do
-      expect(reservation).must_be_kind_of Reservation
+      binding.pry
+      expect(@reservation).must_be_kind_of Reservation
     end
 
     it "adds reservation to list of reservarions made" do
-      # expect(@hotel.reservations).must_be_nil
+      expect(@hotel.reservations).must_be_nil
       @hotel.make_reservation(2018923, 2018926)
       expect(@hotel.reservations.length).must_equal 1
     end
@@ -58,6 +60,7 @@ describe "Hotel Class" do ####### big describe opening
   describe "Hotel#find_reservation(date)" do
     it "find a reservation using the date" do
       hotel = Hotel.new
+      room = Room.new(2)
       hotel.make_reservation(2018923, 2018926)
       reservation_2 = hotel.make_reservation(20181023, 20181028)
 
@@ -67,6 +70,7 @@ describe "Hotel Class" do ####### big describe opening
 
     it "finds the correct reservation using the date" do
       hotel = Hotel.new
+      room = Room.new(2)
       hotel.make_reservation(2018923, 2018926)
       reservation_2 = hotel.make_reservation(20181023, 20181028)
 
@@ -75,18 +79,18 @@ describe "Hotel Class" do ####### big describe opening
     end
   end
 
-  describe "Hotel#list_rooms_available(start_date, end_date)" do
-    before do
-        @hotel = Hotel.new
-        @hotel.make_reservation(2018923, 2018926)
-        reservation_2 = @hotel.make_reservation(20181023, 20181028)
-    end
-
-    it "finds room dates" do
-      binding.pry
-      expect(@hotel.list_rooms_available(2018923, 201892))
-    end
-  end
+  # describe "Hotel#list_rooms_available(start_date, end_date)" do
+  #   before do
+  #       @hotel = Hotel.new
+  #       @hotel.make_reservation(2018923, 2018926)
+  #       reservation_2 = @hotel.make_reservation(20181023, 20181028)
+  #   end
+  #
+  #   it "finds room dates" do
+  #     binding.pry
+  #     expect(@hotel.list_rooms_available(2018923, 201892))
+  #   end
+  # end
   # describe "Hotel#find_available_rooms(check_in, check_out)" do
   #   before do
   #     hotel = Hotel.new

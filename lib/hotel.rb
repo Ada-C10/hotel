@@ -15,7 +15,7 @@ class Hotel
     # room = room.first # find correct syntax to merge wit above
     reservation = Reservation.new(check_in, check_out)
     @reservations << reservation
-    binding.pry
+
     room.reserve(reservation)
     return reservation
   end
