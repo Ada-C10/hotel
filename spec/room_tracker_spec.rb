@@ -1,10 +1,5 @@
 require_relative 'spec_helper'
 
-# As an administrator, I can access the list of all of the rooms in the hotel
-# As an administrator, I can reserve a room for a given date range
-# As an administrator, I can access the list of reservations for a specific date
-# As an administrator, I can get the total cost for a given reservation
-
 describe Room_Tracker do
 
   describe "Room_Tracker instantiation" do
@@ -43,9 +38,14 @@ describe Room_Tracker do
   end
 
   describe "I can access the list of all of the rooms in the hotel" do
+    describe "#get_rooms" do
     it "lists all hotel rooms" do
+    end
+  end
+end
 
   describe "I can reserve a room for a given date range" do
+    describe "#make_reservation" do
       let (:start_date) { Date.parse('2012-02-01') }
       let (:end_date) { Date.parse('2012-02-03') }
       let (:room) { [14] }
@@ -58,17 +58,22 @@ describe Room_Tracker do
                expect (new_reservation.room).must_equal 14
         end
         end
+      end
 
-# describe "I can reserve a room for a given date range" do
-#         # def get_rooms(room_count)
-#         #   rooms = []
-#         #   room_count.times do |index|
-#         #     id = index + 1
-#         #     cost = 200
-#         #     rooms << Room.new(id,cost)
-#         #   end
-#         #   return rooms
-#         # end
+      describe "Access the list of reservations for a specific date" do
+        describe "#find_reservations_by_date" do
+        end
+      end
+
+      describe "View a list of rooms that are not reserved for a given date range" do
+        describe "#rooms_available_by_date" do
+        end
+        end
+
+        describe "Reserve an available room for a given date range" do
+          describe "#rooms_available_by_date" do
+          end
+        end
 
   end
 end
