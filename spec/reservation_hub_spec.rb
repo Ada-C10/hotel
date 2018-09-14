@@ -7,6 +7,7 @@ describe "Reservation Hub class" do
     @reservation_hub = Hotel::ReservationHub.new
   end
 
+
   describe "Reservation Hub initialization" do
 
     it "is an instance of Reservation Hub" do
@@ -180,64 +181,78 @@ describe "Reservation Hub class" do
   end
 
 
-  # describe "find reservation" do
-  #
-  #   before do
-  #     start_date1 = Date.new(2018,01,03)
-  #     end_date1 = Date.new(2018,01,06)
-  #     start_date2 = Date.new(2018,02,05)
-  #     end_date2 = Date.new(2018,02,15)
-  #     start_date3 = Date.new(2018,01,11)
-  #     end_date3 = Date.new(2018,01,21)
-  #     start_date4 = Date.new(2018,01,03)
-  #     end_date4 = Date.new(2018,01,05)
-  #
-  #     @reservation_hub = Hotel::ReservationHub.new
-  #     @reservation_hub.add_reservation(start_date1, end_date1)
-  #     @reservation_hub.add_reservation(start_date2, end_date2)
-  #     @reservation_hub.add_reservation(start_date3, end_date3)
-  #     @reservation_hub.add_reservation(start_date4, end_date4)
-  #   end
-  #
-  #   it "returns a list of reservations based on a start date" do
-  #
-  #     start_date = Date.new(2018,01,03)
-  #
-  #     reservations = @reservation_hub.find_reservations(start_date)
-  #
-  #     expect(reservations).must_be_kind_of Array
-  #
-  #     expect(reservations.length).must_equal 2
-  #   end
-  # end
+  describe "find reservation" do
+
+    before do
+      @start_date = Date.new(2018,01,03)
+      @end_date = Date.new(2018,01,06)
+
+      @reservation_hub = Hotel::ReservationHub.new
+      reservation1 = @reservation_hub.add_reservation(@start_date, @end_date)
+    end
+
+    it "returns an array of reservations" do
+
+      date = Date.new(2017,01,01)
+      reservations = @reservation_hub.find_reservations(date)
+
+      expect(reservations).must_be_kind_of Array
+
+      expect(@reservation_hub.reservations[0]).must_be_kind_of Hotel::Reservation
+
+    end
+
+    it "returns a reservation if its start date is the parameter" do
+
+      reservations = @reservation_hub.find_reservations(@start_date)
+
+      expect(reservations.length).must_equal 1
+    end
+
+    it "returns a reservation if one of the middle dates is a parameter" do
+      date = @start_date +1
+
+      reservations = @reservation_hub.find_reservations(date)
+
+      expect(reservations.length).must_equal 1
+
+    end
+
+    it "does not include a reservation if its end date is a parameter" do
+
+      reservation = @reservation_hub.find_reservations(@end_date)
+
+      expect(reservation.length).must_equal 0
+    end
+  end
 
 
-  # describe "all reservations" do
-  #
-  #   before do
-  #     @reservation_hub = Hotel::ReservationHub.new
-  #
-  #     start_date1 = Date.new(2018,01,03)
-  #     end_date1 = Date.new(2018,01,06)
-  #     start_date2 = Date.new(2018,02,05)
-  #     end_date2 = Date.new(2018,02,15)
-  #     start_date3 = Date.new(2018,01,11)
-  #     end_date3 = Date.new(2018,01,21)
-  #
-  #     @reservation_hub.add_reservation(start_date1, end_date1)
-  #     @reservation_hub.add_reservation(start_date2, end_date2)
-  #     @reservation_hub.add_reservation(start_date3, end_date3)
-  #   end
-  #
-  #   it "returns an array of all reservations" do
-  #     reservations = @reservation_hub.all_reservations
-  #
-  #     expect(reservations.length).must_equal 3
-  #
-  #     reservations.each do |res|
-  #       expect(res).must_be_kind_of Hotel::Reservation
-  #     end
-  #   end
-  # end
+  describe "all reservations" do
+
+    before do
+      @reservation_hub = Hotel::ReservationHub.new
+
+      start_date1 = Date.new(2018,01,03)
+      end_date1 = Date.new(2018,01,06)
+      start_date2 = Date.new(2018,02,05)
+      end_date2 = Date.new(2018,02,15)
+      start_date3 = Date.new(2018,01,11)
+      end_date3 = Date.new(2018,01,21)
+
+      @reservation_hub.add_reservation(start_date1, end_date1)
+      @reservation_hub.add_reservation(start_date2, end_date2)
+      @reservation_hub.add_reservation(start_date3, end_date3)
+    end
+
+    it "returns an array of all reservations" do
+      reservations = @reservation_hub.all_reservations
+
+      expect(reservations.length).must_equal 3
+
+      reservations.each do |res|
+        expect(res).must_be_kind_of Hotel::Reservation
+      end
+    end
+  end
 
 end
