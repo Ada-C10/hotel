@@ -59,8 +59,18 @@ module Hotel
       return block
     end
 
-    def reserve_block(check_in, check_out, number_of_rooms: , block_id: @blocks.last.id)
-    end
+#     def reserve_block(check_in, check_out, number_of_rooms: , block_id: @blocks.last.id)
+#       block_reservation = Reservation.new(@reservations.length + 1, check_in: check_in, check_out: check_out)
+# #refer to blok - create find block based on id return blocked rooms
+#       available_rooms() check_out).last(number_of_rooms)
+#       assigned_rooms.each do |room|
+#         new_reservation.rooms << room.id
+#         find_room(room.id).reservations << new_reservation
+#       end
+#       @reservations << block_reservation
+#       return block_reservation
+#     end
+  end
 
       #how to account for multiple rooms for a rservation within a block_reservation
 
@@ -89,5 +99,5 @@ module Hotel
     #ask room - do you have availability
 
 
-  end
+
 end
