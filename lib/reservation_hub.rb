@@ -42,23 +42,24 @@ module Hotel
       @start_date = start_date
       @end_date = end_date
       @total_rooms = total_rooms
-      validate dates
+      validate_dates
 
       reservation_dates = create_date_array(start_date, end_date)
 
       room_ids = []
 
-      @total_rooms.each do
+      @total_rooms.times do
         room_id = assign_room(reservation_dates)
         room_ids << room_id
       end
 
-      block_id = @room_blocks.length += 1
+      block_id = @room_blocks.length + 1
 
       room_block = RoomBlock.new(reservation_dates, room_ids, block_id)
 
       @room_blocks << room_block
 
+      return room_block
     end
 
 
@@ -115,10 +116,10 @@ module Hotel
       reservations_by_date = []
       index = 0
 
-      all_reservations.each do
+      @reservations.each do
 
-        if all_reservations[index].reservation_dates.include?(date)
-          reservations_by_date << all_reservations[index]
+        if @reservations[index].reservation_dates.include?(date)
+          reservations_by_date << @reservations[index]
         end
         index +=1
 
@@ -127,10 +128,15 @@ module Hotel
     end
 
 
-    def all_reservations
-      @reservations
-    end
+    def find_room_block(id)
 
+      @room_blocks.each do |room_block|
+        if room_block.block_id == id
+          return room_block
+        end
+      end
+
+    end
 
   end
 end

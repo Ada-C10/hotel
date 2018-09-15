@@ -2,7 +2,7 @@
 
 module Hotel
   class RoomBlock
-    attr_reader :reservation_dates, :room_ids
+    attr_reader :reservation_dates, :room_ids, :block_id
 
     def initialize(reservation_dates, room_ids, block_id)
 

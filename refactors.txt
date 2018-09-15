@@ -1,0 +1,5 @@
+**the name "room_bookings" seems a bit misleading. I used it to include both, reservations and room blocks for each room. For each room, I probably would have been better off creating a nested hash. One key/value pair would be confirmed_reservations => [] and one would be room_blocks => [].
+
+**I would have changed the method for adding reservations so it could also be used to add a block reservation as well. The current method assigns rooms, which is a step that wouldn't be necessary if a user entered in a block id (it already would have been handled).
+
+**I feel like some of my methods in reservation hub are currently doing a lot. I think the overall code would benefit by breaking some of those methods up into smaller steps.

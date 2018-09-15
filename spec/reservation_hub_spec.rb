@@ -83,6 +83,36 @@ describe "Reservation Hub class" do
   end
 
 
+  describe "add room block" do
+
+    before do
+      start_date = Date.new(2018,01,03)
+      end_date = Date.new(2018,01,06)
+      total_rooms = 3
+      @room_block = @reservation_hub.add_room_block(start_date, end_date, total_rooms)
+    end
+
+    it "returns a new room block" do
+      expect(@room_block).must_be_kind_of Hotel::RoomBlock
+    end
+
+    it "adds a new room block to an array of all room blocks" do
+      expect(@reservation_hub.room_blocks.length).must_equal 1
+    end
+
+    it "increments the block id by 1 for every new room block" do
+
+      start_date = Date.new(2018,02,04)
+    end_date = Date.new(2018,02,15)
+    total_rooms = 2
+
+    @room_block2 = @reservation_hub.add_room_block(start_date, end_date, total_rooms)
+
+    expect(@room_block2.block_id).must_equal 2
+    end
+  end
+
+
   describe "create date array" do
 
     before do
@@ -223,35 +253,6 @@ describe "Reservation Hub class" do
       reservation = @reservation_hub.find_reservations(@end_date)
 
       expect(reservation.length).must_equal 0
-    end
-  end
-
-
-  describe "all reservations" do
-
-    before do
-      @reservation_hub = Hotel::ReservationHub.new
-
-      start_date1 = Date.new(2018,01,03)
-      end_date1 = Date.new(2018,01,06)
-      start_date2 = Date.new(2018,02,05)
-      end_date2 = Date.new(2018,02,15)
-      start_date3 = Date.new(2018,01,11)
-      end_date3 = Date.new(2018,01,21)
-
-      @reservation_hub.add_reservation(start_date1, end_date1)
-      @reservation_hub.add_reservation(start_date2, end_date2)
-      @reservation_hub.add_reservation(start_date3, end_date3)
-    end
-
-    it "returns an array of all reservations" do
-      reservations = @reservation_hub.all_reservations
-
-      expect(reservations.length).must_equal 3
-
-      reservations.each do |res|
-        expect(res).must_be_kind_of Hotel::Reservation
-      end
     end
   end
 
