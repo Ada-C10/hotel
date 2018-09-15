@@ -3,11 +3,12 @@ require 'pry'
 
 require_relative 'reservation'
 
+
 module Hotel
   class ReservationHub
     class NoRoomsAvailableError < StandardError; end
 
-    attr_reader :reservations, :room_bookings
+    attr_reader :reservations, :room_bookings, :reservation_dates
 
 
     def initialize
@@ -18,19 +19,38 @@ module Hotel
 
     def add_reservation(start_date, end_date)
 
-      room_id = assign_room(start_date, end_date)
+      @start_date = start_date
+      @end_date = end_date
+      validate_dates
 
-      reservation = Reservation.new(start_date, end_date, room_id)
+      reservation_dates = create_date_array(start_date, end_date)
+
+      room_id = assign_room(reservation_dates)
+
+      reservation = Reservation.new(reservation_dates, room_id)
 
       @reservations << reservation
 
       return reservation
     end
 
-    #
-    # def generate_date(year, month, day)
-    #   return Date.new(year, month, day)
-    # end
+
+    def add_block_reservation(block_id)
+      #find room block
+      #room_block = something.find
+
+      #start date and end date are returned
+      #start_date = room_block.start_date
+      #end_date = room_block.end_date
+
+      #add_reservation(start_date, end_date)
+      #remove room id from room_ids array
+    end
+
+
+    def validate_dates
+      raise ArgumentError.new("The end date must be after the start date") if @end_date <= @start_date
+    end
 
 
     def create_date_array(start_date, end_date)
@@ -44,8 +64,7 @@ module Hotel
     end
 
 
-    def check_available_rooms(start_date, end_date)
-      reservation_dates = create_date_array(start_date, end_date)
+    def check_available_rooms(reservation_dates)
 
       available_rooms = []
 
@@ -61,11 +80,9 @@ module Hotel
     end
 
 
-    def assign_room(start_date, end_date)
+    def assign_room(reservation_dates)
 
-      available_rooms = check_available_rooms(start_date, end_date)
-
-      reservation_dates = create_date_array(start_date, end_date)
+      available_rooms = check_available_rooms(reservation_dates)
 
       if available_rooms == nil
         raise NoRoomsAvailableError, "No rooms are available."
@@ -85,9 +102,8 @@ module Hotel
       index = 0
 
       all_reservations.each do
-        # if all_reservation[index].dates.include?(date)
-        if all_reservations[index].start_date == date
 
+        if all_reservations[index].reservation_dates.include?(date)
           reservations_by_date << all_reservations[index]
         end
         index +=1

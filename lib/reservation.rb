@@ -1,22 +1,21 @@
 require 'date'
 require 'pry'
 
-
 module Hotel
   class Reservation
-    attr_reader :start_date, :end_date, :room_id, :date_range, :total_cost
+    attr_reader :start_date, :end_date, :room_id, :reservation_dates, :total_cost
 
-    def initialize(date_range, room_id)
+    def initialize(reservation_dates, room_id)
 
-      @date_range = date_range
+      @reservation_dates = reservation_dates
       @room_id = room_id
-      @total_cost = reservation_cost(date_range)
+      @total_cost = reservation_cost(reservation_dates)
 
     end
 
-    def reservation_cost(date_range)
+    def reservation_cost(reservation_dates)
       nightly_cost = 200
-      total_days = (date_range.length).to_i
+      total_days = (reservation_dates.length).to_i
       total_cost = total_days * nightly_cost
     end
 

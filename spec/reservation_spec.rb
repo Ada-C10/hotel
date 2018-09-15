@@ -15,8 +15,8 @@ describe "Reservation class" do
     end
 
     it "is initialized with a date range, room id and total cost" do
-      expect(@reservation).must_respond_to :date_range
-      expect(@reservation.date_range).must_be_kind_of Array
+      expect(@reservation).must_respond_to :reservation_dates
+      expect(@reservation.reservation_dates).must_be_kind_of Array
 
       expect(@reservation).must_respond_to :room_id
       expect(@reservation.room_id).must_be_kind_of Integer
