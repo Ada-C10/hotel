@@ -1,0 +1,5 @@
+A list of changes I'd like to make to the code:
+- I would have liked to reduce/remove class variables.
+- For the code to handle more edge cases.
+- To reduce dependencies
+- To have added more comments throughout the code
