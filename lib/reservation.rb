@@ -1,5 +1,4 @@
-require 'date'
-require 'pry'
+
 
 module Hotel
   class Reservation
@@ -21,13 +20,3 @@ module Hotel
 
   end
 end
-
-
-
-# def validate_dates
-#   raise ArgumentError.new("The end date must be after the start date") if @end_date <= @start_date
-#
-#   raise ArgumentError.new("The start date can't be nil") if @start_date == nil
-#
-#   raise ArgumentError.new("The end date can't be nil") if @end_date == nil
-# end
