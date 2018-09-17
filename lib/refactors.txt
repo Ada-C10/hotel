@@ -1,4 +1,6 @@
 Refactors for Hotel
 - change reserve method so it can be used for block reseration
 hve it pull rooms from a vairable- that can be plugged in i.e.
-available rooms method for any kidn fo reservation and rooms on hold for block reservations
+available rooms method for any kind of reservation and rooms on hold for block reservations
+- figure out how to handle blocked rooms that are not reserved yet and only allow certain people to reserve, m
+mayby need to supply block id?
