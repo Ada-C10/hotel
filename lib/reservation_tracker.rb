@@ -7,8 +7,6 @@ require_relative 'reservation'
 class ReservationTracker
   attr_reader :rooms, :check_in_date, :check_out_date, :reservations, :unreserved_rooms
 
-  ROOM_RATE = 200
-
   def initialize
     @rooms = create_rooms
     @reservations = []
@@ -52,7 +50,7 @@ class ReservationTracker
 
   # calculates the total cost for a given reservation
   def cost_for_given_reservation(reservation)
-    total_cost = reservation.nights_stayed * ROOM_RATE
+    total_cost = reservation.nights_stayed * Room::ROOM_RATE
     return total_cost
   end
 

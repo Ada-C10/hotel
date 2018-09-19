@@ -41,3 +41,14 @@ describe 'Reservation' do
     end
   end
 end
+
+describe 'BlockReservation' do
+  it 'instantiates a block reservation' do
+    check_in_date = Date.new(2018, 9, 6)
+    check_out_date = Date.new(2018, 9, 10)
+    room_number = 15
+    block_reservation = BlockReservation.new(check_in_date, check_out_date, room_number)
+    expect(block_reservation).must_be_instance_of BlockReservation
+  end
+
+end

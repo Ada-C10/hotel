@@ -18,4 +18,16 @@ class Reservation
     return date_range.to_i
   end
 end
+
+class BlockReservation < Reservation
+  def initialize(check_in_date, check_out_date, room_number)
+    super
+  end
+
+  def block_rate
+    date_range = @check_out_date - @check_in_date
+    date_range.to_i
+  end
+
+end
 # end
