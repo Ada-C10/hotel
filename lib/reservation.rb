@@ -28,6 +28,5 @@ class BlockReservation < Reservation
     date_range = @check_out_date - @check_in_date
     date_range.to_i
   end
-
 end
 # end

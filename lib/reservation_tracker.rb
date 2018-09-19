@@ -1,6 +1,7 @@
 require 'pry'
 require 'date'
 require_relative 'room'
+require_relative 'block'
 require_relative 'reservation'
 # Keeps track of the list of reservations
 # module Hotel
@@ -11,6 +12,7 @@ class ReservationTracker
     @rooms = create_rooms
     @reservations = []
     @unreserved_rooms = []
+    @blocks = []
     # @existing_reservations = []
 
 
@@ -78,6 +80,12 @@ class ReservationTracker
         unreserved_rooms.delete(reservation.room_number)
       end
     }
+
+    @blocks.each { |block|
+        if (block.check_in_date >= check_in_date &&  block.check_in_date <= check_out_date) || (block.check_out_date >= check_in_date && block.check_out_date <= check_out_date)
+          unreserved_rooms - block.rooms
+        end
+      }
     # unreserved_rooms returns an empty array if  nothing is availible in the given date range or it will return an array of available room numbers in date range given.
     # for use in the reserve_room method
     return unreserved_rooms

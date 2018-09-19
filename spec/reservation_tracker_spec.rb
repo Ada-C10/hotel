@@ -134,17 +134,24 @@ describe 'ReservationTracker class' do
    end
   end
 
-  describe 'rooms that are not reserved method' do
+  describe 'rooms not reserved method' do
     before do
       @reservation_tracker = ReservationTracker.new
     end
 
-    it 'returns a list of rooms that are not reserved for a given date range' do
+    it 'returns an array of rooms that are not reserved for a given date range' do
       check_in_date = Date.new(2018, 9, 7)
-      # check_in_date = Date.today (5 days from today)
-      # Date + 5
       check_out_date = Date.new(2018, 9, 10)
       expect(@reservation_tracker.rooms_not_reserved(check_in_date, check_out_date)).must_be_kind_of Array
+    end
+
+    it 'returns a list of rooms not reserved' do
+       date = Date.today
+       @reservation_tracker.create_rooms
+       @reservation_tracker.create_reservation(date, date + 5, 5)
+       @reservation_tracker.create_reservation(date, date + 5, 10)
+       @reservation_tracker.create_reservation(date + 10, date + 25, 15)
+       @reservation_tracker.rooms_not_reserved(date, date + 5).must_equal [1, 2, 3, 4, 6, 7, 8, 9, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
     end
   end
 end
