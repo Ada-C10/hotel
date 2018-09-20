@@ -278,10 +278,12 @@ describe "#blocks" do
     data[:discounted_rate] = 100
     # it creates 4 blocks
     @admin.create_block_rooms(data)
+    binding.pry
 
     start_date = "2018-08-07 00:00:00 -0700"
     end_date = "2018-08-09 00:00:00 -0700"
     @admin.reserve_room(start_date, end_date)
+    binding.pry
     # FUTURE WORK: a binding.pry at this point shows that it didn't reserve a room, it removed rooms one and three??
 
     # to test the expected result

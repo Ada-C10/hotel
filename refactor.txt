@@ -5,3 +5,8 @@
 4.2 explore difference of creating a hash or a key word argument, and apply it when you only have two key-word pairs like
 5. for range use ... to not include the last day (this way you don't have to keep subtracting)
 6. move all helper methods into it's own class and keep admin tasks in its class
+
+one refactor can be the bug that I have where a reserve_room - check this method is grabbing the two rooms from my block
+-check if room -> block <- is the @number here, the room for the block? verify this!
+
+finish the reservation to reflect current reservations including the block room 
