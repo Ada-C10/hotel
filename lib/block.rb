@@ -2,11 +2,12 @@ require 'date'
 require 'securerandom'
 
 class Block
-  attr_reader :check_in_date, :check_out_date, :id, :block_of_rooms, :rooms
+  attr_reader :check_in_date, :check_out_date, :id, :block_of_rooms
+  attr_accessor :rooms
 
   BLOCKRATE = 100
 
-  def initialize(id, check_in_date, check_out_date, block_of_rooms)
+  def initialize(check_in_date, check_out_date, block_of_rooms)
     @id = SecureRandom.uuid
     @check_in_date = check_in_date
     @check_out_date = check_out_date

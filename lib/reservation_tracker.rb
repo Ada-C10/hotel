@@ -6,7 +6,7 @@ require_relative 'reservation'
 # Keeps track of the list of reservations
 # module Hotel
 class ReservationTracker
-  attr_reader :rooms, :check_in_date, :check_out_date, :reservations, :unreserved_rooms
+  attr_reader :rooms, :check_in_date, :check_out_date, :reservations, :unreserved_rooms, :blocks
 
   def initialize
     @rooms = create_rooms
@@ -36,9 +36,22 @@ class ReservationTracker
     # return reservation
   end
 
+  def create_a_block(check_in_date, check_out_date, block_of_rooms)
+    # rooms_available is an arrary from rooms_not_reserved
+    rooms_available = rooms_not_reserved(check_in_date,
+                                        check_out_date)
+    block_reservation = Block.new(check_in_date,
+                      check_out_date,
+                      block_of_rooms)
+    block_reservation.rooms = rooms_available.pop(block_of_rooms)
+    @blocks << block_reservation
+
+    return block_reservation
+  end
+
   # don't think i need this anymore
   # def is_a_room_available?(date)
-  #   @reservations.each do |reservation|
+  #   @reservations.each do |reservation |
   #     return false if reservation.check_in_date >= date && reservation.check_out_date > date
   #   end
   #   # binding.pry

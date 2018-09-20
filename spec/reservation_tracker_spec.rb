@@ -61,6 +61,20 @@ describe 'ReservationTracker class' do
     # end
   end
 
+  describe 'create a block method' do
+    before do
+      @reservation_tracker = ReservationTracker.new
+    end
+
+    it 'should create a new block' do
+      date = Date.today
+      @reservation_tracker.create_rooms
+      @reservation_tracker.create_a_block(date + 2, date + 7, 5)
+      # binding.pry
+      expect(@reservation_tracker.blocks.length ).must_equal 1
+    end
+  end
+
   # don't think I need this since I check this in the reserve_room method.
   # describe 'is a room available method' do
   #   before do

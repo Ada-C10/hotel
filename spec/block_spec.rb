@@ -6,7 +6,7 @@ describe 'Block Class' do
   it 'creates a new instance of a block' do
     check_in_date = Date.new(2018, 9, 5)
     check_out_date = Date.new(2018, 9, 8)
-    new_block = Block.new(1, check_in_date, check_out_date, 5)
+    new_block = Block.new(check_in_date, check_out_date, 5)
     expect(new_block).must_be_instance_of Block
   end
 
@@ -17,7 +17,7 @@ describe 'Block Class' do
   it 'block of rooms must equal 5' do
     check_in_date = Date.new(2018, 9, 5)
     check_out_date = Date.new(2018, 9, 8)
-    new_block = Block.new(1, check_in_date, check_out_date, 5)
+    new_block = Block.new(check_in_date, check_out_date, 5)
     expect(new_block.block_of_rooms).must_equal 5
   end
 end
@@ -26,7 +26,7 @@ describe 'validate block of rooms' do
   it 'raises an Argument Error, if there are more than 5 rooms in a block' do
     check_in_date = Date.new(2018, 9, 5)
     check_out_date = Date.new(2018, 9, 8)
-    new_block = Block.new(1, check_in_date, check_out_date, 6)
+    new_block = Block.new(check_in_date, check_out_date, 6)
     expect { new_block.valid_block_of_rooms }.must_raise ArgumentError
   end
 end
