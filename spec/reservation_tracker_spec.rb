@@ -124,7 +124,7 @@ describe 'reservation_tracker class' do
 
     it 'successful book increases total reservations array by one' do
       initial_reservations = @hotel.reservations.length
-      reservation = @hotel.book_reservation(5, Date.new(2018,7,7), Date.new(2018,7,10))
+      @hotel.book_reservation(5, Date.new(2018,7,7), Date.new(2018,7,10))
 
       expect( @hotel.reservations.length - initial_reservations).must_equal(1)
     end
@@ -156,7 +156,9 @@ describe 'reservation_tracker class' do
   describe 'book_block_reservation' do
     it 'returns reservation object' do
       @hotel.create_block([*1..5], Date.new(2018,9,17), Date.new(2018,9,20))
-      @hotel.book_block_reservation(3, Date.new(2018,9,17), Date.new(2018,9,20))
+      reservation = @hotel.book_block_reservation(3, Date.new(2018,9,17), Date.new(2018,9,20))
+
+      expect(reservation).must_be_instance_of(Hotel::Reservation)
     end
   end
 end
