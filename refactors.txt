@@ -2,6 +2,8 @@ Make availability hash for room class? {DateRange: Availability}
 Use inheritance for blockrooms class
 
 Make DateRange class?/Date range check method
+https://ruby-doc.org/core-1.9.3/Range.html#method-i-cover-3F
+
 Figure out what to do about the class method in Reservation (line 8) and BlockRooms (line 9)
 
 Undo dependencies if possible
