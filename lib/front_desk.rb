@@ -24,9 +24,7 @@ class FrontDesk
   end
 
   def list_all_rooms
-    rooms.each do |room|
-      room
-    end
+    return rooms
   end
 
   def create_reservation(room_number, start_day, end_day, nightly_cost)
@@ -34,13 +32,17 @@ class FrontDesk
     new_reservation = Reservation.new(room_number, start_day, end_day,nightly_cost)
     reservations << new_reservation
     room = find_room(room_number)
-    room.add_reservation_to_room(new_reservation)
-
+    add_reservation_to_room(room, new_reservation)
   end
 
   def find_room(room_number)
     return @rooms.find {|room| room.room_number == room_number}
   end
+
+  def add_reservation_to_room (room,reservation)
+    room.room_reservations << reservation
+end
+
 
   def find_by_date(date)
     res = []
@@ -81,7 +83,8 @@ class FrontDesk
     new_block = Block.new(block_start, block_end, rate, converted_rooms)
     @blocks << new_block
     converted_rooms.each do |room|
-      room.add_reservation_to_room(new_block)
+      # room.add_reservation_to_room(new_block)
+      add_reservation_to_room(room,new_block)
     end
     return new_block
   end

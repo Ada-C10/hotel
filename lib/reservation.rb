@@ -27,4 +27,11 @@ require_relative 'front_desk'
     def total_cost
       @total_nights * @nightly_cost
     end
+
+    private
+    
+    def dates_validation(start_day, end_day)
+      raise StandardError.new "invalid dates" unless start_day < end_day
+    end
+
   end

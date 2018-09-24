@@ -5,19 +5,20 @@ require_relative 'front_desk'
 
   class Room
 
-    attr_reader :room_number, :room_reservations
+    attr_reader :room_number, :room_reservations, :block_reservations
 
     def initialize(room_number)
       @room_number = room_number
       @room_reservations = []
+      @block_reservations = []
       if room_number > 20 || room_number < 1
         raise ArgumentError.new "NOT VALID ROOM NUMBER"
       end
     end
 
-    def add_reservation_to_room (reservation)
-      @room_reservations << reservation
-  end
+  #   def add_reservation_to_room (room, reservation)
+  #     room.room_reservations << reservation
+  # end
 
   def is_available?(date)
     @room_reservations.each do |reservation|
