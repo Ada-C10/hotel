@@ -29,6 +29,10 @@ attr_reader :start_date, :end_date, :cost, :id, :rooms, :checkout_date, :number_
     return (((@end_date - @start_date).to_i ) * @room_rate) * @number_of_rooms
   end
 
+  def dates_overlap?(start_a, end_a)
+    return (start_a <= @checkout_date) && (end_a > @start_date)
+  end
+
   def create_reservation_id
     id = id_generator
 

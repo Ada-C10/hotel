@@ -4,7 +4,7 @@ require 'pry'
 
 class BlockRooms
 
-attr_reader :start_date, :end_date, :cost, :id, :rooms_reserved, :checkout_date, :discounted_rate, :rooms_blocked
+  attr_reader :start_date, :end_date, :cost, :id, :rooms_reserved, :checkout_date, :discounted_rate, :rooms_blocked, :number_of_rooms
 
   @@block_ids = []
 
@@ -25,6 +25,14 @@ attr_reader :start_date, :end_date, :cost, :id, :rooms_reserved, :checkout_date,
     @rooms_reserved << room
   end
 
+  def dates_overlap?(start_a, end_a)
+      return (start_a <= @checkout_date) && (end_a > @start_date)
+  end
+
+  def add_rooms_blocked(room)
+    @rooms_blocked << room
+  end
+
   def create_id
     id = id_generator
 
@@ -39,10 +47,6 @@ attr_reader :start_date, :end_date, :cost, :id, :rooms_reserved, :checkout_date,
   def id_generator
     alpha = ('a'..'z').to_a
     return id = alpha[rand(26)] + alpha[rand(26)] + rand(100..999).to_s
-  end
-
-  def add_rooms_blocked(room)
-    @rooms_blocked << room
   end
 
 end

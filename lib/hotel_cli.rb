@@ -16,7 +16,9 @@ def main
     end
 
     if user_answer == 1
-      puts hotel.list_rooms
+      hotel.list_rooms.each do |room|
+        puts"Room number: #{room}"
+      end
 
     elsif user_answer == 2
       puts "What is the start date? '2018-01-01' format"
@@ -27,12 +29,14 @@ def main
       number_of_rooms = gets.chomp.to_i
 
       hotel.reserve_room(start_date, end_date, number_of_rooms)
-      puts "Your reservation ID is #{hotel.reservations[-1].reservation_id}"
+      puts "Your reservation ID is #{hotel.reservations[-1].id}"
 
     elsif user_answer == 3
       puts "What date do you want see reservations from? '2018-01-01' format"
       date = gets.chomp
-      puts hotel.list_reservations(date)
+      hotel.list_reservations(date).each do |reservation|
+        puts "ID: #{reservation.id}\nDates: #{reservation.start_date} - #{reservation.end_date}\nNumber of rooms: #{reservation.number_of_rooms}\nCost: $#{reservation.cost}"
+      end
 
     elsif user_answer == 4
       puts "Please input an ID for a reservation cost"
@@ -45,7 +49,9 @@ def main
       puts "What is the end date? '2018-01-01' format"
       end_date = gets.chomp
 
-      puts hotel.list_available_rooms(start_date, end_date)
+      hotel.list_available_rooms(start_date, end_date).each do |room|
+        puts "Room number: #{room}"
+      end
 
     elsif user_answer == 6
       puts "What is the start date? '2018-01-01' format"
@@ -63,7 +69,9 @@ def main
     elsif user_answer == 7
       puts "Please input a block ID to list available block rooms"
       block_booking_id = gets.chomp
-      puts list_available_block_rooms(block_booking_id)
+      list_available_block_rooms(block_booking_id).each do |room|
+        puts  "Room number: #{room}"
+      end
 
     elsif user_answer == 8
       puts "Please input a block ID to reserve a block room"

@@ -57,3 +57,11 @@ I'm not sure. The first implementation has more single responsibility classes, b
 
 #### Bonus question once you've read Metz ch. 3: Which implementation is more loosely coupled?
 I think the second implementation is more loosely coupled.
+
+#### Based on the answers to each set of the above questions, identify one place in your Hotel project where a class takes on multiple roles, or directly modifies the attributes of another class. Describe in design-activity.md what changes you would need to make to improve this design, and how the resulting design would be an improvement.
+I don't think my Hotel class modifies any attributes of other classes. It uses them to check things and create instances. My Hotel class does take on multiple roles, but I'm not quite sure how to fix that. I think I'm going to follow my refactors.txt and change some aspects according to POODR chapter 3. Otherwise, I'm not sure what else I can do. I don't see how the Implementations in the Hotel Revisited exercise apply to my code. I'm not calculating anything in Hotel, just generating reservations and checking that rooms are available. I'm not sure about what is required for this assignment.
+
+Refactors:
+Changed all but one of direct references to classes. (there is a Reservation.new on line 132).
+Moved "dates_overlap?" method to the Reservation and BlockRooms classes.
+Removed Room class.
