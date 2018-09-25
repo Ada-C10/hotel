@@ -15,9 +15,13 @@ class Reservation
     nights * rate
   end
 
+  def block_available?(party)
+    guest_id == party && status == :block_reserved
+  end
+
   def complete_reservation
     raise ArgumentError, ("This room has already been reserved.") if @status == :complete
     @status = :complete
   end
-  
+
 end

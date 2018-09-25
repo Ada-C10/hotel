@@ -13,6 +13,9 @@ class Room
     reservation
   end
 
+  def find_bookings(date)
+    bookings.select { |b| b.date_range.include? date }
+  end
 
   def available?(requested_dates)
     bookings.each do |booking|
@@ -22,6 +25,10 @@ class Room
       end
     end
     return true
+  end
+
+  def available_in_block(party)
+    bookings.any? { |b| b.block_available?(party)}
   end
 
 end

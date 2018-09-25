@@ -3,7 +3,7 @@ class HotelAdmin
 
   def initialize
     @rooms = build_rooms
-    @reservations = []
+    # @reservations = []
   end
 
   def build_rooms
@@ -24,13 +24,11 @@ class HotelAdmin
 
   def retrieve_by_date(date)
     raise ArgumentError, "Valid date format was not provided." if date.class != Date
-    reservations.select { |res| res.date_range.include? date }
+    rooms.map {|room| room.find_bookings(date)}.flatten
   end
 
   def reserve_room(reservation_details)
-    new_reservation = retrieve_room(reservation_details[:room]).add_booking(Reservation.new(reservation_details))
-    reservations << new_reservation
-    new_reservation
+    retrieve_room(reservation_details[:room]).add_booking(Reservation.new(reservation_details))
   end
 
   def build_reservation(guest_identifier, room_number, check_in, check_out, rate = 200.00, status = :complete)
@@ -42,10 +40,6 @@ class HotelAdmin
       rate: rate,
       status: status
     })
-  end
-
-  def reservation_charge(reservation)
-    reservation.stay_cost
   end
 
   def available_rooms(check_in, check_out)
@@ -60,10 +54,10 @@ class HotelAdmin
     end
   end
 
-  def reserve_block(party, rooms, check_in, check_out, rate)
-    raise ArgumentError, ("There is a limit of 5 rooms to a block") if rooms.length > 5
+  def reserve_block(party, selection, check_in, check_out, rate)
+    raise ArgumentError, ("There is a limit of 5 rooms to a block") if selection.length > 5
     block_reservations = []
-    rooms.each do |room_number|
+    selection.each do |room_number|
       block_reservations << build_reservation(party, room_number, check_in, check_out, rate, status = :block_reserved)
     end
     block_reservations
@@ -74,7 +68,7 @@ class HotelAdmin
   end
 
   def available_rooms_in_block(party)
-    reservations.find_all {|res| res.guest_id == party && res.status == :block_reserved}.map {|res| res.room}
+    rooms.find_all {|room| room.available_in_block(party) == true }
   end
 
 end

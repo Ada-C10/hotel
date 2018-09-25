@@ -20,5 +20,5 @@ at this time to identify the problems with my class and method names.
 
 Questions:
 What are the problems with the way I've implemented the block?
-Should the blocks be separate instances or a seperate class?
+Should the blocks be separate instances or a separate class?
 If so... why?
