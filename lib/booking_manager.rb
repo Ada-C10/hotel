@@ -49,7 +49,7 @@ module Hotel
 
 
     # Method to add a reservation to list of reservations
-    def add_reservation(reservation)
+    def add_reservation(reservation) #combine with add_reservation_to_calendar?
       @reservations << reservation
     end
 
