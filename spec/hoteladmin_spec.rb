@@ -56,6 +56,13 @@ describe "HotelAdmin" do
       expect(reservations_for_date.first).must_be_instance_of Hotel::Reservation
       expect(reservations_for_date.length).must_equal 2
     end
+
+    it "returns an array of empty reservations if there are none for a given date" do
+      reservations_for_date = hotel.retrieve_by_date(Date.new(2019,11,04))
+
+      expect(reservations_for_date).must_be_instance_of Array
+      expect(reservations_for_date).must_be_empty
+    end
   end
 
   describe "HotelAdmin#build_reservation" do
@@ -88,6 +95,10 @@ describe "HotelAdmin" do
       expect{
         hotel.build_reservation("Mamacita09@gmail.com", 4, Date.new(2019,01,21), Date.new(2019,01,22))
       }.must_raise ArgumentError
+
+      expect{
+        hotel.build_reservation("Mamacita09@gmail.com", 4, Date.new(2019,01,22), Date.new(2019,01,23))
+      }.must_be_silent
     end
   end
 
