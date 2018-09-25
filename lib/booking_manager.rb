@@ -166,9 +166,9 @@ module Hotel
     end
 
 
-    def no_vacancies_message
-      return "There are no vacancies for the given date range."
-    end
+    # def no_vacancies_message
+    #   return "There are no vacancies for the given date range."
+    # end
 
 
     def reserve_available_room(guest_name, start_date, end_date)
