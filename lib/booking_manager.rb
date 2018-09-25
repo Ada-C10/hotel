@@ -109,6 +109,7 @@ module Hotel
     #   return total_cost
     # end
 
+
     # Return array reservations with matching date from room calendar hash
     def find_reservations_on_date(date, calendar)
       search_date = Date.parse(date)
@@ -139,19 +140,20 @@ module Hotel
         end
       end
 
-      return found_vacancies.empty? ? no_vacancies_message: found_vacancies
+      return found_vacancies
+      #.empty? ? no_vacancies_message: found_vacancies
     end
 
 
     def find_vacancies_in_date_range(start_date, end_date)
       check_dates(start_date, end_date)
+      date_range = determine_date_range(start_date, end_date)
       rooms_available_in_date_range = []
 
       @room_calendar.each do |room, reserved_dates|
         if reserved_dates.empty?
           rooms_available_in_date_range << room
         else
-          date_range = determine_date_range(start_date, end_date)
           if (reserved_dates.keys && date_range).length > 0
             next
           else
