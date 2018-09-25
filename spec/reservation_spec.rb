@@ -21,5 +21,14 @@ describe "Reservation class" do
   end # of initialize method
 
 
+  describe "get_reservation_cost method" do
+    it "returns the total cost of the reservation" do
+      hotel = Hotel::BookingManager.new(5)
+      room = hotel.rooms.first
+      booking = Hotel::Reservation.new(room, guest_name: "Ilona Illari", start_date: "June 10, 2018", end_date: "June 12, 2018")
+
+      expect(booking.get_reservation_cost).must_be_close_to 400
+    end
+  end
 
 end # of class Reservation

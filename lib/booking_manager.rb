@@ -103,12 +103,11 @@ module Hotel
       return @rooms
     end
 
-
-    # Method to get total cost of reservation
-    def get_reservation_cost(nights, cost_per_night)
-      total_cost = nights * cost_per_night
-      return total_cost
-    end
+    # # Method to get total cost of reservation
+    # def get_reservation_cost(nights, cost_per_night)
+    #   total_cost = nights * cost_per_night
+    #   return total_cost
+    # end
 
     # Return array reservations with matching date from room calendar hash
     def find_reservations_on_date(date, calendar)

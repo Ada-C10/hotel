@@ -11,12 +11,18 @@ module Hotel
       @end_date = Date.parse(end_date)
       @cost_per_night = cost_per_night
       @number_nights = (@end_date - @start_date).to_i
-    end 
+    end
 
     def check_dates(start_date, end_date)
       if start_date > end_date
         raise ArgumentError.new "Invalid date range. Start date must be before end date, both in format of 'Month dd, yyyy'. "
       end
+    end
+
+    # # Method to get total cost of reservation
+    def get_reservation_cost
+      total_cost = @number_nights * @cost_per_night
+      return total_cost
     end
 
   end

@@ -113,15 +113,15 @@ describe "BookingManager class" do
     end
   end
 
-  describe "get_reservation_cost method" do
-    it "returns the total cost of the reservation" do
-      hotel = Hotel::BookingManager.new(3)
-      room = hotel.rooms[3]
-      booking = Hotel::Reservation.new(room, guest_name: "Tony Tonson", start_date: "June 10, 2018", end_date: "June 12, 2018")
-
-      expect(hotel.get_reservation_cost(booking.cost_per_night, booking.number_nights)).must_be_close_to 400
-    end
-  end
+  # describe "get_reservation_cost method" do
+  #   it "returns the total cost of the reservation" do
+  #     hotel = Hotel::BookingManager.new(3)
+  #     room = hotel.rooms[3]
+  #     booking = Hotel::Reservation.new(room, guest_name: "Tony Tonson", start_date: "June 10, 2018", end_date: "June 12, 2018")
+  #
+  #     expect(hotel.get_reservation_cost(booking.cost_per_night, booking.number_nights)).must_be_close_to 400
+  #   end
+  # end
 
   describe "find_reservations_on_date method" do
     it "returns all reservations on the desired date" do
