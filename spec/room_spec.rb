@@ -80,6 +80,36 @@ describe "Room" do
     end
   end
 
+  describe "Room#find_bookings" do
+    let (:reservation8) {
+      Reservation.new({guest_id: "SoccerMom2010@gmail.com", room: 8, date_range: (Date.new(2018,10,18)...Date.new(2018,10,22))})
+    }
 
+    it "returns an array of booking for a given date" do
+      room8 = Room.new(8)
+      room8.add_booking(reservation8)
+
+      expect(room8.find_bookings(Date.new(2018,10,18))).must_be_instance_of Array
+      expect(room8.find_bookings(Date.new(2018,10,18)).first).must_be_instance_of Reservation
+      expect(room8.find_bookings(Date.new(2018,10,18)).first.date_range).must_equal (Date.new(2018,10,18)...Date.new(2018,10,22))
+    end
+  end
+
+  describe "Room#available_in_block" do
+    let (:hotel) {
+       HotelAdmin.new
+    }
+
+    it "returns true or false based on whether there are rooms available to reserve in block" do
+      hotel.reserve_block("La Bomba", [11,12], Date.new(2018,12,02), Date.new(2018,12,07), 145.00)
+      room11 = hotel.retrieve_room(11)
+      hotel.reserve_room_in_block("La Bomba", 11)
+      room12 = hotel.retrieve_room(12)
+
+      expect(room11.available_in_block("La Bomba")).must_equal false
+      expect(room12.available_in_block("La Bomba")).must_equal true
+
+    end
+  end
 
 end

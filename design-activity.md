@@ -42,4 +42,6 @@ Changes to Hotel:
 
 2. I am tracking reservations in both the hoteladmin class and in the room class. This means that if I delete a reservation in one location I would need to do it in both place. The rooms class also has very little behavior while the hoteladmin class is overloaded with responsibility. Without redesigning the entire project the best way I can come up with to fix this is to move some of the methods from hoteladmin into the room and make the room class the soul party responsible for storing and answering questions about reservations.
 
-3. Clean up some issues with tests identified by code review
+3. Available method in Room class is inefficient and using nested loops. It is inefficient to loop through each night in the range and this can be cleaned up by using a conditional.
+
+4. Clean up some issues with tests identified by code review
