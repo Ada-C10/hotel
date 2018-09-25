@@ -32,12 +32,12 @@ class Booking
   end
 
   def list_all_rooms
-    return @rooms
+    return rooms
   end
 
   # Find room helper method
   def find_room(room_number)
-    return @rooms.find { |room| room.room_number == room_number }
+    return rooms.find { |room| room.room_number == room_number }
   end
 
   # Reservation creator, maybe refactor so check_in/check_out have defaults/order does not matter
@@ -50,7 +50,7 @@ class Booking
     return list_rooms_available_for_date_range(start_date, end_date).first.room_number
   end
 
-# Struggled with this code. May have been easier if collections were hashes rather than arrays. 
+# Struggled with this code. May have been easier if collections were hashes rather than arrays.
   def add_reservation(check_in, check_out, room_number = nil)
     # If not given a room, choose the first available room for the date range
     room_number ||= first_available_room(check_in, check_out)
@@ -72,7 +72,7 @@ class Booking
   # Would it make sense for date to default to today?
   def list_reservations_for_date(date)
     # Access array of rooms
-    @rooms.reject do |room|
+    rooms.reject do |room|
       # Check if room is available for the date
       room.is_available?(date)
     end
@@ -92,7 +92,7 @@ class Booking
   # Change to keyword arguments or maybe a hash so order doesn't matter
   def list_rooms_available_for_date_range(start_date, end_date)
     # Select room if all reservations for the room return false for overlap with the given start date end date
-    rooms_available = @rooms.select do |room|
+    rooms_available = rooms.select do |room|
      room.reservations.all? { |reservation| date_range_overlap?(start_date, end_date, reservation.check_in, reservation.check_out) == FALSE }
     end
     # If there is no room available, raise an error
@@ -107,7 +107,7 @@ class Booking
     # See if any rooms have the given reservation
     # If so, return the reservation cost
     # This is a bit messy, would like to refactor if there's time
-    room_with_reservation = @rooms.select do |room|
+    room_with_reservation = rooms.select do |room|
       # find_reservation is only returning true/false, need actual reservation
       room.find_reservation(room_number, start_date, end_date, cost_per_night)
     end

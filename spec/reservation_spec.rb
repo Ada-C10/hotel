@@ -61,7 +61,7 @@ describe "Reservation" do
 
     it "Uses discounted rate for block room reservations" do
       # Would need to access discounted rate from BlockRoom class for given date range
-      # Will probably need a helper method 
+      # Will probably need a helper method
     end
   end
 end

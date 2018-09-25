@@ -174,7 +174,7 @@ describe "booking manager" do
         @manager.list_rooms_available_for_date_range(Date.new(2018, 9, 2), Date.new(2018, 9, 3))
         }.must_raise NoRoomsAvailableError
     end
-    
+
     # List of block rooms
 
   end

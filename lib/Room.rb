@@ -19,7 +19,7 @@ class Room
     # Returns true if any reservations match the given reservation
     # To be used as a helper method in Booking for finding a given reservation cost
     # Should this use select to return array with reservation?
-    reservation_to_find = @reservations.find do |reservation|
+    reservation_to_find = reservations.find do |reservation|
       reservation.room_number == room_number_to_find &&
       reservation.check_in == check_in_to_find &&
       reservation.check_out == check_out_to_find &&
@@ -38,7 +38,7 @@ class Room
     # Access reservations and ask if any of the ranges include the date
     # If so, return false
     # if not, return true
-    !@reservations.any? do |reservation|
+    !reservations.any? do |reservation|
       date_range = DateRange.new(reservation.check_in, reservation.check_out)
       date_range.date_within_range?(date)
     end
