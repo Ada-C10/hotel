@@ -18,10 +18,16 @@ class Room
   end
 
   def available?(requested_dates)
+    # bookings.each do |booking|
+    #   previously_reserved = booking.date_range
+    #   previously_reserved.each do |night|
+    #     return false if requested_dates.include? night
+    #   end
+    # end
+    # return true
     bookings.each do |booking|
-      previously_reserved = booking.date_range
-      previously_reserved.each do |night|
-        return false if requested_dates.include? night
+      if !(requested_dates.last <= booking.date_range.first || requested_dates.first >= booking.date_range.last)
+        return false
       end
     end
     return true
