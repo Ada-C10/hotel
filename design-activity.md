@@ -1,3 +1,5 @@
+## Evaluating Responsibility
+
 * What classes does each implementation include? Are the lists the same? | Each has the same classes, CartEntry, ShoppingCart, and Order, but the methods have been reorganized in the second implementation.
 * Write down a sentence to describe each class. |
  * CartEntry handles an item added, taking in as parameters its unit price and quantity. It also calculates the price of that CartEntry instance.
@@ -21,4 +23,8 @@
 * Which implementation better adheres to the single responsibility principle?
   * Implementation B better adheres to single responsibility because each class only operates on and calculates its own instance variables.
 * Bonus question once you've read Metz ch. 3: Which implementation is more loosely coupled?
-  * Implementation B is more loosely coupled. It has less instances of directly calling/naming an instance variable or attribute from other classes or variables. 
+  * Implementation B is more loosely coupled. It has less instances of directly calling/naming an instance variable or attribute from other classes or variables.
+
+## Revisiting Hotel
+Identify one place in your Hotel project where a class takes on multiple roles, or directly modifies the attributes of another class. Describe in design-activity.md what changes you would need to make to improve this design, and how the resulting design would be an improvement.  
+BookingManager class takes on multiple roles, some of which are acting on (or creating) attributes of class Reservation. I would need to move several of the functions from BookingManager to Reservation. Making this change would allow my code to more so follow Single Responsibility.
