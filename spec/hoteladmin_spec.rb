@@ -3,24 +3,24 @@ require 'pry'
 
 describe "HotelAdmin" do
   let (:hotel) {
-     HotelAdmin.new
+     Hotel::HotelAdmin.new
   }
   describe "HotelAdmin#Initialize" do
     it "can create a hoteladmin object" do
-      expect(hotel).must_be_instance_of HotelAdmin
+      expect(hotel).must_be_instance_of Hotel::HotelAdmin
     end
 
     it "initializes with readable rooms array attribute" do
       expect(hotel.rooms).must_be_instance_of Array
       expect(hotel.rooms.length).must_equal 20
-      expect(hotel.rooms.first).must_be_instance_of Room
+      expect(hotel.rooms.first).must_be_instance_of Hotel::Room
     end
   end
 
   describe "HotelAdmin#build_rooms" do
     it "creates our room objects numbered 1-20" do
       expect(hotel.build_rooms.length).must_equal 20
-      expect(hotel.build_rooms.first).must_be_instance_of Room
+      expect(hotel.build_rooms.first).must_be_instance_of Hotel::Room
       expect(hotel.build_rooms).must_be_instance_of Array
     end
   end
@@ -30,7 +30,7 @@ describe "HotelAdmin" do
           # 20.times do |index|
           #   hotel.rooms << Room.new(index+1)
           # end
-          expect(hotel.list_rooms[0]).must_be_instance_of Room
+          expect(hotel.list_rooms[0]).must_be_instance_of Hotel::Room
           expect(hotel.list_rooms).must_be_instance_of Array
           expect(hotel.list_rooms.length).must_equal 20
     end
@@ -39,10 +39,10 @@ describe "HotelAdmin" do
   describe "HotelAdmin#retrieve_by_date" do
     before do
       @room1 = hotel.retrieve_room(1)
-      @room1.add_booking(Reservation.new({guest_id: "SoccerMom2010@gmail.com", room: @room1, date_range: (Date.new(2018,10,20)...Date.new(2018,10,22))}))
-      @room1.add_booking(Reservation.new({guest_id: "Guccifer2.0@ada.com", room: @room1, date_range: (Date.new(2018,12,02)...Date.new(2018,12,07))}))
+      @room1.add_booking(Hotel::Reservation.new({guest_id: "SoccerMom2010@gmail.com", room: @room1, date_range: (Date.new(2018,10,20)...Date.new(2018,10,22))}))
+      @room1.add_booking(Hotel::Reservation.new({guest_id: "Guccifer2.0@ada.com", room: @room1, date_range: (Date.new(2018,12,02)...Date.new(2018,12,07))}))
       @room2 = hotel.retrieve_room(2)
-      @room2.add_booking(Reservation.new({guest_id: "Jfahmy07@gmail.com", room: @room2, date_range: (Date.new(2018,12,03)...Date.new(2018,12,06))}))
+      @room2.add_booking(Hotel::Reservation.new({guest_id: "Jfahmy07@gmail.com", room: @room2, date_range: (Date.new(2018,12,03)...Date.new(2018,12,06))}))
     end
 
     it "raises an argument error if invalid date object is provided" do
@@ -53,7 +53,7 @@ describe "HotelAdmin" do
       reservations_for_date = hotel.retrieve_by_date(Date.new(2018,12,04))
 
       expect(reservations_for_date).must_be_instance_of Array
-      expect(reservations_for_date.first).must_be_instance_of Reservation
+      expect(reservations_for_date.first).must_be_instance_of Hotel::Reservation
       expect(reservations_for_date.length).must_equal 2
     end
   end
@@ -80,7 +80,7 @@ describe "HotelAdmin" do
     end
 
     it "adds new reservation to a room" do
-      expect(hotel.rooms[3].bookings.first).must_be_instance_of Reservation
+      expect(hotel.rooms[3].bookings.first).must_be_instance_of Hotel::Reservation
       expect(hotel.rooms[3].bookings.length).must_equal 1
     end
 
@@ -97,7 +97,7 @@ describe "HotelAdmin" do
     }
 
     it "locates room object using a given room number" do
-      expect(room_instance).must_be_instance_of Room
+      expect(room_instance).must_be_instance_of Hotel::Room
       expect(room_instance.id).must_equal 8
     end
   end
@@ -146,7 +146,7 @@ describe "HotelAdmin" do
       end
 
       expect(available).must_be_instance_of Array
-      expect(available.first).must_be_instance_of Room
+      expect(available.first).must_be_instance_of Hotel::Room
       expect(available.length).must_equal 5
       expect(room_ids).wont_include 1
       expect(room_ids).wont_include 2
@@ -175,7 +175,7 @@ describe "HotelAdmin" do
       expect(test_room.bookings.last.rate).must_equal 145.00
       expect(test_room.bookings.last.date_range).must_equal (Date.new(2018,12,02)...Date.new(2018,12,07))
       expect(new_reservations.length).must_equal 4
-      expect(new_reservations.first).must_be_instance_of Reservation
+      expect(new_reservations.first).must_be_instance_of Hotel::Reservation
       expect(new_reservations.first).must_equal (test_room.bookings.last)
     end
 
@@ -193,13 +193,13 @@ describe "HotelAdmin" do
       room10 = hotel.retrieve_room(10)
 
       expect(room7.bookings.count).must_equal 1
-      expect(room7.bookings.first).must_be_instance_of Reservation
+      expect(room7.bookings.first).must_be_instance_of Hotel::Reservation
       expect(room8.bookings.count).must_equal 1
-      expect(room8.bookings.first).must_be_instance_of Reservation
+      expect(room8.bookings.first).must_be_instance_of Hotel::Reservation
       expect(room9.bookings.count).must_equal 1
-      expect(room9.bookings.first).must_be_instance_of Reservation
+      expect(room9.bookings.first).must_be_instance_of Hotel::Reservation
       expect(room10.bookings.count).must_equal 1
-      expect(room10.bookings.first).must_be_instance_of Reservation
+      expect(room10.bookings.first).must_be_instance_of Hotel::Reservation
     end
 
     it "raise ArgumentError if a room being placed in the block has previous reservation for date range" do
