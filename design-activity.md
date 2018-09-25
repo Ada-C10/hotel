@@ -60,3 +60,46 @@ Implementation B better adheres to the single responsibility principle because c
 Implementation B is more loosely coupled because it does not know anything about the other classes except that ShoppingCart has a price method.
 
 In Implementation A, the total_price method makes Order tightly coupled with both of the other classes because it knows the instance variables and data structures of ShoppingCart and CartEntry.
+
+****
+
+# Design Activity Part 2: Hotel
+
+**What is this class's responsibility? You should be able to describe it in a single sentence.**
+
+1. Room - manages price and availability per night.
+2. Reservation - manages dates, pricing, and rooms for a reservation.
+3. Block - manages dates, pricing, and rooms for a room block.
+4. Admin - creates reservations and blocks, and manages all rooms and reservations.
+
+**Is this class responsible for exactly one thing?**
+
+Admin is definitely responsible for too much, and there are redundancies across the other three classes that make them too tightly coupled.
+
+**Does this class take on any responsibility that should be delegated to "lower level" classes?**
+
+Things like validating information to create reservations and blocks should definitely be taken out of admin and put into their respective classes.
+
+**Is there code in other classes that directly manipulates this class's instance variables?**
+
+Yes, in particular, the private methods in Admin know way too much about the other classes' inner workings.
+
+## Refactors.txt
+
+**How easy is it to follow your own instructions?**
+
+Not too bad!
+
+**Do these refactors improve the clarity of your code?**
+
+Yes -- I was not thrilled with where my code stood at the end of the first pass at Hotel, so I'm eager to do these refactors!
+
+**Do you still agree with your previous assessment, or could your refactor be further improved?**
+
+I agree with these changes, and they seem to match up well with Dan's code. One thing I'll need to consider after making these changes is whether or not Room is still a necessary class.
+
+## Activity
+
+**Based on the answers to each set of the above questions, identify one place in your Hotel project where a class takes on multiple roles, or directly modifies the attributes of another class. Describe in design-activity.md what changes you would need to make to improve this design, and how the resulting design would be an improvement.**
+
+I'm going to focus on paring down my Admin class, which does too much and knows too much about the other classes. Many of its methods belong in the other classes.
