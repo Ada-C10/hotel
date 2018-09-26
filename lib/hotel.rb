@@ -114,14 +114,10 @@ class Hotel
   def find_available_rooms(start_date, end_date) #move some of this logic into Room class
     available_room_numbers = []
     room_list.each do |room|
-      room_is_available = true
-      (start_date..(end_date - 1)).each do |date|
-        if !room.is_available?(date)
-          room_is_available = false
-        end
-      end
-      available_room_numbers << room.room_number if room_is_available
+      available_room_numbers << room.room_number if room.is_available?(start_date, end_date)
     end
     return available_room_numbers #should return Rooms and let UI convert to numbers
   end
+
+
 end

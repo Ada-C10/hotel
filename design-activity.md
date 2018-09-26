@@ -59,3 +59,9 @@ Implementation B is a better example of single responsibility.  In A, the Order 
 *10) Bonus question once you've read Metz ch. 3: Which implementation is more loosely coupled?*
 
 Implementation B is more loosely coupled because the Order class does not need to know as much information about the other two classes.  In A, Order needs to know that ShoppingCart has an array named 'entries' AND that the items in the array have both a 'unit_price' and 'quantity'.  In B, Order only needs to know that ShoppingCart has a method named 'price' (it doesn't need to know anything about the array or the CartEntry items in this case).
+
+
+
+*Based on the answers to each set of the above questions, identify one place in your Hotel project where a class takes on multiple roles, or directly modifies the attributes of another class. Describe in design-activity.md what changes you would need to make to improve this design, and how the resulting design would be an improvement.*
+
+A room should be able to do all of the work of checking its own availability instead of having the Hotel (this needs to get renamed) class do part of the work. Hotel#add_reservation_to_room should call a method within the room instead of directly modifying the room's 'reservations' instance variable. 
