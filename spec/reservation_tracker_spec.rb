@@ -10,7 +10,7 @@ describe 'ReservationTracker class' do
   end
 
   it 'shows all rooms in the hotel' do
-    all_rooms = @new_tracker.show_all_hotel_rooms
+    all_rooms = @new_tracker.all_rooms
     expect(all_rooms.length).must_equal 20
   end
 
@@ -83,7 +83,7 @@ describe 'ReservationTracker class' do
     check_out_2 = "2018,9,12"
     new_reservation_2 = @new_tracker.reserve_room(room_num_2, check_in_2, check_out_2)
 
-    expect(@new_tracker.show_all_reservations.length).must_equal 2
+    expect(@new_tracker.all_reservations.length).must_equal 2
   end
 
   it 'returns the total cost of the reservation' do

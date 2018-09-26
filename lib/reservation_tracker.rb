@@ -21,13 +21,13 @@ class ReservationTracker
     return all_rooms
   end
 
-  def show_all_hotel_rooms
-    return @all_rooms
-  end
+  # def show_all_hotel_rooms
+  #   return @all_rooms
+  # end
 
-  def show_all_reservations
-    return @all_reservations
-  end
+  # def show_all_reservations
+  #   return @all_reservations
+  # end
 
   def format_date(date_string)
     parsed_date = date_string.split(",")
