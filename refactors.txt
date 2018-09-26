@@ -1,35 +1,35 @@
 Potential improvements to Hotel:
 
-1.
+1. - Complete
 Methods throughout every class require many arguments, while some are optional.
 It might be good to use keyword arguments to create greater flexibility with
 ordering of arguments and default values. (Currently using default values but
 not keyword arguments.)
 
-2.
+2. - Complete
 Admin and its spec might be more aptly named something like BookingSystem.
 
-3.
+3. - Complete
 Admin#make_reservation and Admin#make_block contain similar code and could likely
 be DRYed up some. Same with the private helper methods Admin#book_rooms and
 Admin#block_rooms.
 
-4.
+4. - Complete, but moved this knowledge out of room entirely.
 Currently, a Room only knows its status, not the reservation or block that is
 giving it a status of :BOOKED or :BLOCKED. It might make the system more
 flexible if a Room knows more info (e.g. it would be easier to answer the
 question: Who is staying in Room 5 tonight?)
 
-5. #TODO
+5. - Did not complete, focused instead of refactoring a robust test suite
 I'd like to complete the other optional steps of using CSVs to store info, and
 of creating a CLI.
 
-6.
+6. - Complete, created super class BookingDates
 Reservation and Block have a few of the same instance variable and at least one
 method in common. It may make the system more flexible if they inherit from a
 super class called something like Booking.
 
-7. #TODO
+7. - Did not complete, focused instead of refactoring a robust test suite
 Creating a CLI exposed many unhandled potential errors that could arise from
 bad user input. A future refactoring should handle these scenarios rather than
 crash the program.
