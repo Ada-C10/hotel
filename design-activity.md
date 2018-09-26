@@ -103,3 +103,5 @@ I agree with these changes, and they seem to match up well with Dan's code. One 
 **Based on the answers to each set of the above questions, identify one place in your Hotel project where a class takes on multiple roles, or directly modifies the attributes of another class. Describe in design-activity.md what changes you would need to make to improve this design, and how the resulting design would be an improvement.**
 
 I'm going to focus on paring down my Admin class, which does too much and knows too much about the other classes. Many of its methods belong in the other classes.
+
+Update: This is complete!
