@@ -4,57 +4,72 @@
 
 module Hotel
   class Block
-    attr_reader :checkin_date, :checkout_date, :block_name, :discount_rate, :blocked_rooms, :reservations
+    class InvalidBlockError < StandardError
+    end
 
+    attr_reader :block_name, :checkin, :checkout, :rooms, :available_rooms, :reservations, :discount
+
+    DISCOUNT_RATE = 175.00
     MAX_BLOCK = 5
+    @@all_blocks = []
 
-    def initialize(checkin_date, checkout_date, block_name, discount_rate)
-      @checkin_date = checkin_date
-      @checkout_date = checkout_date
+    def initialize(block_name, checkin, checkout, rooms, discount_rate: DISCOUNT_RATE)
+      super(checkin, checkout)
+      if rooms.length > MAX_BLOCK || rooms.length < 1
+        raise InvalidBlockError, "Blocks must contain 1-5 rooms."
+      end
       @block_name = block_name
+      @rooms = rooms
+      @available_rooms = rooms.dup
       @discount_rate = discount_rate
-      @blocked_rooms = []
-      @reservations = []
+      @@all_blocks << self
     end
 
-    # adds a room to the block and updates rooms status to :BLOCKED
-    # checkout_date status is not updated since guest leaves in morning
-    # raises an ArgumentError if Room not provided or Room is already in block
-    # returns updated rooms collection if successful
-    def add_room(room)
-      raise ArgumentError, "Must provide a Room." unless room.is_a? Room
-      unless blocked_rooms.empty?
-        room_nums = blocked_rooms.map { |room| room.room_num }
-        raise ArgumentError, "Room already in block." if room_nums.include? room.room_num
-      end
-      blocked_rooms_booked = reservations.sum { |reservation| reservation.rooms.length }
-      if (blocked_rooms.length + blocked_rooms_booked) == MAX_BLOCK
-        raise ArgumentError, "Maximum number of rooms alredy in block."
-      end
-      room.change_room_status(checkin_date, :BLOCKED, checkout_date)
-      room.change_nightly_rate(checkin_date, discount_rate, checkout_date)
-      blocked_rooms << room
-      return blocked_rooms
+    def self.all
+      return @@all_blocks
     end
 
-    # adds a reservation to the block and removes room from @blocked_rooms
-    # raises an ArgumentError if Reservation not provided or Reservation is already in block
-    # returns updated reservations collection if successful
-    def add_reservation(reservation)
-      raise ArgumentError, "Must provide a Reservation." unless reservation.is_a? Reservation
-      unless reservations.empty?
-        conf_nums = reservations.map { |res| res.confirmation_number }
-        raise ArgumentError, "Reservation already in block." if conf_nums.include? reservation.confirmation_number
+    def self.find(block_name, checkin, checkout)
+      return all.select do |block|
+        (block.block_name.casecmp? block_name) && block.checkin == checkin && block.checkout == checkout
       end
-      reservation.rooms.each do |room|
-        blocked_rooms.delete(room)
-      end
-      reservations << reservation
-      return reservations
+    end
+
+    def reserve_from_block(block_name, checkin, checkout)
+      block = validate_block(block_name, checkin, checkout)
+
+      room = block.available_rooms.first
+      new_res = Reservation.new(checkin, checkout, room, block.discount_rate, block_name)
+
+      # update block's available rooms
+      available_rooms -= room
+
+      # remove block from room's bookings and replace with res
+      room.remove_booking(block)
+      room.add_booking(new_res)
+
+      return new_res
     end
 
     def num_rooms_available
-      return blocked_rooms.length
+      return available_rooms.length
     end
+
+    def num_rooms_booked
+      return rooms.length - num_rooms_available
+    end
+
+    private
+
+      def validate_block(block_name, checkin, checkout)
+        block = find(block_name, checkin, checkout)
+        if block == nil
+          raise InvalidBlockError, "Block not found"
+        elsif block.num_rooms_available < 1
+          raise InvalidBlockError, "No rooms available"
+        else
+          return block
+        end
+      end
   end
 end

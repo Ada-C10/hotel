@@ -4,82 +4,40 @@
 
 module Hotel
   class Room
-    attr_reader :room_num, :availability
+    attr_reader :room_num
+    attr_accessor :rate
 
+    ROOM_COUNT = 20
     NIGHTLY_RATE = 200.00
-    VALID_STATUSES = [:AVAILABLE, :BOOKED, :BLOCKED]
 
-    def initialize(room_num, available_starting, available_thru)
-      @room_num =       room_num
-      @availability =   {}
-      # add room status and rate by day to availability hash
-      add_inventory(available_starting, available_thru)
+    def initialize(room_num)
+      @room_num = room_num
+      @bookings = []
+      @rate = NIGHTLY_RATE
     end
 
-    # makes new dates available for the room
-    # raises ArgumentError if invalid dates provided, returns true if successful
-    def add_inventory(available_starting, available_thru)
-      if available_thru < available_starting
-        raise ArgumentError, "Start date must be before end date."
-      elsif availability[available_starting.to_s]
-        raise ArgumentError, "New dates of availbility overlap with existing inventory."
-      else # add new dates of availability to room
-        available_starting.upto(available_thru) do |date|
-          availability[date.to_s] = { :status => :AVAILABLE, :rate => NIGHTLY_RATE }
-        end
-        return true
+    def room_factory
+      rooms = []
+      ROOM_COUNT.times do |room_num|
+        rooms << Room.new(room_num + 1)
       end
+      return rooms
     end
 
-    # checks availability for a specific night or date range
-    # returns true if available for entire date range, false otherwise
-    def is_available?(checkin_date, checkout_date = nil)
-      if checkout_date == nil
-        checkout_date = checkin_date.next_day
-      end
-      unless availability[checkin_date.to_s] && availability[checkout_date.prev_day.to_s]
-        return false
-      end
-      checkin_date.upto(checkout_date.prev_day) do |date|
-        return false if availability[date.to_s][:status] != :AVAILABLE
+    def is_available?(checkin, checkout)
+      date_range = BookingDates.new(checkin, checkout)
+      bookings.each do |booking|
+        return false if booking.overlaps?(date_range)
       end
       return true
     end
 
-    # updates availability for date to :BOOKED or :BLOCKED
-    # raises an ArgumentError if invalid status, returns new status if successful
-    def change_room_status(checkin_date, room_status, checkout_date = nil)
-      unless VALID_STATUSES.include? room_status
-        raise ArgumentError, "Invalid status: #{room_status}"
-      end
-      if checkout_date == nil
-        checkout_date = checkin_date.next_day
-      end
-      checkin_date.upto(checkout_date.prev_day) do |date|
-        availability[date.to_s][:status] = room_status
-      end
-      # room is unavailable from checkin to night before checkout
-      # room is available day of checkout for reservations starting that evening
+    def add_booking(booking)
+      return bookings << booking
     end
 
-    # gets the nightly rate for a specific night as a float with 2 decimals
-    def nightly_rate(date)
-      return availability[date.to_s][:rate].to_f.round(2)
-    end
-
-    # update the nightly rate for a specific night or date range
-    # raises an ArgumentError if invalid rate, returns new rate if successful
-    def change_nightly_rate(checkin_date, new_rate, checkout_date = nil)
-      if new_rate < 0 || !(new_rate.is_a? Numeric)
-        raise ArgumentError, "Invalid rate: #{new_rate}"
-      end
-      if checkout_date == nil
-        checkout_date = checkin_date.next_day
-      end
-      checkin_date.upto(checkout_date.prev_day) do |date|
-        availability[date.to_s][:rate] = new_rate
-      end
-      return availability[checkin_date.to_s][:rate]
+    def remove_booking(booking)
+      return booking.delete(booking)
     end
   end
 end
