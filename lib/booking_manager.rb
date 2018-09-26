@@ -49,19 +49,21 @@ module Hotel
 
 
     # Method to add a reservation to list of reservations
-    def add_reservation(reservation) #combine with add_reservation_to_calendar?
-      @reservations << reservation
-    end
+    # def add_reservation(reservation) #combine with add_reservation_to_calendar?
+    #   @reservations << reservation
+    # end
 
 
     # Add reservation date range to hash of room reserved dates
     def add_reservation_to_calendar(reservation)
       date = reservation.start_date
+      @reservations << reservation
 
       reservation.number_nights.times do
         @room_calendar[reservation.room][date] = reservation # dependency
         date += 1
       end
+
 # binding.pry
       return @room_calendar
     end
@@ -176,7 +178,7 @@ module Hotel
       available_rooms = find_vacancies_in_date_range(start_date, end_date)
 
       new_reservation = Reservation.new(available_rooms.first, guest_name: guest_name, start_date: start_date, end_date: end_date)
-      add_reservation(new_reservation)
+      # add_reservation(new_reservation)
       add_reservation_to_calendar(new_reservation)
       return new_reservation #unneeded?
     end

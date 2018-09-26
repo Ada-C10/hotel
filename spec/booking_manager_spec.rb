@@ -75,31 +75,29 @@ describe "BookingManager class" do
     end
   end
 
-  describe "add_reservation method" do
+  describe "add_reservation_to_calendar method" do
     before do
       @hotel_rooms = Hotel::BookingManager.new(5)
     end
 
     it "increases the length of the reservations array by one" do
       old_number = @hotel_rooms.reservations.length
-      new_booking = "new reservation"
+      room = @hotel_rooms.rooms[2]
+      new_booking = Hotel::Reservation.new(room, guest_name: "Polly Pocket", start_date: "May 10, 2018", end_date: "May 12, 2018")
 
-      @hotel_rooms.add_reservation(new_booking)
+      @hotel_rooms.add_reservation_to_calendar(new_booking)
       expect(@hotel_rooms.reservations.length).must_equal old_number + 1
     end
 
     it "adds new instance of Reservation to reservations array" do
       room = @hotel_rooms.rooms[1]
       another_booking = Hotel::Reservation.new(room, guest_name: "Polly Pocket", start_date: "May 10, 2018", end_date: "May 12, 2018")
-      @hotel_rooms.add_reservation(another_booking)
+      @hotel_rooms.add_reservation_to_calendar(another_booking)
 
       expect(@hotel_rooms.reservations.last).must_be_instance_of Hotel::Reservation
       expect(@hotel_rooms.reservations.last.guest_name).must_equal "Polly Pocket"
     end
 
-  end
-
-  describe "add_reservation_to_calendar method" do
     it "creates a hash with room instance as key and dates as hash" do
       hotel = Hotel::BookingManager.new(3)
       # room = Hotel::Room.new(3)
@@ -184,8 +182,8 @@ describe "BookingManager class" do
       booking5 = Hotel::Reservation.new(room4, guest_name: "Horis Who", start_date: "June 08, 2018", end_date: "June 14, 2018")
       booking6 = Hotel::Reservation.new(room5, guest_name: "Dorian Damian", start_date: "June 06, 2018", end_date: "June 11, 2018")
 
-      @hotel.add_reservation(booking5)
-      @hotel.add_reservation(booking6)
+      @hotel.add_reservation_to_calendar(booking5)
+      @hotel.add_reservation_to_calendar(booking6)
 
       @number_prior_reservations = @hotel.reservations.length
       @hotel.reserve_available_room("Donna Foster", "January 02, 2019", "January 08, 2019")
@@ -202,7 +200,7 @@ describe "BookingManager class" do
     it "iterates through rooms to find available room" do
       room2 = @hotel.rooms[1]
       booking2 = Hotel::Reservation.new(room2, guest_name: "Joe Jeans", start_date: "June 08, 2018", end_date: "June 14, 2018")
-      @hotel.add_reservation(booking2)
+      @hotel.add_reservation_to_calendar(booking2)
       number_reserved = @hotel.reservations.length
 
       @hotel.reserve_available_room("Lisel Wallace", "June 08, 2018", "June 13, 2018")
