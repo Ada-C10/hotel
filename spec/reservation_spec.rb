@@ -2,21 +2,24 @@ require_relative 'spec_helper'
 
 describe 'Reservation class' do
   let (:valid_res) {
+    room = 1
     date1 = "Jan 11th 2019"
     date2 = "Jan 15th 2019"
-    Reservation.new(date1, date2)
+    Reservation.new(room, date1, date2)
   }
 
   let (:invalid_res1) {
+    room = 1
     date1 = "Jan 15th 2019"
     date2 = "Jan 11th 2019"
-    Reservation.new(date1, date2)
+    Reservation.new(room, date1, date2)
   }
 
   let (:invalid_res2) {
+    room = 1
     date1 = "Jan 15th 2019"
     date2 = "Jan 15th 2019"
-    Reservation.new(date1, date2)
+    Reservation.new(room, date1, date2)
   }
 
   describe 'Initializer' do
@@ -75,14 +78,11 @@ describe 'BlockOfRooms class' do
 
   describe 'add_room' do
     it 'adds a collection of room instances' do
-      room1 = Room.new(room_num: 1)
-      room2 = Room.new(room_num: 2)
 
-      @my_block.add_room(room1)
-      @my_block.add_room(room2)
+      @my_block.add_room(1)
+      @my_block.add_room(2)
 
       expect(@my_block.collection_rooms.count).must_equal 2
-      expect(@my_block.collection_rooms[0]).must_be_kind_of Room
     end
   end
 end

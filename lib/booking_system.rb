@@ -1,4 +1,3 @@
-require_relative 'room.rb'
 require_relative 'reservation.rb'
 require 'awesome_print'
 require 'date'
@@ -16,7 +15,7 @@ class BookingSystem
 
   def load_rooms
     rooms =[]
-    @num_rooms.times { |room| rooms << Room.new(room_num: room + 1) }
+    @num_rooms.times { |room| rooms << room + 1 }
     return rooms
   end
 
@@ -30,10 +29,9 @@ class BookingSystem
     dates = date_range(check_in, check_out)
     new_reservation = nil
     @rooms.each do |room|
-      if room.is_available?(dates) && room.is_not_blocked?(dates)
-        new_reservation = Reservation.new(check_in, check_out)
+      if is_available?(room, dates) && is_not_blocked?(room, dates)
+        new_reservation = Reservation.new(room, check_in, check_out)
         new_reservation.id = assign_res_id
-        room.add_reservation_to_room(new_reservation)
         @reservations << new_reservation
         break
       end
@@ -41,8 +39,32 @@ class BookingSystem
     if new_reservation != nil
       return new_reservation
     else
-      raise ArgumentError, 'no rooms available in date range'
+      raise StandardError, 'no rooms available in date range'
     end
+  end
+
+  def is_available?(room, dates)
+    reservations = @reservations.select { |reservation| reservation.room_num == room }
+    reservations.each do |reservation|
+      dates.each do |date|
+        if reservation.dates_booked.include?(date)
+          return false
+        end
+      end
+    end
+    return true
+  end
+
+  def is_not_blocked?(room, dates)
+    room_blocks = @room_blocks.select { |block| block.collection_rooms.include?(room) }
+    room_blocks.each do |block|
+      dates.each do |date|
+        if block.dates_booked.include?(date)
+          return false
+        end
+      end
+    end
+    return true
   end
 
   def date_range(check_in_date, check_out_date)
@@ -88,7 +110,7 @@ class BookingSystem
     dates << Date.parse(end_date)
     unreserved_rooms = []
     @rooms.each do |room|
-      if room.is_available?(dates) && room.is_not_blocked?(dates)
+      if is_available?(room, dates) && is_not_blocked?(room, dates)
         unreserved_rooms << room
       end
     end
@@ -103,8 +125,7 @@ class BookingSystem
 
     num_of_rooms = 0
     @rooms.each do |room|
-      if room.is_available?(dates) && room.is_not_blocked?(dates)
-        room.add_block_to_room(new_block)
+      if is_available?(room, dates) && is_not_blocked?(room, dates)
         new_block.add_room(room)
         num_of_rooms += 1
       end
@@ -128,8 +149,8 @@ class BookingSystem
     dates = date_range("#{selected_block.check_in_date}", "#{selected_block.check_out_date}")
 
     selected_block.collection_rooms.each do |room_blocked|
-      check_room = @rooms.find { |room| room.room_num == room_blocked.room_num }
-      if check_room.is_available?(dates)
+      check_room = @rooms.find { |room| room == room_blocked }
+      if is_available?(check_room, dates)
         return true
       end
     end
@@ -143,11 +164,10 @@ class BookingSystem
     dates = date_range("#{selected_block.check_in_date}", "#{selected_block.check_out_date}")
 
     selected_block.collection_rooms.each do |room_blocked|
-      check_room = @rooms.find { |room| room.room_num == room_blocked.room_num }
-      if check_room.is_available?(dates)
-        new_reservation = Reservation.new("#{selected_block.check_in_date}", "#{selected_block.check_out_date}")
+      check_room = @rooms.find { |room| room == room_blocked }
+      if is_available?(check_room, dates)
+        new_reservation = Reservation.new(check_room, "#{selected_block.check_in_date}", "#{selected_block.check_out_date}")
         new_reservation.id = assign_res_id
-        check_room.add_reservation_to_room(new_reservation)
         @reservations << new_reservation
         break
       end
@@ -156,7 +176,7 @@ class BookingSystem
     if new_reservation != nil
       return new_reservation
     else
-      raise ArgumentError, 'no rooms available in block'
+      raise StandardError, 'no rooms available in block'
     end
   end
 end

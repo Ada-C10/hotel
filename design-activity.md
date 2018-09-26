@@ -60,3 +60,6 @@
 
 9.  Bonus question once you've read Metz ch. 3: Which implementation is more loosely coupled?
     Implementation B.
+
+Hotel Refactor:
+  Both BookingSystem and Room classes track Reservations. To refactor my program, I will eliminate the Room class and add the Room Number to Reservations. The result is an improvement because I will not have two classes that depend on reservations, just BookingSystem.

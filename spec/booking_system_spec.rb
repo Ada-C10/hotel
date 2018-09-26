@@ -69,15 +69,15 @@ describe 'BookingSystem class' do
   end
 
   describe 'load_rooms' do
-    it 'is an instance of Room' do
-      expect(@booking.rooms.first).must_be_kind_of Room
+    it 'is an array of room numbers' do
+      expect(@booking.rooms.first).must_be_kind_of Integer
     end
   end
 
   describe 'list_all_rooms' do
     it 'returns a list of all the rooms in the hotel' do
       expect(@booking.list_all_rooms).must_be_kind_of Array
-      expect(@booking.list_all_rooms[0]).must_be_kind_of Room
+      expect(@booking.list_all_rooms.count).must_equal 20
     end
   end
 
@@ -90,14 +90,24 @@ describe 'BookingSystem class' do
     end
 
     it "selects the next room when requested date overlaps" do
-      room1_before = @booking.rooms[0].reservations.count
-      room2_before = @booking.rooms[1].reservations.count
-      room3_before = @booking.rooms[2].reservations.count
+      room1_reservations = @booking.reservations.select { |reservation| reservation.room_num == 1 }
+      room2_reservations = @booking.reservations.select { |reservation| reservation.room_num == 2 }
+      room3_reservations = @booking.reservations.select { |reservation| reservation.room_num == 3 }
+
+      room1_before = room1_reservations.count
+      room2_before = room2_reservations.count
+      room3_before = room3_reservations.count
+
       overlap_before
       overlap_after
-      room1_after = @booking.rooms[0].reservations.count
-      room2_after = @booking.rooms[1].reservations.count
-      room3_after = @booking.rooms[2].reservations.count
+
+      room1_reservations = @booking.reservations.select { |reservation| reservation.room_num == 1 }
+      room2_reservations = @booking.reservations.select { |reservation| reservation.room_num == 2 }
+      room3_reservations = @booking.reservations.select { |reservation| reservation.room_num == 3 }
+
+      room1_after = room1_reservations.count
+      room2_after = room2_reservations.count
+      room3_after = room3_reservations.count
 
       expect(room1_after).must_equal room1_before
       expect(room2_after).must_equal room2_before + 1
@@ -105,34 +115,59 @@ describe 'BookingSystem class' do
     end
 
     it "selects the same room when requested date does not overlap" do
-      room1_before = @booking.rooms[0].reservations.count
-      room2_before = @booking.rooms[1].reservations.count
+
+      room1_reservations = @booking.reservations.select { |reservation| reservation.room_num == 1 }
+      room2_reservations = @booking.reservations.select { |reservation| reservation.room_num == 2 }
+
+      room1_before = room1_reservations.count
+      room2_before = room2_reservations.count
+
       no_overlap_before
       no_overlap_after
-      room1_after = @booking.rooms[0].reservations.count
-      room2_after = @booking.rooms[1].reservations.count
+
+      room1_reservations = @booking.reservations.select { |reservation| reservation.room_num == 1 }
+      room2_reservations = @booking.reservations.select { |reservation| reservation.room_num == 2 }
+
+      room1_after = room1_reservations.count
+      room2_after = room2_reservations.count
 
       expect(room1_after).must_equal room1_before + 2
       expect(room2_after).must_equal room2_before
     end
 
     it "selects the same room when requested date ends on check_in date" do
-      room1_before = @booking.rooms[0].reservations.count
-      room2_before = @booking.rooms[1].reservations.count
+      room1_reservations = @booking.reservations.select { |reservation| reservation.room_num == 1 }
+      room2_reservations = @booking.reservations.select { |reservation| reservation.room_num == 2 }
+
+      room1_before = room1_reservations.count
+      room2_before = room2_reservations.count
+
       end_on_checkin
-      room1_after = @booking.rooms[0].reservations.count
-      room2_after = @booking.rooms[1].reservations.count
+
+      room1_reservations = @booking.reservations.select { |reservation| reservation.room_num == 1 }
+      room2_reservations = @booking.reservations.select { |reservation| reservation.room_num == 2 }
+
+      room1_after = room1_reservations.count
+      room2_after = room2_reservations.count
 
       expect(room1_after).must_equal room1_before + 1
       expect(room2_after).must_equal room2_before
     end
 
     it "selects the same room when requested date starts on check_out date" do
-      room1_before = @booking.rooms[0].reservations.count
-      room2_before = @booking.rooms[1].reservations.count
-      end_on_checkin
-      room1_after = @booking.rooms[0].reservations.count
-      room2_after = @booking.rooms[1].reservations.count
+      room1_reservations = @booking.reservations.select { |reservation| reservation.room_num == 1 }
+      room2_reservations = @booking.reservations.select { |reservation| reservation.room_num == 2 }
+
+      room1_before = room1_reservations.count
+      room2_before = room2_reservations.count
+
+      starts_on_checkout
+
+      room1_reservations = @booking.reservations.select { |reservation| reservation.room_num == 1 }
+      room2_reservations = @booking.reservations.select { |reservation| reservation.room_num == 2 }
+
+      room1_after = room1_reservations.count
+      room2_after = room2_reservations.count
 
       expect(room1_after).must_equal room1_before + 1
       expect(room2_after).must_equal room2_before
@@ -154,23 +189,39 @@ describe 'BookingSystem class' do
 
       expect {
         @booking.reserve_room(check_in, check_out)
-      }.must_raise ArgumentError
+      }.must_raise StandardError
     end
 
     it 'selects another room when requested date overlaps with block' do
-      room1_before = @booking.rooms[0].reservations.count
-      room2_before = @booking.rooms[1].reservations.count
-      room3_before = @booking.rooms[2].reservations.count
-      room4_before = @booking.rooms[3].reservations.count
-      room5_before = @booking.rooms[4].reservations.count
-      room6_before = @booking.rooms[5].reservations.count
+      room1_reservations = @booking.reservations.select { |reservation| reservation.room_num == 1 }
+      room2_reservations = @booking.reservations.select { |reservation| reservation.room_num == 2 }
+      room3_reservations = @booking.reservations.select { |reservation| reservation.room_num == 3 }
+      room4_reservations = @booking.reservations.select { |reservation| reservation.room_num == 4 }
+      room5_reservations = @booking.reservations.select { |reservation| reservation.room_num == 5 }
+      room6_reservations = @booking.reservations.select { |reservation| reservation.room_num == 6 }
+
+      room1_before = room1_reservations.count
+      room2_before = room2_reservations.count
+      room3_before = room3_reservations.count
+      room4_before = room4_reservations.count
+      room5_before = room5_reservations.count
+      room6_before = room6_reservations.count
+
       overlap_block
-      room1_after = @booking.rooms[0].reservations.count
-      room2_after = @booking.rooms[1].reservations.count
-      room3_after = @booking.rooms[2].reservations.count
-      room4_after = @booking.rooms[3].reservations.count
-      room5_after = @booking.rooms[4].reservations.count
-      room6_after = @booking.rooms[5].reservations.count
+
+      room1_reservations = @booking.reservations.select { |reservation| reservation.room_num == 1 }
+      room2_reservations = @booking.reservations.select { |reservation| reservation.room_num == 2 }
+      room3_reservations = @booking.reservations.select { |reservation| reservation.room_num == 3 }
+      room4_reservations = @booking.reservations.select { |reservation| reservation.room_num == 4 }
+      room5_reservations = @booking.reservations.select { |reservation| reservation.room_num == 5 }
+      room6_reservations = @booking.reservations.select { |reservation| reservation.room_num == 6 }
+
+      room1_after = room1_reservations.count
+      room2_after = room2_reservations.count
+      room3_after = room3_reservations.count
+      room4_after = room4_reservations.count
+      room5_after = room5_reservations.count
+      room6_after = room6_reservations.count
 
       expect(room1_after).must_equal room1_before
       expect(room2_after).must_equal room2_before
@@ -239,7 +290,6 @@ describe 'BookingSystem class' do
       unreserved_rooms = @booking.unreserved_rooms_by_date(start_date, end_date)
 
       expect(unreserved_rooms).must_be_kind_of Array
-      expect(unreserved_rooms[0]).must_be_kind_of Room
       expect(unreserved_rooms.count).must_equal 16
     end
 
@@ -284,16 +334,25 @@ describe 'BookingSystem class' do
 
   describe 'reserve_within_block' do
     it 'creates a reservation within a block' do
-      room1_before = @booking.rooms[0].reservations.count
-      room2_before = @booking.rooms[1].reservations.count
+      room1_reservations = @booking.reservations.select { |reservation| reservation.room_num == 1 }
+      num_reservations_before = room1_reservations.count
 
       @booking.reserve_within_block(@booking.room_blocks[0].id)
 
-      room1_after = @booking.rooms[0].reservations.count
-      room2_after = @booking.rooms[1].reservations.count
+      room1_reservations = @booking.reservations.select { |reservation| reservation.room_num == 1 }
+      num_reservations_after = room1_reservations.count
 
-      expect(room1_after).must_equal room1_before + 1
-      expect(room2_after).must_equal room2_before
+      expect(num_reservations_after).must_equal num_reservations_before + 1
+    end
+
+    it 'raises a StandardError if no reservations available within block' do
+      5.times do |i|
+        @booking.reserve_within_block(@booking.room_blocks[0].id)
+      end
+
+      expect {
+        @booking.reserve_within_block(@booking.room_blocks[0].id)
+      }.must_raise StandardError
     end
   end
 end

@@ -2,9 +2,10 @@ require 'date'
 
 class Reservation
   attr_reader :check_in_date, :check_out_date, :dates_booked
-  attr_accessor :id, :room_cost
+  attr_accessor :id, :room_cost, :room_num
 
-  def initialize(check_in_date, check_out_date, id: 0, room_cost: 200)
+  def initialize(room_num, check_in_date, check_out_date, id: 0, room_cost: 200)
+    @room_num = room_num
     @check_in_date = Date.parse(check_in_date)
     @check_out_date = Date.parse(check_out_date)
     raise ArgumentError, "invalid dates" if @check_in_date >= @check_out_date
