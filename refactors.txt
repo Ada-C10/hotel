@@ -20,7 +20,7 @@ giving it a status of :BOOKED or :BLOCKED. It might make the system more
 flexible if a Room knows more info (e.g. it would be easier to answer the
 question: Who is staying in Room 5 tonight?)
 
-5.
+5. #TODO
 I'd like to complete the other optional steps of using CSVs to store info, and
 of creating a CLI.
 
@@ -29,7 +29,7 @@ Reservation and Block have a few of the same instance variable and at least one
 method in common. It may make the system more flexible if they inherit from a
 super class called something like Booking.
 
-7.
+7. #TODO
 Creating a CLI exposed many unhandled potential errors that could arise from
 bad user input. A future refactoring should handle these scenarios rather than
 crash the program.

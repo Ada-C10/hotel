@@ -1,13 +1,13 @@
 module Hotel
   class BookingDates
-    class InvalidBookingDates < StandardError
+    class InvalidBookingDatesError < StandardError
     end
 
     attr_reader :checkin, :checkout
 
     def initialize(checkin, checkout)
       unless checkout > checkin
-        raise InvalidBookingDates, "Checkin must be before checkout."
+        raise InvalidBookingDatesError, "Checkin must be before checkout."
       end
 
       @checkin = checkin

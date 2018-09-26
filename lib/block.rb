@@ -3,15 +3,14 @@
 # Block: Blocks off rooms at a certain rate during an event.
 
 module Hotel
-  class Block
+  class Block < BookingDates
     class InvalidBlockError < StandardError
     end
 
-    attr_reader :block_name, :checkin, :checkout, :rooms, :available_rooms, :reservations, :discount
+    attr_reader :block_name, :checkin, :checkout, :rooms, :available_rooms, :discount_rate
 
     DISCOUNT_RATE = 175.00
     MAX_BLOCK = 5
-    @@all_blocks = []
 
     def initialize(block_name, checkin, checkout, rooms, discount_rate: DISCOUNT_RATE)
       super(checkin, checkout)
@@ -22,31 +21,16 @@ module Hotel
       @rooms = rooms
       @available_rooms = rooms.dup
       @discount_rate = discount_rate
-      @@all_blocks << self
     end
 
-    def self.all
-      return @@all_blocks
-    end
+    def reserve_from_block(checkin, checkout)
+      validate_block(checkin, checkout)
 
-    def self.find(block_name, checkin, checkout)
-      return all.select do |block|
-        (block.block_name.casecmp? block_name) && block.checkin == checkin && block.checkout == checkout
-      end
-    end
-
-    def reserve_from_block(block_name, checkin, checkout)
-      block = validate_block(block_name, checkin, checkout)
-
-      room = block.available_rooms.first
-      new_res = Reservation.new(checkin, checkout, room, block.discount_rate, block_name)
+      room = available_rooms.first
+      new_res = Reservation.new(checkin, checkout, room, discount_rate: discount_rate, block: self)
 
       # update block's available rooms
-      available_rooms -= room
-
-      # remove block from room's bookings and replace with res
-      room.remove_booking(block)
-      room.add_booking(new_res)
+      available_rooms.delete(room)
 
       return new_res
     end
@@ -61,14 +45,11 @@ module Hotel
 
     private
 
-      def validate_block(block_name, checkin, checkout)
-        block = find(block_name, checkin, checkout)
-        if block == nil
-          raise InvalidBlockError, "Block not found"
-        elsif block.num_rooms_available < 1
-          raise InvalidBlockError, "No rooms available"
-        else
-          return block
+      def validate_block(checkin, checkout)
+        if self.checkin != checkin || self.checkout != checkout
+          raise InvalidBlockError, "Dates requested do not match block"
+        elsif num_rooms_available < 1
+          raise RoomAvailabilityError, "No blocked rooms available for #{block_name}"
         end
       end
   end

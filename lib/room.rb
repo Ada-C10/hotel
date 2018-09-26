@@ -1,22 +1,20 @@
 # Jacquelyn Cheng - Nodes
 
-# Room: Keeps track of the availability of hotel rooms.
+# Room: Keeps track of the pricing per room.
 
 module Hotel
   class Room
-    attr_reader :room_num
-    attr_accessor :rate
+    attr_reader :room_num, :rate
 
     ROOM_COUNT = 20
     NIGHTLY_RATE = 200.00
 
     def initialize(room_num)
       @room_num = room_num
-      @bookings = []
       @rate = NIGHTLY_RATE
     end
 
-    def room_factory
+    def self.room_factory
       rooms = []
       ROOM_COUNT.times do |room_num|
         rooms << Room.new(room_num + 1)
@@ -24,20 +22,11 @@ module Hotel
       return rooms
     end
 
-    def is_available?(checkin, checkout)
-      date_range = BookingDates.new(checkin, checkout)
-      bookings.each do |booking|
-        return false if booking.overlaps?(date_range)
+    def change_rate(new_rate)
+      if new_rate < 0 || !(new_rate.respond_to? :*)
+        raise ArgumentError, "Rate must be a number greater than 0"
       end
-      return true
-    end
-
-    def add_booking(booking)
-      return bookings << booking
-    end
-
-    def remove_booking(booking)
-      return booking.delete(booking)
+      @rate = new_rate
     end
   end
 end
