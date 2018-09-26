@@ -9,15 +9,14 @@ describe "Reservation" do
   before do
     @checkin_date = Date.parse("2019-02-01")
     @checkout_date = Date.parse("2019-02-05")
-    @conf_num = 10
   end
 
-  let (:res) {
-    Hotel::Reservation.new(@checkin_date, @checkout_date, @conf_num)
+  let (:room1) {
+    Hotel::Room.new(1)
   }
 
-  let (:room1) {
-    Hotel::Room.new(1, Date.parse("2019-01-01"), Date.parse("2019-12-31"))
+  let (:res) {
+    Hotel::Reservation.new(@checkin_date, @checkout_date, room1)
   }
 
   describe "Reservation#initialize" do
@@ -26,62 +25,33 @@ describe "Reservation" do
     end
 
     it "has a start date" do
-      expect(res.checkin_date).must_equal @checkin_date
+      expect(res.checkin).must_equal @checkin_date
     end
 
     it "has an end date" do
-      expect(res.checkout_date).must_equal @checkout_date
+      expect(res.checkout).must_equal @checkout_date
     end
 
-    it "initially has an empty collection of rooms" do
-      expect(res.rooms.length).must_equal 0
-      expect(res.rooms).must_be_kind_of Enumerable
+    it "has a room assigned" do
+      expect(res.room).must_be_kind_of Hotel::Room
     end
 
-    it "has a confirmation number" do
-      expect(res.confirmation_number).must_equal @conf_num
-    end
-  end
-
-  describe "Reservation#add_room" do
-    it "updates the room's status" do
-      expect(room1.is_available? @checkin_date).must_equal true
-      expect(room1.is_available? @checkout_date.prev_day).must_equal true
-      res.add_room(room1)
-      expect(room1.is_available? @checkin_date).must_equal false
-      expect(room1.is_available? @checkout_date.prev_day).must_equal false
+    it "defaults to 200.00 room rate" do
+      expect(res.rate).must_equal 200.00
     end
 
-    it "checkout_date availability is unmodified" do
-      expect(room1.is_available? @checkout_date).must_equal true
-      res.add_room(room1)
-      expect(room1.is_available? @checkout_date).must_equal true
-    end
-
-    it "adds a room to reservation @rooms" do
-      expect(res.rooms.length).must_equal 0
-      res.add_room(room1)
-      expect(res.rooms.length).must_equal 1
-      expect(res.rooms.first).must_be_instance_of Hotel::Room
-    end
-
-    it "raises an error if Room object is not provided" do
-      expect{res.add_room(4)}.must_raise ArgumentError
-    end
-
-    it "raises an error if Room object is already on reservation" do
-      res.add_room(room1)
-      expect{res.add_room(room1)}.must_raise ArgumentError
+    it "defaults to nil block" do
+      expect(res.block).must_be_nil
     end
   end
 
   describe "Reservation#total_cost" do
     before do
-      @admin = Hotel::Admin.new
+      @bookingsystem = Hotel::BookingSystem.new
     end
 
     let (:res1) {
-      @admin.make_reservation(@checkin_date, @checkout_date, 1)
+      @bookingsystem.reserve_room(@checkin_date, @checkout_date)
     }
 
     it "returns a float" do
@@ -93,25 +63,9 @@ describe "Reservation" do
     end
 
     it "correctly calculates the cost for a discounted room in a block" do
-      block = @admin.make_block("Jackie's Event", Date.parse("2019-02-01"), Date.parse("2019-02-05"), 150.00, 3)
-      res2 = @admin.make_reservation(Date.parse("2019-02-01"), Date.parse("2019-02-05"), 1, block)
-      expect(res2.total_cost).must_equal 600.00
-    end
-
-    it "correctly calculates the cost when some nights in the same reservation have differing rates" do
-      res1.rooms.first.change_nightly_rate(@checkin_date, 100.00)
-      expect(res1.total_cost).must_equal 700.00
-    end
-
-    it "correctly calculates the cost when a reservation has multiple rooms" do
-      res3 = @admin.make_reservation(@checkin_date, @checkout_date, 3)
-      expect(res3.total_cost).must_equal 2400.00
-    end
-
-    it "correctly calculates the cost when different rooms on a reservation have different rates" do
-      res3 = @admin.make_reservation(@checkin_date, @checkout_date, 3)
-      res3.rooms.first.change_nightly_rate(@checkin_date, 100.00, @checkout_date)
-      expect(res3.total_cost).must_equal 2000.00
+      block = @bookingsystem.block_rooms("Jackie's Event", Date.parse("2019-02-01"), Date.parse("2019-02-05"), room_quantity: 3)
+      res2 = @bookingsystem.reserve_room(Date.parse("2019-02-01"), Date.parse("2019-02-05"), block: block)
+      expect(res2.total_cost).must_equal 175.00 * 4
     end
   end
 end
