@@ -7,8 +7,6 @@ module Hotel
   class ReservationManager
 
     VALID_ROOM_IDS = (1..20).to_a
-    #RESERVATION_NAMING_CONVENTION = /^[A-Z]{3}+[\d]{5}/
-    #BLOCK_NAMING_CONVENTION = /BLOCK+[\d]{5}/
 
     attr_reader :reservations, :rooms, :room_blocks, :room_cost, :room_block_discount
 
@@ -18,21 +16,40 @@ module Hotel
       @room_block_discount = 0.8
       @reservations = []
       @room_blocks = []
-
-      #this method call populates array of @rooms
-      generate_room_ids(VALID_ROOM_IDS)
+      @rooms = VALID_ROOM_IDS
     end
 
     #helper method for make_reservation / finding one available room
+    #make private, class method
     def find_available_room(date_range)
 
-      @rooms.each() do |room|
-        if room.is_available?(date_range)
-          return room
+      if @reservations.empty?
+        return @rooms[0]
+      end
+
+      available_rooms =  VALID_ROOM_IDS.dup
+
+  #if reservation date_range overlaps with date_range, delete reservation.room_number from list of available rooms
+      @reservations.each do |reservation|
+
+        # #if date_range has nothing in common with reservations range, then set_difference is date_range
+        range_set_difference = date_range - ((reservation.checkin_date..reservation.checkout_date).to_a - [reservation.checkout_date])
+
+        # #if set difference not equal to date_range, that room is unavailabel for that date
+        if range_set_difference != date_range
+          available_rooms -= [reservation.room_number]
         end
       end
 
+    #throw error if the unavailable_rooms = 20
+      #throw another type of RuntimeError if no available rooms
+    if available_rooms.empty?
       return "Hotel fully booked for this date range. Try a different date."
+    end
+
+      #use find by to find the first number that isn't in unavailable rooms array
+      return available_rooms[0]
+
     end
 
     #helper method for making a reservation / calculating cost
@@ -77,10 +94,9 @@ module Hotel
       range = (Date.parse(checkin_date)..Date.parse(checkout_date)).to_a
       room = find_available_room(range)
 
-      input = parse_reservation_data(checkin_date, checkout_date, room.room_number, room_block_discount)
+      input = parse_reservation_data(checkin_date, checkout_date, room, room_block_discount)
       reservation = Hotel::Reservation.new(input)
 
-      room.add_reservation(reservation)
       add_reservation_to_list(reservation)
       return reservation
     end
@@ -132,21 +148,36 @@ module Hotel
     #returns array of list of room numbers in all rooms
     def list_all_rooms_in_hotel
 
-      return @rooms.map { |room| room.room_number }
+      return @rooms.map { |room| room }
     end
 
     #helper method for listing all available rooms
     def find_all_available_rooms(given_date_range)
 
-      available_rooms = []
+      available_rooms = VALID_ROOM_IDS.dup
 
-      @rooms.find_all do |room|
-        if (room.is_available?(given_date_range))
-          available_rooms << room.room_number
-        end
+      if @reservations.empty?
+        return @rooms
       end
 
-      return "Hotel fully booked for this date range. Try a different date." if available_rooms.empty?
+      @reservations.each do |reservation|
+
+        range_set_difference = date_range - ((reservation.checkin_date..reservation.checkout_date).to_a - [reservation.checkout_date])
+
+        if range_set_difference != date_range
+          available_rooms -= [reservation.room_number]
+        end
+
+      end
+
+      # @rooms.find_all do |room|
+      #   if (room.is_available?(given_date_range))
+      #     available_rooms << room.room_number
+      #   end
+      # end
+      if available_rooms.empty?
+        return "Hotel fully booked for this date range. Try a different date."
+      end
       return available_rooms
     end
 
@@ -182,12 +213,15 @@ module Hotel
     private
 
     #private method to generate valid room ids for ReservationManager
-    def generate_room_ids(room_ids)
-      @rooms = room_ids.map do |room_id|
-        Room.new(room_id)
-      end
-      raise StandardError.new('No rooms remaining to create.') if room_ids.empty?
-    end
+    # def generate_room_ids(room_ids)
+    #   @rooms = room_ids.map do |room_id|
+    #     Room.new(room_id)
+    #   end
+    #   raise StandardError.new('No rooms remaining to create.') if room_ids.empty?
+    # end
+
+    #RESERVATION_NAMING_CONVENTION = /^[A-Z]{3}+[\d]{5}/
+    #BLOCK_NAMING_CONVENTION = /BLOCK+[\d]{5}/
 
     #private method to generate reservation ids according to naming convention constant
     def generate_random_reservation_id

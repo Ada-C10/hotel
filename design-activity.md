@@ -35,7 +35,7 @@ Does total_price directly manipulate the instance variables of other classes?
 It shouldn't. I think no?
 
 If we decide items are cheaper if bought in bulk, how would this change the code? Which implementation is easier to modify?
-I guess ImplementationB, since cart price (and subsequent each entry) cost is just accessed here in total_price; whereas, in Implementation A, it's relying on each entry being singular with a singular price.
+I guess ImplementationB, since cart price (and subsequently each entry cost)  is just accessed here in total_price; whereas, in Implementation A, it's relying on each entry being singular with a singular price.
 
 Which implementation better adheres to the single responsibility principle?
 ImplementationB since each class handles calculating price for itself.

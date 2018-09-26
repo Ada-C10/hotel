@@ -15,19 +15,9 @@ describe 'ReservationManager' do
 
     it 'will populate 20 instances of room upon initialization' do
 
-      expect(manager.rooms[0]).must_be_instance_of Hotel::Room
-      expect(manager.rooms[19]).must_be_instance_of Hotel::Room
+      expect(manager.rooms[0]).must_be_kind_of Numeric
+      expect(manager.rooms[19]).must_be_kind_of Numeric
       expect(manager.rooms[20]).must_be_nil
-    end
-
-    it 'will throw an error if you try to generate more than  20 rooms' do
-      expect{
-        rooms = []
-        21.times do
-          room = Hotel::Room.new
-          rooms << room
-        end
-      }.must_raise StandardError
     end
   end
 
@@ -54,16 +44,16 @@ describe 'ReservationManager' do
 
   describe 'find_available_room' do
     it 'will return the first available room for reservation that date range' do
-      expect(find_first_room).must_be_instance_of Hotel::Room
-      expect(find_first_room.room_number).must_equal 1
+      expect(find_first_room).must_be_kind_of Numeric
+      expect(find_first_room).must_equal 1
     end
 
     it 'will return the first available room for 2 reservations in same date range' do
       expect(find_two_rooms.length).must_equal 2
-      expect(find_two_rooms[0]).must_be_instance_of Hotel::Room
-      expect(find_two_rooms[1]).must_be_instance_of Hotel::Room
-      expect(find_two_rooms[0].room_number).must_equal 1
-      expect(find_two_rooms[1].room_number).must_equal 1
+      expect(find_two_rooms[0]).must_be_kind_of Numeric
+      expect(find_two_rooms[1]).must_be_kind_of Numeric
+      expect(find_two_rooms[0]).must_equal 1
+      expect(find_two_rooms[1]).must_equal 1
     end
 
     it 'will return a message to user if no room available for that date' do
@@ -150,8 +140,7 @@ describe 'ReservationManager' do
       checkin_date = "12/09/2018"
       checkout_date = "15/09/2018"
       date_range = (Date.parse(checkin_date)..Date.parse(checkout_date)).to_a
-      room_object = manager.find_available_room(date_range)
-      room_number = room_object.room_number
+      room_number = manager.find_available_room(date_range)
       manager.parse_reservation_data(checkin_date, checkout_date, room_number)
     }
 
@@ -216,17 +205,6 @@ describe 'ReservationManager' do
       expect(no_reservations_manager.reservations.length).must_equal 0
       expect(make_one_reservation_manager.reservations.length).must_equal 1
       expect(make_two_reservations_manager.reservations.length).must_equal 2
-    end
-
-
-    it 'will store the reservation in the first room for 2 reservations even if they have an overlapping start and end date' do
-      expect(make_three_allowed_overlapping_manager.rooms[0].reservations.length).must_equal 3
-      expect(make_three_allowed_overlapping_manager.rooms[1].reservations.length).must_equal 0
-    end
-
-    it 'will store the reservation in the first and second room if 2 reservations overlap in a bad way' do
-      expect(make_two_not_allowed_overlapping_manager.rooms[0].reservations.length).must_equal 1
-      expect(make_two_not_allowed_overlapping_manager.rooms[1].reservations.length).must_equal 1
     end
 
     # #Lazy Test of RoomBlock Methods and Class
@@ -364,7 +342,7 @@ describe 'ReservationManager' do
       expect(no_daily_reservations).must_equal "No reservations for 2018-09-12."
     end
 
-    it 'will raise an array of reservations if found' do
+    it 'will return an array of reservations if found' do
       fully_booked_reservations = fully_booked_manager.list_daily_reservations("10/05/2018")
       expect(fully_booked_reservations).must_be_kind_of Array
       expect(fully_booked_reservations.length).must_equal 20
