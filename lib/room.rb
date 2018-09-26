@@ -15,7 +15,6 @@ class Room
     return true
   end
 
-
   def add_reservation(reservation)
     @reservations << reservation
   end

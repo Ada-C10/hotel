@@ -99,7 +99,7 @@ class Hotel
   end
 
   def add_reservation_to_room(room, reservation)
-    room.reservations << reservation
+    room.add_reservation(reservation)
   end
 
   def find_reservations_by_date(date)
@@ -111,7 +111,7 @@ class Hotel
     return reservation.price
   end
 
-  def find_available_rooms(start_date, end_date) #move some of this logic into Room class
+  def find_available_rooms(start_date, end_date)
     available_room_numbers = []
     room_list.each do |room|
       available_room_numbers << room.room_number if room.is_available?(start_date, end_date)

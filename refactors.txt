@@ -9,11 +9,11 @@ Do not make any further changes to your code at this time
 
 ROOM REFACTORS
 
-originally wanted a room to know its own price
+*DONE* originally wanted a room to know its own price
   as code developed, moved price to the Reservation class
   should remove price_per_night and change associated tests
 
-is_available? method
+*DONE* is_available? method
   only checks availability for a single day
   Hotel class has the logic to check for multiple nights, but still calls Room.is_available?
   move all availability-checking logic into the Room class
@@ -36,7 +36,7 @@ probably should rename this to HotelManager or something similar
 
 probably should encapsulate everything into a Hotel module
 
-move availability-checking logic to Room
+*DONE* move availability-checking logic to Room
 
 dependencies on Reservation and BlockReservation.  Isolate these?  Duck typing?
   wrap/isolate instance creation for new reservations?
