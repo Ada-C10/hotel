@@ -13,7 +13,7 @@ class Hotel
 
   def set_up_rooms(number_of_rooms)
     number_of_rooms.times do |i|
-      @rooms << Room.new(i + 1, 200) #Rooms will be refactored to eliminate the second parameter
+      @rooms << Room.new(i + 1)
     end
   end
 

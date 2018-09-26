@@ -1,10 +1,9 @@
 class Room
-  attr_reader :room_number, :reservations, :price_per_night
+  attr_reader :room_number, :reservations
 
-  def initialize(room_number, price_per_night) #price_per_night should be removed during refactor
+  def initialize(room_number) #price_per_night should be removed during refactor
     @room_number = room_number
     @reservations = []
-    @price_per_night = price_per_night
   end
 
   def is_available?(start_date, end_date) #move some of the hotel's availability-checking into this method

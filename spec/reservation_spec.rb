@@ -2,8 +2,8 @@ require_relative 'spec_helper'
 
 describe 'initialize' do
   before do
-    @room_1 = Room.new(1, 200)
-    @room_2 = Room.new(2, 200)
+    @room_1 = Room.new(1)
+    @room_2 = Room.new(2)
   end
 
   let (:new_reservation) {Reservation.new(Date.new(2018, 9, 5), Date.new(2018, 9, 8), @room_1, 'customer')}
@@ -28,8 +28,8 @@ end
 
 describe 'Block initialize' do
   before do
-    @room_1 = Room.new(1, 200)
-    @room_2 = Room.new(2, 200)
+    @room_1 = Room.new(1)
+    @room_2 = Room.new(2)
   end
 
   let (:new_reservation) {BlockReservation.new(Date.new(2018, 9, 5), Date.new(2018, 9, 8), [@room_1, @room_2], 150, 'Block1')}
