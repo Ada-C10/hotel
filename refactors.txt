@@ -1,0 +1,26 @@
+Make availability hash for room class? {DateRange: Availability}
+Use inheritance for blockrooms class
+
+Make DateRange class?/Date range check method
+https://ruby-doc.org/core-1.9.3/Range.html#method-i-cover-3F
+
+Figure out what to do about the class method in Reservation (line 8) and BlockRooms (line 9)
+
+Undo dependencies if possible
+
+logic for finding dates not in range:
+    if (end_a < start_b) || (start_a > end_b)
+      puts "not in range"
+    end
+
+Rename hotel something else AdminPortal or something
+
+See page 40 of POODR for lines 20, 35, 118, 151 to dependency inject
+
+If it makes sense to do, try to isolate methods that are dependent on other classes ie. .add_rooms_reserved(reserved_room) (pg 44)
+
+Rewrite initialize methods with args (pg 47)
+
+Wrap method for Reservation initializations (pg 50)
+
+Create Module "Hotel" and wrap that around everything?
