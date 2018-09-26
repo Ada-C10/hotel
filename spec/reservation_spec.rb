@@ -7,7 +7,11 @@ describe "Reservation" do
     room_number = 1,
     check_in = Date.new(2018, 9, 01),
     check_out = Date.new(2018, 9, 02),
-    @test_reservation = Reservation.new(1, check_in, check_out)
+    @test_reservation = Reservation.new(
+      :room_number => 1,
+      :check_in => check_in,
+      :check_out => check_out
+    )
     @manager = Booking.new
   end
 
@@ -22,7 +26,11 @@ describe "Reservation" do
   end
 
   it 'raises an ArgumentError if check_in is not a date' do
-    expect{Reservation.new(1, "Invalid", Date.new(1-1-2018)) }.must_raise ArgumentError
+    expect{Reservation.new(
+      room_number: 1,
+      check_in: "Invalid",
+      check_out: Date.new(1-1-2018)
+    ) }.must_raise ArgumentError
   end
 
   it "Has a checkout" do
@@ -31,7 +39,19 @@ describe "Reservation" do
   end
 
   it 'raises an ArgumentError if check_out is not a date' do
-    expect{Reservation.new(1, Date.new(1-1-2018), "Invalid") }.must_raise ArgumentError
+    expect{Reservation.new(
+      room_number: 1,
+      check_in: Date.new(1-1-2018),
+      check_out: "Invalid"
+      ) }.must_raise ArgumentError
+  end
+
+  it 'Raises an ArgumentError if check_out is prior to check_in' do
+    expect{Reservation.new(
+      room_number: 1,
+      check_in: Date.today,
+      check_out: (Date.today - 1)
+      ) }.must_raise ArgumentError
   end
 
   it "Has a room number" do
@@ -44,9 +64,9 @@ describe "Reservation" do
     expect(@test_reservation).must_respond_to :cost_per_night
   end
 
-  it "Has a valid cost" do
-    @test_reservation = Reservation.new(1, Date.new(2018, 9, 1), Date.new(2018, 9, 2))
-    expect(@test_reservation.reservation_cost).must_equal 200
+  it "Has a valid total" do
+    binding.pry
+    expect(@test_reservation.total).must_equal 200
   end
 
   it "Correctly counts the number of days" do

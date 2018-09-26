@@ -12,22 +12,39 @@ class Reservation
 
   attr_reader :room_number, :check_in, :check_out, :cost_per_night, :total
 
-  def initialize(room_number, check_in, check_out, cost_per_night=200)
+  # def initialize(room_number, check_in, check_out, cost_per_night=200)
+    def initialize(args)
+      args = defaults.merge(args)
+      @room_number = args[:room_number]
+      @check_in = args[:check_in]
+      @check_out = args[:check_out]
+      validate_reservation_dates(@check_in, @check_out)
+      @cost_per_night = args[:cost_per_night]
+      @total = reservation_cost
+  end
 
-    if check_in.class != Date || check_out.class != Date
+  def defaults
+    {
+      check_in: Date.today,
+      check_out: Date.today + 2,
+      cost_per_night: 200
+    }
+  end
+
+  def validate_reservation_dates(check_in, check_out)
+    if @check_in.class != Date || @check_out.class != Date
       raise ArgumentError, "Please enter a date in mm-dd-yyyy format"
     end
 
-    @room_number = room_number
-    @check_in = check_in
-    @check_out = check_out
-    @cost_per_night = cost_per_night
-    @total = reservation_cost
+    if @check_out < @check_in
+      raise ArgumentError, "Check out date must be after check in date."
+    end
   end
 
   # Attempted to transfer a DateRange method but was unsucessful. Would like
   # to try again in a refactor
   def number_of_days_reserved
+    # binding.pry
     return (check_out - check_in).to_i
   end
 
