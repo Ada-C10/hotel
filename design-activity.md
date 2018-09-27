@@ -61,3 +61,7 @@
 10. Bonus question once you've read Metz ch. 3: Which implementation is more loosely coupled?
 
   Implementation B
+
+***Refactoring Hotel for looser coupling***
+
+1.  Original: Reservation#total_cost contained hard coded data regarding the price of a room per night depending on the type of room. Move responsibility to class Room by creating a class method 'price_per_night' which returns the price per night depending on the type of room booking. In order to do this, each instance of Reservation needs to have an attribute of a Room instance. For a Reservation instantiation, ReservationTracker#room_instance is created so that a specific room_instance can be added as an argument for a new Reservation. 
