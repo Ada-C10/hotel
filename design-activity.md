@@ -41,7 +41,7 @@ Consider the Order#total_price method. In each implementation:
 If we decide items are cheaper if bought in bulk, how would this change the code? Which implementation is easier to modify?
 
   Bulk purchases would require a change to the expression that calculates price. It would be easier to modify implementation B because there is only one class in which changes would need to be made to the instance variables or price calculation to account for bulk purchases, whereas in implementation A you would need to change both the CartEntry class and the Order class to calculate bulk purchases correctly.
-  
+
 
 Which implementation better adheres to the single responsibility principle?
 
@@ -51,3 +51,12 @@ Which implementation better adheres to the single responsibility principle?
 Bonus question once you've read Metz ch. 3: Which implementation is more loosely coupled?
 
   Implementation B is more loosely coupled. Each class in B refers to methods of other classes in calculating price, where the Order class of A uses instance variables of another class to calculate price.
+
+
+HOTEL
+
+I renamed the DateRange to reduce confusion with Ruby's existing Date class. I also renamed the methods within the DateRange class to be more descriptive of their responsibilities.
+
+In the Reservation class I moved cost out of initialization into its own method.  I also added a method to return room numbers for a reservation as an array so ReservationTracker could use this method in its occupied_rooms method instead of referring to Reservations room number variables directly.
+
+I also added some tests for the DateRange class to make sure it caught overlapping dates, as well as a test to calculate the cost of a reservation in the Reservation class, and a test to check for an error thrown if a request was made for an unavailable room in the Room class.
