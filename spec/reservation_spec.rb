@@ -15,4 +15,10 @@ describe "Reservation class" do
       expect(@reservation).must_be_kind_of Reservation
     end
   end
+
+  describe "Calculates the cost of a reservation" do
+    it "correctly calculates the cost of a reservation" do
+      expect(@reservation.cost).must_equal 2800
+    end
+  end
 end
