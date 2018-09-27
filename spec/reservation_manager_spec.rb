@@ -300,10 +300,12 @@ describe 'ReservationManager' do
 
     it 'will return one less room id if a room is booked for a date range' do
 
-      date_range = (Date.parse("10/09/2018")..Date.parse("12/09/2018")).to_a
-      expect(one_less_reservation.find_all_available_rooms(date_range)).must_be_kind_of Array
-      expect((one_less_reservation.find_all_available_rooms(date_range)).length).must_equal 19
-      expect((one_less_reservation.find_all_available_rooms(date_range))[0]).must_be_kind_of Numeric
+      this_manager = one_less_reservation
+
+
+      expect(this_manager.find_all_available_rooms((Date.parse("10/09/2018")..Date.parse("12/09/2018")).to_a)).must_be_kind_of Array
+      expect((this_manager.find_all_available_rooms((Date.parse("10/09/2018")..Date.parse("12/09/2018")).to_a)).length).must_equal 19
+      expect((this_manager.find_all_available_rooms((Date.parse("10/09/2018")..Date.parse("12/09/2018")).to_a))[0]).must_be_kind_of Numeric
     end
 
     it 'will return a message to user if no rooms available for that date' do

@@ -152,7 +152,7 @@ module Hotel
     end
 
     #helper method for listing all available rooms
-    def find_all_available_rooms(given_date_range)
+    def find_all_available_rooms(date_range)
 
       available_rooms = VALID_ROOM_IDS.dup
 
@@ -170,11 +170,6 @@ module Hotel
 
       end
 
-      # @rooms.find_all do |room|
-      #   if (room.is_available?(given_date_range))
-      #     available_rooms << room.room_number
-      #   end
-      # end
       if available_rooms.empty?
         return "Hotel fully booked for this date range. Try a different date."
       end
