@@ -50,5 +50,13 @@ module Hotel
       return @date_range.overlaps?(range)
     end
 
+    def includes_room?(room)
+      return @blocked_rooms.include?(room)
+    end
+
+    def add_reservation(reservation)
+      @block_reservations << reservation
+    end
+
   end
 end

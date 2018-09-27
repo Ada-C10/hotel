@@ -64,9 +64,9 @@ module Hotel
 
       else
 
-        if block.blocked_rooms.include?(room)
+        if block.includes_room?(room)
           new_reservation = Hotel::Reservation.new(range, room, rate: block.discounted_rate)
-          block.block_reservations << new_reservation
+          block.add_reservation(new_reservation)
         else
           raise UnavailableRoomError, "Room in different block"
         end

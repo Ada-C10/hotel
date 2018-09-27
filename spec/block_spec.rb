@@ -113,4 +113,33 @@ describe 'Block class' do
     end
   end
 
+  describe 'includes_room? method' do
+    it 'returns true if the given room is included in the block' do
+      (1..5).each do |room|
+        expect(block.includes_room?(room)).must_equal true
+      end
+    end
+
+    it 'returns false if the given room is not included in the block' do
+      (6..20).each do |room|
+        expect(block.includes_room?(room)).must_equal false
+      end
+    end
+  end
+
+  describe 'add_reservation method' do
+    let (:block) { Hotel::Block.new(range, blocked_rooms, discounted_rate, 1) }
+
+    let (:reservation) { [ Hotel::Reservation.new(range, 1, rate: 150)] }
+    it 'adds a reservation to list of block_reservations' do
+      num_reservations = block.block_reservations.length
+      block.add_reservation(reservation)
+
+      expect(block.block_reservations.length - num_reservations).must_equal 1
+
+      expect(block.block_reservations[0]).must_equal reservation
+
+    end
+  end
+
 end
