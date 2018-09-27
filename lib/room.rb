@@ -38,4 +38,11 @@ class Room
     end
   end
 
+  def update_dates_booked_for_room(array_of_dates)
+
+    array_of_dates.each do |date|
+      @dates_booked << date
+    end
+
+  end
 end

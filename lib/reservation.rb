@@ -22,6 +22,7 @@ class Reservation
 
     @dates_booked_for_reservation = dates_of_booking(@start_date, @end_date)
 
+
   end
 
   # Verifying that the room number entered is between 1-20
@@ -78,6 +79,10 @@ class Reservation
   def duration
     reservation_duration = @end_date - @start_date
     return reservation_duration
+  end
+
+  def update_room_booked_dates
+    @room_instance.update_dates_booked_for_room(@dates_booked_for_reservation)
   end
 
 end
