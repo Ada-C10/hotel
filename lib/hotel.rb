@@ -51,23 +51,6 @@ module Hotel
     end
 
 
-    #returns matched reservations for a specific date
-    # def reservations_for_date(date)
-    #   if contains?(date)
-    #     return
-    #   end
-
-
-      # matches = []
-      # @reservations.each do |reservation|
-      #   if reservation.start_date <= date && reservation.end_date > date
-      #     matches << reservation
-      #   end
-      #   return matches
-      # end
-    # end
-
-
 
     def reserved_rooms_for_dates(start_date, end_date)
       matched_date_range = []
@@ -119,6 +102,7 @@ module Hotel
       blocked_rooms = avail_rooms[0..num_of_rooms]
       block = Block.new(start_date, end_date, blocked_rooms, name)
       @blocked_blocks << block
+
       return @blocked_blocks
 
     end
@@ -132,6 +116,7 @@ module Hotel
       rooms.each do |room|
         reservation = Reservation.new(single_block.start_date, single_block.end_date, room)
         @reservations << reservation
+        reservation.add_reservation(reservation)
       end
       return @reservations
     end

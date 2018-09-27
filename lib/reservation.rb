@@ -19,18 +19,14 @@ module Hotel
       @room_num = room_num
       @reservations = []
 
-      argument_error_dates(start_date, end_date)
+      check_dates(start_date, end_date)
 
     end
 
-
-    def valid_dates?(start_date, end_date)
-      return start_date < end_date
-    end
 
     #Date.parse format: Date.parse("10/5/2018"), 10 is day, 5 is month
-    def argument_error_dates(start_date, end_date)
-      if !valid_dates?(@start_date, @end_date)
+    def check_dates(start_date, end_date)
+      if start_date > end_date
         raise ArgumentError, "start date has to before end date start date: #{@start_date}"
       end
     end
@@ -60,6 +56,11 @@ module Hotel
         return matches
       end
     end
+
+
+
+    # def overlap?(start_date, end_date)
+    # end
 
 
   end
