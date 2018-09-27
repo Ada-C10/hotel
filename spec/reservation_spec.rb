@@ -32,12 +32,9 @@ describe "Reservation class" do
     it "returns the total amount of the new reservation" do
 
       date_range = [1,2,3,4]
-      @reservation = Hotel::Reservation.new(date_range, 3)
+      reservation = Hotel::Reservation.new(date_range, 3)
 
-      start_date = @reservation.start_date
-      end_date = @reservation.end_date
-
-      expect(@reservation.reservation_cost(date_range)).must_equal 800
+      expect(reservation.reservation_cost(date_range)).must_equal 800
     end
   end
 

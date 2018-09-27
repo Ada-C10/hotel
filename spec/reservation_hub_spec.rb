@@ -111,36 +111,7 @@ describe "Reservation Hub class" do
     expect(@room_block2.block_id).must_equal 2
     end
   end
-
-
-  describe "create date array" do
-
-    before do
-      start_date = Date.new(2018,01,06)
-      @end_date = Date.new(2018,01,10)
-
-      @date_array = @reservation_hub.create_date_array(start_date, @end_date)
-
-      @test_dates = []
-      until start_date == @end_date
-        @test_dates << start_date
-        start_date +=1
-      end
-
-    end
-
-    it "returns an array of all dates" do
-      expect(@date_array).must_be_kind_of Array
-      expect(@date_array.length).must_equal @test_dates.length
-    end
-
-    it "includes all dates in the reservation, not including the end date" do
-      expect(@date_array).wont_include @end_date
-      expect(@date_array).must_equal @test_dates
-
-    end
-  end
-
+  
 
   describe "check available rooms method" do
 

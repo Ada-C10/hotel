@@ -3,13 +3,14 @@ require 'pry'
 
 require_relative 'reservation'
 require_relative 'room_block'
+require_relative 'date_range'
 
 
 module Hotel
   class ReservationHub
     class NoRoomsAvailableError < StandardError; end
 
-    attr_reader :reservations, :room_bookings, :reservation_dates, :room_blocks
+    attr_reader :reservations, :room_bookings, :room_blocks
 
 
     def initialize
@@ -21,11 +22,8 @@ module Hotel
 
     def add_reservation(start_date, end_date)
 
-      @start_date = start_date
-      @end_date = end_date
-      validate_dates
-
-      reservation_dates = create_date_array(start_date, end_date)
+      dates = DateRange.new(start_date, end_date)
+      reservation_dates = dates.create_date_array(start_date, end_date)
 
       room_id = assign_room(reservation_dates)
 
@@ -39,16 +37,12 @@ module Hotel
 
     def add_room_block(start_date, end_date, total_rooms)
 
-      @start_date = start_date
-      @end_date = end_date
-      @total_rooms = total_rooms
-      validate_dates
-
-      reservation_dates = create_date_array(start_date, end_date)
+      dates = DateRange.new(start_date, end_date)
+      reservation_dates = dates.create_date_array(start_date, end_date)
 
       room_ids = []
 
-      @total_rooms.times do
+      total_rooms.times do
         room_id = assign_room(reservation_dates)
         room_ids << room_id
       end
@@ -60,22 +54,6 @@ module Hotel
       @room_blocks << room_block
 
       return room_block
-    end
-
-
-    def validate_dates
-      raise ArgumentError.new("The end date must be after the start date") if @end_date <= @start_date
-    end
-
-
-    def create_date_array(start_date, end_date)
-      number_of_nights = (end_date - start_date).to_i
-      date_array = []
-      number_of_nights.times do
-        date_array << start_date
-        start_date +=1
-      end
-      return date_array
     end
 
 
@@ -135,7 +113,6 @@ module Hotel
           return room_block
         end
       end
-
     end
 
   end

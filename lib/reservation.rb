@@ -2,7 +2,7 @@
 
 module Hotel
   class Reservation
-    attr_reader :start_date, :end_date, :room_id, :reservation_dates, :total_cost
+    attr_reader :room_id, :reservation_dates, :total_cost
 
     def initialize(reservation_dates, room_id)
 
