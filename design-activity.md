@@ -62,8 +62,21 @@
 
   Implementation B
 
-***Refactoring Hotel for looser coupling***
+***Revisiting Hotel***
 
-1.  Original: Reservation#total_cost contained hard coded data regarding the price of a room per night depending on the type of room. Move responsibility to class Room by creating a class method 'price_per_night' which returns the price per night depending on the type of room booking. In order to do this, each instance of Reservation needs to have an attribute of a Room instance. For a Reservation instantiation, ReservationTracker#room_instance is created so that a specific room_instance can be added as an argument for a new Reservation.
+1.  Original:
+    Reservation#total_cost contained hard coded data regarding the price of a room per night depending on the type of room.
 
-2.  Original: ReservationTracker#update_dates_booked_for_room receiving a Reservation as an argument. This method would iterate through all reservations to find the reservation that matched the argument. From that Reservation, it would access the Room instance and update the dates booked for the room instance. The change involves moving the responsibility of the Room to update the dates it is booked. When a new Reservation is instantiated (Reservation contains an attribute of the room instance associated with the reservation), it will call Reservation#update_room_booked_dates. Reservation#update_room_booked_dates will access the instance variable 'room_instance' and call Room#update_dates_booked_for_room which updates the dates booked for the room, from inside the Room class. 
+    Update:
+    Move responsibility to class Room by creating a class method 'price_per_night' which returns the price per night depending on the type of room booking. In order to do this, each instance of Reservation needs to have an attribute of a Room instance. For a Reservation instantiation, ReservationTracker#room_instance is created so that a specific room_instance can be added as an argument for a new Reservation.
+
+2.  Original: ReservationTracker#update_dates_booked_for_room receiving a Reservation as an argument. This method would iterate through all reservations to find the reservation that matched the argument. From that Reservation, it would access the Room instance and update the dates booked for the room instance.
+
+    Update:
+    The change involves moving the responsibility of the Room to update the dates it is booked. When a new Reservation is instantiated (Reservation contains an attribute of the room instance associated with the reservation), it will call Reservation#update_room_booked_dates. Reservation#update_room_booked_dates will access the instance variable 'room_instance' and call Room#update_dates_booked_for_room which updates the dates booked for the room, from inside the Room class.
+
+3.  Original:
+    ReservationTracker#make_reservation_number was responsible for generating a reservation number, which was then used as an argument when instantiating a new Reservation.
+
+    Update:
+    Removing ReservationTracker#make_reservation_number, created Reservation#generate_reservation_number to be responsible for creating a reservation number. Reservation#generate_reservation_number is called by the constructor method of Reservation. 

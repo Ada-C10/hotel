@@ -137,6 +137,10 @@ describe 'ReservationTracker class' do
     expect(new_block).must_be_kind_of BlockRoom
   end
 
+  # it 'returns a reservation instance' do
+  #
+  # end
+
   # This is not yet functional
   # it 'will not create a block of 5 rooms to put on hold if not enough rooms are available' do
   #   16.times do |i|

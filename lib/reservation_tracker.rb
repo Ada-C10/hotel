@@ -145,13 +145,13 @@ class ReservationTracker
     end
   end
 
-  def reservation_instance(reservation_num)
-    @all_reservations.each do |reservation|
-      if reservation.reservation_num == reservation_num.to_i
-        return reservation
-      end
-    end
-  end
+  # def reservation_instance(reservation_num)
+  #   @all_reservations.each do |reservation|
+  #     if reservation.reservation_num == reservation_num.to_i
+  #       return reservation
+  #     end
+  #   end
+  # end
 
   # def cost_of_reservation(reservation_number)
   #   reservation_object = reservation_instance(reservation_number)

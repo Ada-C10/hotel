@@ -50,6 +50,38 @@ describe 'Room' do
     expect(new_room.is_available_for_block?(date_to_check)).must_equal false
   end
 
+  it 'returns the correct room price for a standard room' do
+    new_room = Room.new(15)
+    room_type = :standard
+    price = new_room.price_per_night(room_type)
 
+    expect(price).must_equal 200
+  end
+
+  it 'returns the correct room price for a block room' do
+    new_room = Room.new(15)
+    room_type = :block
+    price = new_room.price_per_night(room_type)
+
+    expect(price).must_equal 150
+  end
+
+  it 'raises a standard error if an invalid room type is entered' do
+    new_room = Room.new(15)
+    room_type = :luxury
+
+    expect{new_room.price_per_night(room_type)}.must_raise StandardError
+  end
+
+  it 'updates the dates that a room is booked for' do
+    new_room = Room.new(15)
+    date_array = []
+    date_array << Date.new(2018, 9, 10)
+    date_array << Date.new(2018, 9, 11)
+    date_array << Date.new(2018, 9, 12)
+
+    room_booked_dates = new_room.update_dates_booked_for_room(date_array)
+    expect(room_booked_dates.length).must_equal 3
+  end
 
 end
