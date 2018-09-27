@@ -1,0 +1,5 @@
+Changes:
+- create CSV test file to fully test different booking scenarios
+- check_in_date, check_out_date, start_date, end_date used interchangeably
+- @rooms and room when iterating should be re-named when changing actual room data or just searching
+- @reservations and @room_blocks can be renamed when just referencing and not changing room data
