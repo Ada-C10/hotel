@@ -6,6 +6,8 @@ module Hotel
   class Reservation
 
     PRICE = 200.00
+    DIS_PRICE = 150.00
+
 
 
     attr_reader :room_num
@@ -33,12 +35,15 @@ module Hotel
     end
 
     def reservation_cost
-      total = 0
       total = ((@end_date - @start_date) - 1) * PRICE
       return total
     end
 
 
+    def block_room_cost
+      total = ((@end_date - @start_date) - 1) * DIS_PRICE
+      return total
+    end
 
 
 

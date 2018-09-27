@@ -15,4 +15,13 @@ describe 'Reservation Class' do
     expect(reservation.reservation_cost).must_equal 800
   end
 
+
+  it "calculates block room cost" do
+    @hotel.block_rooms(@start_date, @end_date, 4, "Hopper")
+    reservations = @hotel.reserve_block_room(1, "Hopper")
+
+    expect(reservations[0].block_room_cost).must_equal 600.00
+
+  end
+
 end

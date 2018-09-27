@@ -5,7 +5,7 @@ require_relative 'reservation'
 module Hotel
   class Hotel
 
-    attr_reader :rooms, :reservations
+    attr_reader :rooms, :reservations, :reservation_blocks, :avail_rooms, :blocked_blocks
 
     def initialize
       @rooms = []
@@ -14,12 +14,11 @@ module Hotel
         @rooms << room
       end
       @reservations = []
-      @reservation_blocks = []
+      @blocked_blocks = []
 
     end
 
 
-    #wave 2 copy of list of room, iterate though list of reservation---care
 
     #returns an array of numbers from a collection of room instances (room_num)
     def get_all_numbers
@@ -66,6 +65,7 @@ module Hotel
 
     def reserved_rooms_for_dates(start_date, end_date)
       matched_date_range = []
+
       @reservations.each do |reservation|
         if reservation.start_date.between?(start_date, end_date)
           matched_date_range << reservation.room_num
@@ -75,7 +75,18 @@ module Hotel
           matched_date_range << reservation.room_num
         end
       end
+
+      @blocked_blocks.each do |block|
+        if block.start_date.between?(start_date, end_date)
+          matched_date_range += block.blocked_rooms
+        elsif block.start_date.between?(start_date, end_date)
+          matched_date_range += block.blocked.rooms
+        elsif start_date < block.start_date && end_date > block.end_date
+          matched_date_range += block.blocked_rooms
+        end
+      end
       return matched_date_range
+
     end
 
 
@@ -87,24 +98,37 @@ module Hotel
     end
 
 
-
-    def reserve_block_rooms(start_date, end_date, num_of_rooms)
+    def block_rooms(start_date, end_date, num_of_rooms, name)
 
       if num_of_rooms > 5
         raise ArgumentError.new("can't be more than 5")
       end
 
-      num_of_rooms.times do
-      reservation = assigns_a_reservation(start_date, end_date)
-        @reservation_blocks << reservation
+      avail_rooms = nonreserved_rooms_fordates(start_date, end_date)
+
+      if num_of_rooms > avail_rooms.length
+        raise ArgumentError.new("This many block rooms are not available #{num_of_rooms} the number that is actucally available is #{avail_rooms}")
       end
 
-      return @reservation_blocks
+      blocked_rooms = avail_rooms[0..num_of_rooms]
+      block = Block.new(start_date, end_date, blocked_rooms, name)
+      @blocked_blocks << block
+      return @blocked_blocks
 
     end
 
+    def reserve_block_room(number_of_rooms, name)
+      reservation = 0
+      single_block = @blocked_blocks.find { |block| block.name == name }
 
+      rooms = single_block.get_avail_room(number_of_rooms)
 
+      rooms.each do |room|
+        reservation = Reservation.new(single_block.start_date, single_block.end_date, room)
+        @reservations << reservation
+      end
+      return @reservations
+    end
 
 
   end

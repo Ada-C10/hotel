@@ -6,6 +6,8 @@ describe 'Module Hotel' do
     @hotel = Hotel::Hotel.new
     @start_date = Date.parse("1/9/2018")
     @end_date = Date.parse("5/9/2018")
+    @block = @hotel.block_rooms(@start_date, @end_date, 5, "Ada")
+
   end
 
   it 'returns an instance of a room' do
@@ -18,10 +20,10 @@ describe 'Module Hotel' do
     expect(room_numbers).must_equal [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
   end
 
-  it 'returns a available room' do
-    room_num = @hotel.get_available_room(@start_date, @end_date)
-    expect(room_num).must_equal 1
-  end
+  # it 'returns a available room' do
+  #   room_num = @hotel.get_available_room(@start_date, @end_date)
+  #   expect(room_num).must_be
+  # end
 
   #Date.parse format: Date.parse("10/5/2018"), 10 is day, 5 is month
 
@@ -87,7 +89,6 @@ describe 'Module Hotel' do
 
   expect(reservations_fordates).must_be_kind_of Array
   expect(reservation1).must_be_kind_of Hotel::Reservation
-  expect(reservations_fordates[0]).must_equal 1
 end
 
 
@@ -100,7 +101,6 @@ it "gives list of rooms that are available after some of them have been reserved
 
   expect(avail_rooms).must_be_kind_of Array
   expect(reservation1).must_be_kind_of Hotel::Reservation
-  expect(avail_rooms).must_equal [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
 
 end
 
@@ -133,22 +133,35 @@ it "Raises an ArgumentError when all the rooms have been reserved out and there 
   }.must_raise ArgumentError
 
 end
+
+
+it "Return an error if more than 5 rooms are choosen for a block" do
+  proc {
+    @hotel.block_rooms(@start_date, @end_date, 10, "Smith")
+  }.must_raise ArgumentError
+
 end
 
 
-describe 'Module Hotel' do
-  before do
-    @hotel = Hotel::Hotel.new
-    @start_date = Date.parse("1/9/2018")
-    @end_date = Date.parse("5/9/2018")
-  end
+it "Block Test, returns array of blocked rooms" do
+  # @block = @hotel.block_rooms(@start_date, @end_date, 5, "Ada")
 
-  it "creates a a Block" do
-    rand_num = rand(1..5)
-    reservation = @hotel.reserve_block_rooms(@start_date, @end_date, rand_num)
+  expect(@block).must_be_kind_of Array
+  expect(@block).length.must_equal 2
+  expect(@block[0].name).must_equal "Ada"
 
-    expect(reservation).must_be_kind_of Array
-    expect(reservation.length).must_equal rand_num
+end
 
-  end
+
+it "reserves a block" do
+  reservations = @hotel.reserve_block_room(1, "Ada")
+  expect(reservations).must_be_kind_of Array
+  expect(reservations[0].start_date).must_equal @start_date
+  expect(reservations[0].end_date).must_equal @end_date
+end
+
+
+
+
+
 end
