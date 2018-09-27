@@ -5,10 +5,8 @@ require_relative 'spec_helper'
 
 describe 'Reservation Class' do
   before do
-
     @start_date = Date.parse("5/9/2018")
     @end_date = Date.parse("10/9/2018")
-
     @reservation = Hotel::Reservation.new(@start_date, @end_date, 20)
 
 
@@ -18,6 +16,21 @@ describe 'Reservation Class' do
     # reservation = @hotel.assigns_a_reservation(@start_date, @end_date)
     expect(@reservation.cost).must_equal 800
   end
+
+
+
+  it "returns an error for invaild date range" do
+    @end_date = Date.parse("5/9/2018")
+    @start_date = Date.parse("10/9/2018")
+
+    proc {
+      Hotel::Reservation.new(@start_date, @end_date, 18)
+    }.must_raise ArgumentError
+
+  end
+
+
+
 
 
   #moved to this spec as the method contains? is in reservations
@@ -38,6 +51,7 @@ describe 'Reservation Class' do
     expect(reservations_fordate.first).must_equal match_res
 
   end
+
 
 
 
