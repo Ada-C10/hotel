@@ -35,7 +35,7 @@ module Hotel
       occupied_rooms = overlapping_reservations.map { |reservation| reservation.room_num}
 
       overlapping_blocks = @all_room_blocks.select { |block|
-        block.date_range.overlaps?(range) }
+        block.overlaps?(range) }
 
       overlapping_blocks.each do |block|
         occupied_rooms.concat block.blocked_rooms

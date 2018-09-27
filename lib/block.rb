@@ -45,6 +45,10 @@ module Hotel
 
       return (@blocked_rooms - occupied_block_rooms)
     end
-    
+
+    def overlaps?(range)
+      return @date_range.overlaps?(range)
+    end
+
   end
 end

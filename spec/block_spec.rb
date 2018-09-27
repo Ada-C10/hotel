@@ -100,4 +100,18 @@ describe 'Block class' do
     end
   end
 
+  describe 'overlaps? method' do
+    let (:overlap_range) { Hotel::DateRange.new(check_in, check_out) }
+    let (:nonoverlap_range) {Hotel::DateRange.new(check_out, check_out + 2)}
+
+    it 'returns true if the given DateRange overlaps with the reservations date range' do
+      expect(block.overlaps?(overlap_range)).must_equal true
+    end
+
+    it 'returns false if the given DateRange overlaps with the reservations date range' do
+      expect(block.overlaps?(nonoverlap_range)).must_equal false
+    end
+
+  end
+
 end
