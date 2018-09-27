@@ -19,4 +19,17 @@ describe "DateRange class" do
   it "must raise ArgumentError for invalid dates" do
     expect { DateRange::date_range_parse(begin_date: '10-10-2018', end_date: '9-15-2018')}.must_raise ArgumentError
   end
+
+  it "returns true for overlapping dates" do
+    date1 = DateRange::date_range_parse(begin_date: '10-10-2018', end_date: '10-20-2018')
+    date2 = DateRange::date_range_parse(begin_date: '10-09-2018', end_date: '10-10-2018')
+    date3 = DateRange::date_range_parse(begin_date: '10-09-2018', end_date: '10-15-2018')
+    date4 = DateRange::date_range_parse(begin_date: '10-15-2018', end_date: '10-25-2018')
+    date5 = DateRange::date_range_parse(begin_date: '10-20-2018', end_date: '10-25-2018')
+
+    expect (DateRange.date_overlap?(date1, date2)).must_equal false
+    expect (DateRange.date_overlap?(date1, date3)).must_equal true
+    expect (DateRange.date_overlap?(date1, date4)).must_equal true
+    expect (DateRange.date_overlap?(date1, date5)).must_equal false
+  end
 end
