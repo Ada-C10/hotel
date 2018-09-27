@@ -4,9 +4,7 @@ class ReservationTracker
   attr_accessor :all_rooms, :all_reservations
 
   def initialize()
-    # @all_rooms is a collection of all room instances
     @all_rooms = room_maker
-    # @all_reservations is a collection of all reservation instances
     @all_reservations = []
   end
 
@@ -43,12 +41,10 @@ class ReservationTracker
     reservations_for_date = []
     formatted_date = format_date(date)
 
-    # Iterating through all reservation instances listed in @all_reservations
     @all_reservations.each do |reservation|
       # reservation_dates is a collection of date instances for the specific reservation instance
       reservation_dates = reservation.dates_booked_for_reservation
 
-      # If the reservation_dates collection includes the specified date, then that reservation instance is pushed into reservations_for_date
       if reservation_dates.include?(formatted_date)
         reservations_for_date << reservation
       end
@@ -64,7 +60,6 @@ class ReservationTracker
     if is_date_range_valid(starting_date, ending_date)
       available_rooms = []
 
-      # This loop will iterate through each room instance listed in @all_rooms
       date_to_check = starting_date
       @all_rooms.each do |room|
         room_status = []
@@ -89,24 +84,6 @@ class ReservationTracker
       return available_rooms
     end
   end
-
-  # def update_dates_booked_for_room(new_reservation)
-  #   dates_booked_for_new_reservation = new_reservation.dates_booked_for_reservation
-
-    # Iterating through all room instances in @all_rooms. If the room instance has the same room number as the room_num in the reservation instance, then date instances representing all dates that the reservation is made for will be pushed into that room instance's @dates_booked
-  #   @all_rooms.each do |room|
-  #     if room.room_number == new_reservation.room_num
-  #       dates_booked_for_new_reservation.each do |date|
-  #         room.dates_booked << date
-  #       end
-  #     end
-  #   end
-  # end
-
-  # def make_reservation_number
-  #   reservation_number = @all_reservations.length + 1
-  #   return reservation_number
-  # end
 
   # Finds a room instance with the matching room_number
   def room_instance(room_num)
@@ -133,10 +110,8 @@ class ReservationTracker
       # If the available_rooms_by_number collection contains the desired room_number that the user wants to reserve, then create a new reservation
       if available_rooms_by_number.include?(room_number)
         room_object = room_instance(room_number)
-        # reservation_number = make_reservation_number
         new_reservation = Reservation.new(room_object, room_number, start_date, end_date, :standard)
 
-        # update_dates_booked_for_room(new_reservation)
         @all_reservations << new_reservation
 
       else
@@ -144,20 +119,6 @@ class ReservationTracker
       end
     end
   end
-
-  # def reservation_instance(reservation_num)
-  #   @all_reservations.each do |reservation|
-  #     if reservation.reservation_num == reservation_num.to_i
-  #       return reservation
-  #     end
-  #   end
-  # end
-
-  # def cost_of_reservation(reservation_number)
-  #   reservation_object = reservation_instance(reservation_number)
-  #   cost = reservation_object.total_cost
-  #   return cost
-  # end
 
 # Wave 3 not complete. Need to change show_available_rooms to search through each room instances @dates_booked AND @dates_held_for_block. Currently, show_available_rooms is only searching @date_booked. Modify update_dates_booked_for_room to move date instance from @dates_held_for_block to @dates_booked.
 def create_block(event_name, start, ending)

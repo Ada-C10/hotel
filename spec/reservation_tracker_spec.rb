@@ -32,11 +32,6 @@ describe 'ReservationTracker class' do
     expect(rooms_available.length).must_equal 19
   end
 
-  # it 'makes a reservation number' do
-  #   new_reservation_number = @new_tracker.make_reservation_number
-  #   expect(new_reservation_number).must_equal 1
-  # end
-
   it 'will reserve an available room ' do
     room_num = 3
     check_in = "2018,9,10"
@@ -86,22 +81,6 @@ describe 'ReservationTracker class' do
     expect(@new_tracker.all_reservations.length).must_equal 2
   end
 
-  # it 'returns the total cost of the reservation' do
-  #   reservation_num = 5555
-  #   room_instance = Room.new(1)
-  #   room_num = 1
-  #   start_date = Date.new(2018,9,6)
-  #   end_date = Date.new(2018,9,8)
-  #   room_type = :standard
-  #
-  #   new_reservation = Reservation.new(room_instance, room_num, start_date, end_date, room_type)
-  #
-  #   @new_tracker.all_reservations << new_reservation
-  #   reservation_num = "1962018"
-  #   total_cost = @new_tracker.cost_of_reservation(reservation_num)
-  #   expect(total_cost).must_equal 400
-  # end
-
   it 'shows reservations for a specific date' do
     room_num_1 = 3
     check_in_1 = "2018,9,10"
@@ -137,21 +116,4 @@ describe 'ReservationTracker class' do
     expect(new_block).must_be_kind_of BlockRoom
   end
 
-  # it 'returns a reservation instance' do
-  #
-  # end
-
-  # This is not yet functional
-  # it 'will not create a block of 5 rooms to put on hold if not enough rooms are available' do
-  #   16.times do |i|
-  #     date = Date.new(2018,9,10)
-  #     room = @new_tracker.all_rooms[i]
-  #     room.dates_booked << date
-  #   end
-  #
-  #   check_in = "2018,9,10"
-  #   check_out = "2018,9,12"
-  #   new_block = @new_tracker.create_block("AdaCon", check_in, check_out)
-  #   expect(new_block).must_equal false
-  # end
 end

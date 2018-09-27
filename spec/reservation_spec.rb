@@ -3,7 +3,6 @@ require_relative 'spec_helper'
 describe 'Reservation' do
 
   it 'creates an instance of Reservation' do
-    # reservation_num = 5555
     room_instance = Room.new(1)
     room_num = 1
     start_date = Date.new(2018,9,6)
@@ -46,7 +45,6 @@ describe 'Reservation' do
   end
 
   it 'correctly calculates duration of trip' do
-    # reservation_num = 5555
     room_instance = Room.new(1)
     room_num = 1
     start_date = Date.new(2018,9,10)
@@ -59,7 +57,6 @@ describe 'Reservation' do
   end
 
   it 'correctly calculates total cost of a reservation for a standard booking' do
-    # reservation_num = 5555
     room_instance = Room.new(1)
     room_num = 1
     start_date = Date.new(2018,9,10)
@@ -72,7 +69,6 @@ describe 'Reservation' do
   end
 
   it 'updates booked dates for a room instance' do
-    # reservation_num = 5555
     room_instance = Room.new(1)
     room_num = 1
     start_date = Date.new(2018,9,6)
@@ -84,18 +80,5 @@ describe 'Reservation' do
     new_reservation.update_room_booked_dates
     expect(room_instance.dates_booked.length).must_equal 2
   end
-
-  # it 'correctly calculates total cost of a reservation for a block booking' do
-  #   reservation_num = 5555
-  #   room_instance = Room.new(1)
-  #   room_num = 1
-  #   start_date = Date.new(2018,9,10)
-  #   end_date = Date.new(2018,9,12)
-  #   room_type = :block
-  #
-  #   new_reservation = Reservation.new(reservation_num, room_instance, room_num, start_date, end_date, room_type)
-  #
-  #   expect(new_reservation.total_cost).must_equal 300
-  # end
 
 end
