@@ -21,6 +21,7 @@ class Reservation
     end
 
     @dates_booked_for_reservation = dates_of_booking(@start_date, @end_date)
+
   end
 
   # Verifying that the room number entered is between 1-20

@@ -145,12 +145,18 @@ class ReservationTracker
     end
   end
 
-  def cost_of_reservation(reservation_number)
+  def reservation_instance(reservation_num)
     @all_reservations.each do |reservation|
-      if reservation.reservation_num == reservation_number.to_i
-        return reservation.total_cost
+      if reservation.reservation_num == reservation_num.to_i
+        return reservation
       end
     end
+  end
+
+  def cost_of_reservation(reservation_number)
+    reservation_object = reservation_instance(reservation_number)
+    cost = reservation_object.total_cost
+    return cost
   end
 
 # Wave 3 not complete. Need to change show_available_rooms to search through each room instances @dates_booked AND @dates_held_for_block. Currently, show_available_rooms is only searching @date_booked. Modify update_dates_booked_for_room to move date instance from @dates_held_for_block to @dates_booked.
