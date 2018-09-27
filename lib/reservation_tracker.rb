@@ -90,18 +90,18 @@ class ReservationTracker
     end
   end
 
-  def update_dates_booked_for_room(new_reservation)
-    dates_booked_for_new_reservation = new_reservation.dates_booked_for_reservation
+  # def update_dates_booked_for_room(new_reservation)
+  #   dates_booked_for_new_reservation = new_reservation.dates_booked_for_reservation
 
     # Iterating through all room instances in @all_rooms. If the room instance has the same room number as the room_num in the reservation instance, then date instances representing all dates that the reservation is made for will be pushed into that room instance's @dates_booked
-    @all_rooms.each do |room|
-      if room.room_number == new_reservation.room_num
-        dates_booked_for_new_reservation.each do |date|
-          room.dates_booked << date
-        end
-      end
-    end
-  end
+  #   @all_rooms.each do |room|
+  #     if room.room_number == new_reservation.room_num
+  #       dates_booked_for_new_reservation.each do |date|
+  #         room.dates_booked << date
+  #       end
+  #     end
+  #   end
+  # end
 
   def make_reservation_number
     reservation_number = @all_reservations.length + 1
@@ -136,7 +136,7 @@ class ReservationTracker
         reservation_number = make_reservation_number
         new_reservation = Reservation.new(reservation_number, room_object, room_number, start_date, end_date, :standard)
 
-        update_dates_booked_for_room(new_reservation)
+        # update_dates_booked_for_room(new_reservation)
         @all_reservations << new_reservation
 
       else
