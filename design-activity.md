@@ -1,3 +1,5 @@
+PROMPTS
+
 What classes does each implementation include? Are the lists the same?
 
   Implementation A has CartEntry, ShoppingCart, and Order classes. Implementation B has the same classes but differs in behavior.
@@ -53,3 +55,14 @@ Which implementation better adheres to the single responsibility principle?
 Bonus question once you've read Metz ch. 3: Which implementation is more loosely coupled?
 
   Implementation B is more loosely coupled. A's Order class knows about both of the other class's instances variables. In B, each class relies on message sends from one other class.
+
+
+>>>>>>>>>>>>
+
+ACTIVITY
+
+One place where a class takes on multiple roles is in the BookingSystem class. In multiple methods, it chains method calls and knows the structures of objects that are stored in other objects. Additionally, in the make_reservation method, it directly manipulates the instance variable `block_reservation` of the Block class.
+
+To improve this design, these chained method calls and instance_variable manipulation should be delegated to the lower-level classes (as in implementation B) or to the instance of a class that is directly being affected.
+
+The resulting design would be an improvement as it would improve readability and balance the overall responsibilities of running a Hotel program between the classes.
