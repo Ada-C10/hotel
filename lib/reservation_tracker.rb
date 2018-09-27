@@ -36,12 +36,8 @@ class ReservationTracker
     date_range = DateRange::date_range_parse(date_range)
     @all_reservations.each do |reservation|
       if DateRange::date_overlap?(date_range, reservation.date_range)
-        if reservation.room_num.class == Array
-          reservation.room_num.each do |num|
-            occupied_rooms << num
-          end
-        else
-          occupied_rooms << reservation.room_num
+        reservation.get_room_numbers.each do |num|
+          occupied_rooms << num
         end
       end
     end

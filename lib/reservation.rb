@@ -12,4 +12,8 @@ class Reservation
   def cost
     @cost = ( date_range[:end_date] - date_range[:begin_date] ) * rate
   end
+
+  def get_room_numbers
+    return Array(@room_num)
+  end
 end
