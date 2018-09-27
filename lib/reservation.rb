@@ -23,5 +23,9 @@ module Hotel
       return @date_range.overlaps?(range)
     end
 
+    def is_within_date_range(date)
+      return @date_range.is_within_date_range(date)
+    end
+
   end
 end

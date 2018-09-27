@@ -111,7 +111,6 @@ describe 'Block class' do
     it 'returns false if the given DateRange overlaps with the reservations date range' do
       expect(block.overlaps?(nonoverlap_range)).must_equal false
     end
-
   end
 
 end

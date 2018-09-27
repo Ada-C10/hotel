@@ -47,7 +47,7 @@ module Hotel
 
     def list_reservations_by_date(date)
       return @all_reservations.select do |reservation|
-        reservation.date_range.is_within_date_range(date)
+        reservation.is_within_date_range(date)
       end
     end
 

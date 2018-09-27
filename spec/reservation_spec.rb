@@ -61,6 +61,16 @@ describe 'Reservation class' do
     it 'returns false if the given DateRange overlaps with the reservations date range' do
       expect(reservation.overlaps?(nonoverlap_range)).must_equal false
     end
-
   end
+
+  describe 'is_within_date_range method' do
+    it 'returns true if the given date is within the reservation\'s date range' do
+      expect(reservation.is_within_date_range(Date.today)).must_equal true
+    end
+
+    it 'returns false if the given date is outside the reservation\'s date range' do
+      expect(reservation.is_within_date_range(check_out)).must_equal false
+    end
+  end
+
 end
