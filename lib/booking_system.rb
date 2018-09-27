@@ -30,7 +30,7 @@ module Hotel
 
 
     def list_unavailable_rooms(range)
-      overlapping_reservations = @all_reservations.select { |reservation| reservation.date_range.overlaps?(range) }
+      overlapping_reservations = @all_reservations.select { |reservation| reservation.overlaps?(range) }
 
       occupied_rooms = overlapping_reservations.map { |reservation| reservation.room_num}
 

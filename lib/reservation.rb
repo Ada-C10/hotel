@@ -19,5 +19,9 @@ module Hotel
       return @date_range.get_total_days * @rate
     end
 
+    def overlaps?(range)
+      return @date_range.overlaps?(range)
+    end
+
   end
 end
