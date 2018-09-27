@@ -5,21 +5,24 @@ require_relative 'spec_helper'
 
 describe 'Reservation Class' do
   before do
-    @hotel = Hotel::Hotel.new
+
     @start_date = Date.parse("5/9/2018")
     @end_date = Date.parse("10/9/2018")
+
+    @reservation = Hotel::Reservation.new(@start_date, @end_date, 20)
 
 
   end
 
   it "calculates the total cost per reservation" do
-    reservation = @hotel.assigns_a_reservation(@start_date, @end_date)
-    expect(reservation.reservation_cost).must_equal 800
+    # reservation = @hotel.assigns_a_reservation(@start_date, @end_date)
+    expect(@reservation.cost).must_equal 800
   end
 
 
-  #moved to this spec as the method contains? is in reservations 
+  #moved to this spec as the method contains? is in reservations
   it "return a reservation for a specific date" do
+    @hotel = Hotel::Hotel.new
 
     match_res = @hotel.assigns_a_reservation(@start_date, @end_date)
 
@@ -41,6 +44,8 @@ describe 'Reservation Class' do
 
 
   it "calculates block room cost" do
+    @hotel = Hotel::Hotel.new
+
     @hotel.block_rooms(@start_date, @end_date, 4, "Hopper")
     reservations = @hotel.reserve_block_room(1, "Hopper")
 

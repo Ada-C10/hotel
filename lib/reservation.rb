@@ -24,14 +24,13 @@ module Hotel
     end
 
 
-    #Date.parse format: Date.parse("10/5/2018"), 10 is day, 5 is month
     def check_dates(start_date, end_date)
       if start_date > end_date
         raise ArgumentError, "start date has to before end date start date: #{@start_date}"
       end
     end
 
-    def reservation_cost
+    def cost
       total = ((@end_date - @start_date) - 1) * PRICE
       return total
     end
