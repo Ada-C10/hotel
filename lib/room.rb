@@ -31,11 +31,6 @@ class Room
       end
     end
     return true
-    # if date_range.all? { |date| unavailable_dates.include?(date) }
-    #   return 0
-    # else
-    #   return self.id
-    # end
   end
 
   def add_unavailablity(check_in,check_out)

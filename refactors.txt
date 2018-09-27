@@ -11,3 +11,28 @@ Refactor changes:
   RESERVATION MANAGER CLASS
     -Maybe it should just be called Reservation_Manager instead of MGr
     -I like the names in this class they are specific about what they are performing
+--------------------------------------------------------------------------------
+    What is this class's responsibility?
+    Is this class responsible for exactly one thing?
+    Does this class take on any responsibility that should be delegated to "lower level" classes?
+    Is there code in other classes that directly manipulates this class's instance variables?
+--------------------------------------------------------------------------------
+
+  ReservationManager:
+    - To manage rooms and reservations
+    - Pretty good
+    - It will create new instances of reservations and it will also add unavailable dates to the Room Class.
+  Room:
+    - It manages room availability
+    - Yes.
+    - No, only changes stuff about the room
+    - The reservation manager will add unavailable dates to the Room if someone makes a reservation.
+  Reservation:
+    - Manages reservations and if they are in a block room
+    - It could be broken up into two classes one for block reservations and one for regular reservations
+    - Yes the reservation manager can change whether or not the block_available is true or false if someone makes a new reservation on a set of given block dates.
+
+
+    How easy is it to follow your own instructions?
+    Do these refactors improve the clarity of your code?
+    Do you still agree with your previous assesment, or could your refactor be further improved?
