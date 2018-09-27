@@ -108,6 +108,15 @@ class ReservationTracker
     return reservation_number
   end
 
+  # Finds a room instance with the matching room_number
+  def room_instance(room_num)
+    @all_rooms.each do |room|
+      if room.room_number == room_num.to_i
+        return room
+      end
+    end
+  end
+
   # Expecting user will enter date in the format: "yyyy,mm,dd"
   def reserve_room(room_num, check_in, check_out)
     room_number = room_num.to_i

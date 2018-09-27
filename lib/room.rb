@@ -28,4 +28,14 @@ class Room
     end
   end
 
+  def price_per_night(room_type)
+    if room_type == :standard
+      return 200
+    elsif room_type == :block
+      return 150
+    else
+      raise ArgumentError.new("The room type entered is not valid")
+    end
+  end
+
 end
