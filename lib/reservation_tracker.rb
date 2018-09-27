@@ -132,8 +132,9 @@ class ReservationTracker
                                 end
       # If the available_rooms_by_number collection contains the desired room_number that the user wants to reserve, then create a new reservation
       if available_rooms_by_number.include?(room_number)
+        room_object = room_instance(room_number)
         reservation_number = make_reservation_number
-        new_reservation = Reservation.new(reservation_number, room_number, start_date, end_date, :standard)
+        new_reservation = Reservation.new(reservation_number, room_object, room_number, start_date, end_date, :standard)
 
         update_dates_booked_for_room(new_reservation)
         @all_reservations << new_reservation

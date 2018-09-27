@@ -1,10 +1,11 @@
 require_relative 'lib_file_helper'
 
 class Reservation
-  attr_accessor :reservation_num, :room_num, :start_date, :end_date, :room_type, :dates_booked_for_reservation
+  attr_accessor :reservation_num, :room_instance, :room_num, :start_date, :end_date, :room_type, :dates_booked_for_reservation
 
-  def initialize(reservation_num, room_num, start_date, end_date, room_type)
+  def initialize(reservation_num, room_instance, room_num, start_date, end_date, room_type)
     @reservation_num = reservation_num.to_i
+    @room_instance = room_instance
 
     if is_room_num_valid(room_num)
       @room_num = room_num.to_i
