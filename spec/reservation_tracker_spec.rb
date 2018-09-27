@@ -88,12 +88,13 @@ describe 'ReservationTracker class' do
 
   it 'returns the total cost of the reservation' do
     reservation_num = 5555
+    room_instance = Room.new(1)
     room_num = 1
     start_date = Date.new(2018,9,6)
     end_date = Date.new(2018,9,8)
     room_type = :standard
 
-    new_reservation = Reservation.new(reservation_num, room_num, start_date, end_date, room_type)
+    new_reservation = Reservation.new(reservation_num, room_instance, room_num, start_date, end_date, room_type)
 
     @new_tracker.all_reservations << new_reservation
     total_cost = @new_tracker.cost_of_reservation(reservation_num)
