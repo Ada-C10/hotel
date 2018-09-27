@@ -1,17 +1,15 @@
-require 'date'
-
-class Reservation
+class RoomBlock
   attr_reader :check_in_date, :check_out_date, :dates_booked
-  attr_accessor :id, :room_cost, :room_num
+  attr_accessor :id, :room_cost, :collection_rooms
 
-  def initialize(room_num, check_in_date, check_out_date, id: 0, room_cost: 200)
-    @room_num = room_num
+  def initialize(check_in_date, check_out_date, id: 0, room_cost: 200)
     @check_in_date = Date.parse(check_in_date)
     @check_out_date = Date.parse(check_out_date)
     raise ArgumentError, "invalid dates" if @check_in_date >= @check_out_date
     @dates_booked = date_range(check_in_date, check_out_date)
     @id = 0
     @room_cost = room_cost
+    @collection_rooms = []
   end
 
   def date_range(check_in_date, check_out_date)
@@ -26,13 +24,7 @@ class Reservation
     return dates
   end
 
-  def length_of_stay
-    duration = check_out_date - check_in_date
-    return duration
-  end
-
-  def total_cost
-    total = length_of_stay * @room_cost
-    return total
+  def add_room(room)
+    @collection_rooms << room
   end
 end

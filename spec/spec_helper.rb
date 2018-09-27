@@ -10,3 +10,4 @@ Minitest::Reporters.use! Minitest::Reporters::SpecReporter.new
 # Require_relative your lib files here!
 require_relative '../lib/booking_system'
 require_relative '../lib/reservation'
+require_relative '../lib/room_block'

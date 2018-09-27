@@ -309,7 +309,7 @@ describe 'BookingSystem class' do
       discounted_rate = 180
       my_block = @booking.create_block_of_rooms(start_date, end_date, 180)
 
-      expect(my_block).must_be_kind_of BlockOfRooms
+      expect(my_block).must_be_kind_of RoomBlock
       expect(my_block.check_in_date).must_equal Date.parse(start_date)
       expect(my_block.check_out_date).must_equal Date.parse(end_date)
       expect(my_block.room_cost).must_equal discounted_rate

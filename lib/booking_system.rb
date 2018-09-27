@@ -120,7 +120,7 @@ class BookingSystem
   # create block of rooms
   def create_block_of_rooms(start_date, end_date, discounted_rate)
     dates = date_range(start_date, end_date)
-    new_block = BlockOfRooms.new(start_date, end_date, room_cost: discounted_rate)
+    new_block = RoomBlock.new(start_date, end_date, room_cost: discounted_rate)
     new_block.id = assign_block_id
 
     num_of_rooms = 0
