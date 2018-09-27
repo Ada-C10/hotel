@@ -103,10 +103,10 @@ class ReservationTracker
   #   end
   # end
 
-  def make_reservation_number
-    reservation_number = @all_reservations.length + 1
-    return reservation_number
-  end
+  # def make_reservation_number
+  #   reservation_number = @all_reservations.length + 1
+  #   return reservation_number
+  # end
 
   # Finds a room instance with the matching room_number
   def room_instance(room_num)
@@ -133,8 +133,8 @@ class ReservationTracker
       # If the available_rooms_by_number collection contains the desired room_number that the user wants to reserve, then create a new reservation
       if available_rooms_by_number.include?(room_number)
         room_object = room_instance(room_number)
-        reservation_number = make_reservation_number
-        new_reservation = Reservation.new(reservation_number, room_object, room_number, start_date, end_date, :standard)
+        # reservation_number = make_reservation_number
+        new_reservation = Reservation.new(room_object, room_number, start_date, end_date, :standard)
 
         # update_dates_booked_for_room(new_reservation)
         @all_reservations << new_reservation
@@ -153,11 +153,11 @@ class ReservationTracker
     end
   end
 
-  def cost_of_reservation(reservation_number)
-    reservation_object = reservation_instance(reservation_number)
-    cost = reservation_object.total_cost
-    return cost
-  end
+  # def cost_of_reservation(reservation_number)
+  #   reservation_object = reservation_instance(reservation_number)
+  #   cost = reservation_object.total_cost
+  #   return cost
+  # end
 
 # Wave 3 not complete. Need to change show_available_rooms to search through each room instances @dates_booked AND @dates_held_for_block. Currently, show_available_rooms is only searching @date_booked. Modify update_dates_booked_for_room to move date instance from @dates_held_for_block to @dates_booked.
 def create_block(event_name, start, ending)

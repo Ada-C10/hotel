@@ -4,8 +4,8 @@ require 'date'
 class Reservation
   attr_accessor :reservation_num, :room_instance, :room_num, :start_date, :end_date, :room_type, :dates_booked_for_reservation
 
-  def initialize(reservation_num, room_instance, room_num, start_date, end_date, room_type)
-    @reservation_num = reservation_num.to_i
+  def initialize(room_instance, room_num, start_date, end_date, room_type)
+    @reservation_num = generate_reservation_number
     @room_instance = room_instance
 
     if is_room_num_valid(room_num)
@@ -84,6 +84,14 @@ class Reservation
 
   def update_room_booked_dates
     @room_instance.update_dates_booked_for_room(@dates_booked_for_reservation)
+  end
+
+  def generate_reservation_number
+    room_num_string = @room_num.to_s
+    date_time_object = DateTime.now
+    date_time_string = date_time_object.strftime "%m%d%Y%H%M"
+    reservation_number = room_num_string + date_time_string
+    return reservation_number
   end
 
 end
