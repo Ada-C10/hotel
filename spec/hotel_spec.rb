@@ -60,23 +60,7 @@ describe 'Module Hotel' do
 
   end
 
-  it "return a reservation for a specific date" do
-
-    match_res = @hotel.assigns_a_reservation(@start_date, @end_date)
-
-    @start_date1 = Date.parse("4/9/2018")
-    @end_date1 = Date.parse("6/9/2018")
-
-    # nomatch_res = (warning: assigned but unused variable - nomatch_res so commented it out)
-    @hotel.assigns_a_reservation(@start_date1, @end_date1)
-
-    reservations_fordate = @hotel.reservations_for_date(@start_date)
-
-    expect(reservations_fordate).must_be_kind_of Array
-    expect(reservations_fordate.length).must_equal 1
-    expect(reservations_fordate.first).must_equal match_res
-
-  end
+  
 
 
 

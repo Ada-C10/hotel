@@ -17,6 +17,7 @@ module Hotel
       @start_date = start_date
       @end_date = end_date
       @room_num = room_num
+      @reservations = []
 
       argument_error_dates(start_date, end_date)
 
@@ -45,6 +46,20 @@ module Hotel
       return total
     end
 
+
+    def add_reservation(reservation)
+      @reservations << reservation
+    end
+
+    def contains?(date)
+      matches = []
+      @reservations.each do |reservation|
+        if reservation.start_date <= date && reservation.end_date > date
+          matches << reservation
+        end
+        return matches
+      end
+    end
 
 
   end

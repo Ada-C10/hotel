@@ -46,20 +46,26 @@ module Hotel
 
       reservation = Reservation.new(start_date, end_date, room_num)
       @reservations << reservation
+      reservation.add_reservation(reservation)
       return reservation
     end
 
 
     #returns matched reservations for a specific date
-    def reservations_for_date(date)
-      matches = []
-      @reservations.each do |reservation|
-        if reservation.start_date <= date && reservation.end_date > date
-          matches << reservation
-        end
-        return matches
-      end
-    end
+    # def reservations_for_date(date)
+    #   if contains?(date)
+    #     return
+    #   end
+
+
+      # matches = []
+      # @reservations.each do |reservation|
+      #   if reservation.start_date <= date && reservation.end_date > date
+      #     matches << reservation
+      #   end
+      #   return matches
+      # end
+    # end
 
 
 
