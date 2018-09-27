@@ -61,3 +61,7 @@ Implementation B.
 **Bonus question once you've read Metz ch. 3: Which implementation is more loosely coupled?**
 
 Implementation B.
+
+
+**changes to hotel**
+I had a lot of logic regarding the date within reservation_hub. I can create a separate DateRange class to validate dates and create a date array. It would make my code better because I'd be able to call the DateRange class when booking both, room blocks and reservations. It would not only dry up my code, but also help me better adhere to single responsibility. 
