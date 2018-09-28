@@ -41,5 +41,13 @@ describe "BlockReservation" do
     it "keeps track of reservations within block" do
       family_reunion.reservations.length.must_equal 0
     end
+
+    it "accurately calculates cost of reservation for reservation within block" do
+      # admin.request_block_reservation(4, "2018-12-12", "2018-12-14")
+      # smith = admin.request_reservation_within_block(1, "2018-12-12", "2018-12-14")
+      #
+      # smith_cost = hotel.reservation_cost(smith)
+      family_reunion.cost.must_equal 450
+    end
   end
 end

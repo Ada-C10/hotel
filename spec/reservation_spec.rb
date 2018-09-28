@@ -38,5 +38,10 @@ describe "Reservation" do
     it "raises StandardError for invalid date range" do
       expect{Reservation.new(7, 4, "2018-4-17", "2018-4-14")}.must_raise StandardError
     end
+
+    it "accurately calculates cost of reservation" do
+
+      reservation.cost.must_equal 600
+    end
   end
 end

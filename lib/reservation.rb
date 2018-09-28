@@ -18,5 +18,14 @@ module Hotel
 
       @room_cost = room_cost
     end
+
+    def cost
+      # https://stackoverflow.com/questions/4502245/how-can-i-find-the-number-of-days-between-two-date-objects-in-ruby
+      total_nights = end_date.mjd - start_date.mjd
+
+      cost = total_nights * room_cost
+
+      return cost
+    end
   end
 end

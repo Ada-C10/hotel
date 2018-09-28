@@ -98,22 +98,11 @@ describe "Booking" do
     end
   end
 
-  describe "reservation_cost" do
-    it "accurately calculates cost of reservation" do
-      reserve1 = hotel.request_reservation("2018-12-09", "2018-12-15")
-      cost = hotel.reservation_cost(reserve1)
-
-      cost.must_equal 1200
-    end
-
-    it "accurately calculates cost of reservation for reservation within block" do
-      hotel.request_block_reservation(4, "2018-12-12", "2018-12-14")
-      smith = hotel.request_reservation_within_block(1, "2018-12-12", "2018-12-14")
-
-      smith_cost = hotel.reservation_cost(smith)
-      smith_cost.must_equal 300
-    end
-  end
+  # describe "reservation_cost" do
+  #
+  #
+  #
+  # end
 
   describe "find_reservations_by_date_range" do
     it "accurately finds all reservations during that date range" do

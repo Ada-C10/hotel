@@ -5,11 +5,7 @@ module Hotel
     attr_reader :rooms, :reservations
 
     def initialize
-      @rooms = Array.new(20)
-        @rooms.length.times do |x|
-          @rooms[x] = x + 1
-        end
-
+      @rooms = (1..20).to_a
       @reservations = []
     end
 
@@ -106,16 +102,7 @@ module Hotel
       end
     end
 
-    def reservation_cost(reservation)
-      # https://stackoverflow.com/questions/4502245/how-can-i-find-the-number-of-days-between-two-date-objects-in-ruby
-      start_date = reservation.start_date
-      end_date = reservation.end_date
-      total_nights = end_date.mjd - start_date.mjd
 
-      cost = total_nights * reservation.room_cost
-
-      return cost
-    end
 
     def available_rooms(trip_start, trip_end,
       all_rooms: [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20] )
