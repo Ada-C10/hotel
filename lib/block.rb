@@ -58,5 +58,9 @@ module Hotel
       @block_reservations << reservation
     end
 
+    def get_first_available_room
+      return list_available_block_rooms.first
+    end
+
   end
 end

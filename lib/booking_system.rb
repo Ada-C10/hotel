@@ -101,7 +101,7 @@ module Hotel
         raise ArgumentError, "Block has no availability"
       end
 
-      room_num = block.list_available_block_rooms.first
+      room_num = block.get_first_available_room
       make_reservation(block.date_range, room_num, block: block)
     end
 

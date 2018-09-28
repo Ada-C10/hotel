@@ -130,7 +130,8 @@ describe 'Block class' do
   describe 'add_reservation method' do
     let (:block) { Hotel::Block.new(range, blocked_rooms, discounted_rate, 1) }
 
-    let (:reservation) { [ Hotel::Reservation.new(range, 1, rate: 150)] }
+    let (:reservation) { Hotel::Reservation.new(range, 1, rate: 150)}
+
     it 'adds a reservation to list of block_reservations' do
       num_reservations = block.block_reservations.length
       block.add_reservation(reservation)
@@ -138,8 +139,25 @@ describe 'Block class' do
       expect(block.block_reservations.length - num_reservations).must_equal 1
 
       expect(block.block_reservations[0]).must_equal reservation
-
     end
+  end
+
+  describe 'get_first_available_room method' do
+    let (:block) { Hotel::Block.new(range, blocked_rooms, discounted_rate, 1) }
+
+    let (:reservation) { Hotel::Reservation.new(range, 1, rate: 150)}
+
+    let (:reservation2) { Hotel::Reservation.new(range, 2, rate: 150) }
+
+    it 'returns the first available room number' do
+      expect(block.get_first_available_room).must_equal 1
+
+      block.add_reservation(reservation)
+      block.add_reservation(reservation2)
+
+      expect(block.get_first_available_room).must_equal 3
+    end
+
   end
 
 end
