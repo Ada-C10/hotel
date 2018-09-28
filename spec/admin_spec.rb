@@ -2,11 +2,11 @@ require_relative 'spec_helper'
 require 'pry'
 
 describe "Booking" do
-  let (:hotel) { Admin.new }
+  let (:hotel) { Hotel::Admin.new }
 
   describe "initialize" do
     it "Creates an instance of hotel" do
-      hotel.must_be_kind_of Admin
+      hotel.must_be_kind_of Hotel::Admin
     end
 
     it "keeps track of rooms" do
@@ -32,7 +32,7 @@ describe "Booking" do
 
   describe "add reservations" do
     it "increase count by 1 when add reservation" do
-      reserve1 = Reservation.new(7, 4, "2018-12-09", "2018-12-15")
+      reserve1 = Hotel::Reservation.new(7, 4, "2018-12-09", "2018-12-15")
       hotel.add_reservation(reserve1)
 
       hotel.reservations.count.must_equal 1

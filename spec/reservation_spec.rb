@@ -4,23 +4,23 @@ require 'pry'
 describe "Reservation" do
   describe "initialize" do
     let (:reservation) {
-      Reservation.new(7, 4, "2018-4-17", "2018-4-20")
+      Hotel::Reservation.new(7, 4, "2018-4-17", "2018-4-20")
     }
 
     it "Create an instance of reservation" do
-      reservation.must_be_kind_of Reservation
+      reservation.must_be_kind_of Hotel::Reservation
     end
 
     it "keeps track of ID" do
       id = 7
-      reservation = Reservation.new(id, 4, "2018-4-17", "2018-4-20")
+      reservation = Hotel::Reservation.new(id, 4, "2018-4-17", "2018-4-20")
       reservation.must_respond_to :id
       reservation.id.must_equal 7
     end
 
     it "keeps track of room number" do
       room = 4
-      reservation = Reservation.new(7, room, "2018-4-17", "2018-4-20")
+      reservation = Hotel::Reservation.new(7, room, "2018-4-17", "2018-4-20")
       reservation.must_respond_to :room
       reservation.room.must_equal 4
     end
