@@ -2,40 +2,40 @@ require_relative 'spec_helper'
 
 describe 'DateRange class' do
   let (:today) { Date.today }
-  let (:today_plus_4) { today + 4}
-  let (:today_minus_2) {today - 2}
-  let (:range) { Hotel::DateRange.new(today, today_plus_4) }
+  let (:week_later) { today + 7}
+  let (:before_today) {today - 2}
+  let (:range) { Hotel::DateRange.new(today, week_later) }
 
-  let (:same_dates) { Hotel::DateRange.new(today, today_plus_4) }
-  let (:overlap_front) { Hotel::DateRange.new(today_minus_2, today + 1) }
-  let (:overlap_back) { Hotel::DateRange.new(today + 1, today_plus_4 + 1) }
-  let (:contained) { Hotel::DateRange.new(today + 1, today_plus_4 - 1) }
-  let (:containing) { Hotel::DateRange.new(today_minus_2, today_plus_4 + 1) }
+  let (:same_dates) { Hotel::DateRange.new(today, week_later) }
+  let (:overlap_front) { Hotel::DateRange.new(before_today, today + 1) }
+  let (:overlap_back) { Hotel::DateRange.new(today + 1, week_later + 1) }
+  let (:contained) { Hotel::DateRange.new(today + 1, week_later - 1) }
+  let (:containing) { Hotel::DateRange.new(before_today, week_later + 1) }
 
-  let (:before_dates) { Hotel::DateRange.new(today_minus_2 - 1, today_minus_2) }
-  let (:after_dates) { Hotel::DateRange.new(today_plus_4 + 1, today_plus_4 + 2) }
-  let (:ends_on_checkin) { Hotel::DateRange.new(today_minus_2, today) }
-  let (:starts_on_checkout) { Hotel::DateRange.new(today_plus_4, today_plus_4 + 1) }
+  let (:before_dates) { Hotel::DateRange.new(before_today - 1, before_today) }
+  let (:after_dates) { Hotel::DateRange.new(week_later + 1, week_later + 2) }
+  let (:ends_on_checkin) { Hotel::DateRange.new(before_today, today) }
+  let (:starts_on_checkout) { Hotel::DateRange.new(week_later, week_later + 1) }
 
   describe 'DateRange instantiation' do
 
     it 'creates an instance of DateRange' do
-      expect(Hotel::DateRange.new(today, today_plus_4)).must_be_instance_of Hotel::DateRange
+      expect(Hotel::DateRange.new(today, week_later)).must_be_instance_of Hotel::DateRange
 
-      expect(Hotel::DateRange.new(today, today_plus_4)).must_respond_to :check_in
+      expect(Hotel::DateRange.new(today, week_later)).must_respond_to :check_in
 
-      expect(Hotel::DateRange.new(today, today_plus_4)).must_respond_to :check_out
+      expect(Hotel::DateRange.new(today, week_later)).must_respond_to :check_out
     end
 
     it 'raises an Argument error if end date is before the start date' do
       expect{
-        Hotel::DateRange.new(today, today_minus_2)
+        Hotel::DateRange.new(today, before_today)
       }.must_raise ArgumentError
     end
 
     it 'raises an Argument error if given anything besides a Date object' do
       expect{
-        Hotel::DateRange.new("2000-10-10", today_minus_2)
+        Hotel::DateRange.new("2000-10-10", before_today)
       }.must_raise ArgumentError
 
       expect{
@@ -46,7 +46,7 @@ describe 'DateRange class' do
 
   describe 'get_total_days method' do
     it 'returns the number of days in the date range' do
-      expect(range.get_total_days).must_equal 4
+      expect(range.get_total_days).must_equal 7
     end
   end
 
@@ -56,7 +56,7 @@ describe 'DateRange class' do
     end
 
     it 'returns false if date is outside the range' do
-      expect(range.is_within_date_range(today_minus_2)).must_equal false
+      expect(range.is_within_date_range(before_today)).must_equal false
     end
 
     it 'returns false if given an invalid date' do
