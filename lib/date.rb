@@ -21,10 +21,10 @@ module Hotel
       return reserved_dates
     end
 
-    def check_overlap(requested_dates)
+    def check_overlap?(requested_dates)
 
       reserved_range = self.get_date_range
-      return (reserved_range.to_a & requested_dates.to_a).empty?
+      return !(reserved_range.to_a & requested_dates.to_a).empty?
     end
 
     def check_include?(date)

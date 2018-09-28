@@ -27,9 +27,8 @@ module Hotel
       @rooms.each do |room|
         if room.room_reservations.empty?
           rooms_available << room
-        elsif
-          room.room_reservations.each do |reservation|
-            if reservation.date_range.check_overlap(x) == true
+        elsif room.room_reservations.each do |reservation|
+            if reservation.date_range.check_overlap?(x) == false
               rooms_available << room
             end
           end
@@ -40,10 +39,13 @@ module Hotel
 
     # list the reservations for a specific date
     def list_reservations(date)
-
-      return @reservations.select do |reservation|
-        reservation.date_range.check_include?(date)
+      list = []
+      @reservations.each do |reservation|
+        if reservation.date_range.check_include?(date)
+          list << reservation
+        end
       end
+      return list
     end
 
 
@@ -57,25 +59,17 @@ module Hotel
         info = {id: rand(1..300),
           room: room_to_book,
           start_date: start_date,
-          end_date: end_date,
+          end_date: end_date
         }
         # Creating an instance of a new reservation
         new_reserv = Reservation.new(info)
-
         # Add this new reservation to the list (array) of reservations for the room in the room class
         room_to_book.add_booking(new_reserv)
-
         # Adding this new reservation to the list (array) of reservations in the booking class
         @reservations << new_reserv
-        return new_reserv
+        # calculating total cost for the new reservation and returning that
       end
+      return new_reserv
     end
-
-    def present_total_cost(date)
-      reservation = list_reservations(date)
-      total_cost = reservation.total_cost
-      return total_cost
-    end
-
   end
 end

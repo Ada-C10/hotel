@@ -34,7 +34,7 @@ describe "DateRange Class" do
       date2 = Hotel::DateRange.new(requested_start, requested_end)
       date_range2 = date2.get_date_range
 
-      expect(@range.check_overlap(date_range2)).must_equal false
+      expect(@range.check_overlap?(date_range2)).must_equal true
     end
 
     it "checking overlap method for dates that don't overlap" do
@@ -44,7 +44,7 @@ describe "DateRange Class" do
       date2 = Hotel::DateRange.new(requested_start, requested_end)
       date_range2 = date2.get_date_range
 
-      expect(@range.check_overlap(date_range2)).must_equal true
+      expect(@range.check_overlap?(date_range2)).must_equal false
     end
 
     it "checking overlap dates on checkout dates" do
@@ -54,7 +54,7 @@ describe "DateRange Class" do
       date2 = Hotel::DateRange.new(requested_start, requested_end)
       date_range2 = date2.get_date_range
 
-      expect(@range.check_overlap(date_range2)).must_equal true
+      expect(@range.check_overlap?(date_range2)).must_equal false
     end
   end
 
