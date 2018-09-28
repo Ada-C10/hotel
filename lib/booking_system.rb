@@ -24,8 +24,8 @@ module Hotel
 
 
     def list_available_rooms(range)
-        occupied_rooms = list_unavailable_rooms(range)
-        return @all_rooms - occupied_rooms
+      occupied_rooms = list_unavailable_rooms(range)
+      return @all_rooms - occupied_rooms
     end
 
 

@@ -23,20 +23,6 @@ describe 'BookingSystem class' do
     Hotel::BookingSystem.new(all_reservations: [reservation1, reservation2])
   }
 
-  let (:captures_both_res_dates) { Hotel::DateRange.new(today, res2_checkout)}
-  let (:overlap_res_1) {Hotel::DateRange.new(today, today + 1)}
-  let (:overlap_res_2) { Hotel::DateRange.new(res1_checkout, res2_checkout) }
-  #
-  let (:before_dates) { Hotel::DateRange.new(today_minus_2 - 1, today_minus_2) }
-  let (:after_dates) { Hotel::DateRange.new(res2_checkout, res2_checkout + 2) }
-
-  let (:room_block) {
-    hotel_booker.create_a_block(today + 2, today + 7, 5, 150)
-  }
-  let (:room_block_2) {
-    hotel_booker.create_a_block(today + 2, today + 7, 5, 150)
-  }
-
   describe 'BookingSystem instantiation' do
     it 'creates an instance of BookingSystem class' do
       expect(Hotel::BookingSystem.new).must_be_instance_of Hotel::BookingSystem
@@ -71,6 +57,14 @@ describe 'BookingSystem class' do
 
   describe 'list_available_rooms helper method' do
 
+    let (:captures_both_res_dates) { Hotel::DateRange.new(today, res2_checkout)}
+
+    let (:overlap_res_1) {Hotel::DateRange.new(today, today + 1)}
+    let (:overlap_res_2) { Hotel::DateRange.new(res1_checkout, res2_checkout) }
+
+    let (:before_dates) { Hotel::DateRange.new(today_minus_2 - 1, today_minus_2) }
+    let (:after_dates) { Hotel::DateRange.new(res2_checkout, res2_checkout + 2) }
+
     it 'returns an array containing a list of available room numbers for a given date range' do
       expect(hotel_booker.list_available_rooms(captures_both_res_dates)).must_be_instance_of Array
     end
@@ -102,6 +96,14 @@ describe 'BookingSystem class' do
   end
 
   describe 'list_unavailable_rooms helper method' do
+
+    let (:captures_both_res_dates) { Hotel::DateRange.new(today, res2_checkout)}
+
+    let (:overlap_res_1) {Hotel::DateRange.new(today, today + 1)}
+    let (:overlap_res_2) { Hotel::DateRange.new(res1_checkout, res2_checkout) }
+
+    let (:before_dates) { Hotel::DateRange.new(today_minus_2 - 1, today_minus_2) }
+    let (:after_dates) { Hotel::DateRange.new(res2_checkout, res2_checkout + 2) }
 
     it 'returns an array containing a list of unavailable room numbers for a given date range' do
       expect(hotel_booker.list_available_rooms(Hotel::DateRange.new(today + 2, today + 4))).must_be_instance_of Array
@@ -154,6 +156,13 @@ describe 'BookingSystem class' do
 
   describe 'make_reservation helper method' do
 
+    let (:room_block) {
+      hotel_booker.create_a_block(today + 2, today + 7, 5, 150)
+    }
+    let (:room_block_2) {
+      hotel_booker.create_a_block(today + 2, today + 7, 5, 150)
+    }
+
     it 'returns an instance of reservation' do
       expect(hotel_booker.make_reservation(Hotel::DateRange.new(today + 1, today + 4), 3)).must_be_instance_of Hotel::Reservation
     end
@@ -203,7 +212,7 @@ describe 'BookingSystem class' do
     end
 
     it 'uses the DateRange class to check for valid Date input' do
-      expect{hotel_booker.reserve_standard_room(today -1 , today)}.must_raise ArgumentError
+      expect{hotel_booker.reserve_standard_room(today, today - 1)}.must_raise ArgumentError
       expect{hotel_booker.reserve_standard_room('String of a Date' , today)}.must_raise ArgumentError
     end
 
@@ -211,13 +220,16 @@ describe 'BookingSystem class' do
       20.times do
         hotel_booker.reserve_standard_room(today + 7, today + 8)
       end
-      # binding.pry
       expect{hotel_booker.reserve_standard_room}.must_raise StandardError
     end
 
   end
 
   describe 'reserve_a_room_in_block' do
+
+    let (:room_block) {
+      hotel_booker.create_a_block(today + 2, today + 7, 5, 150)
+    }
 
     it 'returns a reservation of a room within the room block' do
       room_block
@@ -240,6 +252,13 @@ describe 'BookingSystem class' do
   end
 
   describe 'create_a_block method' do
+
+    let (:room_block) {
+      hotel_booker.create_a_block(today + 2, today + 7, 5, 150)
+    }
+    let (:room_block_2) {
+      hotel_booker.create_a_block(today + 2, today + 7, 5, 150)
+    }
 
     it 'returns a RoomBlock object if given valid parameters' do
       expect(room_block).must_be_instance_of Hotel::Block
@@ -268,6 +287,11 @@ describe 'BookingSystem class' do
   end
 
   describe 'is_room_available helper method' do
+
+    let (:room_block) {
+      hotel_booker.create_a_block(today + 2, today + 7, 5, 150)
+    }
+
     it 'returns true if room is available for the given date range' do
       expect(hotel_booker.is_room_available(Hotel::DateRange.new(today, today + 2), 2)).must_equal true
       expect(hotel_booker.is_room_available(Hotel::DateRange.new(today + 4, today + 5), 1)).must_equal true
@@ -308,6 +332,11 @@ describe 'BookingSystem class' do
   end
 
   describe 'find_block method' do
+
+    let (:room_block) {
+      hotel_booker.create_a_block(today + 2, today + 7, 5, 150)
+    }
+
     it 'returns an instance of Block if the given id corresponds to a Block instance' do
       room_block
       expect(hotel_booker.find_block(1)).must_be_instance_of Hotel::Block
