@@ -104,8 +104,7 @@ module Hotel
 
 
 
-    def available_rooms(trip_start, trip_end,
-      all_rooms: [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20] )
+    def available_rooms(trip_start, trip_end, all_rooms: (1..20).to_a )
       specific_reservations = reservations_by_date_range(trip_start, trip_end)
 
       unavailable_rooms = []
