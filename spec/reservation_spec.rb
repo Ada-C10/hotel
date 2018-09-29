@@ -33,30 +33,6 @@ describe 'Reservation Class' do
 
 
 
-  #moved to this spec as the method contains? is in reservations
-  it "return a reservation for a specific date" do
-    @hotel = Hotel::Hotel.new
-
-    match_res = @hotel.assigns_a_reservation(@start_date, @end_date)
-
-    @start_date1 = Date.parse("4/9/2018")
-    @end_date1 = Date.parse("6/9/2018")
-
-    reservation2 = @hotel.assigns_a_reservation(@start_date1, @end_date1)
-
-    reservations_fordate = match_res.contains?(@start_date)
-
-    expect(reservations_fordate).must_be_kind_of Array
-    expect(reservations_fordate.length).must_equal 1
-    expect(reservations_fordate.first).must_equal match_res
-
-  end
-
-
-
-
-
-
   it "calculates block room cost" do
     @hotel = Hotel::Hotel.new
 

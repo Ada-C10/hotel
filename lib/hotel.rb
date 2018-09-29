@@ -18,8 +18,6 @@ module Hotel
 
     end
 
-
-
     #returns an array of numbers from a collection of room instances (room_num)
     def get_all_numbers
       room_nums = []
@@ -28,6 +26,42 @@ module Hotel
       end
       return room_nums
     end
+
+
+    def reservations_for_date(date)
+      matches = []
+      @reservations.each do |reservation|
+        if reservation.contains?(date)
+          matches << reservation
+        end
+      end
+      return matches
+    end
+
+    def reserved_rooms_for_dates(start_date, end_date)
+      matched_date_range = []
+
+      @reservations.each do |reservation|
+        if reservation.overlap?(start_date, end_date)
+          matched_date_range << reservation.room_num
+        end
+      end
+      
+      @blocked_blocks.each do |block|
+        if block.overlap?(start_date, end_date)
+          matched_date_range += block.blocked_rooms
+        end
+      end
+      return matched_date_range
+    end
+
+    def nonreserved_rooms_fordates(start_date, end_date)
+      matched_rooms_range = reserved_rooms_for_dates(start_date, end_date)
+      all_room_numbers = get_all_numbers
+      avail_rooms = all_room_numbers - matched_rooms_range
+      return avail_rooms
+    end
+
 
     #assings room from the available room's array
     def get_available_room(start_date, end_date)
@@ -46,44 +80,7 @@ module Hotel
 
       reservation = Reservation.new(start_date, end_date, room_num)
       @reservations << reservation
-      reservation.add_reservation(reservation)
       return reservation
-    end
-
-
-
-    def reserved_rooms_for_dates(start_date, end_date)
-      matched_date_range = []
-
-      @reservations.each do |reservation|
-        if reservation.start_date.between?(start_date, end_date)
-          matched_date_range << reservation.room_num
-        elsif reservation.end_date.between?(start_date, end_date)
-          matched_date_range << reservation.room_num
-        elsif start_date < reservation.start_date && end_date > reservation.end_date
-          matched_date_range << reservation.room_num
-        end
-      end
-
-      @blocked_blocks.each do |block|
-        if block.start_date.between?(start_date, end_date)
-          matched_date_range += block.blocked_rooms
-        elsif block.start_date.between?(start_date, end_date)
-          matched_date_range += block.blocked.rooms
-        elsif start_date < block.start_date && end_date > block.end_date
-          matched_date_range += block.blocked_rooms
-        end
-      end
-      return matched_date_range
-
-    end
-
-
-    def nonreserved_rooms_fordates(start_date, end_date)
-      matched_rooms_range = reserved_rooms_for_dates(start_date, end_date)
-      all_room_numbers = get_all_numbers
-      avail_rooms = all_room_numbers - matched_rooms_range
-      return avail_rooms
     end
 
 
@@ -116,7 +113,6 @@ module Hotel
       rooms.each do |room|
         reservation = Reservation.new(single_block.start_date, single_block.end_date, room)
         @reservations << reservation
-        reservation.add_reservation(reservation)
       end
       return @reservations
     end

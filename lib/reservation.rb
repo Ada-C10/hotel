@@ -1,9 +1,12 @@
 require 'date'
 require 'pry'
+require 'overlappable'
 
 module Hotel
 
+
   class Reservation
+    include Overlappable
 
     PRICE = 200.00
     DIS_PRICE = 150.00
@@ -17,7 +20,6 @@ module Hotel
       @start_date = start_date
       @end_date = end_date
       @room_num = room_num
-      @reservations = []
 
       check_dates(start_date, end_date)
 
@@ -42,75 +44,17 @@ module Hotel
     end
 
 
-    def add_reservation(reservation)
-      @reservations << reservation
-    end
 
     def contains?(date)
-      matches = []
-      @reservations.each do |reservation|
-        if reservation.start_date <= date && reservation.end_date > date
-          matches << reservation
-        end
-        return matches
-      end
+      start_date <= date && end_date > date
     end
 
 
 
-    # def overlap?(start_date, end_date)
-    # end
+
+
 
 
   end
 
 end
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-#___________________________________________________________________________
-
-
-# COST = 200.00
-#
-# def initialize(start_date, end_date, hotel_room)
-#   @start_date = start_date
-#   @end_date = end_date
-#   @hotel_room = hotel_room
-# end
-
-
-#calculate cost of a single reservation and make that be an attr_reader to access cost per reservation
-
-# total_money = 0
-# def cost (start_date, end_date)
-#   start_date = Date.parse(@start_date)
-#   end_date  = Date.parse(@end_date)
-#   total_money = end_day - start_day
-#   return (total_money * COST) - COST
-# end
-
-# end

@@ -2,10 +2,15 @@ require 'pry'
 require_relative 'room'
 require_relative 'reservation'
 require_relative 'hotel'
+require 'overlappable'
+
 
 module Hotel
 
   class Block
+    include Overlappable
+
+
 
     attr_reader :start_date, :end_date, :blocked_rooms, :avail_rooms, :name
 
@@ -31,7 +36,6 @@ module Hotel
       end
       return rooms
     end
-
 
 
   end
