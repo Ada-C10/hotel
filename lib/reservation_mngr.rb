@@ -1,20 +1,19 @@
 require 'time'
 require 'date'
+require 'pry'
 
 
 require_relative 'reservation'
 
 module Hotel
 
-  class Reservation_mngr < Reservation
+  class ReservationManager < Reservation
 
     attr_reader :rooms, :reservations
-    attr_accessor :current_res_id
 
     def initialize
       @rooms = build_room_list
       @reservations = []
-      @current_res_id = 1
     end
 
     def build_room_list
@@ -33,43 +32,61 @@ module Hotel
     end
 
     def find_room(check_in, check_out)
+      # find a way to use the find enumerable
+      # rm_avail = true
+      # @reservations.each do |reservation|
+      #   if room.room_number == reservation.room.room_number
+      #     if Date.strptime(check_in, '%m/%d/%Y') >= reservation.check_in && Date.strptime(check_out, '%m/%d/%Y') < reservation.check_out
+      #       rm_avail = false
+      #       break
+      #     end
+      #   else
+      #     rm_avail = false
+      #   end
+      # end
+      # if rm_avail
+      #   return room
+      # end
+      check_in = Date.strptime(check_in, '%m/%d/%Y')
+      check_out = Date.strptime(check_out, '%m/%d/%Y')
 
-      @rooms.each do |room|
-        rm_avail = true
-        @reservations.each do |reservation|
-          if room.room_number == reservation.room.room_number
-            if Date.strptime(check_in, '%m/%d/%Y') >= reservation.check_in && Date.strptime(check_out, '%m/%d/%Y') < reservation.check_out
-              rm_avail = false
-              break
-            end
-          end
+      unavailable = @reservations.collect do |reservation|
+        if check_in >= reservation.check_in && check_in < reservation.check_out
+          reservation.room
         end
-        if rm_avail
-          return room
-        end
+      end
+      if unavailable.length == 20
+        return "No rooms available"
+      else
+        return @rooms[unavailable.length]
       end
     end
 
     def create_reservation(check_in, check_out)
       check_dates(check_in, check_out)
       room = find_room(check_in, check_out)
-      reservation = Hotel::Reservation.new(reservation_id: @current_res_id, room: room, check_in: check_in, check_out: check_out)
+      reservation = Hotel::Reservation.new(room: room, check_in: check_in, check_out: check_out)
 
-      @reservations << reservation
-      if @reservations.length > 20
+
+      if reservation.room.room_number < 1 && reservation.room.room_number > 20
         raise ArgumentError
       end
-
-      @current_res_id += 1
+      @reservations << reservation
       return reservation
     end
 
-    def get_total(reservation_id)
-      raise ArgumentError if reservation_id.to_s !~ /\d/
-
+    def get_total(room, check_in, check_out)
       @reservations.each do |reservation|
-        if reservation.reservation_id == reservation_id
-          return reservation.calculate_cost
+        if reservation.room.nil? || reservation.room.room_number < 1 || reservation.room.room_number > 20
+          raise ArgumentError
+        elsif reservation.room.room_number == room
+          if check_in != reservation.check_in || check_out != reservation.check_out
+            raise ArgumentError
+          else
+            date = reservation.check_out - reservation.check_in
+            price = reservation.room.price
+            return price * date
+          end
         end
       end
     end

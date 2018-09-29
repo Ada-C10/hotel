@@ -6,11 +6,9 @@ module Hotel
     attr_accessor :room_number
     attr_reader :price
 
-    ROOM_NUMBERS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
-
     def initialize(input)
       @room_number = input[:room_number]
-      if @room_number < 1 || @room_number > 21
+      if @room_number < 1 || @room_number > 20
         raise ArgumentError
       end
       @price = input[:price]

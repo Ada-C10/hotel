@@ -15,16 +15,24 @@ describe 'Room class' do
       expect{
         Hotel::Room.new({room_number: 0, price: 200})
       }.must_raise ArgumentError
+
+      expect{
+        Hotel::Room.new({room_number: 21, price: 200})
+      }.must_raise ArgumentError
     end
 
     it "throws an argument error if price is not 200" do
+      expect{
+        Hotel::Room.new({room_number: 1, price: 100})
+      }.must_raise ArgumentError
+
       expect{
         Hotel::Room.new({room_number: 1, price: 400})
       }.must_raise ArgumentError
     end
 
     it "is set up for specific attributes and data types" do
-      [:room_number,:price].each do |prop|
+      [:room_number, :price].each do |prop|
         expect(@room).must_respond_to prop
       end
 

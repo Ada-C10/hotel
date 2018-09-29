@@ -2,19 +2,19 @@ require_relative 'spec_helper'
 
 require 'date'
 
-describe 'Reservation_mngr class' do
+describe 'ReservationManager class' do
 
-  describe "Reservation_mngr instantiation" do
+  describe "ReservationManager instantiation" do
     before do
       @room = Hotel::Room.new( {room_number: 1, price: 200} )
 
-      @res_1 = Hotel::Reservation.new( { reservation_id: 1, room: @room, check_in: "01/10/1988", check_out: "01/17/1988", cost: 1400 } )
+      @res_1 = Hotel::Reservation.new( { room: @room, check_in: "01/10/1988", check_out: "01/17/1988"} )
 
-      @front_desk = Hotel::Reservation_mngr.new()
+      @front_desk = Hotel::ReservationManager.new()
     end
 
-    it "is an instance of Reservation_mngr" do
-      expect(@front_desk).must_be_kind_of Hotel::Reservation_mngr
+    it "is an instance of ReservationManager" do
+      expect(@front_desk).must_be_kind_of Hotel::ReservationManager
     end
 
     it "is set up for specific attributes and data types" do
@@ -29,7 +29,7 @@ describe 'Reservation_mngr class' do
 
   describe "build_room_list" do
     before do
-      @front_desk = Hotel::Reservation_mngr.new()
+      @front_desk = Hotel::ReservationManager.new()
       @room_list = @front_desk.build_room_list
     end
 
@@ -40,10 +40,9 @@ describe 'Reservation_mngr class' do
 
   describe "find_room" do
     before do
-      @front_desk = Hotel::Reservation_mngr.new()
+      @front_desk = Hotel::ReservationManager.new()
       @room_list = @front_desk.build_room_list
       @front_desk.find_room("01/03/2018", "01/10/2018")
-      @rez = []
     end
 
     it "returns a room that's available" do
@@ -67,11 +66,10 @@ describe 'Reservation_mngr class' do
 
   end
 
-
   describe "create_reservation" do
     before do
       @room = Hotel::Room.new( {room_number: 1, price: 200} )
-      @front_desk = Hotel::Reservation_mngr.new()
+      @front_desk = Hotel::ReservationManager.new()
     end
 
     it "throws an ArgumentError if check_out is before check_in" do
@@ -100,19 +98,6 @@ describe 'Reservation_mngr class' do
       expect(res).must_equal 1
     end
 
-    it "increases reservation_id by 1" do
-      expect(@front_desk.current_res_id).must_equal 1
-      @front_desk.create_reservation("01/10/2018", "01/17/2018")
-      expect(@front_desk.current_res_id).must_equal 2
-    end
-
-    it "returns an error if number of reservations exceeds 20" do
-      20.times do
-        @front_desk.create_reservation("01/03/2018", "01/10/2018")
-      end
-      expect{@front_desk.create_reservation("01/03/2018", "01/10/2018")}.must_raise ArgumentError
-    end
-
     it "returns a reservation" do
       expect(@front_desk.create_reservation("01/10/2018", "01/17/2018")).must_be_kind_of Hotel::Reservation
     end
@@ -120,20 +105,16 @@ describe 'Reservation_mngr class' do
 
   describe "get_total" do
     before do
-      @front_desk = Hotel::Reservation_mngr.new()
-
-      @front_desk.create_reservation("01/10/2018", "01/17/2018")
+      @front_desk = Hotel::ReservationManager.new()
+      @front_desk.create_reservation("01/10/1988", "01/17/1988")
     end
 
-    it "throws an ArgumentError if reservation id invalid" do
+    it "calculates total cost of reservation" do
+      expect(@front_desk.get_total(1, Date.strptime("01/10/1988", '%m/%d/%Y'), Date.strptime("01/17/1988", '%m/%d/%Y') ) ).must_equal 1400
 
-      expect{@front_desk.get_total("A")}.must_raise ArgumentError
+      @front_desk.create_reservation("01/15/1988", "01/20/1988")
+
+      expect(@front_desk.get_total(2, Date.strptime("01/15/1988", '%m/%d/%Y'), Date.strptime("01/20/1988", '%m/%d/%Y') ) ).must_equal 1000
     end
-
-    it "returns reservation if id matches" do
-      expect(@front_desk.get_total(1)).must_equal 1400
-    end
-
   end
-
 end

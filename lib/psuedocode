@@ -1,0 +1,70 @@
+RESERVATION_MNGER
+
+def list_rooms
+  returns array of all room instances
+end
+
+def find_rooms(room_number)
+  returns room instance that matches room_number
+  ? call find_room instead?
+end
+
+def find_available_room(specific_date)
+  returns an instance of room that is available for a specific date
+  how do i know it's available?
+    ask all of the reservations "is this room under any reservations for some specific date?"
+end
+
+def reserve_room(room_number, start_date, end_date)
+  - takes room instance that matches room number
+  - make one new reservation for one room, for given start_date and end_date
+  - give the new reservation instance the room instance from step one
+  ? - changes availability for a period of time
+end
+
+def list_reservations
+  - returns array of all reservation instances
+end
+
+def find_reservation(reservation_id)
+  - returns reservation instance that matches reservation id
+  ? call find_reservation
+end
+
+def get_total(reservation_id)
+  - calculates each room and number of nights reserved
+  - returns total
+end
+
+
+ROOM
+
+def current_status
+ - returns available or unavailable
+end
+
+def availability
+ - returns date range of when room is available
+end
+
+def cost(number_of_nights)
+ - returns cost * number of nights reserved
+end
+
+RESERVATION
+
+def room_reserved
+ - what is the room associated with this reservation
+ - return room instance is associated with this reservation
+end
+
+def reservation_date
+  - returns date reservation begins and ends
+  - example: 02/02/2018 - 02/04/2018
+  - example: 2 days
+  ? tricky/fuzzy/needs to be investigated: what data type is this going to be?
+end
+
+def total_room_cost
+ - calculates rooms_reserved * cost
+end
