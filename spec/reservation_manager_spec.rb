@@ -58,8 +58,7 @@ describe 'ReservationManager' do
 
     it 'will return a message to user if no room available for that date' do
       date_range = (Date.parse("10/05/2018")..Date.parse("14/05/2018")).to_a
-      expect(fully_booked_manager.find_available_room(date_range)).must_be_kind_of String
-      expect(fully_booked_manager.find_available_room(date_range)).must_equal "Hotel fully booked for this date range. Try a different date."
+      expect{fully_booked_manager.find_available_room(date_range)}.must_raise StandardError
     end
 
   end
@@ -310,8 +309,7 @@ describe 'ReservationManager' do
 
     it 'will return a message to user if no rooms available for that date' do
       date_range = (Date.parse("10/05/2018")..Date.parse("14/05/2018")).to_a
-      expect(fully_booked_manager.find_all_available_rooms(date_range)).must_be_kind_of String
-      expect(fully_booked_manager.find_all_available_rooms(date_range)).must_equal "Hotel fully booked for this date range. Try a different date."
+      expect{ fully_booked_manager.find_all_available_rooms(date_range)}.must_raise StandardError
     end
   end
 

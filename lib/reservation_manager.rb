@@ -44,7 +44,7 @@ module Hotel
     #throw error if the unavailable_rooms = 20
       #throw another type of RuntimeError if no available rooms
     if available_rooms.empty?
-      return "Hotel fully booked for this date range. Try a different date."
+      raise StandardError.new("Hotel fully booked for this date range. Try a different date.")
     end
 
       #use find by to find the first number that isn't in unavailable rooms array
@@ -171,8 +171,9 @@ module Hotel
       end
 
       if available_rooms.empty?
-        return "Hotel fully booked for this date range. Try a different date."
+        raise StandardError.new("Hotel fully booked for this date range. Try a different date.")
       end
+      
       return available_rooms
     end
 
