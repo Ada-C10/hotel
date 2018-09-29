@@ -14,8 +14,6 @@ module Hotel
 
     def reservation_cost(reservation)
       # https://stackoverflow.com/questions/4502245/how-can-i-find-the-number-of-days-between-two-date-objects-in-ruby
-      # start_date = reservation.start_date
-      # end_date = reservation.end_date
       total_nights = end_date.mjd - start_date.mjd
 
       cost = total_nights * room_cost
