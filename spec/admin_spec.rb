@@ -98,12 +98,6 @@ describe "Booking" do
     end
   end
 
-  # describe "reservation_cost" do
-  #
-  #
-  #
-  # end
-
   describe "find_reservations_by_date_range" do
     it "accurately finds all reservations during that date range" do
       hotel.request_reservation("2018-12-09", "2018-12-15")
