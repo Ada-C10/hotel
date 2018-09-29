@@ -7,10 +7,17 @@ module Hotel
     def initialize(id, room, start_date, end_date, room_cost: 200)
       @id = id
       @room = room
-      @start_date = Date.parse(start_date)
-        # check_date(start_date)
-      @end_date = Date.parse(end_date)
-        # check_date(end_date)
+      if start_date.instance_of?Date
+        @start_date = start_date
+      else
+        @start_date = Date.parse(start_date)
+      end
+
+      if end_date.instance_of?Date
+        @end_date = end_date
+      else
+        @end_date = Date.parse(end_date)
+      end
 
       if @end_date < @start_date
         raise StandardError, "invalid date range"

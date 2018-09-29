@@ -89,7 +89,7 @@ describe "Booking" do
       hotel.request_reservation("2018-4-11", "2018-4-12")
       hotel.request_block_reservation(4, "2018-12-12", "2018-12-14")
 
-      jones = hotel.request_reservation_within_block(4, "2018-12-12", "2018-12-14")
+      jones = hotel.request_reservation_within_block(4)
 
       specific_date = hotel.reservations_by_date("2018-12-12")
 
@@ -116,7 +116,7 @@ describe "Booking" do
       hotel.request_reservation("2018-4-11", "2018-4-12")
       hotel.request_block_reservation(4, "2018-12-12", "2018-12-14")
 
-      jones = hotel.request_reservation_within_block(4, "2018-12-12", "2018-12-14")
+      jones = hotel.request_reservation_within_block(4)
 
       specific_dates = hotel.reservations_by_date_range("2018-12-12", "2018-12-14")
 
@@ -229,54 +229,36 @@ describe "Booking" do
     end
     it "creates new reservation within block" do
       # action
-      hotel.request_reservation_within_block(1, "2018-12-12", "2018-12-14")
+      hotel.request_reservation_within_block(1)
 
       @family_reunion.reservations.length.must_equal 1
-      # assert
     end
 
     it "selects a room already designated for that block reservation" do
-      jones = hotel.request_reservation_within_block(1, "2018-12-12", "2018-12-14")
+      jones = hotel.request_reservation_within_block(1)
 
       @family_reunion.room.must_include jones.room
     end
 
-    it "raises ArgumentError if start_time or end_time are wrong format" do
-      expect{hotel.request_reservation_within_block(1, "2018-12", "2018-12-14")}.must_raise StandardError
-      expect{hotel.request_reservation_within_block(1, "2018-12-12", "spinach")}.must_raise StandardError
-    end
-
     it "raises an argument if id is invalid" do
-      expect{hotel.request_reservation_within_block(0, "2018-12-12", "2018-12-14")}.must_raise StandardError
-      expect{hotel.request_reservation_within_block("Nine", "2018-12-12", "2018-12-14")}.must_raise StandardError
+      expect{hotel.request_reservation_within_block(0)}.must_raise StandardError
+      expect{hotel.request_reservation_within_block("Nine")}.must_raise StandardError
     end
 
     it "will reduce the number of available rooms with each reservation in block" do
-      hotel.request_reservation_within_block(1, "2018-12-12", "2018-12-14")
-      hotel.request_reservation_within_block(1, "2018-12-12", "2018-12-14")
-      hotel.request_reservation_within_block(1, "2018-12-12", "2018-12-14")
+      hotel.request_reservation_within_block(1)
+      hotel.request_reservation_within_block(1)
+      hotel.request_reservation_within_block(1)
 
       @family_reunion.rooms_available.length.must_equal 1
     end
 
     it "keeps track of reservations made within block" do
-      hotel.request_reservation_within_block(1, "2018-12-12", "2018-12-14")
-      hotel.request_reservation_within_block(1, "2018-12-12", "2018-12-14")
-      hotel.request_reservation_within_block(1, "2018-12-12", "2018-12-14")
+      hotel.request_reservation_within_block(1)
+      hotel.request_reservation_within_block(1)
+      hotel.request_reservation_within_block(1)
 
       @family_reunion.reservations.length.must_equal 3
-    end
-
-    it "throws StandardError if reservation start does not match block start date" do
-
-      expect{hotel.request_reservation_within_block(1, "2018-12-13",
-        "2018-12-14")}.must_raise StandardError
-      end
-
-    it "throws StandardError if reservation end date does not match block end date" do
-
-      expect{hotel.request_reservation_within_block(1, "2018-12-12",
-        "2018-12-17")}.must_raise StandardError
     end
   end
 end
