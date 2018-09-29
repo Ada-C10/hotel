@@ -173,7 +173,7 @@ module Hotel
       if available_rooms.empty?
         raise StandardError.new("Hotel fully booked for this date range. Try a different date.")
       end
-      
+
       return available_rooms
     end
 
