@@ -52,7 +52,7 @@ class Admin
       raise StandardError, "no rooms are available"
     else
       room = vacant_rooms.first
-      rooms.first.add_range(range)
+      room.add_range(range)
       input_data = {}
       input_data[:start_time] = start_date
       input_data[:end_time] = end_date
@@ -64,29 +64,44 @@ class Admin
   #As an administrator, I can view a list of rooms that are not reserved for a given date range
   ## expects dates to be instances of time
   def view_vacant_rooms(start_date, end_date)
+    # I am editing the rooms! it's not making a copy
+    # I am just creating a new pointer that points to the same data as what rooms points to
     vacant_rooms = @rooms
     target_range = create_hotel_range(start_date, end_date)
     vacant_rooms.each do |room|
         ranges = room.ranges
-        blocks = room.blocks
         ranges.each do |range|
             # nil means no intersection
             if intersection(target_range, range) != nil # there was a overlap
               vacant_rooms.delete(room)
-              break
+              break # where does this go? it goes to the next room, if one range conflicts, I do not have to check if the others conflicts
             end
         end
     end
+
+
     # remove rooms that have a block in them
-    # must add test for this case
-    vacant_rooms.each do |room|
-      blocks = room.blocks
-      blocks.each do |block|
-        blocks.empty? == false
-        vacant_rooms.delete(room)
+    vacant_rooms_result = vacant_rooms.select do | room |
+      if room.blocks.empty?
+        room.blocks.empty?
+      else
+        intersection(target_range, room.blocks.first[:range]) == nil
       end
     end
-    return vacant_rooms
+
+    return vacant_rooms_result
+
+    # QUEstion for later: how come this does not work without using select: Can't escape from eval with next
+
+    # vacant_rooms.each do |room|
+    #   if room.blocks.empty? == false
+    #     if intersection(target_range, room.blocks.first[:range]) != nil # there was a overlap
+    #       vacant_rooms.delete(room)
+    #     end
+    #   else # it does not have a block
+    #     next # go to the next room
+    #   end
+    # end
   end
 
   # As an administrator, I can access the list of all of the rooms in the hotel
