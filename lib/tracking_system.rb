@@ -11,7 +11,7 @@ class TrackingSystem
 
   def initialize
     @all_rooms = add_rooms
-    @reservations = []
+    @reservations = [] #when a block is created, would i instead add that number of rooms into the reservations list & change their block status?, and then when it's reserved add one set of {dates} to the reservation 
     @blocks = []
   end
 

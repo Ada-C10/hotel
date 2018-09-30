@@ -35,8 +35,12 @@ The Order class in A and B both contain #total_price. In A, the instance variabl
 
 
 6. Consider the Order#total_price method. In each implementation:
-Is logic to compute the price delegated to "lower level" classes like ShoppingCart and CartEntry, or is it retained in Order?
-Does total_price directly manipulate the instance variables of other classes?
-If we decide items are cheaper if bought in bulk, how would this change the code? Which implementation is easier to modify?
-Which implementation better adheres to the single responsibility principle?
+6.1) Is logic to compute the price delegated to "lower level" classes like ShoppingCart and CartEntry, or is it retained in Order? In A it is retained in Order, in B it is delegated.
+
+6.2) Does total_price directly manipulate the instance variables of other classes? Yes it does in A but not in B.
+
+6.3) If we decide items are cheaper if bought in bulk, how would this change the code? Which implementation is easier to modify? B is easier to modify. 
+
+6.4) Which implementation better adheres to the single responsibility principle?
 Bonus question once you've read Metz ch. 3: Which implementation is more loosely coupled?
+B is more loosely coupled and adheres better to the single responsibility principle.
