@@ -53,10 +53,10 @@ describe 'BookingSystem' do
     it 'returns an array of reservation instances' do
       expect(finder[0]).must_be_kind_of Hotel::Reservation
     end
-    it 'returns 0 if no reservations found on that day' do
+    it 'returns empty array if no reservations found on that day' do
       # admin = Hotel::BookingSystem.new
       find_date2 = "May 4 1337" # May 4 1337 used as test data for ensuring no reservations on that date"
-      expect(admin.find_reservations_by_date(find_date2)).must_equal 0
+      expect(admin.find_reservations_by_date(find_date2)).must_equal []
     end
     it 'given an id, can find a reservation' do
       # admin = Hotel::BookingSystem.new
@@ -215,14 +215,14 @@ end
       # binding.pry
       expect(@block.included_rooms).wont_include 3
     end
+
+    # TODO: make tests and methods to reserve a room within a block
+    it 'can make a reservation within a block' do
+      expect(admin.make_a_block_reservation('Johnson')).must_be_kind_of Hotel::Reservation
+    end
+
   end
-  # TODO: make tests and methods to reserve a room within a block
-  # describe 'it can make a reservation within a block' do
-  #   let(:admin) do
-  #     Hotel::BookingSystem.new
-  #   end
-  #   expect(admin.make_a_block_reservation(group_name)).must_be_kind_of Hotel::Reservation
-  # end
+
 
 end
 

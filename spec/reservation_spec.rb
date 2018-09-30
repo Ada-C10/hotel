@@ -34,66 +34,66 @@ describe 'Reservation' do
 
   it 'raises an error if end date is before start date' do
     expect {
-      rs1 = Hotel::Reservation.new(id: 110, guest_name: "Coco deVille",
-                                   included_rooms: [1, 3, 4],
-                                   rsv_start: "March 3, 2019",
-                                   rsv_end: "March 1, 2019")
+      Hotel::Reservation.new(id: 110, guest_name: "Coco deVille",
+                             included_rooms: [1, 3, 4],
+                             rsv_start: "March 3, 2019",
+                             rsv_end: "March 1, 2019")
     }.must_raise ArgumentError
   end
 
   it 'raises an error if start or end data are not provided' do
     expect {
-      rs2 = Hotel::Reservation.new(id: 110, guest_name: "Coco deVille",
-                                   included_rooms: [1, 3, 4],
-                                   rsv_start: '',
-                                   rsv_end: "March 5, 2019")
+      Hotel::Reservation.new(id: 110, guest_name: "Coco deVille",
+                             included_rooms: [1, 3, 4],
+                             rsv_start: '',
+                             rsv_end: "March 5, 2019")
     }.must_raise ArgumentError
 
     expect {
-      rs2 = Hotel::Reservation.new(id: 110, guest_name: "Coco deVille",
-                                   included_rooms: [1, 3, 4],
-                                   rsv_start: "March 5, 2019",
-                                   rsv_end: '')
+      Hotel::Reservation.new(id: 110, guest_name: "Coco deVille",
+                             included_rooms: [1, 3, 4],
+                             rsv_start: "March 5, 2019",
+                             rsv_end: '')
     }.must_raise ArgumentError
   end
 
   it 'raises an error if start or end data are not dates' do
     expect {
-      rs3 = Hotel::Reservation.new(id: 110, guest_name: "Coco deVille",
-                                   included_rooms: [1, 3, 4],
-                                   rsv_start: "bad data",
-                                   rsv_end: "March 5, 2019")
+      Hotel::Reservation.new(id: 110, guest_name: "Coco deVille",
+                             included_rooms: [1, 3, 4],
+                             rsv_start: "bad data",
+                             rsv_end: "March 5, 2019")
     }.must_raise ArgumentError
 
     expect {
-      rs3 = Hotel::Reservation.new(id: 110, guest_name: "Coco deVille",
-                                   included_rooms: [1, 3, 4],
-                                   rsv_start: "March 5, 2019",
-                                   rsv_end: "bad data")
+      Hotel::Reservation.new(id: 110, guest_name: "Coco deVille",
+                             included_rooms: [1, 3, 4],
+                             rsv_start: "March 5, 2019",
+                             rsv_end: "bad data")
     }.must_raise ArgumentError
   end
 
   it 'raises an error if no rooms are included in the booking' do
     expect {
-      rs4 = Hotel::Reservation.new(id: 104, guest_name: "Dolly Raj",
-                                   included_rooms: [],
-                                   rsv_start: "May 12, 2019",
-                                   rsv_end: "May 14, 2019")
+      Hotel::Reservation.new(id: 104, guest_name: "Dolly Raj",
+                             included_rooms: [],
+                             rsv_start: "May 12, 2019",
+                             rsv_end: "May 14, 2019")
     }.must_raise ArgumentError
   end
 
   it 'raises an error if no guest name is included in the booking' do
     expect {
-      rs5 = Hotel::Reservation.new(id: 104, guest_name: "",
-                                   included_rooms: [],
-                                   rsv_start: "May 12, 2019",
-                                   rsv_end: "May 14, 2019")
+      Hotel::Reservation.new(id: 104, guest_name: "",
+                             included_rooms: [],
+                             rsv_start: "May 12, 2019",
+                             rsv_end: "May 14, 2019")
     }.must_raise ArgumentError
     expect {
-      rs6 = Hotel::Reservation.new(id: 104, guest_name: nil,
-                                   included_rooms: [],
-                                   rsv_start: "May 12, 2019",
-                                   rsv_end: "May 14, 2019")
+      Hotel::Reservation.new(id: 104, guest_name: nil,
+                             included_rooms: [],
+                             rsv_start: "May 12, 2019",
+                             rsv_end: "May 14, 2019")
     }.must_raise ArgumentError
   end
 end

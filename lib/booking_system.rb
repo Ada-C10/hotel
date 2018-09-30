@@ -77,7 +77,7 @@ module Hotel
         end
       end
 
-      found_reservations = 0 if found_reservations.empty?
+      # found_reservations = 0 if found_reservations.empty?
 
       return found_reservations
     end
@@ -86,7 +86,6 @@ module Hotel
     def find_a_reservation(id)
       reservation = @reservations.find { |rsv| rsv.id == id }
       raise ArgumentError, 'ID does not exist' if reservation.nil?
-      # implicitly returns 0 if reservation.empty?
       return reservation
     end
 
@@ -122,15 +121,16 @@ module Hotel
     end
 
     def make_a_reservation(guest, check_in, check_out, number_of_rooms = 1, status = :BASE)
-      raise ArgumentError, 'Too many rooms' if number_of_rooms > 20 || !(number_of_rooms.is_a? Integer)
+      raise ArgumentError, 'At most 20 rooms available for booking at any time' if number_of_rooms > 20 || !(number_of_rooms.is_a? Integer)
       open_rooms = find_available_rooms(check_in, check_out).first(number_of_rooms)
+      raise StandardError, 'No rooms available' if open_rooms == []
       res_id = (@reservations.last).id + 1
       new_res = Hotel::Reservation.new(id: res_id, guest_name: guest,
                                        included_rooms: open_rooms,
                                        rsv_start: check_in,
-                                       rsv_end: check_out)
+                                       rsv_end: check_out,
+                                       status: status)
 
-      # @all_bookings << new_res
       @reservations << new_res
 
       return new_res
@@ -144,11 +144,17 @@ module Hotel
                                               included_rooms: open_block,
                                               rsv_start: check_in,
                                               rsv_end: check_out,
+                                              status: status,
                                               room_qty: number_of_rooms)
 
       @block_reservations << new_block
 
       return new_block
+    end
+
+    def make_a_block_reservation(group_name)
+      block_reservation = @block_reservations.find { |rsv| rsv.group_name == group_name }
+
     end
 
 

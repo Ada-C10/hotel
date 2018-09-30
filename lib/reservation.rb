@@ -14,18 +14,15 @@ module Hotel
       raise ArgumentError if (input[:rsv_end]).empty?
       # TODO: raise error if booking longer than x days?
       raise ArgumentError if input[:included_rooms].empty?
-      # must check nil first to stacktrace error
-      raise ArgumentError if @status == :BASE && input[:guest_name].nil? \
-                          || @status == :BASE && input[:guest_name].empty?
 
       @id = input[:id].to_i # reservation id
       @guest_name = input[:guest_name] # name of guest holding reservation
       @included_rooms = input[:included_rooms] # array - list of rooms booked for reservation
       @rsv_start = Date.parse(input[:rsv_start]) # reservation start date
       @rsv_end = Date.parse(input[:rsv_end]) # reservation end data
-      @status = :BASE # start w/ base rate, option to add BLOCK for later dev
+      @status ||= :BASE # start w/ base rate, option to add BLOCK for later dev
       # call methods to define booked dates and total cost instance variables
-      @booked_dates = get_date_range_arr(Date.parse(input[:rsv_start]), Date.parse(input[:rsv_end]))
+      @booked_dates = get_date_range_arr
       @total_cost = get_total_cost(input[:included_rooms],
                                    Date.parse(input[:rsv_start]),
                                    Date.parse(input[:rsv_end]),
@@ -36,8 +33,8 @@ module Hotel
     # would something like BookedDates = Struct.new(:rsv_start, :rsv_end) work here???
     # method to make an array of date ranges for reservation
     # date range up to but not including rsv_end
-    def get_date_range_arr(rsv_start, rsv_end)
-      (rsv_start...rsv_end).to_a.map { |day| day.to_s }
+    def get_date_range_arr
+      (@rsv_start...@rsv_end).to_a.map { |day| day.to_s }
     end
 
     def get_total_cost(included_rooms, rsv_start, rsv_end, status)

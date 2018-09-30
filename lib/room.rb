@@ -7,14 +7,12 @@ require 'csv'
 
 module Hotel
   class Room
-    attr_reader(:id)
-    attr_accessor(:cost)
+    attr_reader(:id, :cost)
     def initialize(input)
-      # binding.pry
       @id = input[:id]
-      # @booked_dates = []
       @cost = input[:cost]
     end
+
     # factory method to create room objects
     def self.all
       all_rooms = []
@@ -25,9 +23,5 @@ module Hotel
       return all_rooms
     end
 
-    # method to find a room
-    def self.find_room(id)
-      @id.find { |room| room.id == id }
-    end
   end
 end
