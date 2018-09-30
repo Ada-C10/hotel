@@ -1,4 +1,4 @@
-require_relative 'reservation_creator'
+require_relative 'reservation'
 require 'pry'
 
 module Hotel
