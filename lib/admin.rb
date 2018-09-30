@@ -195,7 +195,7 @@ class Admin
     end
     return available_rooms
   end
-
+  # it is used in view_vacant_rooms_in_block method
   def find_block(range)
     #find block
     rooms_with_blocks = @rooms.select { |room| room.blocks.empty? == false}
