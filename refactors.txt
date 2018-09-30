@@ -10,3 +10,4 @@ positional
 5. In terms of naming conventions, I tried my best to make things clear, even if it meant really long method names.
 There also aren't that many alternatives to "start_date" aside from "check_in" and may a couple of others. I felt like
 I named my classes appropriately and understand the purpose of each.
+6. Consider storing rooms with dates instead of giving each room all the dates
