@@ -31,3 +31,6 @@
 
 **Bonus question once you've read Metz ch. 3: Which implementation is more loosely coupled?**
 - Implementation B is more loosely coupled. Changing the functionality in one class, CartEntry, does not affect or cause the other classes to change. In addition, classes in Implementation B call on the methods of other classes instead of manipulating the state directly.
+
+**Identify one place in your Hotel project where a class takes on multiple roles, or directly modifies the attributes of another class. What changes would you need to make to improve this design, and how will the resulting design be an improvement?**
+- In the HotelManager class, I noticed that the make_reservation method modifies the attribute room_list of the Block class. I created an instance method in the Block class called change_status so that HotelManager does not have more than one responsibility. The change was quick, and all my tests continue to pass. The resulting design is an improvement since this functionality actually falls under what the Block class should do, I can make changes there without having to make a slew changes in other places too.

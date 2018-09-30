@@ -27,6 +27,10 @@ module Hotel
       return blocks.find {|b| b.group_name == group_name and b.start_date == start_date and b.end_date == end_date}
     end
 
+    def change_status(room_number)
+      @room_list[room_number] = :UNAVAILABLE
+    end
+
     private
     def self.create_list_with_availability(room_list)
       formatted_list = {}

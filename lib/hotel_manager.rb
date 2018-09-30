@@ -33,7 +33,9 @@ module Hotel
           num_of_rooms.times do |k|
             room_number = final_list[k]
             new_reservation = Reservation.new(room_number, start_date: start_date, end_date: end_date, room_rate: new_block.room_rate, group_name: group_name)
-            new_block.room_list[room_number] = :UNAVAILABLE
+            # Right here: I am modifying an attribute of the Block class
+            # new_block.room_list[room_number] = :UNAVAILABLE
+            new_block.change_status(room_number)
             reservations << new_reservation
           end
         end
