@@ -137,6 +137,7 @@ module HotBook
         reservation.daterange.conflict?(daterange) }
     end
 
+    #TODO: There's an inconsistency here-- daterange.conflict?(other) vs. block.conflict?(daterange)--PICK ONE!
 # Returns an array of blocks with a daterange conflict
     def conflicting_blocks(daterange)
       validate(:daterange, daterange)
