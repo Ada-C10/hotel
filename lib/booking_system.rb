@@ -64,5 +64,10 @@ module Hotel
 
       return bookings_by_date
     end
+
+    def show_available_rooms(date)
+      show = list_reservations_by_date(date).map {|reservation| reservation.room_number }
+      return list_all_rooms - show
+    end
   end
 end

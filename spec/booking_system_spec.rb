@@ -109,4 +109,11 @@ describe "BookingSystem class" do
     expect(new_reservation.room_number).must_equal 1
     expect(@booking.reservations.length).must_equal 2
   end
+
+  it "shows all room_numbers that were reserved" do
+    new_reservation = @booking.make_reservation(check_in_date: 180903, check_out_date: 180906)
+
+    expect(@booking.show_available_rooms(180904)).must_be_kind_of Array
+    expect(@booking.show_available_rooms(180904)).must_equal [*3..20]
+  end
 end
