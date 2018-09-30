@@ -63,7 +63,7 @@ describe "BookingSystem class" do
 
   it "automatically assigns room number 1 if it\'s the first booking for that date range" do
     new_reservation = @booking.make_reservation(check_in_date: 180910, check_out_date: 180911)
-
+# binding.pry
     expect(new_reservation.room_number).must_equal 1
     expect(@booking.reservations.length).must_equal 2
   end

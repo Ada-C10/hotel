@@ -10,7 +10,7 @@ module Hotel
 
       @check_out_date = Date.parse("#{input[:check_out_date]}")
       raise StandardError, "Checkout date cannot be before checkin date" unless input[:check_in_date] < input[:check_out_date]
-      @room_number = input[:room_number].nil? ? [] : input[:room_number]
+      @room_number = input[:room_number].nil? ? input[:room_number] : 1
     end
 
     def date_range
