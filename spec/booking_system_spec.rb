@@ -35,10 +35,35 @@ describe "BookingSystem class" do
     expect(@booking.list_reservations_by_date(180904)).wont_include bad_reservation
   end
 
-  # it "does not assign room when room is booked for that date" do
-  #   bad_reservation = @booking.make_reservation(check_in_date: 180904, check_out_date: 180905)
-  #
-  #   expect()
-  #
-  # end
+  it "assigns different room if room already taken for that date" do
+    sec_reservation = @booking.make_reservation(check_in_date: 180904, check_out_date: 180905)
+    third_reservation = @booking.make_reservation(check_in_date: 180904, check_out_date: 180905)
+    fourth_reservation = @booking.make_reservation(check_in_date: 180904, check_out_date: 180905)
+
+    expect(fourth_reservation.room_number).must_equal 4
+    expect(@booking.list_reservations_by_date(180904)).must_include fourth_reservation
+  end
+
+  it "raises argument error when try to overbook" do
+    19.times do
+      @booking.make_reservation(check_in_date: 180904, check_out_date: 180905)
+    end
+
+    expect{(@booking.make_reservation(check_in_date: 180904, check_out_date: 180905))}.must_raise ArgumentError
+  end
+
+  it "does not raise error when booking for 20th time on same day" do
+    19.times do
+      @booking.make_reservation(check_in_date: 180904, check_out_date: 180905)
+    end
+
+    expect(@booking.list_reservations_by_date(180904).length).must_equal 20
+  end
+
+  it "automatically assigns room number 1 if it\'s the first booking for that date range" do
+    new_reservation = @booking.make_reservation(check_in_date: 180910, check_out_date: 180911)
+
+    expect(new_reservation.room_number).must_equal 1
+    expect(@booking.reservations.length).must_equal 2
+  end
 end

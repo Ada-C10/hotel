@@ -3,12 +3,11 @@ require 'pry'
 
 module Hotel
   class BookingSystem
-    attr_reader :rooms, :reservations, :dates
+    attr_reader :rooms, :reservations
 
     def initialize
       @reservations = []
       @rooms = [*1..20]
-      @dates = []
     end
 
     def make_reservation(check_in_date:, check_out_date:)
@@ -18,22 +17,30 @@ module Hotel
 
       reservation = ReservationCreator.new(check_in_date: check_in_date, check_out_date: check_out_date, room_number: room_number)
 
+      # @reservations << reservation
 
-
-      # @dates.each do |date_with_room|
-      #   date
-      #     if reservation.date_range.include?(date) && reservation.room_number == room
-      #
-      #       reservation.room_number += 1
-      #     end
-      #     binding.pry
-      #   end
-      # end
-
-
-      @reservations << reservation
-
-      return reservation
+      # return reservation
+      if @reservations.length == 0
+        @reservations << reservation
+        return reservation
+      elsif @reservations.length >= 1
+        dates = reservation.date_range
+        dates.each do |date|
+          overlapping_bookings = list_reservations_by_date(date)
+          if overlapping_bookings.length == 0
+            @reservations << reservation
+            return reservation
+          elsif overlapping_bookings.length >= 1
+            reservation.room_number += overlapping_bookings.length
+            if reservation.room_number > 20
+              raise ArgumentError, "unable to reserve, rooms all booked"
+            end
+            
+            @reservations << reservation
+            return reservation
+          end
+        end
+      end
     end
 
     def get_available_room(check_in_date:, check_out_date:)
@@ -43,22 +50,6 @@ module Hotel
     def list_all_rooms
       return @rooms
     end
-
-    # def add_dates_with_rooms
-    #
-    #   @reservations.each do |booking|
-    #
-    #     booking.date_range.each do |date|
-    #       date_with_room = {}
-    #       # binding.pry
-    #
-    #       date_with_room[date] = booking.room_number
-    #       @dates << date_with_room
-    #     end
-    #   end
-    #
-    #   return @dates
-    # end
 
     def list_reservations_by_date(date)
       specific_date = Date.parse("#{date}")
