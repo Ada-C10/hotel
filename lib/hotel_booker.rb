@@ -16,7 +16,7 @@ module Hotel
       @rooms = []
 
       NUM_ROOMS.times do |i|
-        @rooms << Hotel::Room.new(i+1)
+        @rooms << Room.new(i+1)
       end
     end
 
@@ -26,7 +26,7 @@ module Hotel
       check_in = Date.parse(check_in)
       check_out = Date.parse(check_out)
       date_range = range(check_in, check_out)
-      reservation = Hotel::Reservation.new(id, date_range)
+      reservation = Reservation.new(id, date_range)
 
       available = unreserved_rooms(check_in, check_out)
       if available == []
@@ -50,7 +50,7 @@ module Hotel
       end
 
       rooms.times do |i|
-        reservation = Hotel::Reservation.new("BLOCK ROOM #{i+1}", date_range)
+        reservation = Reservation.new("BLOCK ROOM #{i+1}", date_range)
         available[i].cost = discount
         reservation.room = available[i]
         @unreserved_block << reservation
@@ -132,7 +132,7 @@ module Hotel
     end
 
     def range(check_in, check_out)
-      Hotel::DateRange.new(check_in, check_out)
+      DateRange.new(check_in, check_out)
     end
 
   end

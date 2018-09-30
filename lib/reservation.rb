@@ -9,7 +9,7 @@ module Hotel
       @id = id
       @date_range = date_range
       # placeholder room initation
-      @room = Hotel::Room.new(0)
+      @room = Room.new(0)
     end
 
     def cost
