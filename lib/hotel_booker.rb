@@ -20,18 +20,21 @@ module Hotel
       end
     end
 
+    def available?(available_rooms)
+      if available_rooms.empty?
+        raise StandardError, "There are no more available rooms for this date range!"
+      end
+    end
+
 
     # arguments for check_in and check_out are Strings
     def make_reservation(id, check_in, check_out)
       check_in = Date.parse(check_in)
       check_out = Date.parse(check_out)
-      date_range = range(check_in, check_out)
-      reservation = Reservation.new(id, date_range)
+      reservation = Reservation.new(id, range(check_in, check_out))
 
       available = unreserved_rooms(check_in, check_out)
-      if available == []
-        raise StandardError, "There are no more available rooms for this date range!"
-      end
+      available?(available)
 
       reservation.room = available[0]
       @reservations << reservation
@@ -61,10 +64,7 @@ module Hotel
 
 
     def make_block_reservation(id)
-      if @unreserved_block.length ==  0
-        raise StandardError, "There are no available Block reservations."
-      end
-
+      available?(@unreserved_block)
       @reserved_block << @unreserved_block[0]
       @unreserved_block.delete_at(0)
     end
