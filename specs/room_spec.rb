@@ -7,13 +7,10 @@ describe 'Rooms Class' do
       expect(test_room).must_be_kind_of Hotel::Room
     end
   end
-  it 'has a room number' do
-    @room = Hotel::Room.new(1)
-    expect(@room.room_number).must_equal 1
-  end
 
   it 'creates a list of twenty rooms' do
-    @all_rooms = Hotel::Room.create_rooms
-    expect(@all_rooms.length).must_equal 20
-  end
+     @all_rooms = Hotel::Room.create_rooms
+     expect(@all_rooms.length).must_equal 20
+   end
+
 end
