@@ -1,7 +1,7 @@
 require 'date'
 
 module Hotel
-  class ReservationCreator
+  class Reservation
     attr_reader :check_in_date, :check_out_date
     attr_accessor :room_number
 
@@ -9,7 +9,7 @@ module Hotel
       @check_in_date = Date.parse("#{input[:check_in_date]}")
 
       @check_out_date = Date.parse("#{input[:check_out_date]}")
-        raise StandardError, "Checkout date cannot be before checkin date" unless input[:check_in_date] < input[:check_out_date]
+      raise StandardError, "Checkout date cannot be before checkin date" unless input[:check_in_date] < input[:check_out_date]
       @room_number = input[:room_number].nil? ? [] : input[:room_number]
     end
 

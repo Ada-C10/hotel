@@ -15,7 +15,7 @@ module Hotel
 
       room_number = get_available_room(check_in_date: check_in_date, check_out_date: check_out_date)
 
-      reservation = ReservationCreator.new(check_in_date: check_in_date, check_out_date: check_out_date, room_number: room_number)
+      reservation = Reservation.new(check_in_date: check_in_date, check_out_date: check_out_date, room_number: room_number)
 
       if @reservations.length == 0
         @reservations << reservation

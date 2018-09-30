@@ -12,7 +12,7 @@ describe "BookingSystem class" do
 
   it "returns an array of all instances of reservations created" do
     expect(@booking.reservations).must_be_kind_of Array
-    expect(@booking.reservations[0]).must_be_kind_of Hotel::ReservationCreator
+    expect(@booking.reservations[0]).must_be_kind_of Hotel::Reservation
   end
 
   it "returns array of all room numbers in hotel" do
@@ -21,7 +21,7 @@ describe "BookingSystem class" do
   end
 
   it "returns array of dates" do
-    expect(@reservation).must_be_kind_of Hotel::ReservationCreator
+    expect(@reservation).must_be_kind_of Hotel::Reservation
     expect(@reservation.date_range).must_equal [Date.parse("180904"), Date.parse("180905"), Date.parse("180906")]
   end
 
