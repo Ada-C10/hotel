@@ -1,4 +1,4 @@
-# hotel/refactors.txt
+# hotbook/refactors.txt
 
 1. Create "rooms" CSV and load into hotel class into hash. Unless rooms have a lot more information than just room number and rate, they don't have to become a Rooms class object yet. The Hotel class is named Hotel rather than Rooms so as not to be confusing. There's a tradeoff there.
 

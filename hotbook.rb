@@ -17,7 +17,7 @@ end
 
 # all of the classes that live in the module
 require_relative "lib/block.rb"
-require_relative "lib/book.rb"
+require_relative "lib/bookingsmanager.rb"
 require_relative "lib/daterange.rb"
 require_relative "lib/errors.rb"
 require_relative "lib/hotel.rb"

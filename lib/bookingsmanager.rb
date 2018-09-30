@@ -1,11 +1,11 @@
 module HotBook
-# The Book class is responsible for:
+# The BookingsManager class is responsible for:
 # holding all reservations and blocks,
 # searching through them, and
 # making new reservations and blocks.
 # It includes support methods for determining availability/conflicts.
 
-  class Book
+  class BookingsManager
     attr_reader :reservations, :hotel, :blocks
 
     def initialize(hotel) # expects a dependency injection (HotBook::Hotel.new)
