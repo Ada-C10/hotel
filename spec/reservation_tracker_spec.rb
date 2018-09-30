@@ -73,6 +73,14 @@ describe 'ReservationTracker class' do
       # binding.pry
       expect(@reservation_tracker.blocks.length ).must_equal 1
     end
+
+    it 'should create an array of rooms for the block' do
+      date = Date.today
+      @reservation_tracker.create_rooms
+      @reservation_tracker.create_a_block(date + 2, date + 7, 5)
+      expect(@reservation_tracker.blocks).must_be_kind_of Array
+    end
+
   end
 
   # don't think I need this since I check this in the reserve_room method.
