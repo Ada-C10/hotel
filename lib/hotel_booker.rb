@@ -26,6 +26,9 @@ module Hotel
       end
     end
 
+    def range(check_in, check_out)
+      DateRange.new(check_in, check_out)
+    end
 
     # arguments for check_in and check_out are Strings
     def make_reservation(id, check_in, check_out)
@@ -101,11 +104,8 @@ module Hotel
     end
 
     def unreserved_block_rooms
-      unreserved_block_rooms = []
-      @unreserved_block.each do |reservation|
-        unreserved_block_rooms << reservation.room
-      end
-
+      unreserved_block_rooms =
+      @unreserved_block.map { |reservation| reservation.room }
       return unreserved_block_rooms
     end
 
@@ -129,10 +129,6 @@ module Hotel
       end
 
       return matching_reservations
-    end
-
-    def range(check_in, check_out)
-      DateRange.new(check_in, check_out)
     end
 
   end
