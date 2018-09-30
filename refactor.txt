@@ -7,6 +7,6 @@
 6. move all helper methods into it's own class and keep admin tasks in its class
 
 one refactor can be the bug that I have where a reserve_room - check this method is grabbing the two rooms from my block
--check if room -> block <- is the @number here, the room for the block? verify this!
+-check if room -> block <- is the @number here, the room for the block? verify this! Yes, it is the room number
 
-finish the reservation to reflect current reservations including the block room 
+finish the reservation to reflect current reservations including the block room
