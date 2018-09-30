@@ -1,5 +1,6 @@
 # create module for reservations to hold classes
 require 'pry'
+<<<<<<< HEAD
 require_relative 'date_range'
 module Hotel
 
@@ -8,10 +9,23 @@ module Hotel
     attr_accessor :cost
 
     def initialize(start_date,end_date, cost)
+=======
+require_relative 'hotel_admin.rb'
+module Reservation
+
+  class ReserveRoom
+    attr_accessor :room_status, :start_date, :end_date, :cost, :res_id
+
+    def initialize( start_date_time, end_date_time, res_id, cost = 200)
+      @start_date = DateTime.strptime(start_date_time + " 15:00", "%m/%d/%y %H:%M")
+      @end_date = DateTime.strptime(end_date_time + " 11:00", "%m/%d/%y %H:%M")
+      @res_id = res_id
+>>>>>>> 7ad404c6cf9267bef449cee230493c6008ca966b
       @cost = cost
       super(start_date, end_date)
     end
 
+<<<<<<< HEAD
     def self.create_reservation
     end
 
@@ -24,6 +38,25 @@ module Hotel
       dates = DateRange.new(start_date, end_date)
       available_rooms = @rooms
     end
+=======
+    # def self.create_reservation
+    # end
+
+    def calculate_cost
+      num_nights = (end_date - start_date).to_i
+      @room_cost = (num_nights + 1) * 200.to_f
+    end
+
+    # def check_room_status
+    #   @rooms.each do |status|
+    #     if :room_status == :Available
+    #       puts 'Room is Available.'
+    #     elsif :room_status == :Unavailable
+    #       puts 'Room is Unavailable.'
+    #     end
+    #   end
+    # end
+>>>>>>> 7ad404c6cf9267bef449cee230493c6008ca966b
   end
 end
 
