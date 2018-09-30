@@ -37,8 +37,8 @@ describe "BookingSystem class" do
   end
 
   it "assigns different room number if room number is already taken for existing reservation" do
-    sec_reservation = @booking.make_reservation(check_in_date: 180904, check_out_date: 180905)
-    third_reservation = @booking.make_reservation(check_in_date: 180904, check_out_date: 180905)
+    @booking.make_reservation(check_in_date: 180904, check_out_date: 180905)
+    @booking.make_reservation(check_in_date: 180904, check_out_date: 180905)
     fourth_reservation = @booking.make_reservation(check_in_date: 180904, check_out_date: 180905)
 
     expect(fourth_reservation.room_number).must_equal 4
@@ -111,7 +111,7 @@ describe "BookingSystem class" do
   end
 
   it "shows all room_numbers that were reserved" do
-    new_reservation = @booking.make_reservation(check_in_date: 180903, check_out_date: 180906)
+    @booking.make_reservation(check_in_date: 180903, check_out_date: 180906)
 
     expect(@booking.show_available_rooms(180904)).must_be_kind_of Array
     expect(@booking.show_available_rooms(180904)).must_equal [*3..20]

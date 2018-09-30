@@ -12,7 +12,7 @@ describe "ReservationCreator class" do
   end
 
   it "raises ArgumentError if check out date is before check in date" do
-    expect{(list = Hotel::ReservationCreator.new(180904, 180903))}.must_raise StandardError
+    expect{(Hotel::ReservationCreator.new(180904, 180903))}.must_raise StandardError
   end
 
   it "returns all dates in date range" do

@@ -11,15 +11,12 @@ module Hotel
     end
 
     def make_reservation(check_in_date:, check_out_date:)
-      # TODO find a room that's available
+      # TODO: find a room that's available
 
       room_number = get_available_room(check_in_date: check_in_date, check_out_date: check_out_date)
 
       reservation = ReservationCreator.new(check_in_date: check_in_date, check_out_date: check_out_date, room_number: room_number)
 
-      # @reservations << reservation
-
-      # return reservation
       if @reservations.length == 0
         @reservations << reservation
         return reservation
