@@ -1,6 +1,6 @@
 require_relative 'spec_helper'
 
-#
+
 # describe "Rooms class" do
 #   describe "Initializer in Rooms" do
 #

@@ -2,6 +2,22 @@ require_relative 'spec_helper'
 
 describe "Reservation Class" do
   describe "Initializer in  Reservation" do
+
+    it "loads 20 rooms" do
+      admin = Front_Desk.new
+      rooms = admin.load_rooms
+      expect(rooms).must_be_kind_of Array
+      expect(rooms.length).must_equal 20
+    end
+
+    it "returns an array that has instances of room" do
+      admin = Front_Desk.new
+      rooms = admin.load_rooms
+      rooms.each do |room|
+        expect(room).must_be_kind_of Room
+      end
+    end
+
     before do
       @reservation_info = {
         room_number: 1,
