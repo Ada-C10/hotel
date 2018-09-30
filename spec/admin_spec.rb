@@ -206,8 +206,10 @@ describe "Booking" do
   end
 
   describe "find reservation by id" do
-    it "find correct reservation instance from argument" do
+    before do
       hotel.request_reservation("2018-12-09", "2018-12-15")
+    end
+    it "find correct reservation instance from argument" do
       hotel.request_block_reservation(4, "2018-12-12", "2018-12-14")
 
       correct_reservation = hotel.find_reservation_by_id(2)
@@ -216,10 +218,12 @@ describe "Booking" do
     end
 
     it "raises StandardError for invalid id" do
-      hotel.request_reservation("2018-12-09", "2018-12-15")
-
       expect{hotel.find_reservation_by_id(0)}.must_raise StandardError
       expect{hotel.find_reservation_by_id("Nine")}.must_raise StandardError
+    end
+
+    it "raises StandardError for reservation not found" do
+      expect{hotel.find_reservation_by_id(5)}.must_raise StandardError
     end
   end
 

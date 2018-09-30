@@ -45,8 +45,6 @@ module Hotel
     # param: reservation number
     # returns - new reservation instance
     def request_reservation_within_block(id)
-      check_id(id)
-
       block_reservation = find_reservation_by_id(id)
 
       id = block_reservation.reservations.length + 1
@@ -69,6 +67,7 @@ module Hotel
 
       specific_reservation = @reservations.find { |reservation|
         reservation.id == id }
+        raise StandardError, "Reservation cannot be found" if specific_reservation.nil?
       return specific_reservation
     end
     #param - date
