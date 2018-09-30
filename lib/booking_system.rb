@@ -27,19 +27,19 @@ module Hotel
         dates = reservation.date_range
         dates.each do |date|
           overlapping_bookings = list_reservations_by_date(date)
-          if overlapping_bookings.length == 0
-            @reservations << reservation
-            return reservation
-          elsif overlapping_bookings.length >= 1
+          if overlapping_bookings.length >= 1
             reservation.room_number += overlapping_bookings.length
             if reservation.room_number > 20
               raise ArgumentError, "unable to reserve, rooms all booked"
             end
-            
+
             @reservations << reservation
             return reservation
           end
         end
+
+        @reservations << reservation
+        return reservation
       end
     end
 
