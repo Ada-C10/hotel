@@ -1,0 +1,5 @@
+refactor plan for hotel project
+
+#1. in hotel project, I have used an array of the available room & date combinations as the instant variable in the admin class, which need to occupy lot of the space. Each time, when a reservation made, a list of the room_date combination need to be removed from the the available list, which might need a long processing time to accomplish that.  To improve, I plan to change the that design . I will use the list of reservations to replace the list of the available room & date combinations. in that case, although the logic to check if a room is available on a specific period is more complicated than my original design, it might save the space and the time needed to processing.
+
+#2 the block_admin class is a child class of admin class, which made the design very complicated, will keep the block class, but instead of make it inherit from admin class, will make it a totally independent. 

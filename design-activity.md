@@ -38,7 +38,7 @@ The lists are the same.
 # Does total_price directly manipulate the instance variables of other classes?
 
    B: does not directly manipulate the instance variable s of other classes.
-   A: need to access the price and quantity of CartEntry class through ShoppingCart class . 
+   A: need to access the price and quantity of CartEntry class through ShoppingCart class .
 
 # If we decide items are cheaper if bought in bulk, how would this change the code? Which implementation is easier to modify?
   we need to add a conditional statement when calculating the price of that entry, the price should be discounted based on the quantity.
@@ -52,3 +52,7 @@ The lists are the same.
 
 # Bonus question once you've read Metz ch. 3: Which implementation is more loosely coupled?
   B is loosely coupled.
+
+# What changes need to make to the design of the hotel class? pick one.
+  the block_admin class is a child class of admin class, which made the design very complicated, will keep the block class, but instead of make it inherit from admin class, will make it totally independent.
+  
