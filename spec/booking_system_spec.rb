@@ -166,11 +166,23 @@ describe "BookingSystem Class" do
       expect(@reservation.make_reservation(@date_range_1).room_number).must_equal 14
     end
 
-    it 'Adds each instance of reservation into the the @reservations instance variable' do
+    it 'Adds each instance of reservation into the @reservations instance variable' do
       new_res = @reservation.make_reservation(@date_range_1)
 
       expect(@reservation.reservations.length).must_equal 11
     end
+  end
+
+  describe 'reserve_block_rooms method' do
+  end
+
+  describe 'find_block method' do
+  end
+
+  describe 'find_room_in_block method' do
+  end
+
+  describe 'make_reservation_from_block' do
   end
 
 

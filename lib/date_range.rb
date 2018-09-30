@@ -21,37 +21,17 @@ module Hotel
       booked_dates = [*date_range.start_date..date_range.end_date]
       new_dates = [*@start_date..@end_date]
 
-      #TODO: refactor 
 
-      # completely containing
-      if new_dates.first < booked_dates.first && new_dates.last > booked_dates.last
+      if !(new_dates.first >= booked_dates.last || new_dates.last <= booked_dates.first)
+        # dates overlap
         return true
-        # back end
-      elsif new_dates.first < booked_dates.last && new_dates.last > booked_dates.last
-        return true
-        # in the middle
-      elsif new_dates.first > booked_dates.first && new_dates.last < booked_dates.last
-        return true
-        # in the front
-      elsif new_dates.first < booked_dates.first && new_dates.last > booked_dates.first
-        return true
-        # completely before
-      elsif new_dates.last < booked_dates.first
-        return false
-        # completely after
-      elsif new_dates.first > booked_dates.last
-        return false
-        # ends on check-in date
-      elsif new_dates.last == booked_dates.first
-        return false
-        # same dates
-      elsif new_dates.first == booked_dates.first || new_dates.last == booked_dates.first
+      elsif new_dates.first < booked_dates.first && new_dates.last >= booked_dates.last
+        # dates are containing
         return true
       end
 
       return false
     end
-
 
   end
 end
