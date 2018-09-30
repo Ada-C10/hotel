@@ -1,0 +1,24 @@
+Future changes:
+- Move reservation_charge method to reservation class
+- Create a primary key or hash value of some kind that tracks
+that accompanies each reservation as an attribute
+- Stop alternating between party name and guest email. Give every
+reservation instance a block party name and a contact information
+attribute. For non-block reservations then the block party name
+can be nil
+- Create csv test data so that spec files will be readable and cleaner.
+Tests are very haphazard right now and I'd like to run the tests on a hotel
+instance with more bookings.
+- move reserve_room and build_reservation to the reservation class
+- ? remove build_rooms from the HotelAdmin class and instead have
+a method in HotelAdmin that you'd just pass a room into that would
+add the room to @rooms. No reason to create the rooms from HotelAdmin??
+- Naming Conventions? I feel comfortable with the way I've named things
+(other than the fact that I'm not storing the right amount of attributes
+for reservations, as mentioned above). Maybe I am too close to the project
+at this time to identify the problems with my class and method names.
+
+Questions:
+What are the problems with the way I've implemented the block?
+Should the blocks be separate instances or a separate class?
+If so... why?

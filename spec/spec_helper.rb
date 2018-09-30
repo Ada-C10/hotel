@@ -1,7 +1,11 @@
+require 'simplecov'
+SimpleCov.start
 require 'minitest'
 require 'minitest/autorun'
 require 'minitest/reporters'
-# Add simplecov
+require_relative '../lib/reservation'
+require_relative '../lib/room'
+require_relative '../lib/hoteladmin'
 
 Minitest::Reporters.use! Minitest::Reporters::SpecReporter.new
 
