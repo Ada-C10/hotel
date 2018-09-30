@@ -31,7 +31,9 @@ In Implementation B, ```total_price``` only interacts with ```ShoppingCart```'s 
 
 **If we decide items are cheaper if bought in bulk, how would this change the code? Which implementation is easier to modify?**
 We would need to change the code in ```CartEntry``` to add a discount for bulk items (likely an optional parameter) and a way to determine if ```quantity``` meets the threshold for the bulk item discount (likely through a conditional).  Implementation B would be easier to modify, since you'd really only need to make an edit in one place (```CartEntry```), whereas more work would be needed in Implementation A since it doesn't know anything about a discount or bulk quantity criteria yet those influence the pricing for each item (which Implementation A's ```Order``` directly references).
+
 **Which implementation better adheres to the single responsibility principle?**
 Implementation B. ```Order``` in Implementation A does too much work and knows too much about ```CartEntry``` in particular.
+
 ***Bonus question once you've read Metz ch. 3: Which implementation is more loosely coupled?**
 Implementation B (see above).
