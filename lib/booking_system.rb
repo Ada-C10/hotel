@@ -13,10 +13,6 @@ module Hotel
       @block_rooms = []
     end
 
-    def list_rooms
-      return @rooms
-    end
-
     def list_reservations(date_range)
       return @reservations.select { |res| res.date_range == date_range }
     end
