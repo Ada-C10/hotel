@@ -48,7 +48,7 @@ describe "BookingSystem Class" do
 
   describe "list_rooms method" do
     it 'Returns an array of room numbers' do
-      expect(@reservation.list_rooms).must_be_kind_of Array
+      expect(@reservation.rooms).must_be_kind_of Array
       expect(@reservation.rooms.length).must_equal 20
     end
   end
