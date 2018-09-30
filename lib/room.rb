@@ -1,7 +1,5 @@
 require_relative 'hotel_helper'
 
-# class Room manages room availablility (status)
-# (with room number and a calendar of availability)
 module Hotel
   class Room
     attr_reader :id, :block
