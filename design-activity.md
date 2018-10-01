@@ -39,4 +39,4 @@ Implementation B. ```Order``` in Implementation A does too much work and knows t
 Implementation B (see above).
 
 Activity
-- I will add a method to my Calendar class to calculate the number of nights reserved. Right now, this is something I calculate in Reservation in the total_stay_cost method. But because it is date-related, I think I should move it to Calendar. And then I can use it in Reservation since it inherits from Calendar.
+- I will add a method to my Calendar class to calculate the number of nights reserved. Right now, this is something I calculate in Reservation in #total_stay_cost. But because it is date-related, I think I should move it to Calendar. And then I can interact with it in Reservation. I can also interact with it in the RoomBlock class since I calculate costs there.

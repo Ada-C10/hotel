@@ -34,8 +34,7 @@ module Hotel
     end
 
     def total_stay_cost_room()
-      length_in_days = @check_out - @check_in
-      return discounted_rate() * length_in_days
+      return discounted_rate() * nights_reserved
     end
 
     def total_stay_cost_block()
