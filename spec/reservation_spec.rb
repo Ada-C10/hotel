@@ -33,9 +33,12 @@ describe "a reservation" do
   end
 
   it "checks to see if a given date is within a reservation" do
-
     @reservation.within_reservation?(@check_in).must_equal true
   end
 
+  it "does not return true if check in date is after check out date" do
+    wrong_date = Date.new(2020, 8, 24)
+    @reservation.within_reservation?(wrong_date).must_equal false
+  end
 
 end

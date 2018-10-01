@@ -39,4 +39,22 @@ describe "a date range" do
     @date_range.include?(@check_in).must_equal true
   end
 
+  it "returns false if given date is before checkin" do
+
+    @date_range.include?(@check_in - 2).must_equal false
+  end
+
+  it "returns true if given date is within date range" do
+    @date_range.include?(@check_in + 1).must_equal true
+  end
+
+  it "returns false if given date is on the check out day" do
+    @date_range.include?(@check_out).must_equal false
+  end
+
+  it "returns false if given date is after the check out date" do
+    @date_range.include?(@check_out + 1).must_equal false
+  end
+
+
 end

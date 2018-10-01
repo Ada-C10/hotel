@@ -6,7 +6,7 @@ module Hotel
 
     def initilize(room_rate, date_range, room_numbers)
       unless room_numbers.length <= MAX_ROOM_BLOCK
-        raise ArgumentError
+        raise ArgumentError("Block of Room request denied. Request exceeds maximum of 5 rooms.")
       end
 
       @room_numbers = room_numbers

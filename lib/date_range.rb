@@ -6,7 +6,7 @@ module Hotel
 
     def initialize(start_date, end_date)
       if (end_date < start_date)
-        raise StandardError
+        raise StandardError("Check In date must be prior to Check Out date. ")
       end
 
       @start_date = start_date

@@ -25,6 +25,7 @@ describe "what the hotel booking system does" do
   end
 
   it "returns all reservations" do
+    @booking_system.reservations.length.must_equal 0
     @booking_system.book_room(@room_number, @check_in, @check_out)
     @booking_system.must_respond_to :reservations
     @booking_system.reservations.length.must_equal 1
@@ -36,6 +37,7 @@ describe "what the hotel booking system does" do
 
   it "returns list of reservations on a given date" do
     @booking_system.reservations_on_date(@check_in).must_be_kind_of Array
+    
   end
 
   it "returns a list of available rooms" do
@@ -46,7 +48,9 @@ describe "what the hotel booking system does" do
 
   it "raises ArgumentError if requested room is unavailable" do
     @booking_system.book_room(@room_number, @check_in, @check_out)
-    expect { @booking_system.book_room(@room_number, @check_in, @check_out) }.must_raise ArgumentError
+    expect {
+        @booking_system.book_room(@room_number, @check_in, @check_out)
+      }.must_raise ArgumentError
   end
 
   it "allows a reservation to start on the same day that another ends" do
