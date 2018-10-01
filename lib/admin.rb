@@ -2,7 +2,7 @@ require 'pry'
 require 'date'
 require_relative 'reservation'
 require_relative 'room'
-
+require_relative 'block_admin'
 
 class Admin
   attr_reader :reservations, :rooms, :room_unbooked_dates, :room_blocks, :start_date, :end_date
@@ -52,7 +52,7 @@ class Admin
   end
 
   # make new reservations
-  def make_reservation(reservation_id, customer_name, start_date, end_date)
+  def make_reservation(customer_name, start_date, end_date)
 
     check_input_dates(start_date, end_date)
     if start_date < @start_date || (end_date > @end_date)
@@ -67,7 +67,7 @@ class Admin
       room = rooms_not_booked.first
     end
 
-    result = create_reservation(reservation_id, customer_name, room, start_date, end_date)
+    result = create_reservation(customer_name, room, start_date, end_date)
     @reservations << result
     start_d = start_date
 
@@ -144,7 +144,7 @@ class Admin
 
   # find reservation obj by id
   def find_reservation(id)
-    raise ArgumentError, "ID cannot be blank or less than zero. (got #{id})" if id.nil? || id <= 0
+
     return @reservations.find {|reserve| reserve.id == id }
 
   end
@@ -168,8 +168,8 @@ class Admin
     end
 
    # create new instance of reservation object
-    def create_reservation(reservation_id, customer_name, room, start_date, end_date)
-      return Reservation.new(reservation_id, customer_name, room, start_date, end_date)
+    def create_reservation(customer_name, room, start_date, end_date)
+      return Reservation.new(customer_name, room, start_date, end_date)
     end
 
     # create new room object

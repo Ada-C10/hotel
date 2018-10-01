@@ -28,15 +28,15 @@ describe "Admin class" do
     before do
       @start_date_1 = Date.new(2018,12,4)
       @end_date_1 = Date.new(2018,12,6)
-      @res_1 = @admin_1.make_reservation(1,"Mike Murry",@start_date_1, @end_date_1)
+      @res_1 = @admin_1.make_reservation("Mike Murry",@start_date_1, @end_date_1)
       @count_1 = @admin_1.reservations.count
       @start_date_2 = Date.new(2018,12,5)
       @end_date_2 = Date.new(2018,12,7)
-      @res_2 = @admin_1.make_reservation(2,"Julie Smith",@start_date_2, @end_date_2)
+      @res_2 = @admin_1.make_reservation("Julie Smith",@start_date_2, @end_date_2)
       @count_2 = @admin_1.reservations.count
 
       20.times do |i|
-        @admin_1.make_reservation(@count_2 + i + 1, "Lily Xia", Date.new(2018,9,25), Date.new(2018,9,27))
+        @admin_1.make_reservation("Lily Xia", Date.new(2018,10,25), Date.new(2018,10,27))
       end
     end
 
@@ -73,20 +73,20 @@ describe "Admin class" do
     it "raise ArgumentError if start_date is not ealier than end_date" do
       start_date_3 = Date.new(2018,12,5)
       end_date_3 = Date.new(2018,12,3)
-      expect{@admin_1.make_reservation(23,"Jessica lee", start_date_3,end_date_3)}.must_raise ArgumentError
+      expect{@admin_1.make_reservation("Jessica lee", start_date_3,end_date_3)}.must_raise ArgumentError
 
     end
 
     it "raise ArgumentError if start_date is ealier than today" do
       start_date_3 = Date.new(2018,8,5)
       end_date_3 = Date.new(2018,12,3)
-      expect{@admin_1.make_reservation(23,"Jessca lee",start_date_3,end_date_3)}.must_raise ArgumentError
+      expect{@admin_1.make_reservation("Jessca lee",start_date_3,end_date_3)}.must_raise ArgumentError
 
     end
 
     it "will raise ArgumentError when no room is available for trip" do
 
-      expect{@admin_1.make_reservation(23,"Jessica lee",Date.new(2018,9,25),Date.new(2018,9,26))}.must_raise ArgumentError
+      expect{@admin_1.make_reservation("Jessica lee",Date.new(2018,10,25),Date.new(2018,10,26))}.must_raise ArgumentError
     end
 
     it "will not create a reservation if no room is available" do
@@ -101,11 +101,11 @@ describe "Admin class" do
     before do
       @start_date_1 = Date.new(2018,12,4)
       @end_date_1 = Date.new(2018,12,6)
-      @res_1 = @admin_1.make_reservation(2,"Mike Murry",@start_date_1, @end_date_1)
+      @res_1 = @admin_1.make_reservation("Mike Murry",@start_date_1, @end_date_1)
       @count_1 = @admin_1.reservations.count
       @start_date_2 = Date.new(2018,12,5)
       @end_date_2 = Date.new(2018,12,7)
-      @res_2 = @admin_1.make_reservation(3,"Julie Smith",@start_date_2, @end_date_2)
+      @res_2 = @admin_1.make_reservation("Julie Smith",@start_date_2, @end_date_2)
       @count_2 = @admin_1.reservations.count
 
     end
@@ -140,22 +140,21 @@ describe "Admin class" do
     before do
       @start_date_1 = Date.new(2018,12,4)
       @end_date_1 = Date.new(2018,12,6)
-      @res_1 = @admin_1.make_reservation(2,"Mike Murry",@start_date_1, @end_date_1)
+      @res_1 = @admin_1.make_reservation("Mike Murry",@start_date_1, @end_date_1)
       @count_1 = @admin_1.reservations.count
       @start_date_2 = Date.new(2018,12,5)
       @end_date_2 = Date.new(2018,12,7)
-      @res_2 = @admin_1.make_reservation(3,"Julie Smith",@start_date_2, @end_date_2)
+      @res_2 = @admin_1.make_reservation("Julie Smith",@start_date_2, @end_date_2)
       @count_2 = @admin_1.reservations.count
 
     end
 
-    it "throws an argument error for a bad ID" do
-      expect{ @admin_1.find_reservation(0) }.must_raise ArgumentError
 
-    end
 
     it "finds a reservation instance" do
-      reserve_found = @admin_1.find_reservation(2)
+      res_id = @res_1.id
+
+      reserve_found = @admin_1.find_reservation(res_id)
       # binding.pry
       expect(reserve_found).must_be_kind_of Reservation
       expect(reserve_found).must_equal @res_1
@@ -166,17 +165,18 @@ describe "Admin class" do
     before do
       @start_date_1 = Date.new(2018,12,4)
       @end_date_1 = Date.new(2018,12,6)
-      @res_1 = @admin_1.make_reservation(2,"Mike Murry",@start_date_1, @end_date_1)
+      @res_1 = @admin_1.make_reservation("Mike Murry",@start_date_1, @end_date_1)
       @count_1 = @admin_1.reservations.count
       @start_date_2 = Date.new(2018,12,5)
       @end_date_2 = Date.new(2018,12,7)
-      @res_2 = @admin_1.make_reservation(3,"Julie Smith",@start_date_2, @end_date_2)
+      @res_2 = @admin_1.make_reservation("Julie Smith",@start_date_2, @end_date_2)
       @count_2 = @admin_1.reservations.count
 
     end
 
     it "returns the right number" do
-      cost = @admin_1.calculate_cost(2)
+      res_id = @res_1.id
+      cost = @admin_1.calculate_cost(res_id)
       expect(cost).must_equal 400
     end
   end
@@ -185,11 +185,11 @@ describe "Admin class" do
     before do
       @start_date_1 = Date.new(2018,12,4)
       @end_date_1 = Date.new(2018,12,6)
-      @res_1 = @admin_1.make_reservation(2,"Mike Murry",@start_date_1, @end_date_1)
+      @res_1 = @admin_1.make_reservation("Mike Murry",@start_date_1, @end_date_1)
 
       @start_date_2 = Date.new(2018,12,5)
       @end_date_2 = Date.new(2018,12,7)
-      @res_2 = @admin_1.make_reservation(3,"Julie Smith",@start_date_2, @end_date_2)
+      @res_2 = @admin_1.make_reservation("Julie Smith",@start_date_2, @end_date_2)
 
     end
 
@@ -219,15 +219,15 @@ describe "Admin class" do
     before do
       @start_date_1 = Date.new(2018,12,4)
       @end_date_1 = Date.new(2018,12,6)
-      @res_1 = @admin_1.make_reservation(1,"Mike Murry",@start_date_1, @end_date_1)
+      @res_1 = @admin_1.make_reservation("Mike Murry",@start_date_1, @end_date_1)
       @count_1 = @admin_1.reservations.count
       @start_date_2 = Date.new(2018,12,5)
       @end_date_2 = Date.new(2018,12,7)
-      @res_2 = @admin_1.make_reservation(2,"Julie Smith",@start_date_2, @end_date_2)
+      @res_2 = @admin_1.make_reservation("Julie Smith",@start_date_2, @end_date_2)
       @count_2 = @admin_1.reservations.count
 
       20.times do |i|
-        @admin_1.make_reservation(@count_2 + i + 1, "Lily Xia", Date.new(2018,9,25), Date.new(2018,9,27))
+        @admin_1.make_reservation("Lily Xia", Date.new(2018,10,25), Date.new(2018,10,27))
       end
 
       @name_of_block = "tech_forum"
@@ -257,11 +257,11 @@ describe "Admin class" do
     end
 
     it "raise ArgumentError if room specified was not available in that period" do
-      expect{@admin_1.create_room_block("block1",[1,2], Date.new(2018,9,25), Date.new(2018,9,27),@discount)}.must_raise ArgumentError
+      expect{@admin_1.create_room_block("block1",[1,2], Date.new(2018,10,25), Date.new(2018,10,27),@discount)}.must_raise ArgumentError
     end
 
     it "raise ArgumentError if the period requested for set up room block is outside of the current working period )" do
-      expect{@admin_1.create_room_block("block1",[1,2], Date.new(2019,10,25), Date.new(2019,10,27),0.1)}.must_raise ArgumentError
+      expect{@admin_1.create_room_block("block1",[1,2], Date.new(2019,11,25), Date.new(2019,11,27),0.1)}.must_raise ArgumentError
     end
 
     it "raise ArgumentError if the discount_rate is < 0 or > 1" do

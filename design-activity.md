@@ -53,6 +53,7 @@ The lists are the same.
 # Bonus question once you've read Metz ch. 3: Which implementation is more loosely coupled?
   B is loosely coupled.
 
-# What changes need to make to the design of the hotel class? pick one.
+# What changes need to make to the design of the hotel class?
+  changed the Reservation.new method, to remove the reservation id from the parameters. Instead, generate the reservation id by the program. 
+
   the block_admin class is a child class of admin class, which made the design very complicated, will keep the block class, but instead of make it inherit from admin class, will make it totally independent.
-  

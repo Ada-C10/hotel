@@ -21,7 +21,7 @@ describe "Block Admin class" do
 
   describe "make_reservation" do
     it "will only allow to the period same as the block set up period" do
-    @admin_b.make_reservation(1,"Mike lee")
+    @admin_b.make_reservation("Mike lee")
     expect(@admin_b.reservations.first.start_date).must_equal Date.new(2018,10,5)
     expect(@admin_b.reservations.first.end_date).must_equal Date.new(2018,10,10)
     end
@@ -30,8 +30,10 @@ describe "Block Admin class" do
   describe "calculate_cost" do
 
     it "returns a right number" do
-      @admin_b.make_reservation(1,"Mike lee")
-      expect(@admin_b.calculate_cost(1)).must_equal 900.0
+      @admin_b.make_reservation("Mike lee")
+      res_id = @admin_b.reservations.first.id
+
+      expect(@admin_b.calculate_cost(res_id)).must_equal 900.0
     end
   end
 end
