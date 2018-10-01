@@ -22,12 +22,13 @@ class DateRange
     return (end_date - start_date).to_i
   end
 
-  def date_within_range?(date)
+  def valid_date?(date)
     return (date >= @start_date && date < @end_date)
   end
 
-  def daterange_within_range?(start_date, end_date)
-    return date_within_reservation?(start_date) || date_within_reservation?(end_date)
+  def valid_daterange?(start_date, end_date)
+    return valid_date?(start_date) || valid_date?(end_date) ||
+    (start_date < @start_date && end_date > @end_date)
   end
 
 end
