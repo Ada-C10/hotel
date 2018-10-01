@@ -11,7 +11,7 @@ class TrackingSystem
 
   def initialize
     @all_rooms = add_rooms
-    @reservations = [] #when a block is created, would i instead add that number of rooms into the reservations list & change their block status?, and then when it's reserved add one set of {dates} to the reservation 
+    @reservations = [] #when a block is created, would i instead add that number of rooms into the reservations list & change their block status?, and then when it's reserved add one set of {dates} to the reservation
     @blocks = []
   end
 
@@ -31,20 +31,7 @@ class TrackingSystem
     return @all_rooms
   end
 
-  def view_reservations_on(date)
-    raise ArgumentError.new"#{date} must be instance of Date" unless date.instance_of? Date
-    all_reservations = []
-    @reservations.each do |reservation|
-      if (reservation.start_time...reservation.end_time).include?(date)
-        all_reservations << reservation
-      end
-    end
-    if all_reservations.empty?
-      raise ArgumentError.new"There are no reservations on #{date}"
-    else
-      return all_reservations
-    end
-  end
+
 
   def total_cost_of_reservation(reservation)
     raise ArgumentError.new"#{reservation} must be instance of Reservation" unless reservation.instance_of? Reservation

@@ -39,8 +39,37 @@ The Order class in A and B both contain #total_price. In A, the instance variabl
 
 6.2) Does total_price directly manipulate the instance variables of other classes? Yes it does in A but not in B.
 
-6.3) If we decide items are cheaper if bought in bulk, how would this change the code? Which implementation is easier to modify? B is easier to modify. 
+6.3) If we decide items are cheaper if bought in bulk, how would this change the code? Which implementation is easier to modify? B is easier to modify.
 
 6.4) Which implementation better adheres to the single responsibility principle?
 Bonus question once you've read Metz ch. 3: Which implementation is more loosely coupled?
 B is more loosely coupled and adheres better to the single responsibility principle.
+
+<!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+~~ Refactor Activity: ~~
+Based on the answers to each set of the above questions, identify one place in your Hotel project where a class takes on multiple roles, or directly modifies the attributes of another class. Describe in design-activity.md what changes you would need to make to improve this design, and how the resulting design would be an improvement.
+
+One design issue I have in TrackingSystem is that it has too many jobs. One design change I can make to improve this is by moving some date checking logic out of this class and into the Reservation class. In TrackingSystem I'm currently iterating through the list of reservations in order to be able to perform
+date checking logic, and it could just be done in the Reservation class itself. Moving the date checking logic to the Reservation class will be an improvement because the TrackingSystem will need to know less about the structure and variables of the Reservation class and it will DRY up the code in certain methods that iterate through
+the list of reservations.
+
+Extra notes...
+
+Questions to keep in mind:
+-should the instance variables be readable and writable?
+-should there be a class thats job is just to store data?
+-can some computing logic be delegated to lower classes?
+
+1. The TrackingSystem class takes on multiple roles
+  a. it creates all the rooms
+  b. it stores the list of blocks, list of reservations, and list of rooms
+  *c*. it contains date checking logic that checks on a reservation to determines a room and block's availability
+  d. it adds new blocks and new reservations to its data
+
+2. The TrackingSystem directly modifies the attributes of
+  a. a room's reserved dates and its block status
+  b. a reservation's price
+  c. a block's reserved dates, block status and rooms inside it
+
+3. The Room class takes on multiple roles
+  a. it keeps track of a list of dates that it is unavailable which is doing too much it should let the TrackingSystem class be the only place where reservations data is kept. I realized that most of the methods in TrackingSystem are going through the Room objects to check the reservation status, when it should be checking that through Reservation objects. 
