@@ -26,10 +26,13 @@ class Front_Desk
   end
 
   def reserve_room(room_number, start_date, end_date)
+    if start_date > end_date
+      raise StandardError.new("Checkin Date: #{start_date} must be before Checkout Date: #{end_date}")
+    end
 
     available_rooms = available_rooms(start_date,end_date)
     if !available_rooms.find { |room| room.room_number == room_number }
-      raise StandardError
+      raise AlreadyReservedError.new("Room #{room} already has a reservation between #{start_date} and #{end_date}")
     end
 
     input = {}
@@ -90,7 +93,9 @@ class Front_Desk
   def block_hold(start_date, end_date, number_of_rooms)
     available_rooms = available_rooms(start_date,end_date)
 
-    if number_of_rooms > 5
+    if start_date > end_date
+      raise StandardError.new("Checkin Date: #{start_date} must be before Checkout Date: #{end_date}")
+    elsif number_of_rooms > 5
       raise StandardError
     end
 
@@ -106,10 +111,6 @@ class Front_Desk
     end
     return @block_reservations
   end
-
-
-
-
 
 
 end
