@@ -27,4 +27,25 @@ class Reservation
     total_cost = number_of_days * 200
     return total_cost
     end
+
+    def date_range_check(start_date, end_date)
+    date_range = Range.new( start_date, end_date, exclusive =false )
+  end
+
+
+
+
+    def room_availble?(room)
+      date_range =
+      avaialble_rooms = []
+    @bookings.each do |booking|
+      while booking.room != room
+        available_rooms << room
+        end
+        return available_rooms
+      end
+    end
+
+
+
 end

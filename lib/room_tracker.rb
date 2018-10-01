@@ -46,10 +46,30 @@ class Room_Tracker
     return @rooms
   end
 
+#As an administrator, I can reserve an available room for a given date range
   def make_reservation(start_date, end_date)
-    room = @rooms[rand(@rooms.length)] #getavilable room method
-    @bookings << Reservation.new(start_date, end_date, room)
-  end
+      occupied_rooms = []
+      if date_overlap_check(start_date, end_date) == false
+        room = @rooms.first
+        occupied_rooms << room
+        @bookings << Reservation.new(start_date, end_date, room)
+      else
+        counter = 0
+          while counter <= @rooms.length
+            @rooms.each_with_index do |room, i|
+              @bookings.each do |booking|
+              if room[i] == booking.room
+                i + = 1
+              else
+                room[i] = room[i]
+                occupied_rooms <<room
+                end
+              end
+                end
+            end
+          end
+        end
+
 
   def find_reservations_by_date(date)
     bookings = []
@@ -67,30 +87,3 @@ class Room_Tracker
   end
 
 end
-#
-# binding.pry
-# def assign_request_array_to_hash
-#   @valid_reservation = {}
-# @@request_array.each do |booking|
-#
-# values = @valid_reservation[:room]
-# values.zip(request_array).to_h
-#   return values
-# end
-# end
-#ap @valid_reservation
-# users = User.all.each_with_object({}) do |user, hash|
-#   hash[user.id] = user
-# end
-#
-# x = {}
-# (1..10000).each do |i|
-#   x["key#{i}"] = i
-# end
-
-#binding.pry
-  # def add_room_to_hash
-  #   Room.rooms.leangth times do |room|
-  #     room = @room[:room]
-  #   end
-  # end
