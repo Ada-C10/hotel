@@ -1,12 +1,12 @@
 module Hotel
 class RoomBlock
 
-  attr_reader :rooms, :start_date, :end_date, :rate
+  attr_reader :rooms, :daterange, :rate
 
-  def initialize(rooms, start_date, end_date, rate = 200)
+  def initialize(rooms, daterange, rate = 200)
 
-    unless start_date.is_a?(Date) && end_date.is_a?(Date)
-      raise ArgumentError, "Start and/or End dates are not in correct format"
+    unless daterange.is_a?(Hotel::DateRange)
+      raise ArgumentError, "daterange is not daterange object"
     end
     unless rooms.is_a?(Array) && !rooms.empty?
       raise ArgumentError, "Room number is not valid number"
@@ -19,38 +19,35 @@ class RoomBlock
     end
 
     @rooms = rooms
-    @start_date = start_date
-    @end_date = end_date
+    @daterange = daterange
     @rate = rate
     @reservations = []
   end
 
-  def book_reservation(room, start_date, end_date)
+  def book_reservation(room, daterange)
 
       unless available_rooms.include?(room)
         raise ArgumentError, "This room cannot be booked within this block."
       end
 
-      unless match_date?(start_date, end_date)
+      unless match_date?(daterange)
         raise ArgumentError, "Date range does not match block"
       end
 
-      reservation = Hotel::Reservation.new(room, start_date, end_date, @rate)
+      reservation = Hotel::Reservation.new(room, daterange, @rate)
       @reservations << reservation
       return reservation
   end
 
-  def match_date?(start_date, end_date)
-    return start_date == @start_date && end_date == @end_date
+  def match_date?(daterange)
+    return daterange.start_date == @daterange.start_date &&
+    daterange.end_date == @daterange.end_date
   end
 
   def available_rooms
     return @rooms - @reservations.map{ |reservation| reservation.room }
   end
 
-  def daterange_within_block?(start_date, end_date)
-    return (start_date >= @start_date && start_date < @end_date) || (end_date >= @start_date && end_date < @end_date)
-  end
 
 end
 end
