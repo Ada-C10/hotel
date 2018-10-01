@@ -1,3 +1,5 @@
+Notes from original submission - 9.9.18:
+
 BookingManager methods need to be refactored. A lot of logic is repeated, but I had trouble writing the methods so that both blocks and reservations can use them.
 
 Wrap classes in Hotel module.
@@ -5,3 +7,20 @@ Wrap classes in Hotel module.
 Change Calendar#get_all_dates to #all_dates.
 
 Find a better way to organize test data.
+
+
+Notes from instructor feedback - 9.29.18:
+
+BookingManager and Calendar need the most work. The responsibilities need to be split differently, and they're too tightly coupled.
+
+BookingManager and Block are also tightly coupled.
+
+BookingManager needs a factory method to create Reservations and assign room numbers to them.
+
+One of the classes needs to store the reservations and their room numbers - I think it should be BookingManager.
+
+Replace StandardErrors with custom exceptions in BookingManager and Reservation.
+
+Refactor Reservation#number_of_nights.
+
+Change Block discount case statement to hash.
