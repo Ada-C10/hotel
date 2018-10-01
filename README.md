@@ -123,7 +123,7 @@ If you are not familiar with what a block of hotel rooms, here is a brief descri
 
 ## Before Submissions
 
-Usually by the end of a project, we can look back on what we made with a clearer understanding of what we actually needed. In industry, this is a great time to do a refactor of some sort. For this project however, you're off the hook... for the moment. We will be revisiting our hotels later on on the course, and you may want to make some changes at that point. 
+Usually by the end of a project, we can look back on what we made with a clearer understanding of what we actually needed. In industry, this is a great time to do a refactor of some sort. For this project however, you're off the hook... for the moment. We will be revisiting our hotels later on on the course, and you may want to make some changes at that point.
 
 - Create a new file in the project called `refactors.txt`
 - Make a short list of the changes that you could make, particularly in terms of naming conventions
@@ -139,4 +139,27 @@ You should not be working on these (or even thinking about them) until you have 
 - Create a CLI to interact with your hotel system
 
 ## What we're looking for
-You can find what instructors will be looking for in the [feedback](feedback.md) markdown document. 
+You can find what instructors will be looking for in the [feedback](feedback.md) markdown document.
+
+
+Revisiting Hotel
+Now that we've got you thinking about design, spend some time to revisit the code you wrote for the Hotel project. For each class in your program, ask yourself the following questions:
+
+What is this class's responsibility?
+You should be able to describe it in a single sentence.
+Is this class responsible for exactly one thing?
+Does this class take on any responsibility that should be delegated to "lower level" classes?
+Is there code in other classes that directly manipulates this class's instance variables?
+You might recall writing a file called refactor.txt. Take a look at the refactor plans that you wrote, and consider the following:
+
+How easy is it to follow your own instructions?
+Do these refactors improve the clarity of your code?
+Do you still agree with your previous assesment, or could your refactor be further improved?
+Activity
+Based on the answers to each set of the above questions, identify one place in your Hotel project where a class takes on multiple roles, or directly modifies the attributes of another class. Describe in design-activity.md what changes you would need to make to improve this design, and how the resulting design would be an improvement.
+
+If you need inspiration, remember that the reference implementation exists.
+
+Then make the changes! Don't forget to take advantage of all the tests you wrote - if they're well structured, they should quickly inform you when your refactoring breaks something.
+
+Once you're satisfied, git commit your changes and then push them to GitHub. This will automatically update your pull request.
