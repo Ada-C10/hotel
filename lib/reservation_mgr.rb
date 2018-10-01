@@ -16,12 +16,7 @@ class ReservationMgr
       raise StandardError.new('The check-out date is before the check-in')
     end
 
-    available_rooms = []
-    @rooms.each do |room|
-      if room.is_available?(check_in,check_out)
-        available_rooms << room
-      end
-    end
+    available_rooms = @rooms.select { |room| room.is_available?(check_in,check_out) }
 
     if available_rooms.length == 0 || available_rooms.length < rooms
       raise ArgumentError.new('There are not enough room/rooms available')
@@ -54,13 +49,8 @@ class ReservationMgr
   end
 
   def reservations_by_date(date)
-    reservations_on_date = []
-    @reservations.each do |reservation|
-      if reservation.date?(date)
-        reservations_on_date << reservation
-      end
-    end
-
+    reservations_on_date = @reservations.select {|reservation| reservation.date?(date)}
+    
     return reservations_on_date
 
   end

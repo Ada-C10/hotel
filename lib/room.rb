@@ -34,6 +34,7 @@ class Room
   end
 
   def add_unavailablity(check_in,check_out)
+    
     dates = {}
     dates[:check_in] = check_in
     dates[:check_out] = check_out
