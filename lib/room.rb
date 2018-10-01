@@ -10,7 +10,7 @@ module Hotel
       @status_by_date = create_calendar
     end
 
-    def self.change_status_of_room(rooms, id, start_date: Date.today, end_date: Date.today + 2)
+    def change_status_of_room(rooms, id, start_date: Date.today, end_date: Date.today + 2)
       room = Room.find_room(rooms, id)
       all_dates = DateRange.create_date_array(start_date: start_date, end_date: end_date)
       all_dates.each do |date|
@@ -36,6 +36,10 @@ module Hotel
       return list
     end
 
+    def self.find_room(rooms, id)
+      return rooms.find {|r| r.id == id}
+    end
+
     private
     def create_calendar
       room_calendar = {}
@@ -47,10 +51,6 @@ module Hotel
       end
 
       return room_calendar
-    end
-
-    def self.find_room(rooms, id)
-      return rooms.find {|r| r.id == id}
     end
   end
 end

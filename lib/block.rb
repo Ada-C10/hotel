@@ -11,7 +11,7 @@ module Hotel
       @group_name = group_name
       @start_date = start_date
       @end_date = end_date
-      @room_list = Block.create_list_with_availability(room_list)
+      @room_list = create_list_with_availability(room_list)
       @room_rate = room_rate
     end
 
@@ -32,7 +32,7 @@ module Hotel
     end
 
     private
-    def self.create_list_with_availability(room_list)
+    def create_list_with_availability(room_list)
       formatted_list = {}
       room_list.each do |room_number|
         formatted_list[room_number] = :AVAILABLE

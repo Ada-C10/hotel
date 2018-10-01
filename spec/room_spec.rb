@@ -41,7 +41,8 @@ describe "Room" do
   describe "change_status_of_room" do
     it "Changes the status of a room from available to unavailable" do
       my_hotel.rooms << room
-      Hotel::Room.change_status_of_room(my_hotel.rooms, id, start_date: start_date, end_date: end_date)
+
+      room.change_status_of_room(my_hotel.rooms, id, start_date: start_date, end_date: end_date)
 
       expect(room.status_by_date[Date.parse(start_date) - 1]).must_equal :AVAILABLE
       expect(room.status_by_date[Date.parse(start_date)]).must_equal :UNAVAILABLE
@@ -64,7 +65,8 @@ describe "Room" do
 
     it "Returns nil if no rooms can be found" do
       my_hotel.rooms.length.times do |i|
-        Hotel::Room.change_status_of_room(my_hotel.rooms, i+1, start_date: @start_date, end_date: @end_date)
+        room = Hotel::Room.find_room(my_hotel.rooms, i+1)
+        room.change_status_of_room(my_hotel.rooms, i+1, start_date: @start_date, end_date: @end_date)
       end
 
       expect{

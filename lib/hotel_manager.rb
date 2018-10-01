@@ -47,7 +47,10 @@ module Hotel
         else
           num_of_rooms.times do |j|
             new_reservation = Reservation.new(room_list[j], start_date: start_date, end_date: end_date)
-            Room.change_status_of_room(rooms, room_list[j], start_date: start_date, end_date: end_date)
+
+            room = Room.find_room(rooms, room_list[j])
+
+            room.change_status_of_room(rooms, room_list[j], start_date: start_date, end_date: end_date)
             reservations << new_reservation
           end
         end
@@ -69,10 +72,12 @@ module Hotel
       end
 
       new_block = Block.new(group_name, final_list, start_date: start_date, end_date: end_date, room_rate: room_rate)
+
       blocks << new_block
 
       final_list.each do |room_number|
-        Room.change_status_of_room(rooms, room_number, start_date: start_date, end_date: end_date)
+        room = Room.find_room(rooms, room_number)
+        room.change_status_of_room(rooms, room_number, start_date: start_date, end_date: end_date)
       end
 
       return new_block
@@ -124,7 +129,10 @@ module Hotel
 
       reservation_data.each do |reservation|
         new_reservation = Reservation.new(reservation[:room_number].to_i, start_date: reservation[:start_date], end_date: reservation[:end_date])
-        Room.change_status_of_room(rooms, reservation[:room_number].to_i, start_date: reservation[:start_date], end_date: reservation[:end_date])
+
+        room = Room.find_room(rooms, reservation[:room_number].to_i)
+
+        room.change_status_of_room(rooms, reservation[:room_number].to_i, start_date: reservation[:start_date], end_date: reservation[:end_date])
         all_reservations << new_reservation
       end
 
@@ -139,7 +147,8 @@ module Hotel
         room_list =  block[:room_list].split(",").map(&:to_i)
         new_block = Block.new(block[:group_name].to_s, room_list, start_date: block[:start_date], end_date: block[:end_date], room_rate: block[:room_rate].to_i)
         room_list.each do |room|
-          Room.change_status_of_room(rooms, room, start_date: block[:start_date], end_date: block[:end_date])
+          this_room = Room.find_room(rooms, room)
+          this_room.change_status_of_room(rooms, room, start_date: block[:start_date], end_date: block[:end_date])
         end
         all_blocks << new_block
       end

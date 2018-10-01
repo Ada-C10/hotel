@@ -203,7 +203,8 @@ describe "HotelManager" do
 
     it "Raises an error if no rooms are available for the block" do
       my_hotel.rooms.length.times do |i|
-        Hotel::Room.change_status_of_room(my_hotel.rooms, i+1, start_date: @start_date, end_date: @end_date)
+        room = Hotel::Room.find_room(my_hotel.rooms, i+1)
+        room.change_status_of_room(my_hotel.rooms, i+1, start_date: @start_date, end_date: @end_date)
       end
 
       expect{
@@ -213,7 +214,8 @@ describe "HotelManager" do
 
     it "Raises an error if not enough rooms are available for the block" do
       19.times do |i|
-        Hotel::Room.change_status_of_room(my_hotel.rooms, i+1, start_date: @start_date, end_date: @end_date)
+        room = Hotel::Room.find_room(my_hotel.rooms, i+1)
+        room.change_status_of_room(my_hotel.rooms, i+1, start_date: @start_date, end_date: @end_date)
       end
 
       expect{
