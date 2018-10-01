@@ -69,6 +69,7 @@ module Lodging
         update_room[:cost] = new_cost.round(2).to_s
         update_room[:status] = "hold" #changes status of said room in the array of hashes as 'unavailable'
         update_room[:reserved_dates] += reserved_dates #all reserved dates are added under previous dates
+        ap update_room
       end
     end
 
