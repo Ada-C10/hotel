@@ -1,7 +1,7 @@
 # Comprehension Questions
 
 #### 1. What classes does each implementation include? Are the lists the same?
-Both implementations include the same three classes, CartEntry, ShoppingCart, and Order. Yes, each implementation returns the same list.
+Both implementations include the same three classes, CartEntry, ShoppingCart, and Order. Yes, each implementation returns the same list in the Order class. The other classes however does not return the same list because Implementation B has instance methods that call on the `price` method for each class. Implementation A only has attributes in the other two classes.
 
 
 #### 2. Write down a sentence to describe each class.
@@ -9,7 +9,7 @@ The CartEntry class creates an instance of an order item, which has the attribut
 
 The ShoppingCart class creates an instance of a cart, which stores an array of cart item objects as an instance variable `@entries`. The second implementation contains the method price, which calculates the total of all cart items in the shopping cart.
 
-The Order class creates an instance of an order, which stores an instance of a shopping cart object as an instance variable `@cart`. It's behavior calculates the total price of the order by getting the sum of each cart item in the shopping cart and multiplying the sum with a constant sales tax variable.
+The Order class creates an instance of an order, which stores an instance of a shopping cart object as an instance variable `@cart`. It calculates the total price of the order by getting the subtotal of the cart and adding the subtotal with the subtotal multiplied by the sales tax.
 
 
 
@@ -45,13 +45,13 @@ The two implementations differ in that the second implementation wraps the insta
 #### 6. Consider the Order `total_price method`. In each implementation:
 * Is logic to compute the price delegated to "lower level" classes like ShoppingCart and CartEntry, or is it retained in Order?
 
-- First implementation: price is retained in Order
-  Second implementation: price is delegated to lower level classes, ShoppingCart and CartEntry
+  - First implementation: price is retained in Order
+  - Second implementation: price is delegated to lower level classes, ShoppingCart and CartEntry
 
 * Does total_price directly manipulate the instance variables of other classes?
 
-- First implementation: directly manipulates the instance variables of other classes
-  Second implementation: does not manipulate the instance variables, but uses the instance methods to get price
+  - First implementation: directly manipulates the instance variables of other classes
+  - Second implementation: does not manipulate the instance variables, but uses the instance methods to get price
 
 
 #### 7. If we decide items are cheaper if bought in bulk, how would this change the code? Which implementation is easier to modify?
@@ -71,7 +71,7 @@ Implementation B is more loosely coupled.
 
 
 
-## Improvements on Hotel
+## Improvements on Hotel Project
 
 <!--
 What is this class's responsibility?
@@ -84,16 +84,10 @@ You might recall writing a file called refactor.txt. Take a look at the refactor
 How easy is it to follow your own instructions?
 Do these refactors improve the clarity of your code?
 Do you still agree with your previous assesment, or could your refactor be further improved?
-
-
-
-
  -->
 
 
-
-### Class Responsibilities:
-
+### Notes on Class Responsibilities:
 * Reservation:
   - Responsible for holding one reservation instance
   - BookingSystem calls on the reservation's instance variable `date_range`, but thought it was appropriate because `date_range` is an instance of class DateRange. This way, I can call on a method on DateRange and do the work there instead of in the BookingSystem class.
@@ -112,7 +106,7 @@ Do you still agree with your previous assesment, or could your refactor be furth
 
 
 ### Hotel Refactors:
-  * Updated logic of the `dates_overlap` method
-  * Added custom error exception within the DateRange and BookingSystem class
-  * Removed `list_rooms` method since the method was redundant and attr_reader returns the same thing
-  * Fixed logic error in BookingSystem method `find_available_rooms` where nils were being populated in the array
+  * Updated logic of the `dates_overlap` method in DateRange class. Helps clean up code/readability
+  * Created custom error exceptions within the DateRange and BookingSystem class, instead of raising StandardError
+  * Removed `list_rooms` method in the BookingSystem class since the method was redundant and attr_reader returns the same thing
+  * Fixed logic error in BookingSystem method `find_available_rooms` where there were nil inputs being populated in the array
