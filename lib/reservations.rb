@@ -8,8 +8,8 @@ module Hotel
 
 
 
-    def initialize(number, number_of_rooms:1, check_in:, check_out:, discount_rate: 1)
-      @id = number
+    def initialize(id_num, number_of_rooms:1, check_in:, check_out:, discount_rate: 1)
+      @id = id_num
       @check_in = Date.parse(check_in)
       @check_out = Date.parse(check_out)
       @date_range = (@check_in...@check_out)

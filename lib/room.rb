@@ -6,8 +6,8 @@ module Hotel
     attr_reader :id
     attr_accessor :reservations
 
-    def initialize(number)
-      @id = number
+    def initialize(id_num)
+      @id = id_num
       @reservations = [] #bookings - both res/block
       #define room as physical space
     end

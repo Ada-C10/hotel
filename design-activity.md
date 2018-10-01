@@ -21,6 +21,24 @@ Implentation B - Each of the classes is able to calculate the cost/price associa
 
 7. To include a discount for bulk buying, it would be much easier to implement this new feature in Impmentation B. The variable and corresponding method change could be added to the lower level classes and the class Order would be non the wiser to the change but still deliver what the program needs to accomplish.
 
-8. Both Implementations mostly stick to the single responsibility principles except for Implementation A's Order class. Implementation A stores data about a cart and calculates its total cost but is also responsible for calculating the costs of the instances in the two other classes. 
+8. Both Implementations mostly stick to the single responsibility principles except for Implementation A's Order class. Implementation A stores data about a cart and calculates its total cost but is also responsible for calculating the costs of the instances in the two other classes.
 
 9. ImplementationB is more loosely coupled.
+
+--
+
+Hotel
+- Reservation manager
+  - manages/creates relationships between rooms and reservations
+  - Room factory can be moved to the room class.
+  - There is no code in the lower classes that would directly influence instance variables in this class.
+
+- Reservation
+  - holds all pertinent information to a specific instance of reservation
+  - refactor reservation to be more generic and usable for block rooms.
+- Room
+  - holds all pertinent information to a specific room
+  - can take on the factory of rooms from ReservationManager Class
+
+- Block
+  - manages information specific to a block.
