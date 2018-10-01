@@ -2,6 +2,8 @@ require_relative 'reservation'
 
 module Hotel
   class BookingSystem
+    class AllBookedError < StandardError ; end
+    
     attr_reader :rooms, :reservations
 
     def initialize
@@ -24,7 +26,7 @@ module Hotel
         booking.date_range.each do |date|
           if list_reservations_by_date(date).length >= 1
             booking.room_number = show_available_rooms(date).first
-            raise ArgumentError, "unable to reserve/rooms all booked" unless booking.room_number != nil
+            raise AllBookedError.new("unable to reserve/rooms all booked") unless !booking.room_number.nil?
           end
         end
       end

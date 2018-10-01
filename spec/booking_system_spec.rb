@@ -50,7 +50,7 @@ describe "BookingSystem class" do
       @booking.make_reservation(check_in_date: 180904, check_out_date: 180905)
     end
 
-    expect{(@booking.make_reservation(check_in_date: 180904, check_out_date: 180905))}.must_raise ArgumentError
+    expect{(@booking.make_reservation(check_in_date: 180904, check_out_date: 180905))}.must_raise Hotel::BookingSystem::AllBookedError
   end
 
   it "does not raise error when booking for 20th time on same day" do
