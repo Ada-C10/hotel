@@ -108,11 +108,5 @@ module Hotel
       end
     end
 
-    def total_cost(reservation_id)
-      reservation = find_reservation(reservation_id)
-      nights = reservation.end_date - reservation.start_date
-      total_cost = nights * reservation.price_per_night
-      return total_cost.to_f.round(2)
-    end
   end
 end

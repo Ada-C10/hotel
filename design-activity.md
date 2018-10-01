@@ -19,3 +19,7 @@ Both Implementations include the classes CartEntry, ShoppingCart, and Order.
 **Which implementation better adheres to the single responsibility principle?**
 - A, because each class serves one purpose, but they still rely on and interact with other classes. Also, there is no repeated code.
 **Bonus question once you've read Metz ch. 3: Which implementation is more loosely coupled?**
+
+**Refactors**
+
+I had my total cost method in my BookingSystem class, while it should have been in the Reservation class. This can be copied into the Reservation class, but the references to this method will have to be changed to @reservation instead of @system in the tests as well as wherever this is referenced in other methods. 

@@ -6,6 +6,7 @@ describe "BookingSystem class" do
 
   before do
     @system = Hotel::BookingSystem.new
+    @reservation = Hotel::Reservation.new(reservation_id: nil, room: nil, start_date: nil, end_date: nil, price_per_night: 200)
   end
 
   describe "load rooms" do
@@ -116,10 +117,10 @@ describe "BookingSystem class" do
   describe "total cost of reservation" do
     it "finds the total cost of reservation given reservation_id" do
 
-      reservation = Hotel::Reservation.new(reservation_id: 1, room: 1, start_date: Date.new(2018, 1, 1), end_date: Date.new(2018, 1, 5), price_per_night: 200)
-      @system.reservations << reservation
+      @reservation = Hotel::Reservation.new(reservation_id: 1, room: 1, start_date: Date.new(2018, 1, 1), end_date: Date.new(2018, 1, 5), price_per_night: 200)
+      @system.reservations << @reservation
 
-      expect(@system.total_cost(1)).must_equal 800
+      expect(@reservation.total_cost(1)).must_equal 800
     end
   end
 
@@ -185,16 +186,6 @@ describe "BookingSystem class" do
         @system.reservations << block_reservation
 
         expect((@system.make_block_reservation(20)).reservation_id).must_be_kind_of Integer
-      end
-    end
-
-    describe "total cost of reservation" do
-      it "accounts for the discounted price when calculating total cost" do
-
-        @system.make_block((Date.new(2018,1,1)), (Date.new(2018,1,5)), 1)
-        id = @system.reservations[0].reservation_id
-
-        expect(@system.total_cost(id)).must_equal 600
       end
     end
   end
