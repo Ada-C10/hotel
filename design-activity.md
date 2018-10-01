@@ -67,10 +67,58 @@
 
 8. Which implementation better adheres to the single responsibility principle?
 
-  Implementation B better adheres to the single responsibility principle because each class has one responsibility and the classes the dependencies on each other are minimal. They are loosely coupled, and implementing changes are easier compared to Implementation A.
+  Implementation B better adheres to the single responsibility principle because each class has one responsibility and the class's dependencies on each other are minimal. They are loosely coupled, and implementing changes are easier compared to Implementation A.
 
 
 
 9. Bonus question once you've read Metz ch. 3: Which implementation is more loosely coupled?
 
-  Implementation B is more loosely coupled. 
+  Implementation B is more loosely coupled.
+
+
+
+## Improvements on Hotel
+
+<!--
+What is this class's responsibility?
+You should be able to describe it in a single sentence.
+Is this class responsible for exactly one thing?
+Does this class take on any responsibility that should be delegated to "lower level" classes?
+Is there code in other classes that directly manipulates this class's instance variables?
+You might recall writing a file called refactor.txt. Take a look at the refactor plans that you wrote, and consider the following:
+
+How easy is it to follow your own instructions?
+Do these refactors improve the clarity of your code?
+Do you still agree with your previous assesment, or could your refactor be further improved?
+
+
+
+
+ -->
+
+
+
+### Class Responsibilities:
+
+* Reservation:
+  - Responsible for holding one reservation instance
+  - BookingSystem calls on the reservation's instance variable `date_range`, but thought it was appropriate because `date_range` is an instance of class DateRange. This way, I can call on a method on DateRange and do the work there instead of in the BookingSystem class.
+
+* DateRange:
+  - Responsible for validating available dates
+  - Instance variables are not directly manipulated, methods used to validate dates
+
+* BookingSystem:
+  - Responsible for creating all reservations (room and blocks)
+  - Knows about all other class, but the other classes know little about each other
+
+* BlockRoom:
+  - Responsible for holding a block of rooms with a discounted rate
+  - Like Reservation, the instance variable `date_range` in BlockRoom is called in BookingSystem
+
+
+## Hotel Refactors:
+  * Updated logic of the `dates_overlap` method
+  * Added custom error exception within the DateRange and BookingSystem class
+  * Removed `list_rooms` method since the method was redundant and attr_reader returns the same thing
+  * Fixed logic error in BookingSystem method `find_available_rooms` where nils were being populated in the array

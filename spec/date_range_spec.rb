@@ -97,5 +97,5 @@ describe 'DateRange Class' do
       expect(date_range_10.dates_overlap?(@date_range)).must_equal false
     end
   end
-  
+
 end
