@@ -10,7 +10,7 @@ class Reservation
     @start_date = start_date
     @end_date = end_date
     @room = room
-    @reservation_duration = reservation_duration
+    # @reservation_duration = reservation_duration
     @cost = cost
   end
 
@@ -20,9 +20,9 @@ class Reservation
     return duration.to_i
   end
 
-  #The below method works when the rooms are all $200 per night.  
+  #The below method works when the rooms are all $200 per night.
   def cost
-    total_cost = @reservation_duration * 200
+    total_cost = reservation_duration * 200
     return total_cost.to_f
   end
 
