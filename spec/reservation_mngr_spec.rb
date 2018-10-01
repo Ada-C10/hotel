@@ -66,6 +66,7 @@ describe 'ReservationManager class' do
 
   end
 
+
   describe "create_reservation" do
     before do
       @room = Hotel::Room.new( {room_number: 1, price: 200} )

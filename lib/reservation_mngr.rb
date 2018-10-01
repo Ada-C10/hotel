@@ -62,6 +62,7 @@ module Hotel
       end
     end
 
+
     def create_reservation(check_in, check_out)
       check_dates(check_in, check_out)
       room = find_room(check_in, check_out)
