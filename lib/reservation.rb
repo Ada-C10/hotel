@@ -11,6 +11,9 @@ class Reservation
     unless rate.is_a?(Numeric) && rate > 0
       raise ArgumentError, "Rate is not valid number"
     end
+    unless daterange.is_a?(Hotel::DateRange)
+      raise ArgumentError, "daterange is not DateRange object"
+    end
 
     @room = room
     @daterange = daterange

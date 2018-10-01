@@ -25,6 +25,12 @@ describe 'daterange class' do
         Hotel::DateRange.new(Date.new(2018,5,2), Date.new(2018,5,1))
       }.must_raise(StandardError)
     end
+
+    it 'raise StandardError if start date is same as end date' do
+      expect{
+        Hotel::DateRange.new(Date.new(2018,5,2), Date.new(2018,5,2))
+      }.must_raise(StandardError)
+    end
   end
 
   describe 'total nights method' do
