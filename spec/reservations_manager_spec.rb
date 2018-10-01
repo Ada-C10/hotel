@@ -91,7 +91,7 @@ describe "ReservationManager" do
     before do
       @many_rooms_test = @hotel_ada.reserve_room('2018-08-20', '2018-08-23', number_of_rooms: 3)
       @block = @hotel_ada.create_block('2018-08-20', '2018-08-23', number_of_rooms: 10, discount_rate: 0.8)
-      @block_reservation = @hotel_ada.reserve_room_in_block('2018-08-20', '2018-08-23', number_of_rooms: 2) #:block_id
+      @block_reservation = @hotel_ada.reserve_room('2018-08-20', '2018-08-23', number_of_rooms: 2, block_id: 1) #:block_id
     end
 
     it "allows you to reserve multiple rooms on one reservation" do
@@ -104,9 +104,9 @@ describe "ReservationManager" do
     it "can block a given amount of rooms over a date range" do
       expect(@block).must_be_instance_of Hotel::Block
       expect(@block.reservations).must_be_kind_of Array
-      expect(@block.block_rooms).must_be_kind_of Array
-      expect(@block.block_rooms[0]).must_be_kind_of Integer
-      expect(@block.block_rooms.length).must_equal 10
+      expect(@block.rooms).must_be_kind_of Array
+      expect(@block.rooms[0]).must_be_kind_of Integer
+      expect(@block.rooms.length).must_equal 10
       expect(@block.date_range.count).must_equal 3
     end
 

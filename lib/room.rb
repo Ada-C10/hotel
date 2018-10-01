@@ -8,9 +8,19 @@ module Hotel
 
     def initialize(id_num)
       @id = id_num
-      @reservations = [] #bookings - both res/block
+      @reservations = []
+     #bookings - both res/block
       #define room as physical space
     end
+
+    def self.make_rooms(number_of_rooms)
+      rooms = []
+      (1..number_of_rooms).each do |number|
+        rooms << Room.new(number)
+      end
+      return rooms
+    end
+
     #create helper methods that return boolean values - in reservmgr - create loop methods that take helper method booleans and creates an array
     #  def self.find_room(id)
     #    if room.id == id

@@ -8,7 +8,7 @@ module Hotel
 
 
 
-    def initialize(id_num, number_of_rooms:1, check_in:, check_out:, discount_rate: 1, block_id:)
+    def initialize(id_num, number_of_rooms:1, check_in:, check_out:, discount_rate: 1, block_id:'')
       @id = id_num
       @block_id = block_id
       @check_in = Date.parse(check_in)

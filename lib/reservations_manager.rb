@@ -28,19 +28,21 @@ module Hotel
       end
     end
 
+    def find_block(block_id)
+      @blocks.each do |block|
+        if block.id == id
+          return block
+        end
+      end
+    end
+
     def booked_reservations(date)
       return @reservations.select {|reservation| reservation.find_reservation(date) == true}
     end
 
-    def reserve_room(check_in, check_out, number_of_rooms: 1, block_id:)
-      new_reservation = Reservation.new(@reservations.length + 1, check_in: check_in, check_out: check_out)
-      if block_id == ''
-        assigned_rooms = available_rooms(check_in, check_out).last(number_of_rooms)
-      else block_id == Integer
-        #find block method
-        #assigned_rooms = block.block_rooms.available_rooms(check_in, check_out).last(number_of_rooms)
-        #can i call available rooms on this method?
-      end
+    def reserve_room(check_in, check_out, number_of_rooms: 1, block_id:'')
+      new_reservation = Reservation.new(@reservations.length + 1, number_of_rooms: number_of_rooms, check_in: check_in, check_out: check_out, block_id:block_id)
+      assigned_rooms = available_rooms(check_in, check_out, block_id:block_id).last(number_of_rooms)
         assigned_rooms.each do |room|
           new_reservation.rooms << room.id
           find_room(room.id).reservations << new_reservation
@@ -52,8 +54,12 @@ module Hotel
       return new_reservation
     end
 
-    def available_rooms(check_in, check_out)
-      available_rooms = self.rooms.select {|room| room.is_booked?(check_in, check_out) == false}
+    def available_rooms(check_in, check_out, block_id:'')
+      if block_id == ''
+        available_rooms = self.rooms.select {|room| room.is_booked?(check_in, check_out) == false}
+      elsif block_id == Integer
+        available_rooms = find_block(block_id).rooms.select {|room| room.is_booked?(check_in, check_out) == false}
+      end
       #loop through Reservations @match dates on the reservations#reject dates that match
       return available_rooms #array
     end
@@ -62,8 +68,8 @@ module Hotel
       block = Block.new(@blocks.length + 1, check_in: check_in, check_out: check_out, number_of_rooms: number_of_rooms, discount_rate: discount_rate)
       rooms_to_hold = available_rooms(check_in, check_out).first(number_of_rooms)
       rooms_to_hold.each do |room|
-        block.block_rooms << room.id
-        find_room(room.id).reservations << block
+        block.rooms << room.id
+        find_room(room.id).reservations << block# - this needs to be changed
       end
       @blocks << block
       return block
