@@ -34,5 +34,9 @@ module Hotel
       return true
     end
   end
+
+  def nights_reserved()
+    return @check_out - @check_in
+  end
   end
 end
