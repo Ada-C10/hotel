@@ -30,4 +30,14 @@ class Block < Reservation
 
     @rooms = {}
   end
+
+  def set_available_status(room)
+    rooms[room] = :available
+  end
+
+  def set_unavailable_status(room)
+    rooms[room] = :unavailable
+  end
+
+
 end

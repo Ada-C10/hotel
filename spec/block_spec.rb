@@ -1,6 +1,9 @@
 require_relative 'spec_helper'
 
 describe Block do
+  let(:calendar) {
+    Calendar.new(20)
+  }
   let(:block2) {
     Block.new('181202', '181206', 2)
   }
@@ -19,7 +22,10 @@ describe Block do
   let(:block1) {
     Block.new('181202', '181206', 1)
   }
-  
+  let(:reservation1) {
+    Reservation.new('181202', '181204')
+  }
+
   describe "#initalize" do
     it "can be instantiated" do
       expect(block2).must_be_kind_of Block
@@ -45,4 +51,5 @@ describe Block do
       expect(block2.rooms).must_be_empty
     end
   end
+
 end
