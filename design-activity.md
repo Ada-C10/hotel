@@ -36,11 +36,13 @@ Hotel
 - Reservation
   - holds all pertinent information to a specific instance of reservation
   - refactor reservation to be more generic and usable for block rooms.
+  
 - Room
   - holds all pertinent information to a specific room
   - can take on the factory of rooms from ReservationManager Class
 
 - Block
   - manages information specific to a block.
+  - remove reservation responsibility from block class
 
-My refactors doc was clear but a little bit scant. I think I could've been more thorough and thoughtful in creating it. But combined with the design activities and instructor feedback, I feel like I have a clear idea of what changes need to be made. 
+My refactors doc was clear but a little bit scant. I think I could've been more thorough and thoughtful in creating it. But combined with the design activities and instructor feedback, I feel like I have a clear idea of what changes need to be made.

@@ -14,12 +14,13 @@ module Hotel
       @reservations = []
       @blocks = []
       @rooms = []
+      #move this factory over to room class
       (1..number_of_rooms).each do |number|
         @rooms << Room.new(number)
       end
     end
 
-    def find_room(id)
+    def find_room(id) #what is this method used for?
       @rooms.each do |room|
         if room.id == id
           return room
@@ -31,12 +32,21 @@ module Hotel
       return @reservations.select {|reservation| reservation.find_reservation(date) == true}
     end
 
-    def reserve_room(check_in, check_out, number_of_rooms: 1 )
+    def reserve_room(check_in, check_out, number_of_rooms: 1, block_id:)
       new_reservation = Reservation.new(@reservations.length + 1, check_in: check_in, check_out: check_out)
-      assigned_rooms = available_rooms(check_in, check_out).last(number_of_rooms)
-      assigned_rooms.each do |room|
-        new_reservation.rooms << room.id
-        find_room(room.id).reservations << new_reservation
+      if block_id == ''
+        assigned_rooms = available_rooms(check_in, check_out).last(number_of_rooms)
+      else block_id == Integer
+        #find block method
+        #assigned_rooms = block.block_rooms.available_rooms(check_in, check_out).last(number_of_rooms)
+        #can i call available rooms on this method?
+      end
+        assigned_rooms.each do |room|
+          new_reservation.rooms << room.id
+          find_room(room.id).reservations << new_reservation
+          if block_id == Integer
+            find_block(block_id).reservation << new_reservation
+          end
       end
       @reservations << new_reservation
       return new_reservation

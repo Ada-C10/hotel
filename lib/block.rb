@@ -11,7 +11,7 @@ module Hotel
       @check_in = Date.parse(check_in)
       @check_out = Date.parse(check_out)
       @date_range = (@check_in...@check_out)
-      @block_rooms = []
+      @block_rooms = [] #if i change this to rooms can i use available rooms on it?
       @discount_rate = discount_rate
       @reservations = []
       #change this to standard error / rescue
@@ -22,6 +22,8 @@ module Hotel
       end
     end
 
+    def find_block
+    end
 
   end
 end
