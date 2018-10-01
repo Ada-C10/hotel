@@ -23,8 +23,11 @@
     - Does `total_price` directly manipulate the instance variables of other classes?
       - Yes in A, no in B.
 - If we decide items are cheaper if bought in bulk, how would this change the code? Which implementation is easier to modify?
-  - One way to do this would be to add another optional parameter to `CartEntry` called `discount`. Then, if the `quantity` is sufficiently high, the price of the item would be discounted by `discount`. In implementation A, we would also have to modify the `total_price` method of `Order` so that if a discount exists, it will be factored into the total cost. In implementation B, if we modify the `price` method in `CartEntry` we do not have to alter any code in `Order`. Therefore, implementation B is easier. 
+  - One way to do this would be to add another optional parameter to `CartEntry` called `discount`. Then, if the `quantity` is sufficiently high, the price of the item would be discounted by `discount`. In implementation A, we would also have to modify the `total_price` method of `Order` so that if a discount exists, it will be factored into the total cost. In implementation B, if we modify the `price` method in `CartEntry` we do not have to alter any code in `Order`. Therefore, implementation B is easier.
 - Which implementation better adheres to the single responsibility principle?
   - B
 - Bonus question once you've read Metz ch. 3: Which implementation is more loosely coupled?
   - B because in A, `Order` has to know that `@cart` is made up of elements that respond to `unit_price` and `quantity`.
+
+
+I have duplicate logic concerning if a date range is within a reservation or room block. I think the best way to handle this duplication is to create a date range class that saves that logic, and lets that be called in reservation and room block. 
