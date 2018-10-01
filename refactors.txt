@@ -1,0 +1,7 @@
+1. I...lowkey cheated and made a collection of Reservations instead of a collection of Rooms. I would rewrite this part by making a subclass under Room called BookedRoom?
+
+2. HotelBooker has a lot of WET code because I have to loop through several data structures (@unreserved_block, @reserved_block, @reservations)!! If I had focused the Wave 3 blocks of rooms on the ROOMS instead of reservations, probably wouldn't have created this mess ¯\_(ツ)_/¯
+
+3. there are certain check_in and check_out arguments that are strings (as in Hotel::HotelBooker.new.make_reservation) and some that are an instance of Date (as in Hotel::HotelBooker.new.unreserved_rooms). Other arguments pass in a Hotel::DateRange (such as Hotel::Reservations). note to future goeun: make this less terrible
+
+4. How many ways can you say "range"? ;__;
