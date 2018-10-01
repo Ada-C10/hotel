@@ -5,6 +5,8 @@ module Hotel
     attr_reader :check_in_date, :check_out_date
     attr_accessor :room_number
 
+    COST = 200
+
     def initialize(input)
       @check_in_date = Date.parse("#{input[:check_in_date]}")
 
@@ -19,7 +21,7 @@ module Hotel
     end
 
     def calculate_booking_cost
-      cost = date_range.length * 200
+      cost = date_range.length * COST
       return cost
     end
   end

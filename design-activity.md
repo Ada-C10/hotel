@@ -44,3 +44,5 @@ If we decide items are cheaper if bought in bulk, how would this change the code
 
 Which implementation better adheres to the single responsibility principle?
   B. Because each class has both state and behavior while having one single responsibility.
+
+HOTEL REVISITED:

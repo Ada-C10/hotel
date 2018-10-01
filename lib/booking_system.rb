@@ -1,5 +1,4 @@
 require_relative 'reservation'
-require 'pry'
 
 module Hotel
   class BookingSystem
@@ -11,33 +10,24 @@ module Hotel
     end
 
     def make_reservation(check_in_date:, check_out_date:)
-      # TODO: find a room that's available
 
       room_number = get_available_room(check_in_date: check_in_date, check_out_date: check_out_date)
-
       reservation = Reservation.new(check_in_date: check_in_date, check_out_date: check_out_date, room_number: room_number)
 
-      if @reservations.length == 0
-        @reservations << reservation
-        return reservation
-      elsif @reservations.length >= 1
-        dates = reservation.date_range
-        dates.each do |date|
-          overlapping_bookings = list_reservations_by_date(date)
-          if overlapping_bookings.length >= 1
-            reservation.room_number += overlapping_bookings.length
-            if reservation.room_number > 20
-              raise ArgumentError, "unable to reserve, rooms all booked"
-            end
+      if @reservations.length >= 1
+        reservation.date_range.each do |date|
+          if list_reservations_by_date(date).length >= 1
+            reservation.room_number = show_available_rooms(date).first
+            raise ArgumentError, "unable to reserve/rooms all booked" unless reservation.room_number != nil
 
             @reservations << reservation
             return reservation
           end
         end
-
-        @reservations << reservation
-        return reservation
       end
+
+      @reservations << reservation
+      return reservation
     end
 
     def get_available_room(check_in_date:, check_out_date:)
@@ -54,9 +44,7 @@ module Hotel
       bookings_by_date = []
       @reservations.each do |booking|
         dates = booking.date_range
-        if dates.include?(specific_date)
-          bookings_by_date << booking
-        end
+        bookings_by_date << booking if dates.include?(specific_date)
       end
 
       return bookings_by_date
