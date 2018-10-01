@@ -42,3 +42,5 @@ Hotel
 
 - Block
   - manages information specific to a block.
+
+My refactors doc was clear but a little bit scant. I think I could've been more thorough and thoughtful in creating it. But combined with the design activities and instructor feedback, I feel like I have a clear idea of what changes need to be made. 
