@@ -39,6 +39,9 @@ describe Reservation do
   end
 
   describe "#date_format" do
+    before do
+
+    end
     it "converts check_in and check_out strings to Date objects" do
       expect(reservation.check_in).must_be_kind_of Date
       expect(reservation.check_out).must_be_kind_of Date
@@ -59,10 +62,10 @@ describe Reservation do
       expect(months_reservation.number_of_nights).must_equal 4
     end
     it "raises StandardError if check_out is earlier than check_in" do
-      expect{Reservation.new('181204', '181202')}.must_raise StandardError, "Invalid date range."
+      expect{Reservation.new('181204', '181202')}.must_raise Reservation::InvalidDateError, "Invalid date range."
     end
     it "raises StandardError if check_out is the same as check_in" do
-      expect{Reservation.new('181130', '181130')}.must_raise StandardError, "Invalid date range."
+      expect{Reservation.new('181130', '181130')}.must_raise Reservation::InvalidDateError, "Invalid date range."
     end
   end
 

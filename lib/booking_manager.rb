@@ -1,4 +1,5 @@
 class BookingManager
+  class NoAvailabilityError < StandardError ; end
 
   attr_reader :calendar, :reservations, :blocks
 
@@ -25,7 +26,9 @@ class BookingManager
       status == :available
     end
 
-    raise StandardError, "No availability." if available.empty?
+    if available.empty?
+      raise NoAvailabilityError.new("No availability.")
+    end
 
     reserved_room = available.first[0]
 

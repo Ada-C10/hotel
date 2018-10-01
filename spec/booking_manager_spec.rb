@@ -66,6 +66,7 @@ describe BookingManager do
     before do
       calendar.add_reservation(reservation1)
       calendar.add_block(block2)
+      # binding.pry
     end
     it "returns reserved room if block isn't full" do
       expect(manager.reserve_block_room(block2)).must_equal 2
@@ -74,8 +75,7 @@ describe BookingManager do
       2.times do
         manager.reserve_block_room(block2)
       end
-
-      expect{manager.reserve_block_room(block2)}.must_raise StandardError
+      expect{manager.reserve_block_room(block2)}.must_raise BookingManager::NoAvailabilityError
     end
     it "reserves first available room in a block" do
       expect(manager.reserve_block_room(block2)).must_equal 2

@@ -1,6 +1,7 @@
 require 'date'
 
 class Reservation
+  class InvalidDateError < StandardError ; end
 
   PRICE = 200
 
@@ -17,7 +18,7 @@ class Reservation
     pattern = /^\d{6}$/
 
     if pattern.match(date).nil?
-      raise ArgumentError, "Date format: YYMMDD."
+      raise ArgumentError.new("Date format: YYMMDD.")
     else
       Date.parse(date)
     end
@@ -27,7 +28,7 @@ class Reservation
     nights = check_out - check_in
 
     if nights.numerator <= 0
-      raise StandardError, "Invalid date range."
+      raise InvalidDateError.new("Invalid date range.")
     end
 
     return nights.numerator
