@@ -11,36 +11,10 @@ describe BookingManager do
   let(:reservation1) {
     Reservation.new('181202', '181204')
   }
-  let(:reservation2) {
-    Reservation.new('181204', '181206')
-  }
-  let(:reservation3) {
-    Reservation.new('181203', '181204')
-  }
-  let(:reservation4) {
-    Reservation.new('181130', '181202')
-  }
-  let(:reservation5) {
-    Reservation.new('181130', '181206')
-  }
   let(:block2) {
     Block.new('181202', '181206', 2)
   }
-  let(:block3) {
-    Block.new('181206', '181210', 3)
-  }
-  let(:block4) {
-    Block.new('181202', '181203', 4)
-  }
-  let(:block5) {
-    Block.new('181202', '181206', 5)
-  }
-  let(:block6) {
-    Block.new('181203', '181205', 2)
-  }
-  let(:block7) {
-    Block.new('181206', '181208', 5)
-  }
+
   describe "#initialize" do
     it "can be instantiated" do
       expect(manager).must_be_kind_of BookingManager
@@ -53,6 +27,7 @@ describe BookingManager do
   describe "#reserve_room" do
     before do
       manager.reserve_room('181202','181204')
+      @first_res = manager.reservations.first[0]
     end
     it "increases length of @reservations array" do
       before = manager.reservations.length
@@ -60,9 +35,9 @@ describe BookingManager do
       expect(manager.reservations.length).must_equal before + 1
     end
     it "adds accurate Reservation instance to array" do
-      expect(manager.reservations.first[0]).must_be_kind_of Reservation
-      expect(manager.reservations.first[0].check_in).must_equal Date.parse('181202')
-      expect(manager.reservations.first[0].check_out).must_equal Date.parse('181204')
+      expect(@first_res).must_be_kind_of Reservation
+      expect(@first_res.check_in).must_equal Date.parse('181202')
+      expect(@first_res.check_out).must_equal Date.parse('181204')
     end
     it "adds accurate reservation room number to array" do
       expect(manager.reservations.first[1]).must_equal 1
