@@ -1,3 +1,5 @@
+# Comprehension Questions
+
 1. What classes does each implementation include? Are the lists the same?
 
   Both implementations include the same three classes, CartEntry, ShoppingCart, and Order. Yes, each implementation returns the same list.
