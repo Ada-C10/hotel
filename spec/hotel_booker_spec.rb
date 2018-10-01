@@ -100,7 +100,7 @@ describe "HotelBooker Class" do
     end
 
     it "raises StandardError if user tries to create a block with more than 5 rooms" do
-      expect{ @booker.make_block(rooms: 6, discount: 150, check_in: '2018-09-05', check_out: '2018-09-10') }.must_raise StandardError
+      expect{ @booker.make_block(6, 150, '2018-09-05', '2018-09-10') }.must_raise StandardError
     end
 
     it "raises StandardError if there are not enough available rooms for a block" do
@@ -108,34 +108,34 @@ describe "HotelBooker Class" do
         @booker.make_reservation(i+1, '2018-09-05', '2018-09-10')
       end
 
-      expect{ @booker.make_block(rooms: 1, discount: 150, check_in: '2018-09-05', check_out: '2018-09-10') }.must_raise StandardError
+      expect{ @booker.make_block(1, 150, '2018-09-05', '2018-09-10') }.must_raise StandardError
     end
 
     it "creates an array of available block reservations" do
-      expect(@booker.make_block(rooms: 5, discount: 150, check_in: '2018-09-05', check_out: '2018-09-10')).must_be_kind_of Array
+      expect(@booker.make_block(5, 150, '2018-09-05', '2018-09-10')).must_be_kind_of Array
     end
 
     it "creates an array the size of Reservations described by rooms" do
-      expect(@booker.make_block(rooms: 5, discount: 150, check_in: '2018-09-05', check_out: '2018-09-10').length).must_equal 5
+      expect(@booker.make_block(5, 150, '2018-09-05', '2018-09-10').length).must_equal 5
     end
 
     it "creates an array carrying instances of Reservation" do
-      expect(@booker.make_block(rooms: 5, discount: 150, check_in: '2018-09-05', check_out: '2018-09-10')[4]).must_be_kind_of Hotel::Reservation
+      expect(@booker.make_block(5, 150, '2018-09-05', '2018-09-10')[4]).must_be_kind_of Hotel::Reservation
     end
 
     it "carries instances of Reservation with adjusted cost" do
-      expect(@booker.make_block(rooms: 1, discount: 150, check_in: '2018-09-05', check_out: '2018-09-10')[0].cost).must_equal 750
+      expect(@booker.make_block(1, 150, '2018-09-05', '2018-09-10')[0].cost).must_equal 750
     end
 
     it "assigns rooms starting from available rooms" do
       10.times do |i|
         @booker.make_reservation(i+1, '2018-09-05', '2018-09-10')
       end
-      expect(@booker.make_block(rooms: 5, discount: 150, check_in: '2018-09-05', check_out: '2018-09-10')[0].room.id).must_equal 11
+      expect(@booker.make_block(5, 150, '2018-09-05', '2018-09-10')[0].room.id).must_equal 11
     end
 
     it "reservation dates match the date range of the block" do
-      @booker.make_block(rooms: 1, discount: 150, check_in: '2018-09-05', check_out: '2018-09-10')
+      @booker.make_block(1, 150, '2018-09-05', '2018-09-10')
       dates = @booker.unreserved_block[0].date_range
       same_range = @booker.range(Date.parse('2018-09-05'), Date.parse('2018-09-10'))
       expect(dates.check_in).must_equal same_range.check_in
@@ -153,7 +153,7 @@ describe "HotelBooker Class" do
     end
 
     it "moves a reservation from @unreserved_block to @reserve_block" do
-      @booker.make_block(rooms: 1, discount: 150, check_in: '2018-09-05', check_out: '2018-09-10')
+      @booker.make_block(1, 150, '2018-09-05', '2018-09-10')
       @booker.make_block_reservation(1)
 
       expect(@booker.unreserved_block.length).must_equal 0
@@ -165,7 +165,7 @@ describe "HotelBooker Class" do
   describe "unreserved_block_rooms method" do
     before do
       @booker = Hotel::HotelBooker.new
-      @booker.make_block(rooms: 5, discount: 150, check_in: '2018-09-05', check_out: '2018-09-10')
+      @booker.make_block(5, 150, '2018-09-05', '2018-09-10')
     end
 
     it "returns an array of available rooms marked for block reservations" do

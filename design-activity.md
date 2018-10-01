@@ -39,3 +39,11 @@ Implementation B.
 ### Bonus question once you've read Metz ch. 3: Which implementation is more loosely coupled?
 
 Implementation B. The total_price in Order doesn't require knowing the unit price and quantity of each CartEntry.
+
+### Changes made in Hotel
+
+In my original HotelBooker class, I had a method for make_block and directly changed the cost of the Room as such:
+
+` available[i].cost = discount `
+
+To make this code less coupled, I created a wrapping method in Room `set_discount` so HotelBooker wouldn't directly handle the instance variable from Room. 

@@ -44,7 +44,7 @@ module Hotel
     end
 
 
-    def make_block(rooms: nil, discount: nil, check_in: nil, check_out: nil)
+    def make_block(rooms, discount, check_in, check_out)
       check_in = Date.parse(check_in)
       check_out = Date.parse(check_out)
       date_range = range(check_in, check_out)
@@ -57,7 +57,7 @@ module Hotel
 
       rooms.times do |i|
         reservation = Reservation.new("BLOCK ROOM #{i+1}", date_range)
-        available[i].cost = discount
+        available[i].set_discount(discount)
         reservation.room = available[i]
         @unreserved_block << reservation
       end

@@ -7,5 +7,10 @@ module Hotel
       @id = id
       @cost = 200
     end
+
+    def set_discount(new_cost)
+      @cost = new_cost
+    end
+    
   end
 end
