@@ -46,3 +46,12 @@ Which implementation better adheres to the single responsibility principle?
   B. Because each class has both state and behavior while having one single responsibility.
 
 HOTEL REVISITED:
+
+what changes you would need to make to improve this design, and how the resulting design would be an improvement.
+  BookingSystem takes on the role of checking for overlapping dates which is more than what it should do. Reservation class could instead become a date range class and it could address the overlapping date ranges there. This will allow BookingSystem to have less responsibilities.
+
+  Then I could still have a reservation class where it takes in the confirmed date ranges that can be used to make a reservation and assign a room number to that date range in that class.
+
+  I did not finish wave 2 before when we submitted this project so I focused on completing that part. Then I focused on breaking down the methods with less responsibility for the #make_reservation method.
+
+  The way the methods are set up makes sense for them to be in BookingSystem so I had difficulty with fleshing the responsibilities out in BookingSystem. I am still working on breaking down the booking_system class so I have not committed a repo with a newly improved design but it does have better methods with less responsibility.

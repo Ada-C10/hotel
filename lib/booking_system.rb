@@ -14,20 +14,20 @@ module Hotel
       room_number = get_available_room(check_in_date: check_in_date, check_out_date: check_out_date)
       reservation = Reservation.new(check_in_date: check_in_date, check_out_date: check_out_date, room_number: room_number)
 
-      if @reservations.length >= 1
-        reservation.date_range.each do |date|
-          if list_reservations_by_date(date).length >= 1
-            reservation.room_number = show_available_rooms(date).first
-            raise ArgumentError, "unable to reserve/rooms all booked" unless reservation.room_number != nil
+      assign_diff_room_for_overlapping_dates(reservation)
+      @reservations << reservation
+      return reservation
+    end
 
-            @reservations << reservation
-            return reservation
+    def assign_diff_room_for_overlapping_dates(booking)
+      if @reservations.length >= 1
+        booking.date_range.each do |date|
+          if list_reservations_by_date(date).length >= 1
+            booking.room_number = show_available_rooms(date).first
+            raise ArgumentError, "unable to reserve/rooms all booked" unless booking.room_number != nil
           end
         end
       end
-
-      @reservations << reservation
-      return reservation
     end
 
     def get_available_room(check_in_date:, check_out_date:)
