@@ -1,19 +1,23 @@
 class BookingManager
 
-  attr_reader :calendar
+  attr_reader :calendar, :reservations, :blocks
 
   def initialize(calendar)
     @calendar = calendar
+    @reservations = []
+    @blocks = []
   end
 
   def reserve_room(check_in, check_out)
     reservation = Reservation.new(check_in, check_out)
-    calendar.add_reservation(reservation)
+    room = calendar.add_reservation(reservation)
+    @reservations << [reservation, room]
   end
 
   def reserve_block(check_in, check_out, number_of_rooms)
     block = Block.new(check_in, check_out, number_of_rooms)
-    calendar.add_block(block)
+    rooms = calendar.add_block(block)
+    @blocks << block
   end
 
   def reserve_block_room(block)

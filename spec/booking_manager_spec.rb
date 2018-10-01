@@ -50,7 +50,42 @@ describe BookingManager do
     end
   end
 
+  describe "#reserve_room" do
+    before do
+      manager.reserve_room('181202','181204')
+    end
+    it "increases length of @reservations array" do
+      before = manager.reservations.length
+      manager.reserve_room('181202','181204')
+      expect(manager.reservations.length).must_equal before + 1
+    end
+    it "adds accurate Reservation instance to array" do
+      expect(manager.reservations.first[0]).must_be_kind_of Reservation
+      expect(manager.reservations.first[0].check_in).must_equal Date.parse('181202')
+      expect(manager.reservations.first[0].check_out).must_equal Date.parse('181204')
+    end
+    it "adds accurate reservation room number to array" do
+      expect(manager.reservations.first[1]).must_equal 1
+    end
+  end
 
+  describe "#reserve_block" do
+    before do
+      manager.reserve_block('181202','181204', 2)
+      @first_block = manager.blocks[0]
+    end
+    it "increases length of @blocks array" do
+      before = manager.blocks.length
+      manager.reserve_block('181202','181204', 2)
+      expect(manager.blocks.length).must_equal before + 1
+    end
+    it "adds accurate Block instance to array" do
+      expect(@first_block).must_be_kind_of Block
+      expect(@first_block.check_in).must_equal Date.parse('181202')
+      expect(@first_block.check_out).must_equal Date.parse('181204')
+      expect(@first_block.rooms.length).must_equal 2
+    end
+  end
 
   describe "#reserve_block_room" do
     before do
