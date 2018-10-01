@@ -47,16 +47,16 @@ module Hotel
       CSV.read(filename, headers: true).each do |line|
         input = {}
         input[:id] = line[0]
-        input[:guest_name] = line[1]
+        input[:block_rsv] = line[1].split(';')
         input[:included_rooms] = line[2].split(';').map { |num| num.to_i }
         input[:rsv_start] = line[3]
         input[:rsv_end] = line[4]
         input[:group_name] = line[5]
         input[:room_qty] = line[6]
-
+        # binding.pry
         all_blocks << BlockReservation.new(input)
       end
-
+      # binding.pry
       return all_blocks
     end
 
@@ -139,7 +139,7 @@ module Hotel
     def make_a_block(group_name, check_in, check_out, number_of_rooms, status = :BLOCK)
       open_block = find_available_rooms(check_in, check_out).first(number_of_rooms)
       res_id = (@block_reservations.last).id + 1
-      new_block = Hotel::BlockReservation.new(id: res_id, guest_name: 'pending',
+      new_block = Hotel::BlockReservation.new(id: res_id,
                                               group_name: group_name,
                                               included_rooms: open_block,
                                               rsv_start: check_in,
@@ -152,8 +152,19 @@ module Hotel
       return new_block
     end
 
-    def make_a_block_reservation(group_name)
-      block_reservation = @block_reservations.find { |rsv| rsv.group_name == group_name }
+    def make_a_rsv_in_block(group_name, guest_name)
+      find_block = @block_reservations.find { |rsv| rsv.group_name == group_name }
+      # binding.pry
+      rsv_room = find_block.rsv_hash.key('pending')
+      # binding.pry
+      if rsv_room.nil?
+        raise ArgumentError, 'No rooms available in block'
+      else
+        find_block.block_rsv[rsv_room] = guest_name
+      end
+      # binding.pry
+      return find_block
+      #
 
     end
 

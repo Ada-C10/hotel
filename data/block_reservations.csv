@@ -1,3 +1,3 @@
-id,guest_name,included_rooms,rsv_start,rsv_end,group_name,room_qty
-1000,pending,3;4;5,December 1 2019,December 4 2019,Johnson,3
-1001,pending,2;4;5;6,June 3 2019, June 7 2019,Boombaletti,4
+id,block_rsv,included_rooms,rsv_start,rsv_end,group_name,room_qty
+1000,3;pending;4;pending;5;pending,3;4;5,December 1 2019,December 4 2019,Johnson,3
+1001,2;pending;4;pending;5;pending;6;pendingpending,2;4;5;6,June 3 2019, June 7 2019,Boombaletti,4

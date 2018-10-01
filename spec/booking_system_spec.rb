@@ -54,22 +54,18 @@ describe 'BookingSystem' do
       expect(finder[0]).must_be_kind_of Hotel::Reservation
     end
     it 'returns empty array if no reservations found on that day' do
-      # admin = Hotel::BookingSystem.new
       find_date2 = "May 4 1337" # May 4 1337 used as test data for ensuring no reservations on that date"
       expect(admin.find_reservations_by_date(find_date2)).must_equal []
     end
     it 'given an id, can find a reservation' do
-      # admin = Hotel::BookingSystem.new
       id = 1
       expect(admin.find_a_reservation(id)).must_be_kind_of Hotel::Reservation
     end
     it 'raises an argument error if no reservation are found w/ that id' do
-      # admin = Hotel::BookingSystem.new
       id = 9999
       expect{ admin.find_a_reservation(id) }.must_raise ArgumentError
     end
     it 'can get total cost given a reservation id' do
-      # admin = Hotel::BookingSystem.new
       id = 2 # 1 room, 1 night, baserate 200.00
       expect(admin.get_reservation_total(id)).must_equal 1 * 1 * 200.00
       expect(admin.get_reservation_total(id)).must_be_kind_of Float
@@ -218,11 +214,24 @@ end
 
     # TODO: make tests and methods to reserve a room within a block
     it 'can make a reservation within a block' do
-      expect(admin.make_a_block_reservation('Johnson')).must_be_kind_of Hotel::Reservation
+      @rsv = admin.make_a_rsv_in_block('Johnson', 'Egan')
+      expect(@rsv).must_be_kind_of Hotel::Reservation
+      expect(@rsv.block_rsv[3]).must_equal 'Egan'
     end
 
+    # it 'can make subsequent reservations within a block' do
+    #   block_test = Hotel::BookingSystem.new
+    #
+    #   @rsv = block_test.make_a_rsv_in_block('Johnson', 'Senecal')
+    #   expect(@rsv.block_rsv[3]).must_equal 'Senecal'
+    #
+    #   block_test.make_a_rsv_in_block('Johnson', 'Egan')
+    #   expect(@rsv.block_rsv[4]).must_equal 'Egan'
+    #   binding.pry
+    #   block_test.make_a_rsv_in_block('Johnson', 'Allala')
+    #   expect(@rsv.block_rsv[5]).must_equal 'Allala'
+    # end
   end
-
 
 end
 
