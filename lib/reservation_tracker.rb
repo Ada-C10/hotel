@@ -145,14 +145,7 @@ module Hotel
       return first_available_room
     end
 
-    def confirm_valid_dates?(start_date, end_date)
-      check_dates_validity?(start_date, end_date)
-      check_dates_order?(start_date, end_date)
-    end
-
     def get_requested_dates(start_date, end_date)
-      check_prior_today?(start_date)
-      confirm_valid_dates?(start_date, end_date)
       return DateRange.new(start_date, end_date)
     end
 
@@ -222,24 +215,6 @@ module Hotel
 
     def check_room_num(num)
       raise ArgumentError, "Room num cannot be less than 1 or greater than #{NUM_OF_ROOMS} (got #{num})" if num <= 0 || num > NUM_OF_ROOMS
-    end
-
-    def check_prior_today?(start_date)
-      if start_date < Date.today
-        raise OldStartDateError.new("You cannot have a start date prior to Today")
-      end
-    end
-
-    def check_dates_validity?(start_date, end_date)
-      unless (start_date.is_a?(Date) && end_date.is_a?(Date))
-        raise InvalidDateError.new("That is not a Date type")
-      end
-    end
-
-    def check_dates_order?(start_date, end_date)
-      unless start_date < end_date
-        raise DatesOrderError.new("Start date must be before end date")
-      end
     end
 
     def check_enough_rooms?(available_rooms, qty)

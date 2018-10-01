@@ -166,42 +166,42 @@ describe "ReservationTracker class" do
     end
   end
 
-  describe "#confirm_valid_dates method" do
-    it "raises an error if start_date and end_date are both not Date types" do
-      start_date = 'Date.today'
-      end_date = 'start_date - 5'
-
-      expect { @reservation_tracker.confirm_valid_dates?(start_date, end_date) }.must_raise Hotel::ReservationTracker::InvalidDateError
-    end
-
-    it "raises an error if start_date is a Date and but end_date is not" do
-      start_date = Date.today
-      end_date = "Date.today + 5"
-
-      expect { @reservation_tracker.confirm_valid_dates?(start_date,end_date) }.must_raise Hotel::ReservationTracker::InvalidDateError
-    end
-
-    it "raises an error if start_date not a Date and but end_date is" do
-      start_date = "Date.today"
-      end_date = Date.today + 5
-
-      expect { @reservation_tracker.confirm_valid_dates?(start_date, end_date) }.must_raise Hotel::ReservationTracker::InvalidDateError
-    end
-
-    it "raises an error if end date precedes start date" do
-      start_date = Date.today
-      end_date = start_date - 5
-
-      expect { @reservation_tracker.confirm_valid_dates?(start_date, end_date) }.must_raise Hotel::ReservationTracker::DatesOrderError
-    end
-
-    it "raises an error if start_date and end_date are the same" do
-      start_date = Date.today
-      end_date = start_date
-
-      expect { @reservation_tracker.confirm_valid_dates?(start_date, end_date) }.must_raise Hotel::ReservationTracker::DatesOrderError
-    end
-  end
+  # describe "#confirm_valid_dates method" do
+  #   it "raises an error if start_date and end_date are both not Date types" do
+  #     start_date = 'Date.today'
+  #     end_date = 'start_date - 5'
+  #
+  #     expect { @reservation_tracker.confirm_valid_dates?(start_date, end_date) }.must_raise Hotel::ReservationTracker::InvalidDateError
+  #   end
+  #
+  #   it "raises an error if start_date is a Date and but end_date is not" do
+  #     start_date = Date.today
+  #     end_date = "Date.today + 5"
+  #
+  #     expect { @reservation_tracker.confirm_valid_dates?(start_date,end_date) }.must_raise Hotel::ReservationTracker::InvalidDateError
+  #   end
+  #
+  #   it "raises an error if start_date not a Date and but end_date is" do
+  #     start_date = "Date.today"
+  #     end_date = Date.today + 5
+  #
+  #     expect { @reservation_tracker.confirm_valid_dates?(start_date, end_date) }.must_raise Hotel::ReservationTracker::InvalidDateError
+  #   end
+  #
+  #   it "raises an error if end date precedes start date" do
+  #     start_date = Date.today
+  #     end_date = start_date - 5
+  #
+  #     expect { @reservation_tracker.confirm_valid_dates?(start_date, end_date) }.must_raise Hotel::ReservationTracker::DatesOrderError
+  #   end
+  #
+  #   it "raises an error if start_date and end_date are the same" do
+  #     start_date = Date.today
+  #     end_date = start_date
+  #
+  #     expect { @reservation_tracker.confirm_valid_dates?(start_date, end_date) }.must_raise Hotel::ReservationTracker::DatesOrderError
+  #   end
+  # end
 
   describe "#get_requested_dates method" do
     it "creates an instance of DateRange with the start_date and end_date inputs" do
