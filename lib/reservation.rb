@@ -1,7 +1,7 @@
 module Hotel
 class Reservation
 
-  attr_reader :room, :start_date, :end_date, :rate
+  attr_reader :room, :daterange, :rate
 
   def initialize(room, daterange, rate = 200)
 
