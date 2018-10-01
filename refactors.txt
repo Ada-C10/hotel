@@ -1,0 +1,5 @@
+Changes to make in the future:
+- Change start_date and end_date to check_in and check_out
+- If more attributes added to rooms (like different prices, suites, King vs Queen beds, etc), create a separate Room class.
+- Refactor the dates_overlap? method
+- Work on BlockRoom class/methods + Tests
