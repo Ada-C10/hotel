@@ -34,5 +34,11 @@ module BookingLogic
         room.cost = rate
       end
     end
+
+    def reserve_room
+      room = self.available.first
+      room.block_reserved = true
+      return room
+    end
   end
 end

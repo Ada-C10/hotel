@@ -32,4 +32,10 @@
 
 8. Implementation B, absolutely. I've made my case above... lol
 
-9. Once again, B. 
+9. Once again, B.
+
+
+-----------
+
+
+In RoomBooker#new_block_reservation, the local `room` variable is used to modify the state of the Room struct, which belongs to the RoomBlock instance. If I were to handle this functionality instead within the RoomBlock class itself in an instance method, my classes would be even more loosely coupled and resilient to future change/easier to change in the future.

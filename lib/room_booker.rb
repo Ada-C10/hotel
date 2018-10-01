@@ -4,8 +4,6 @@ require_relative 'reservation'
 require_relative 'room_block'
 require_relative 'room_not_available'
 
-require 'pry'
-
 module BookingLogic
   class RoomBooker
     Room = Struct.new(:id, :cost, :block_reserved)
@@ -116,7 +114,7 @@ module BookingLogic
     end
 
     def block_available_rooms(check_in, check_out, number_of_rooms, rate)
-      
+
       available_rooms = list_available_rooms(check_in, check_out)
 
       room_block = []
@@ -157,8 +155,7 @@ module BookingLogic
 
     def new_block_reservation(name)
       block = find_block(name)
-      room = block.available.first
-      room.block_reserved = true
+      room = block.reserve_room
       new_reservation = BookingLogic::Reservation.new(room, block.check_in, block.check_out)
       reservations << new_reservation
       return new_reservation
