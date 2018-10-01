@@ -22,11 +22,5 @@ module Lodging
         end
     end
 
-    def self.available_room #to return one room with status available
-      CSV.open('data/all_hotel_rooms.csv', 'r', headers: true) do |row|
-        return row
-      end
-    end
-
   end
 end
