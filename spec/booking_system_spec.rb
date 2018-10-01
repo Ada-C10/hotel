@@ -55,6 +55,9 @@ describe "BookingSystem class" do
       puts @booking.reservations
       expect(@booking.reservations.length).must_equal 1
     end
+    # it "Makes a block reservation - takes number of rooms, cost_per_night, check-in, check_out "
+
+
     it "raises an error if no rooms are available" do
       20.times do
         @booking.make_reservation(200, "2018-02-03", "2018-02-06")

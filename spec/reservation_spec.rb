@@ -46,7 +46,7 @@ describe "make a reservation" do
     expect(@new_res.total_cost).must_equal 600.00
   end
 
-  it "finds the total cost of each room in a block" do
-    expect(@new_res.discounted_rate).must_equal 480
-  end
+  # it "finds the total cost of each room in a block" do
+  #   expect(@new_res.discounted_rate).must_equal 480
+  # end
 end

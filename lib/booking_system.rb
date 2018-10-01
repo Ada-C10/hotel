@@ -1,7 +1,7 @@
 require 'date'
 require_relative "reservation"
 require_relative "date_range"
-require_relative "blocks"
+require_relative "block"
 require 'pry'
 
 
@@ -15,9 +15,7 @@ module Hotel
         {room_number: 1}, {room_number: 2}, {room_number: 3}, {room_number: 4}, {room_number: 5}, {room_number: 6}, {room_number: 7}, {room_number: 8}, {room_number: 9}, {room_number: 10}, {room_number: 11}, {room_number: 12}, {room_number: 13}, {room_number: 14}, {room_number: 15}, {room_number: 16}, {room_number: 17}, {room_number: 18}, {room_number: 19}, {room_number: 20}
       ]
 
-      @reservations = [
-
-      ]
+      @reservations = [  ]
 
     end
 
@@ -32,6 +30,23 @@ module Hotel
       reservation = Hotel::Reservation.new(room_number, cost_per_night, check_in, check_out)
       @reservations << reservation
       return reservation
+    end
+
+    #make block reservation
+    # error if not between 3-5 rooms
+    def make_block_reservation(number_of_rooms, cost_per_night, check_in, check_out)
+      available_rooms = list_available_rooms(Hotel::DateRange.new(check_in, check_out))
+      if available_rooms.length < number_of_rooms
+        raise StandardError, "There's no room in the inn"
+      end
+      block_reservation = []
+      number_of_rooms.times do
+        room_number = available_rooms.sample[:room_number]
+        reservation = Hotel::Reservation.new(room_number, cost_per_night, check_in, check_out)
+        @reservations << reservation
+        block_reservation << res
+      end
+      return block_reservation
     end
 
     # list reservations for a specific date

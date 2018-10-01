@@ -4,7 +4,7 @@ require_relative "date_range"
 require 'pry'
 
 module Hotel
-  class Blocks
+  class Block
 
     # As an administrator, I can create a block of rooms
       #   To create a block you need a date range, collection of rooms and a discounted room rate
@@ -14,6 +14,7 @@ module Hotel
       attr_reader :collection_of_rooms, :date_range, :cost_per_night
 
       def initialize(collection_of_rooms, cost_per_night, check_in, check_out)
+
         @collection_of_rooms = collection_of_rooms
         @cost_per_night = cost_per_night
         @date_range = Hotel::DateRange.new(check_in, check_out)
