@@ -4,9 +4,10 @@ BookingManager methods need to be refactored. A lot of logic is repeated, but I 
 
 Wrap classes in Hotel module.
 
-Change Calendar#get_all_dates to #all_dates.
+Change Reservation#get_all_dates to #all_dates.
 
 Find a better way to organize test data.
+
 
 
 Notes from instructor feedback - 9.29.18:
@@ -24,3 +25,15 @@ Replace StandardErrors with custom exceptions in BookingManager and Reservation.
 Refactor Reservation#number_of_nights.
 
 Change Block discount case statement to hash.
+
+
+
+Second submission notes - 10.1.18:
+
+Is there a better way to attach the room to the reservation?
+
+Is Calendar#reservations or BookingManager#reservations better for providing a list of reservations?
+
+Test data is cleaned up a bit, but could still use improvement.
+
+I think some methods and variables could be named better. 

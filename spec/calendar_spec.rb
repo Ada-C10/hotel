@@ -1,55 +1,55 @@
 require_relative 'spec_helper'
 
-describe Calendar do
+describe Hotel::Calendar do
   let(:calendar) {
-    Calendar.new(20)
+    Hotel::Calendar.new(20)
   }
   let(:manager) {
-    BookingManager.new(calendar)
+    Hotel::BookingManager.new(calendar)
   }
   let(:reservation1) {
-    Reservation.new('181202', '181204')
+    Hotel::Reservation.new('181202', '181204')
   }
   let(:reservation2) {
-    Reservation.new('181204', '181206')
+    Hotel::Reservation.new('181204', '181206')
   }
   let(:reservation3) {
-    Reservation.new('181203', '181204')
+    Hotel::Reservation.new('181203', '181204')
   }
   let(:reservation4) {
-    Reservation.new('181130', '181202')
+    Hotel::Reservation.new('181130', '181202')
   }
   let(:reservation5) {
-    Reservation.new('181130', '181206')
+    Hotel::Reservation.new('181130', '181206')
   }
   let(:block2) {
-    Block.new('181202', '181204', 2)
+    Hotel::Block.new('181202', '181204', 2)
   }
   let(:block3) {
-    Block.new('181204', '181206', 3)
+    Hotel::Block.new('181204', '181206', 3)
   }
   let(:block4) {
-    Block.new('181129', '181201', 4)
+    Hotel::Block.new('181129', '181201', 4)
   }
   let(:block5) {
-    Block.new('181203', '181204', 5)
+    Hotel::Block.new('181203', '181204', 5)
   }
   let(:block6) {
-    Block.new('181201', '181205', 5)
+    Hotel::Block.new('181201', '181205', 5)
   }
   let(:block7) {
-    Block.new('181202', '181203', 4)
+    Hotel::Block.new('181202', '181203', 4)
   }
   let(:block8) {
-    Block.new('181206', '181210', 3)
+    Hotel::Block.new('181206', '181210', 3)
   }
   let(:block9) {
-    Block.new('181206', '181208', 5)
+    Hotel::Block.new('181206', '181208', 5)
   }
 
   describe "#initalize" do
     it "can be instantiated" do
-      expect(calendar).must_be_kind_of Calendar
+      expect(calendar).must_be_kind_of Hotel::Calendar
     end
     it "creates accurate array of rooms" do
       expect(calendar.rooms).must_be_kind_of Array

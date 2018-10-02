@@ -1,34 +1,34 @@
 require_relative 'spec_helper'
 
-describe Reservation do
+describe Hotel::Reservation do
   let (:reservation) {
-    Reservation.new('181202', '181204')
+    Hotel::Reservation.new('181202', '181204')
   }
   let (:error_reservation) {
-    Reservation.new('181204', '181202')
+    Hotel::Reservation.new('181204', '181202')
   }
   let (:months_reservation) {
-    Reservation.new('181130', '181204')
+    Hotel::Reservation.new('181130', '181204')
   }
   let (:same_reservation) {
-    Reservation.new('181130', '181130')
+    Hotel::Reservation.new('181130', '181130')
   }
   let (:years_reservation) {
-    Reservation.new('181230', '190103')
+    Hotel::Reservation.new('181230', '190103')
   }
   let (:date_error1) {
-    Reservation.new('181202', '1812045')
+    Hotel::Reservation.new('181202', '1812045')
   }
   let (:date_error2) {
-    Reservation.new('18120', '181204')
+    Hotel::Reservation.new('18120', '181204')
   }
   let (:date_error3) {
-    Reservation.new('18-12-02', '1812045')
+    Hotel::Reservation.new('18-12-02', '1812045')
   }
 
   describe "#initialize" do
     it "can be instantiated" do
-      expect(reservation).must_be_kind_of Reservation
+      expect(reservation).must_be_kind_of Hotel::Reservation
     end
     it "stores number of nights" do
       expect(reservation.number_of_nights).must_equal 2
@@ -47,12 +47,12 @@ describe Reservation do
       expect(reservation.check_out).must_be_kind_of Date
     end
     it "raises ArgumentError if date is not 6 digits" do
-      expect{Reservation.new('181202', '1812045')}.must_raise ArgumentError, "Date format: YYMMDD."
+      expect{Hotel::Reservation.new('181202', '1812045')}.must_raise ArgumentError, "Date format: YYMMDD."
 
-      expect{Reservation.new('18120', '181204')}.must_raise ArgumentError, "Date format: YYMMDD."
+      expect{Hotel::Reservation.new('18120', '181204')}.must_raise ArgumentError, "Date format: YYMMDD."
     end
     it "raises ArgumentError if date contains non-numeric characters" do
-      expect{Reservation.new('18-12-02', '1812045')}.must_raise ArgumentError, "Date format: YYMMDD."
+      expect{Hotel::Reservation.new('18-12-02', '1812045')}.must_raise ArgumentError, "Date format: YYMMDD."
     end
   end
 
@@ -62,10 +62,10 @@ describe Reservation do
       expect(months_reservation.number_of_nights).must_equal 4
     end
     it "raises StandardError if check_out is earlier than check_in" do
-      expect{Reservation.new('181204', '181202')}.must_raise Reservation::InvalidDateError, "Invalid date range."
+      expect{Hotel::Reservation.new('181204', '181202')}.must_raise Hotel::Reservation::InvalidDateError, "Invalid date range."
     end
     it "raises StandardError if check_out is the same as check_in" do
-      expect{Reservation.new('181130', '181130')}.must_raise Reservation::InvalidDateError, "Invalid date range."
+      expect{Hotel::Reservation.new('181130', '181130')}.must_raise Hotel::Reservation::InvalidDateError, "Invalid date range."
     end
   end
 

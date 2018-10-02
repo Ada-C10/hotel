@@ -1,26 +1,26 @@
 require_relative 'spec_helper'
 require 'pry'
 
-describe BookingManager do
+describe Hotel::BookingManager do
   let(:calendar) {
-    Calendar.new(20)
+    Hotel::Calendar.new(20)
   }
   let(:manager) {
-    BookingManager.new(calendar)
+    Hotel::BookingManager.new(calendar)
   }
   let(:reservation1) {
-    Reservation.new('181202', '181204')
+    Hotel::Reservation.new('181202', '181204')
   }
   let(:block2) {
-    Block.new('181202', '181206', 2)
+    Hotel::Block.new('181202', '181206', 2)
   }
 
   describe "#initialize" do
     it "can be instantiated" do
-      expect(manager).must_be_kind_of BookingManager
+      expect(manager).must_be_kind_of Hotel::BookingManager
     end
     it "takes a calendar" do
-      expect(manager.calendar).must_be_kind_of Calendar
+      expect(manager.calendar).must_be_kind_of Hotel::Calendar
     end
   end
 
@@ -35,7 +35,7 @@ describe BookingManager do
       expect(manager.reservations.length).must_equal before + 1
     end
     it "adds accurate Reservation instance to array" do
-      expect(@first_res).must_be_kind_of Reservation
+      expect(@first_res).must_be_kind_of Hotel::Reservation
       expect(@first_res.check_in).must_equal Date.parse('181202')
       expect(@first_res.check_out).must_equal Date.parse('181204')
     end
@@ -55,7 +55,7 @@ describe BookingManager do
       expect(manager.blocks.length).must_equal before + 1
     end
     it "adds accurate Block instance to array" do
-      expect(@first_block).must_be_kind_of Block
+      expect(@first_block).must_be_kind_of Hotel::Block
       expect(@first_block.check_in).must_equal Date.parse('181202')
       expect(@first_block.check_out).must_equal Date.parse('181204')
       expect(@first_block.rooms.length).must_equal 2
@@ -66,7 +66,6 @@ describe BookingManager do
     before do
       calendar.add_reservation(reservation1)
       calendar.add_block(block2)
-      # binding.pry
     end
     it "returns reserved room if block isn't full" do
       expect(manager.reserve_block_room(block2)).must_equal 2
@@ -75,7 +74,7 @@ describe BookingManager do
       2.times do
         manager.reserve_block_room(block2)
       end
-      expect{manager.reserve_block_room(block2)}.must_raise BookingManager::NoAvailabilityError
+      expect{manager.reserve_block_room(block2)}.must_raise Hotel::BookingManager::NoAvailabilityError
     end
     it "reserves first available room in a block" do
       expect(manager.reserve_block_room(block2)).must_equal 2
