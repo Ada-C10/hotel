@@ -58,7 +58,7 @@ Do you still agree with your previous assesment, or could your refactor be furth
 ****
 
 ### Based on the answers to each set of the above questions, identify one place in your Hotel project where a class takes on multiple roles, or directly modifies the attributes of another class. Describe in design-activity.md what changes you would need to make to improve this design, and how the resulting design would be an improvement.
-  Changed a bunch of stuff, remove CSV stuff since it didn't work out, change some methods and clearly separate module from class. 
+  Changed a bunch of stuff, remove CSV stuff since it didn't work out, change some methods and clearly separate module from class. Moved module methods to Concierge class, but I think the program as a whole needs a rehaul. 
 
 
 If you need inspiration, remember that the reference implementation exists.
