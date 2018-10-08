@@ -25,8 +25,7 @@ class Reservation
   end
 
  def during?(check_out, check_in)
-   @date_range.include?(check_out) || @date_range.include?(end_date)
-   # What about intersecting reservarions?
+   @date_range.include?(check_out)
  end
 
   # def make_block_reservation(number of rooms, start_time, end_time, rate)

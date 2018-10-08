@@ -1,21 +1,11 @@
 require 'date'
-class Hotel
+class ReservationManager
   attr_reader :reservations, :rooms
   # attr_accessor
   def initialize(reservations = [], rooms = [])
     @reservations = reservations
     @rooms = generate_rooms
-    # @block_reservations = lock_reservations
-  end
-
-  def make_reservation(check_in = Date.new(check_in), check_out = Date.new(check_out))
-
-    room = rooms_available(check_in, check_out).first
-
-    reservation = Reservation.new(check_in, check_out, room)
-    @reservations << reservation
-    room.reserve(reservation)
-    return reservation
+    # @block_reservations = block_reservations
   end
 
   def generate_rooms
@@ -25,11 +15,28 @@ class Hotel
     return rooms
   end
 
+  def make_reservation(check_in = Date.new(check_in), check_out = Date.new(check_out))
+    room = rooms_available(check_in, check_out).first
+    reservation = Reservation.new(check_in, check_out, room)
+    @reservations << reservation
+    room.reserve(reservation)
+    return reservation
+  end
+
   def rooms_available(check_in, check_out)
    free_rooms = @rooms.select do |room|
       room.available?(check_in, check_out)
     end
+    return free_rooms
   end
+
+# rethinking design
+# def rooms_available(check_in, check_out)
+#  free_rooms = @rooms.select do |room|
+#     room.room_availble?(check_in, check_out)
+#   end
+#   return free_rooms
+# end
 
   def find_reservation(check_out, check_in)
     @reservations.each do |reservation|
@@ -38,19 +45,7 @@ class Hotel
     end
   end
 
-  # def reserve_room # helper method
-  #   @rooms.each do |room|
-  #
-  #     available?
-  #     if room.status == :available
-  #       room.status = :reserved
-  #       reserved_room = room
-  #       room.dates << reserved_room
-  #       return reserved_room
-  #     end
-  #   end
-  #
-  #   # changes room status with helper method
+  # def list_reservations(check_out, check_in)
   # end
 
   # def reserve_block

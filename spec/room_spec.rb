@@ -15,8 +15,4 @@ describe "Room" do
     expect(new_room).must_be_kind_of Room
   end
 
-  it "raises an error if room number is higher than 20" do
-    expect{(Room.new(21))}.must_raise ArgumentError
-  end
-
 end

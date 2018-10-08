@@ -32,6 +32,6 @@ describe "Reservation Class" do
     end
 
   end
-
+  # TODO: Test for nights and during? methods
 
 end

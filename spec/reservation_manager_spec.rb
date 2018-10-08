@@ -7,55 +7,58 @@ require 'date'
 
 Minitest::Reporters.use! Minitest::Reporters::SpecReporter.new
 
-require_relative '../lib/hotel.rb'
+require_relative '../lib/reservation_manager.rb'
 require_relative '../lib/room.rb'
 require_relative '../lib/reservation.rb'
 
-describe "Hotel Class" do
+describe "ReservationManagers Class" do
 
   describe "Initializer" do
     before do
-      @hotel = Hotel.new
+      @reservation_manager = ReservationManager.new
     end
-    # let (:hotel) { hotel = Hotel.new
-    # } => this works but creates warnings => warning: assigned but unused variable - hotel
-    it "returns an instance of Hotel" do
-      expect(@hotel).must_be_kind_of Hotel
+
+    it "returns an instance of ReservationManager" do
+      expect(@reservation_manager).must_be_kind_of ReservationManager
     end
 
     it "initializes the correct data structure" do
-      expect(@hotel.rooms).must_be_kind_of Array
-      expect(@hotel.reservations).must_be_kind_of Array
+      expect(@reservation_manager.rooms).must_be_kind_of Array
+      expect(@reservation_manager.reservations).must_be_kind_of Array
     end
 
     it "creates 20 rooms on initiation" do
-      expect(@hotel.rooms.length).must_equal 20
-      binding.pry
+      expect(@reservation_manager.rooms.length).must_equal 20
     end
   end
 
-  # describe "Hotel#make_reservation" do
-  #   before do
-  #     @hotel = Hotel.new
-  #   end
-  #
-  #   it "creates a reservation object" do
-  #     reservation = @hotel.make_reservation(2018923, 2018926)
-  #     expect(reservation).must_be_kind_of Reservation
-  #   end
+  describe "ReservationManager#make_reservation" do
+    before do
+      @reservation_manager = ReservationManager.new
+    end
+
+    it "creates a reservation" do
+      reservation = @reservation_manager.make_reservation(2018923, 2018926)
+
+      expect(reservation).must_be_kind_of Reservation
+      reservation.check_in.must_equal 2018923
+
+      reservation_1 = @reservation_manager.make_reservation(2018910, 2018911)
+    
+    end
   #
   #   it "adds reservation to list of reservarions made" do
-  #     # expect(@hotel.reservations).must_be_nil
-  #     @hotel.make_reservation(2018923, 2018926)
-  #     binding.pry
-  #     expect(@hotel.reservations.length).must_equal 1
+  #
+  #     @reservation_manager.make_reservation(2018923, 2018926)
+  #     expect(@reservation_manager.reservations.length).must_equal 1
   #   end
+  end
 
-    # TODO:
-    # it "reserves a room on reservation" do
-    #
-    # end
-  # end
+  # TODO:
+  # That you can make a reservation
+  # That if you have a reservation in a date range, the next room is selected.
+  # If all rooms are booked, an error is produced.
+  # If a reservation ends on the new booking date, the room can be reserved.
 
   # describe "Hotel#find_reservation(date)" do
   #   it "find a reservation using the date" do

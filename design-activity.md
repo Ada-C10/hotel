@@ -58,11 +58,16 @@ Does total_price directly manipulate the instance variables of other classes?
 
 If we decide items are cheaper if bought in bulk, how would this change the code? Which implementation is easier to modify?
 
-    Implementation B will be easier to modify because it is loosely couple. 
+    Implementation B will be easier to modify because it is loosely couple.
 
 Which implementation better adheres to the single responsibility principle?
+
     Implementation B
 
 
 Bonus question once you've read Metz ch. 3: Which implementation is more loosely coupled?
+
     Implementation B is more loosely coupled because classes are responsible for their prices unlike in Implementation A.
+
+I think it would lessen dependencies if each room does not know about all the reservations it has. I made it like this as a way to check if a room is available for a given date range. If I can think of a better design for how rooms are available, rooms won't need to know reservations.  
+  
