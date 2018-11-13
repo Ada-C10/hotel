@@ -1,0 +1,10 @@
+2018-04-01,2018-04-06,1,200.0,"This is the first reservation"
+2018-04-01,2018-04-06,2,200.0,"thisres"
+2018-04-01,2018-04-06,3,200.0,
+2018-04-06,2018-04-08,3,200.0,"thatres"
+2018-04-05,2018-04-06,4,200.0,"anotherres"
+2018-04-10,2018-04-15,1,185.0,"This is a block (private) reservation"
+2018-04-10,2018-04-15,2,185.0,"This is a block (private) reservation"
+2018-04-10,2018-04-15,3,185.0,"This is a block (private) reservation"
+2018-04-10,2018-04-15,4,185.0,"This is a block (private) reservation"
+2018-04-15,2018-04-30,6,200.0,"This is a public reservation"

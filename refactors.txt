@@ -1,0 +1,25 @@
+# hotbook/refactors.txt
+
+1. Creating a block should not require user to make a list of rooms - make a helper method to find a list of rooms.
+
+2. Consider suggestion for block class to contain "reservations" array.
+
+3. Refactor/expand spec tests per suggestions.
+
+4. Could all classes inherit from a CSVLoader class?
+
+
+
+
+## Previous refactors:
+1. Create "rooms" CSV and load into hotel class into hash. Unless rooms have a lot more information than just room number and rate, they don't have to become a Rooms class object yet. The Hotel class is named Hotel rather than Rooms so as not to be confusing. There's a tradeoff there.
+
+2. More consistency in terms of when keyword arguments vs positional arguments are used.
+
+3. Hotel class needs to be able to add and remove rooms.
+
+4. Block class could parse CSV block data (which will have an identical format as CSV reservation data) into Blocks--or, another approach is for CSV block data to be loaded by Reservations, and for Block class to parse an array of Reservations into Blocks.
+
+5. Learn about how better to structure classes if they load CSVs similarly. Like FarMar?
+
+6. Come up with a more methodical way to do spec tests that more carefully ensures date/reservation/block conflicts are all caught as they should be.
