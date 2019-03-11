@@ -1,0 +1,29 @@
+What is this class's responsibility? You should be able to describe it in a single sentence.
+  Reservation: stores check in, check out date, and room number while also calculating the cost for those dates.
+
+  BookingSystem: keeps track of all reservations, assigns room number, checks for overlaps in dates for new booking, list reservations by date and show available rooms.
+
+Is this class responsible for exactly one thing?
+  Reservation: Almost. It's perhaps it will be better if it just focuses on dates rather than also keeping track of the room_number as well as calculating the cost.
+
+  BookingSystem: No. It's checking to see if the dates overlap while trying to confirm the client is able to make a reservation for that date range.
+
+Does this class take on any responsibility that should be delegated to "lower level" classes?
+  Reservation: Not sure if calculating the cost should go to a lower level class but it this class does need to focus on one responsibility.
+
+  BookingSystem: Yes. Overlaps could go to a date range class.
+
+Is there code in other classes that directly manipulates this class's instance variables?
+  Reservation:
+
+  BookingSystem:
+
+How easy is it to follow your own instructions?
+  It was easy for me to follow the instructions because I wrote them today but if I looked at it a week from now then it will be difficult to follow because it's not specific.
+
+Do these refactors improve the clarity of your code?
+  Yes, if implemented it will reduce the number of responsibilities the booking_system class has right now.
+
+
+Do you still agree with your previous assesment, or could your refactor be further improved?
+  I agree with the previous assessment but there are always ways to refactor for one's code to be improved.

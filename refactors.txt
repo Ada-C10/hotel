@@ -1,0 +1,9 @@
+Refactoring ideas:
+
+  BookingSystem might have too many responsibilities so might need to divide it into several classes.
+
+  #make_reservation method has too many responsibilities inside and the if statement is too clumped. Break down the method to several instance methods.
+
+  Use .map instead of .each in #list_reservations_by_date.
+
+  Clean up the tests and organize them so that it's easier to read.
