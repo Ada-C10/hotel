@@ -1,0 +1,15 @@
+1. Consider making these classes into a module
+  a.To think about - what is the benefit of putting them in a model?
+    -because they are all related?
+
+2. Put a party_name attribute in reservation and block reservation
+  a.In real life, it will be another way to access reservations
+    -so far can see by date range and by id #
+
+3. Make Admin less dependent on Reservation/Block Reservation
+  a. maybe put Reservation.new into argument or make it it's own method by itself.
+    -Would love to get some good ideas how to do this
+
+4. Consider modifying request_reservation method to be used by request block,
+   and request_reservation_within_block (make it reusable)
+   a.maybe dividing up methods will help?
