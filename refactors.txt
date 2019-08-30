@@ -1,0 +1,7 @@
+> Dry up redundant methods between reservation and block_reservation.
+> Investigate drying up BookingSystem#find_reservations_by_date
+> The room class only seems necessary if different room types were ever created,
+as it currently stands rooms could probably just be an array of numbers ranged 1-20
+>
+>> Build functionality to make a block reservation
+>>
